@@ -688,7 +688,7 @@ func enemydefeated():
 	text += '\nYou have received a total sum of [color=yellow]' + str(round(goldearned)) +'[/color] pieces of gold and [color=aqua]' + str(expearned) + '[/color] experience points. '
 	if supplyearned > 0:
 		globals.itemdict.supply.amount += supplyearned
-		text += "\nYou have collected " + str(supplyearned) + " units of supplies from defeated enemies. "
+		text += "\nYou have collected " + str(supplyearned) + " units of supplies from defeated enemies. \n"
 	globals.player.level.xp += round(expearned/(globals.state.playergroup.size()+1))
 	for i in globals.state.playergroup:
 		var slave = globals.state.findslave(i)

@@ -902,6 +902,7 @@ func emilymansion(stage = 0):
 		buttons.append({text = 'Assault her after bath', function = 'emilymansion', arguments = 2})
 		buttons.append({text = "Just wait", function = "emilymansion", arguments = 3})
 	elif stage == 1:
+		globals.itemdict.aphrodisiac.amount -= 1
 		text = textnode.EmilyShowerSex
 		emily.sexuals.unlocked = true
 		emily.sexuals.unlocks.append('vaginal')
