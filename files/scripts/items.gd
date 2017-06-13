@@ -233,7 +233,7 @@ aphroditebrew = {
 	code = 'aphroditebrew',
 	name = 'Aphrodite Brew',
 	icon = load("res://files/images/items/aphroditespot.png"),
-	description = "Extremely potent mixture of aphrodisiacs. Even slightest amounts of this can easily dim person's mind and awake thier carnal desires. \n[color=yellow]Can't be used for single person, required to start orgy. [/color]",
+	description = "Extremely potent mixture of aphrodisiacs. Even slightest amounts of this can easily dim person's mind and awake their carnal desires. \n[color=yellow]Can't be used for single person, required to start orgy. [/color]",
 	effect = '',
 	recipe = 'recipeaphroditebrew',
 	cost = 400,
@@ -447,7 +447,7 @@ underwearplain = {
 	name = 'Plain Underwear',
 	icon = load("res://files/images/items/underwear.png"),
 	iconbig = true,
-	description = "Plain white cotton underwear for everyday's life.",
+	description = "Plain white cotton underwear for everyday life.",
 	effect = "",
 	recipe = '',
 	reqs = null,
@@ -489,7 +489,7 @@ armorchain = {
 	code = 'armorchain',
 	name = 'Chain Armor',
 	icon = null,
-	description = "Finely forged piece of metal suit made out of iron links. Offers reasonable protection against sharp objects. ",
+	description = "A finely crafted suit of armor created from interwoven iron rings. Offers reasonable protection against sharp objects. ",
 	effect = [{type = 'onequip', effect = 'armor', effectvalue = 5, descript = "+5 Armor"}],
 	recipe = '',
 	reqs = null,
@@ -588,7 +588,7 @@ accslavecollar = {
 	name = 'A Leather Slave Collar',
 	icon = null,
 	description = "This leather collar is designed to fit tightly around the neck. It has rings to which bindings can be attached.\n",
-	effect = [{type = 'onendday', effect = 'slavecollareffect', descript = "Increases Obedience by the end of a day"}],
+	effect = [{type = 'onendday', effect = 'slavecollareffect', descript = "Increases Obedience by the end of a day, also reduces the chance for a slave to escape"}],
 	recipe = '',
 	reqs = null,
 	cost = 150,
@@ -660,10 +660,10 @@ func kimonoeffect(slave):
 	pass
 
 func peteffect(slave):
-	var text = slave.dictionary("$name wears pet suit and ")
+	var text = slave.dictionary("$name wears pet suit ")
 	slave.obed += rand_range(8,16)
 	if slave.conf >= 40 && slave.traits.has('Submissive') == false:
-		text += slave.dictionary("and is very unpleasant  about it, although $his obedience grows.\n")
+		text += slave.dictionary("and is very unhappy about it, although $his obedience grows.\n")
 		slave.stress += rand_range(5,10)
 		slave.conf += rand_range(-2,-4)
 	else:
@@ -677,7 +677,7 @@ func mikoeffect(slave):
 	return text
 
 func bedlaheffect(slave):
-	var text = slave.dictionary("$name's revealing clothes causing $him to get better at presenting $himself to others. ")
+	var text = slave.dictionary("$name's revealing clothes teach $him how to better present $himself to others. ")
 	slave.charm += rand_range(1,3)
 	return text
 
@@ -722,7 +722,7 @@ func handcuffeffect(slave):
 	return text
 
 #			elif slave.gear.clothes.code == 'bedlah':
-#				text2.set_bbcode(text2.get_bbcode() + slave.dictionary("$name's revealing clothes causing her to become more open to dirty things.\n"))
+#				text2.set_bbcode(text2.get_bbcode() + slave.dictionary("$name's revealing clothes cause her to become more open to dirty things.\n"))
 
 
 
@@ -737,7 +737,7 @@ func aphrodisiaceffect():
 	if slave == globals.player:
 		return('You decide this potion is not going to benefit you at all.')
 	slave.lust += 25
-	var text = slave.dictionary("After ingesting aphrodisiac, $name began showing signs of growing excitement.")
+	var text = slave.dictionary("After ingesting an aphrodisiac, $name begins showing signs of growing excitement.")
 	return text
 
 func regressionpoteffect():
@@ -747,7 +747,7 @@ func regressionpoteffect():
 	slave.add_trait(globals.origins.trait('Pliable'))
 	slave.add_trait(globals.origins.trait('Regressed'))
 	slave.loyal += rand_range(15,25)
-	var text = slave.dictionary("As $name drinks the potion, look on his face becomes less and less focused, until eventually $his mind is reformed back into its very young and learning state. With this you can leave much greater impact on $his consciousness. ")
+	var text = slave.dictionary("As $name drinks the potion, the look on his face becomes less and less focused, until eventually $his mind is reformed back into a very young and learning state. With this you can leave much greater impact on $his consciousness. ")
 	return text
 
 func hairdyeeffect():
@@ -759,7 +759,7 @@ func hairgrowtheffect():
 	var list = globals.hairlengtharray
 	if slave.hairlength != 'hips':
 		slave.hairlength = list[list.find(slave.hairlength)+1]
-		text = "After applying the elixir, $name's slowly grew in length."
+		text = "After applying the elixir, $name's hair slowly grew in length."
 	else:
 		text = "Hairgrowth elixir wasn't effective as $name's hair is already overly long."
 	if slave == globals.player:
@@ -780,22 +780,22 @@ func maturingpot():
 			text = text + "$name has became taller. "
 		if rand_range(1,10) > 5 && slave.hairlength != 'hips':
 				slave.hairlength = globals.hairlengtharray[globals.hairlengtharray.find(slave.hairlength)+1]
-				text = text + "$name's hair has grew longer. "
+				text = text + "$name's hair grew longer. "
 		if slave.sex != 'male':
 			if rand_range(1,10) > 5 && slave.ass != 'huge':
 				slave.ass = globals.sizearray[globals.sizearray.find(slave.ass)+1]
-				text = text + "$name's butt has grew bigger. "
+				text = text + "$name's butt grew bigger. "
 			if rand_range(1,10) > 5 && slave.ass != 'huge':
 				slave.tits.size = globals.sizearray[globals.sizearray.find(slave.tits.size)+1]
-				text = text + "$name's tits has grew bigger. "
+				text = text + "$name's tits grew bigger. "
 		if slave.penis.number > 0:
 			if rand_range(1,10) > 5 && slave.penis.size != 'big':
 				slave.penis.size = globals.genitaliaarray[globals.genitaliaarray.find(slave.penis.size)+1]
-				text = text + "$name's cock has grew bigger. "
+				text = text + "$name's cock grew bigger. "
 		if slave.balls != 'none':
 			if rand_range(1,10) > 5 && slave.balls != 'big':
 				slave.balls = globals.genitaliaarray[globals.genitaliaarray.find(slave.balls)+1]
-				text = text + "$name's balls has grew bigger. "
+				text = text + "$name's balls grew bigger. "
 	else:
 		text = 'Elixir of Maturity had no visible effect on $name. '
 	if slave == globals.player:
@@ -843,7 +843,7 @@ func amnesiapoteffect():
 	text = slave.dictionary('After chugging down the Amnesia Potion, $name looks lightheaded and confused. "W-what was that? I feel like I’ve forgotten something..."  $He’s lost, unable to recall the memories of $his recent time in confinement. ')
 	if slave.effects.has('captured'):
 		slave.add_effect(globals.effectdict.captured, true)
-		text = text + slave.dictionary('Memories before confinement no longer stimulate $him to resist you. ')
+		text = text + slave.dictionary('Memories from before $his confinement no longer influence $him to resist you. ')
 	if slave.loyal < 50 && slave.memory != 'clear':
 		text = text + slave.dictionary("$He grows closer to you, having no one else $he can rely on. ")
 		slave.loyal += rand_range(15,25) - slave.conf/10
@@ -855,22 +855,22 @@ func lactationpoteffect():
 	if slave.tits.lactation == false:
 		slave.tits.lactation = true
 		if slave == globals.player:
-			text = slave.dictionary("After drinking Nursing Potion, in few hours your tits started secreting milk. ")
+			text = slave.dictionary("A few houors after drinking the Nursing Potion, your tits started secreting milk. ")
 		else:
-			text = slave.dictionary("After drinking Nursing Potion, in few hours $name's tits started secreting milk. ")
+			text = slave.dictionary("A few hours after drinking the Nursing POtion, $name's tits started secreting milk. ")
 	else:
 		if slave == globals.player:
-			text = slave.dictionary('Nursing Potion had no apparent effect on you, as you are already lactating. ')
+			text = slave.dictionary('The Nursing Potion had no apparent effect on you, as you are already lactating. ')
 		else:
-			text = slave.dictionary('Nursing Potion had no apparent effect on $name, as $he is already lactating. ')
+			text = slave.dictionary('The Nursing Potion had no apparent effect on $name, as $he is already lactating. ')
 	return text
 
 func oblivionpoteffect():
 	var text = ''
 	if slave == globals.player:
-		text = slave.dictionary('$name drank oblivion potion and lost all $his learned skills. ')
+		text = slave.dictionary('$name drank an oblivion potion and forgot all $his learned skills. ')
 	else:
-		text = slave.dictionary('You drank oblivion potion and lost all your learned skills. ')
+		text = slave.dictionary('You drank an oblivion potion and forgot all your learned skills. ')
 	for i in slave.skills:
 		while slave.skills[i].value > 19:
 			slave.skills[i].value -= 20
@@ -904,9 +904,9 @@ func beautyeffect():
 	var text = ''
 	var temp = 1
 	if slave == globals.player:
-		text = slave.dictionary('You apply Beauty Mixture over your face, which will make skin smoother and remove flaws.')
+		text = slave.dictionary('You apply the Beauty Mixture over your face, which makes your skin smoother and removes flaws.')
 	else:
-		text = slave.dictionary('You order $name to apply Beauty Mixture over $his face, which will make skin smoother and remove flaws.')
+		text = slave.dictionary('You order $name to apply Beauty Mixture over $his face, which will make the skin smoother and remove flaws.')
 	if slave.face.beauty <= 30:
 		temp = 2
 	elif slave.face.beauty >= 60:
@@ -958,18 +958,18 @@ func applybutt():
 	if currentpotion.code == 'minoruspot':
 		slave.ass = globals.sizearray[globals.sizearray.find(slave.ass)-1]
 		if slave == globals.player:
-			text = slave.dictionary("You applied Minorus Potion to your butt. After some time passed you noticed how it shrank in size. ")
+			text = slave.dictionary("You applied Minorus Potion to your butt. After some time has passed you notice it shrank in size. ")
 		else:
-			text = slave.dictionary("You applied Minorus Potion to $name's butt. After some time passed you noticed how it shrank in size. ")
+			text = slave.dictionary("You applied Minorus Potion to $name's butt. After some time has passed you noticed it shrank in size. ")
 	elif currentpotion.code == 'majoruspot':
 		if slave.ass == 'masculine':
 			slave.ass = globals.sizearray[globals.sizearray.find(slave.ass)+2]
 		else:
 			slave.ass = globals.sizearray[globals.sizearray.find(slave.ass)+1]
 		if slave == globals.player:
-			text = slave.dictionary("You applied Majorus Potion to your butt. After some time passed you noticed how it grew bigger. ")
+			text = slave.dictionary("You applied Majorus Potion to your butt. After some time has passed you notice how it grew bigger. ")
 		else:
-			text = slave.dictionary("You applied Majorus Potion to $name's butt. After some time passed you noticed how it grew bigger. ")
+			text = slave.dictionary("You applied Majorus Potion to $name's butt. After some time has passed you notice how it grew bigger. ")
 	currentpotion.amount -= 1
 	slave.toxicity = currentpotion.toxicity
 	main.hide_everything()
@@ -981,18 +981,18 @@ func applytits():
 	if currentpotion.code == 'minoruspot':
 		slave.tits.size = globals.sizearray[globals.sizearray.find(slave.tits.size)-1]
 		if slave == globals.player:
-			text = slave.dictionary("You applied Minorus Potion to your breasts. After some time passed you noticed how it shrank in size. ")
+			text = slave.dictionary("You applied Minorus Potion to your breasts. After some time passes you notice they shrank in size. ")
 		else:
-			text = slave.dictionary("You applied Minorus Potion to $name's breasts. After some time passed you noticed how it shrank in size. ")
+			text = slave.dictionary("You applied Minorus Potion to $name's breasts. After some time passes you notice they shrank in size. ")
 	elif currentpotion.code == 'majoruspot':
 		if slave.tits.size == 'masculine':
 			slave.tits.size = globals.sizearray[globals.sizearray.find(slave.tits.size)+2]
 		else:
 			slave.tits.size = globals.sizearray[globals.sizearray.find(slave.tits.size)+1]
 		if slave == globals.player:
-			text = slave.dictionary("You applied Majorus Potion to your breasts. After some time passed you noticed how it grew bigger. ")
+			text = slave.dictionary("You applied Majorus Potion to your breasts. After some time passes you notice they grew bigger. ")
 		else:
-			text = slave.dictionary("You applied Majorus Potion to $name's breasts. After some time passed you noticed how it grew bigger. ")
+			text = slave.dictionary("You applied Majorus Potion to $name's breasts. After some time passes you notice they grew bigger. ")
 	currentpotion.amount -= 1
 	main.hide_everything()
 	main.popup(text)
@@ -1003,15 +1003,15 @@ func applypenis():
 	if currentpotion.code == 'minoruspot':
 		slave.penis.size = globals.genitaliaarray[globals.genitaliaarray.find(slave.penis.size)-1]
 		if slave == globals.player:
-			text = slave.dictionary("You applied Minorus Potion to your penis. After some time passed you noticed how it shrank in size. ")
+			text = slave.dictionary("You applied Minorus Potion to your penis. After some time passes you notice it shrank in size. ")
 		else:
-			text = slave.dictionary("You applied Minorus Potion to $name's penis. After some time passed you noticed how it shrank in size. ")
+			text = slave.dictionary("You applied Minorus Potion to $name's penis. After some time passes you notice it shrank in size. ")
 	elif currentpotion.code == 'majoruspot':
 		slave.penis.size = globals.genitaliaarray[globals.genitaliaarray.find(slave.penis.size)+1]
 		if slave == globals.player:
-			text = slave.dictionary("You applied Majorus Potion to your penis. After some time passed you noticed how it grew bigger. ")
+			text = slave.dictionary("You applied Majorus Potion to your penis. After some time passes you notice it grew bigger. ")
 		else:
-			text = slave.dictionary("You applied Majorus Potion to $name's penis. After some time passed you noticed how it grew bigger. ")
+			text = slave.dictionary("You applied Majorus Potion to $name's penis. After some time passes you notice it grew bigger. ")
 	currentpotion.amount -= 1
 	main.hide_everything()
 	main.popup(text)
@@ -1022,15 +1022,15 @@ func applytestic():
 	if currentpotion.code == 'minoruspot':
 		slave.balls = globals.genitaliaarray[globals.genitaliaarray.find(slave.balls)-1]
 		if slave == globals.player:
-			text = slave.dictionary("You applied Minorus Potion to your balls. After some time passed you noticed how it shrank in size. ")
+			text = slave.dictionary("You applied Minorus Potion to your balls. After some time passes you notice it shrank in size. ")
 		else:
-			text = slave.dictionary("You applied Minorus Potion to $name's balls. After some time passed you noticed how it shrank in size. ")
+			text = slave.dictionary("You applied Minorus Potion to $name's balls. After some time passes you notice it shrank in size. ")
 	elif currentpotion.code == 'majoruspot':
 		slave.balls = globals.genitaliaarray[globals.genitaliaarray.find(slave.balls)+1]
 		if slave == globals.player:
-			text = slave.dictionary("You applied Majorus Potion to your balls. After some time passed you noticed how it grew bigger.  ")
+			text = slave.dictionary("You applied Majorus Potion to your balls. After some time passes you notice it grew bigger.  ")
 		else:
-			text = slave.dictionary("You applied Majorus Potion to $name's balls. After some time passed you noticed how it grew bigger. ")
+			text = slave.dictionary("You applied Majorus Potion to $name's balls. After some time passes you notice it grew bigger. ")
 	currentpotion.amount -= 1
 	main.hide_everything()
 	main.popup(text)
