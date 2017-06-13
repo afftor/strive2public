@@ -418,6 +418,12 @@ func _on_end_pressed():
 	for slave in globals.slaves:
 		slave.metrics.ownership += 1
 		var luxury = 0
+		var handcuffs = false
+		for i in slave.gear.values():
+				if !i in ['underwearplain','clothcommon'] && i != null:
+					var tempitem = globals.state.unstackables[i]
+					if tempitem.code in ['acchandcuffs']:
+						handcuffs = true
 		text = ''
 		if slave.away.duration == 0:
 			if slave.sleep != 'jail' && slave.sleep != 'farm':
@@ -468,7 +474,7 @@ func _on_end_pressed():
 					text = slave.dictionary('[color=red]$name has died of starvation.[/color]\n')
 					deads_array.append({number = count, reason = text})
 			if slave.obed < 25 && slave.cour >= 50 && slave.rules.silence == false && slave.traits.has('Mute') == false && slave.sleep != 'jail' && slave.sleep != 'farm' && rand_range(0,1) > 0.5:
-				text0.set_bbcode(text0.get_bbcode()+slave.dictionary('$name dares to openly show her disrespect of you and instigate other servants. \n'))
+				text0.set_bbcode(text0.get_bbcode()+slave.dictionary('$name dares to openly show her disrespect towards you and instigates other servants. \n'))
 				for ii in globals.slaves:
 					if ii != slave && ii.loyal < 30 && ii.traits.has('Loner') == false:
 						ii.obed += -(slave.charm/3)
@@ -480,14 +486,26 @@ func _on_end_pressed():
 					text0.set_bbcode(text0.get_bbcode()+slave.dictionary('You notice that some of your gold is missing.\n'))
 					globals.resources.gold -= rand_range(20,40)
 			if slave.obed < 25 && slave.sleep != 'jail' && slave.sleep != 'farm' && slave.tags.has('noescape') == false:
-				if slave.brand == 'none':
-					if slave.cour/3+slave.wit/3+slave.stress/2 > slave.loyal*2+slave.obed:
-						var temptext = slave.dictionary('[color=red]$name has escaped during the night![/color]\n')
-						deads_array.append({number = count, reason = temptext})
+				var escape = 0
+				var stay = 0
+				if slave.brand == 'none':					
+					escape = slave.cour/3+slave.wit/3+slave.stress/2
+					stay = slave.loyal*2+slave.obed
 				else:
-					if slave.cour/4+slave.stress/4 > slave.loyal*2 + slave.obed + slave.wit/5:
+					escape = slave.cour/4+slave.stress/4
+					stay = slave.loyal*2+slave.obed+slave.wit/5
+				if handcuffs == true:
+					escape /= 2
+				if escape > stay:
+					if handcuffs == false:
 						var temptext = slave.dictionary('[color=red]$name has escaped during the night![/color]\n')
 						deads_array.append({number = count, reason = temptext})
+					else:
+						var temptext = slave.dictionary('[color=red]Despite being handcuffed $name has escaped during the night![/color]\n')
+						deads_array.append({number = count, reason = temptext})
+				if handcuffs == true:
+					if escape < stay && escape*2 > stay:
+						text0.set_bbcode(text0.get_bbcode()+slave.dictionary('[color=red]$name attempted to escape during the night but being handcuffed slowed them down and they were quickly discovered![/color]\n'))
 			#sleep conditions
 			slave.lust = round(rand_range(3,8))
 			if slave.sleep == 'communal' && globals.count_sleepers()['communal'] > globals.state.rooms.communal:
@@ -503,10 +521,10 @@ func _on_end_pressed():
 				slave.health = rand_range(10,15)
 				slave.energy = rand_range(40,50)+ slave.stats.end_cur*6
 				luxury += 15
-				text2.set_bbcode(text2.get_bbcode() + slave.dictionary('$name sleeps in private room, which helps $him heal faster and gives some stress relief.\n'))
+				text2.set_bbcode(text2.get_bbcode() + slave.dictionary('$name sleeps in a private room, which helps $him heal faster and provides some stress relief.\n'))
 				if slave.lust >= 50 && slave.rules.masturbation == false && slave.tags.find('nosex') < 0:
 					slave.lust = rand_range(-10,-15)
-					text2.set_bbcode(text2.get_bbcode() + slave.dictionary('In attempt to calm $his lust, $he spent some time masturbating profoundly given private conditions.\n'))
+					text2.set_bbcode(text2.get_bbcode() + slave.dictionary('In an attempt to calm $his lust, $he spent some time masturbating profusely given $her private conditions.\n'))
 			elif slave.sleep == 'your':
 				slave.loyal += rand_range(1,4)
 				slave.energy = rand_range(25,45)+ slave.stats.end_cur*6
@@ -532,7 +550,7 @@ func _on_end_pressed():
 					slave.stress += slave.conf/10
 			if slave.lust >= 90 && slave.rules.masturbation == true && slave.traits.has('Sex-crazed') == false && (rand_range(0,10)>7 || slave.effects.has('stimulated')):
 				slave.add_trait(globals.origins.trait('Sex-crazed'))
-				text0.set_bbcode(text0.get_bbcode() + slave.dictionary("[color=yellow]Left on great excitement and prohibition from masturbation, $name desperate state led $him to become insanely obsessed with sex.[/color]\n"))
+				text0.set_bbcode(text0.get_bbcode() + slave.dictionary("[color=yellow]Left greatly excited and prohibited from masturbating, $name desperate state led $him to become insanely obsessed with sex.[/color]\n"))
 			#Reputation
 			if !slave.sleep in ['jail','farm']:
 				for i in globals.state.reputation:
@@ -557,16 +575,16 @@ func _on_end_pressed():
 						slave.loyal += 5
 						if rand_range(0,100) < 10:
 							slave.trait_remove("Uncivilized")
-							text0.set_bbcode(text0.get_bbcode() + i.dictionary("[color=green]$name managed to lift ") + slave.dictionary("$name out of $his wild behavior and turn into a socially functioning person.[/color]\n "))
+							text0.set_bbcode(text0.get_bbcode() + i.dictionary("[color=green]$name managed to temper ") + slave.dictionary("$name's wild behavior and turn $him into a socially functioning person.[/color]\n "))
 			if slave.traits.has('Pliable') == true:
 				if slave.sexuals.affection >= 90:
 					slave.trait_remove('Pliable')
 					slave.add_trait(globals.origins.trait('Devoted'))
-					text0.set_bbcode(text0.get_bbcode() + slave.dictionary('[color=green]$name became Devoted. $His willpower strengthened.[/color]\n'))
+					text0.set_bbcode(text0.get_bbcode() + slave.dictionary('[color=green]$name has become Devoted. $His willpower strengthened.[/color]\n'))
 				elif slave.sexuals.actions.size() >= 10:
 					slave.trait_remove('Pliable')
 					slave.add_trait(globals.origins.trait('Slutty'))
-					text0.set_bbcode(text0.get_bbcode() + slave.dictionary('[color=green]$name became Slutty. $His willpower strengthened.[/color]\n'))
+					text0.set_bbcode(text0.get_bbcode() + slave.dictionary('[color=green]$name has become Slutty. $His willpower strengthened.[/color]\n'))
 			#Rules and clothes effect
 			if slave.rules.contraception == true:
 				if globals.resources.gold >= 5:
@@ -655,16 +673,16 @@ func _on_end_pressed():
 				slave.obed += rand_range(10,20)
 				if slave.traits.has('Pervert') == false && slave.traits.has('Sex-crazed') == false && slave.conf > 40:
 					slave.stress += rand_range(10,15)
-					text2.set_bbcode(text2.get_bbcode() + slave.dictionary("Your denial of upper clothing for $name causes her to take you more seriously, but $he certainly is stressed out walking around almost naked.\n"))
+					text2.set_bbcode(text2.get_bbcode() + slave.dictionary("Your denial of upper clothing to $name causes $him to take you more seriously, but $he certainly is stressed out having to walk around almost naked.\n"))
 				else:
-					text2.set_bbcode(text2.get_bbcode() + slave.dictionary("Your denial of upper clothing for $name causes her to take you more seriously, however, it does not seem that $he's feels too troubled about being almost naked.\n"))
+					text2.set_bbcode(text2.get_bbcode() + slave.dictionary("Your denial of upper clothing to $name causes $him to take you more seriously, however, it does not seem that $he's feels too bothered about being almost naked.\n"))
 			if slave.gear.underwear == null:
 				slave.lust = rand_range(5,10)
 				if slave.traits.has('Pervert') == false && slave.traits.has('Sex-crazed') == false:
 					slave.obed -= rand_range(10,20)
-					text2.set_bbcode(text2.get_bbcode() + slave.dictionary("Wearing no underwear causes $name to open a bit to dirty behavior, although $he does not seem to be very happy about it.\n"))
+					text2.set_bbcode(text2.get_bbcode() + slave.dictionary("Wearing no underwear causes $name to become more open to dirty behavior, although $he does not seem to be very happy about it.\n"))
 				else:
-					text2.set_bbcode(text2.get_bbcode() + slave.dictionary("Wearing no underwear causes $name to open a bit to dirty behavior, but $he seems to accept it surprisingly easy.\n"))
+					text2.set_bbcode(text2.get_bbcode() + slave.dictionary("Wearing no underwear causes $name to become more open to dirty behavior, but $he seems to accept it surprisingly well.\n"))
 			if slave.stress > 80 && slave.sleep != 'jail' && slave.sleep != 'farm' && slave.away.duration < 1:
 				text0.set_bbcode(text0.get_bbcode() + slave.dictionary("$name complained "+globals.fastif(headgirl == null, "to you, ", "to your headgirl, ")+"that $he's having it too hard and hoped to get some rest.\n"))
 			if slave.stress >= 95 && slave.cour+slave.conf+slave.wit+slave.charm > 50:
@@ -727,7 +745,7 @@ func _on_end_pressed():
 				if luxury < luxurydict[slave.origins] && slave.metrics.ownership > 7:
 					slave.loyal -= (luxurydict[slave.origins] - luxury)/2.5
 					slave.obed -= (luxurydict[slave.origins] - luxury)
-					text0.set_bbcode(text0.get_bbcode() + slave.dictionary("[color=red]$name appears to be rather unhappy about quality of $his life and demands better conditions from you. [/color]\n"))
+					text0.set_bbcode(text0.get_bbcode() + slave.dictionary("[color=red]$name appears to be rather unhappy about quality of $his life and demands better living conditions from you. [/color]\n"))
 		elif slave.away.duration > 0:
 			slave.away.duration -= 1
 			if slave.away.duration == 0 && slave.away.at == 'lab' && slave.health < 5:
@@ -735,7 +753,7 @@ func _on_end_pressed():
 				deads_array.append({number = count, reason = temptext})
 			elif slave.away.duration == 0:
 				slave.away.at = ''
-				text0.set_bbcode(text0.get_bbcode() + slave.dictionary("$name returned to the mansion and got back to $his duty. \n"))
+				text0.set_bbcode(text0.get_bbcode() + slave.dictionary("$name returned to the mansion and went back to $his duty. \n"))
 		for i in slave.effects.values():
 			if i.has('duration') && i.code != 'captured':
 				if slave.race != 'Dark Elf' || rand_range(0,1) > 0.5: 
@@ -828,7 +846,7 @@ func _on_end_pressed():
 			elif rand_range(0,10) >= 4:
 				slave.stress += rand_range(25,30)
 				slave.health = -rand_range(5,10)
-				text0.set_bbcode(text0.get_bbcode() + slave.dictionary("[color=red]Mansion's terrible condition cause $name big stress and impacts $his health. [/color]\n"))
+				text0.set_bbcode(text0.get_bbcode() + slave.dictionary("[color=red]Mansion's terrible condition causes $name a lot of stress and impacted $his health. [/color]\n"))
 	#####          Outside Events
 	for i in globals.guildslaves:
 		for slave in globals.guildslaves[i]:
@@ -861,7 +879,7 @@ func _on_end_pressed():
 			get_node("gameover/Panel/text").set_bbcode("[center]With no food and money your mansion falls in chaos. \nGame over.[/center]")
 		else:
 			globals.resources.gold -= 20
-			text0.set_bbcode(text0.get_bbcode()+ "[color=red]You have had no food at the mansion and left dining at town, paying 20 gold in process.[/color]\n")
+			text0.set_bbcode(text0.get_bbcode()+ "[color=red]You have no food in the mansion and left dining at town, paying 20 gold in process.[/color]\n")
 	
 	for i in globals.state.repeatables:
 		for ii in globals.state.repeatables[i]:
@@ -896,7 +914,7 @@ func _on_end_pressed():
 	if start_gold <= globals.resources.gold:
 		text = 'Your residents earned ' + str(globals.resources.gold - start_gold) + ' gold by the end of day. \n'
 	else:
-		text = "By the end of day your gold possession got smaller by " + str(start_gold - globals.resources.gold) + " pieces. "
+		text = "By the end of day your gold reserve shrunk by " + str(start_gold - globals.resources.gold) + " pieces. "
 	if start_food > globals.resources.food:
 		text = text + 'Your food storage shrank by ' + str(start_food - globals.resources.food) + ' units of food.\n'
 	else:
@@ -1031,7 +1049,7 @@ func hunt(slave):#agility, strength, endurance, courage
 	slave.level.xp += food/7
 	slave.cour += rand_range(0,2)
 	food = min(food, (slave.sstr+slave.send)*30+40)
-	text += "In the end $he brought " + str(round(food)) + " food and " + str(round(food/12)) + " pieces of supplies. \n"
+	text += "In the end $he brought " + str(round(food)) + " food and " + str(round(food/12)) + " supplies. \n"
 	if slave.smaf * 3 + 3 >= rand_range(0,100):
 		text += "$name has found beastial essence. \n"
 		globals.itemdict.bestialessenceing.amount += 1
@@ -1072,18 +1090,18 @@ func chef(slave):
 	slave.level.xp += globals.slaves.size()
 	if globals.resources.food < 200:
 		if globals.resources.gold >= 100:
-			text = '$name went went for food groceries and bought 200 units of food.\n'
+			text = '$name went to purchase groceries and bought 200 units of food.\n'
 			gold = -100
 			food = 200
 		else:
-			text = '$name complained about lack of food and no money to supply kitchen on $his own.\n'
+			text = '$name complained about the lack of food and no money to supply kitchen on $his own.\n'
 	text += '$name spent $his time prepearing meals for everyone.\n'
 	text = slave.dictionary(text)
 	var dict = {text = text, gold = gold, food = food}
 	return dict
 
 func lumberer(slave):
-	var text = "$name spent the day at Frostford woods, cutting and chopping trees. \n"
+	var text = "$name spent the day in the Frostford woods, cutting and chopping trees. \n"
 	var gold = max(slave.sstr*rand_range(4,8) + slave.send*rand_range(4,8),5)
 	slave.level.xp += gold/4
 	text += "In the end $he made " + str(round(gold)) + " gold\n"
@@ -1103,7 +1121,7 @@ func ffprostitution(slave):
 		slave.pussy.first = 'brothel'
 		slave.health = -5
 		slave.stress += 15
-		text += "$His virginity was taking by one of customers.\n"
+		text += "$His virginity was taken by one of the customers.\n"
 	slave.lust = rand_range(-15,-25)
 	slave.loyal += rand_range(-1,-3)
 	if rand_range(1,10) > 4:
@@ -1138,7 +1156,7 @@ func ffprostitution(slave):
 	return dict
 
 func guardian(slave):
-	var text = "$name spent the day at Gorn, patrolling the city as part of the guard.\n"
+	var text = "$name spent the day in Gorn, patrolling the city as part of the guard.\n"
 	var gold = max(slave.sstr*rand_range(5,10) + slave.cour/4,5)
 	slave.level.xp += gold/6
 	text += "In the end $he made " + str(round(gold)) + " gold\n"
@@ -1159,7 +1177,7 @@ func research(slave):
 	return dict
 
 func slavecatcher(slave):
-	var text = "$name spent day by helping Gorn's slavers to acquire and transit slaves. \n"
+	var text = "$name spent day helping Gorn's slavers to acquire and tranport slaves. \n"
 	var gold = slave.sstr*rand_range(5,10) + slave.sagi*rand_range(5,10) + slave.cour/4
 	slave.level.xp += gold/6
 	text += "In the end $he made " + str(round(gold)) + " gold\n"
@@ -1175,7 +1193,7 @@ func storewimborn(slave):
 	var bonus = 1
 	var supplyprice = round(rand_range(3,5))
 	var supplysold
-	text = "$name has worked at the local market. "
+	text = "$name worked at the local market. "
 	slave.affiliation.wimborn += 0.5
 	gold = rand_range(1,5) + (slave.charm + slave.wit)/3
 	gold = gold*(min(0.30*(globals.originsarray.find(slave.origins)+1),1))
@@ -1224,7 +1242,7 @@ func assistwimborn(slave):
 func artistwimborn(slave):
 	var text
 	var gold
-	text ="$name worked at town as public entertainer.\n"
+	text ="$name worked in town as a public entertainer.\n"
 	slave.affiliation.wimborn += 1
 	gold = rand_range(1,5) + slave.cour/4 + slave.charm/3 + slave.sagi*15 + slave.face.beauty/3.5
 	if slave.race == 'Nereid':
@@ -1241,7 +1259,7 @@ func artistwimborn(slave):
 	return dict
 
 func whorewimborn(slave):
-	var text = "$name went working as whore to the brothel.\n"
+	var text = "$name went to work as whore at the brothel.\n"
 	var gold = 0
 	slave.metrics.brothel += 1
 	slave.affiliation.wimborn += 0.5
@@ -1252,7 +1270,7 @@ func whorewimborn(slave):
 		slave.pussy.first = 'brothel'
 		slave.health = -5
 		slave.stress += 15
-		text += "$His virginity was taking by one of customers.\n"
+		text += "$His virginity was taken by one of the customers.\n"
 	slave.lust = rand_range(-15,-25)
 	slave.loyal += rand_range(-1,-3)
 	if rand_range(1,10) > 4:
@@ -1266,7 +1284,7 @@ func whorewimborn(slave):
 		slave.stress += -counter*4
 		gold = gold*1.2
 	if counter < 4:
-		text += "\nBrothel owner complained that $name does not have enough skills and didn't satisfy many customers. $His salary was cut by half. \n"
+		text += "\nBrothel owner complained that $name does not have sufficient skill and didn't satisfy many customers. $His salary was cut by half. \n"
 		gold = gold/2
 		slave.metrics.sex += round(rand_range(1,3))
 		slave.metrics.randompartners += round(rand_range(1,2))
@@ -1301,7 +1319,7 @@ func whorewimborn(slave):
 func escortwimborn(slave):
 	slave.metrics.brothel += 1
 	slave.affiliation.wimborn += 0.8
-	var text = "$name went providing escort service to rich clients of brothel.\n"
+	var text = "$name provided escort service to rich clients of the brothel.\n"
 	var gold
 	if slave.pussy.virgin == true:
 		slave.pussy.virgin = false
@@ -1313,7 +1331,7 @@ func escortwimborn(slave):
 		else:
 			slave.stress += 15
 		slave.loyal += rand_range(-1,-3)
-		text += "$His virginity was taking by one of customers.\n"
+		text += "$His virginity was taken by one of the customers.\n"
 		if slave.race.find('Bunny') >= 0:
 			slave.stress += 10 - min(slave.sexuals.actions.size()*3, 8)
 		else:
@@ -1359,7 +1377,7 @@ func fucktoywimborn(slave):
 		slave.health = -5
 		slave.stress += 10
 		slave.loyal += rand_range(-2,-4)
-		text += "$His virginity was taking by one of customers.\n"
+		text += "$His virginity was taken by one of the customers.\n"
 	if rand_range(1,10) > 2:
 		impregnation(slave)
 	var counter = 0
@@ -1375,7 +1393,7 @@ func fucktoywimborn(slave):
 	if slave.mods.has("hollownipples") == true:
 		gold = gold*1.2
 	if counter < 4:
-		text += "\nBrothel owner complained that $name does not have enough skills and didn't satisfy many customers. $His salary was cut by half. \n"
+		text += "\nBrothel owner complained that $name does not have sufficient skill and didn't satisfy many customers. $His salary was cut by half. \n"
 		slave.conf += -rand_range(5,10)
 		slave.cour += -rand_range(5,10)
 		slave.metrics.sex += round(rand_range(2,4))
@@ -1421,7 +1439,7 @@ func maid(slave):
 	var temp = 5.5 + (slave.sagi+slave.send)*6
 	slave.level.xp += temp/4
 	globals.state.condition = temp
-	text = "$name spent day cleaning around the mansion. \n"
+	text = "$name spent the day cleaning around the mansion. \n"
 	var dict = {text = text}
 	return dict
 
