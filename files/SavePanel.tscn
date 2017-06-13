@@ -1,0 +1,136 @@
+[gd_scene format=1]
+
+[node name="SavePanel" type="Panel"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = -211.0
+margin/top = 2.0
+margin/right = 488.0
+margin/bottom = 339.0
+
+[node name="savefilebutton" type="Button" parent="."]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 34.0
+margin/top = 249.0
+margin/right = 159.0
+margin/bottom = 296.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "save"
+flat = false
+
+[node name="loadbutton" type="Button" parent="."]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 175.0
+margin/top = 249.0
+margin/right = 300.0
+margin/bottom = 296.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "load"
+flat = false
+
+[node name="cancelsaveload" type="Button" parent="."]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 530.0
+margin/top = 250.0
+margin/right = 655.0
+margin/bottom = 297.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "cancel"
+flat = false
+
+[node name="deletebutton" type="Button" parent="."]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 388.0
+margin/top = 250.0
+margin/right = 513.0
+margin/bottom = 297.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "delete"
+flat = false
+
+[node name="saveline" type="LineEdit" parent="."]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 43.0
+margin/top = 186.0
+margin/right = 658.0
+margin/bottom = 215.0
+placeholder/text = "filename"
+placeholder/alpha = 0.6
+focus_mode = 2
+caret/caret_blink = false
+caret/caret_blink_speed = 0.65
+
+[node name="ScrollContainer" type="ScrollContainer" parent="."]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 36.0
+margin/top = 27.0
+margin/right = 662.0
+margin/bottom = 176.0
+scroll/horizontal = false
+scroll/vertical = true
+
+[node name="savelist" type="VBoxContainer" parent="ScrollContainer"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = false
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 0.0
+margin/bottom = 0.0
+alignment = 0
+
+[node name="Button" type="Button" parent="ScrollContainer/savelist"]
+
+visibility/visible = false
+rect/min_size = Vector2( 620, 35 )
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 620.0
+margin/bottom = 35.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+flat = false
+
+

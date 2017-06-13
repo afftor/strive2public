@@ -1,0 +1,5425 @@
+[gd_scene load_steps=36 format=1]
+
+[ext_resource path="res://files/theme.tres" type="Theme" id=1]
+[ext_resource path="res://files/scripts/slave_tab.gd" type="Script" id=2]
+[ext_resource path="res://files/scripts/statstab.gd" type="Script" id=3]
+[ext_resource path="res://mainfont.fnt" type="BitmapFont" id=4]
+[ext_resource path="res://files/buttons/img-zagr-sm-down.png" type="Texture" id=5]
+[ext_resource path="res://files/buttons/img-zagr-sm-up.png" type="Texture" id=6]
+[ext_resource path="res://files/buttons/img-zagr-sm-mid.png" type="Texture" id=7]
+[ext_resource path="res://mainfont.tres" type="DynamicFont" id=8]
+[ext_resource path="res://files/buttons/tex-wind.png" type="Texture" id=9]
+[ext_resource path="res://files/paneltexturebland.tres" type="StyleBox" id=10]
+[ext_resource path="res://files/buttons/Panel.png" type="Texture" id=11]
+[ext_resource path="res://files/buttons/day.png" type="Texture" id=12]
+[ext_resource path="res://files/buttons/img-backG-popup.png" type="Texture" id=13]
+[ext_resource path="res://Roundo-Medium.otf" type="DynamicFontData" id=14]
+[ext_resource path="res://files/SelectButton.tscn" type="PackedScene" id=15]
+[ext_resource path="res://files/buttons/textfield.png" type="Texture" id=16]
+[ext_resource path="res://files/buttons/textfieldinact.png" type="Texture" id=17]
+[ext_resource path="res://files/scripts/actions.gd" type="Script" id=18]
+[ext_resource path="res://files/buttongrouptheme.tres" type="Theme" id=19]
+[ext_resource path="res://files/scripts/sexuals.gd" type="Script" id=20]
+
+[sub_resource type="StyleBoxTexture" id=1]
+
+content_margin/left = -1.0
+content_margin/right = -1.0
+content_margin/top = -1.0
+content_margin/bottom = -1.0
+texture = ExtResource( 9 )
+margin/left = 10.0
+margin/right = 10.0
+margin/top = 10.0
+margin/bottom = 10.0
+expand_margin/left = 0.0
+expand_margin/right = 0.0
+expand_margin/top = 0.0
+expand_margin/bottom = 0.0
+draw_center = true
+
+[sub_resource type="StyleBoxTexture" id=2]
+
+content_margin/left = -1.0
+content_margin/right = -1.0
+content_margin/top = -1.0
+content_margin/bottom = -1.0
+texture = ExtResource( 13 )
+margin/left = 10.0
+margin/right = 10.0
+margin/top = 10.0
+margin/bottom = 10.0
+expand_margin/left = 10.0
+expand_margin/right = 10.0
+expand_margin/top = 10.0
+expand_margin/bottom = 10.0
+draw_center = true
+
+[sub_resource type="Animation" id=3]
+
+length = 0.01
+loop = false
+step = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath("./slavedescript:margin/bottom")
+tracks/0/interp = 1
+tracks/0/imported = false
+tracks/0/keys = {
+"times": FloatArray( 0 ),
+"transitions": FloatArray( 1 ),
+"update": 1,
+"values": [ 273.0 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("./slavedescript:margin/top")
+tracks/1/interp = 1
+tracks/1/imported = false
+tracks/1/keys = {
+"times": FloatArray( 0 ),
+"transitions": FloatArray( 1 ),
+"update": 1,
+"values": [ 0.0 ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("./slavedescript:margin/right")
+tracks/2/interp = 1
+tracks/2/imported = false
+tracks/2/keys = {
+"times": FloatArray( 0 ),
+"transitions": FloatArray( 1 ),
+"update": 1,
+"values": [ 2.0 ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("./slavedescript:margin/left")
+tracks/3/interp = 1
+tracks/3/imported = false
+tracks/3/keys = {
+"times": FloatArray( 0 ),
+"transitions": FloatArray( 1 ),
+"update": 1,
+"values": [ 0.0 ]
+}
+
+[sub_resource type="Animation" id=4]
+
+length = 0.01
+loop = false
+step = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath("./slavedescript:margin/left")
+tracks/0/interp = 1
+tracks/0/imported = false
+tracks/0/keys = {
+"times": FloatArray( 0 ),
+"transitions": FloatArray( 1 ),
+"update": 1,
+"values": [ 0.0 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("./slavedescript:margin/top")
+tracks/1/interp = 1
+tracks/1/imported = false
+tracks/1/keys = {
+"times": FloatArray( 0 ),
+"transitions": FloatArray( 1 ),
+"update": 1,
+"values": [ 0.0 ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("./slavedescript:margin/right")
+tracks/2/interp = 1
+tracks/2/imported = false
+tracks/2/keys = {
+"times": FloatArray( 0 ),
+"transitions": FloatArray( 1 ),
+"update": 1,
+"values": [ 144.0 ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("./slavedescript:margin/bottom")
+tracks/3/interp = 1
+tracks/3/imported = false
+tracks/3/keys = {
+"times": FloatArray( 0 ),
+"transitions": FloatArray( 1 ),
+"update": 1,
+"values": [ 273.0 ]
+}
+
+[sub_resource type="StyleBoxTexture" id=5]
+
+content_margin/left = -1.0
+content_margin/right = -1.0
+content_margin/top = -1.0
+content_margin/bottom = -1.0
+margin/left = 0.0
+margin/right = 0.0
+margin/top = 0.0
+margin/bottom = 0.0
+expand_margin/left = 0.0
+expand_margin/right = 0.0
+expand_margin/top = 0.0
+expand_margin/bottom = 0.0
+draw_center = true
+
+[sub_resource type="StyleBoxTexture" id=6]
+
+content_margin/left = -1.0
+content_margin/right = -1.0
+content_margin/top = -1.0
+content_margin/bottom = -1.0
+margin/left = 0.0
+margin/right = 0.0
+margin/top = 0.0
+margin/bottom = 0.0
+expand_margin/left = 0.0
+expand_margin/right = 0.0
+expand_margin/top = 0.0
+expand_margin/bottom = 0.0
+draw_center = true
+
+[sub_resource type="StyleBoxTexture" id=7]
+
+content_margin/left = -1.0
+content_margin/right = -1.0
+content_margin/top = -1.0
+content_margin/bottom = -1.0
+margin/left = 0.0
+margin/right = 0.0
+margin/top = 0.0
+margin/bottom = 0.0
+expand_margin/left = 0.0
+expand_margin/right = 0.0
+expand_margin/top = 0.0
+expand_margin/bottom = 0.0
+draw_center = true
+
+[sub_resource type="StyleBoxTexture" id=8]
+
+content_margin/left = -1.0
+content_margin/right = -1.0
+content_margin/top = -1.0
+content_margin/bottom = -1.0
+margin/left = 0.0
+margin/right = 0.0
+margin/top = 0.0
+margin/bottom = 0.0
+expand_margin/left = 0.0
+expand_margin/right = 0.0
+expand_margin/top = 0.0
+expand_margin/bottom = 0.0
+draw_center = true
+
+[sub_resource type="StyleBoxTexture" id=9]
+
+content_margin/left = -1.0
+content_margin/right = -1.0
+content_margin/top = -1.0
+content_margin/bottom = -1.0
+margin/left = 0.0
+margin/right = 0.0
+margin/top = 0.0
+margin/bottom = 0.0
+expand_margin/left = 0.0
+expand_margin/right = 0.0
+expand_margin/top = 0.0
+expand_margin/bottom = 0.0
+draw_center = true
+
+[sub_resource type="StyleBoxTexture" id=10]
+
+content_margin/left = -1.0
+content_margin/right = -1.0
+content_margin/top = -1.0
+content_margin/bottom = -1.0
+margin/left = 0.0
+margin/right = 0.0
+margin/top = 0.0
+margin/bottom = 0.0
+expand_margin/left = 0.0
+expand_margin/right = 0.0
+expand_margin/top = 0.0
+expand_margin/bottom = 0.0
+draw_center = true
+
+[sub_resource type="DynamicFont" id=11]
+
+font/size = 32
+extra_spacing/top = 3
+font/use_mipmaps = false
+font/use_filter = true
+font/font = ExtResource( 14 )
+
+[sub_resource type="StyleBoxTexture" id=12]
+
+content_margin/left = -1.0
+content_margin/right = -1.0
+content_margin/top = -1.0
+content_margin/bottom = -1.0
+texture = ExtResource( 13 )
+margin/left = 4.0
+margin/right = 4.0
+margin/top = 4.0
+margin/bottom = 4.0
+expand_margin/left = 0.0
+expand_margin/right = 0.0
+expand_margin/top = 0.0
+expand_margin/bottom = 0.0
+draw_center = true
+
+[sub_resource type="StyleBoxTexture" id=13]
+
+content_margin/left = -1.0
+content_margin/right = -1.0
+content_margin/top = -1.0
+content_margin/bottom = -1.0
+texture = ExtResource( 16 )
+margin/left = 10.0
+margin/right = 10.0
+margin/top = 10.0
+margin/bottom = 10.0
+expand_margin/left = 0.0
+expand_margin/right = 0.0
+expand_margin/top = 0.0
+expand_margin/bottom = 0.0
+draw_center = true
+
+[sub_resource type="StyleBoxTexture" id=14]
+
+content_margin/left = -1.0
+content_margin/right = -1.0
+content_margin/top = -1.0
+content_margin/bottom = -1.0
+texture = ExtResource( 17 )
+margin/left = 10.0
+margin/right = 10.0
+margin/top = 10.0
+margin/bottom = 10.0
+expand_margin/left = 0.0
+expand_margin/right = 0.0
+expand_margin/top = 0.0
+expand_margin/bottom = 0.0
+draw_center = true
+
+[sub_resource type="StyleBoxTexture" id=15]
+
+content_margin/left = -1.0
+content_margin/right = -1.0
+content_margin/top = -1.0
+content_margin/bottom = -1.0
+texture = ExtResource( 13 )
+margin/left = 0.0
+margin/right = 0.0
+margin/top = 0.0
+margin/bottom = 0.0
+expand_margin/left = 0.0
+expand_margin/right = 0.0
+expand_margin/top = 0.0
+expand_margin/bottom = 0.0
+draw_center = true
+
+[node name="slave_tab" type="TabContainer"]
+
+anchor/right = 1
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+theme/theme = ExtResource( 1 )
+margin/left = 1.0
+margin/top = 1.0
+margin/right = 409.0
+margin/bottom = 151.0
+tab_align = 1
+tabs_visible = true
+script/script = ExtResource( 2 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="stats" type="Tabs" parent="."]
+
+editor/display_folded = true
+anchor/right = 1
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 10.0
+margin/top = 33.0
+margin/right = 10.0
+margin/bottom = 10.0
+script/script = ExtResource( 3 )
+
+[node name="status_panel" type="Panel" parent="stats"]
+
+editor/display_folded = true
+anchor/right = 1
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = -6.0
+margin/top = 128.0
+margin/right = -5.0
+margin/bottom = 141.0
+
+[node name="cour" type="Label" parent="stats/status_panel"]
+
+anchor/left = 3
+anchor/right = 3
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = -13.5
+margin/top = -124.0
+margin/right = -79.5
+margin/bottom = -108.0
+custom_fonts/font = ExtResource( 4 )
+text = "Courage"
+align = 1
+valign = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="courprog" type="TextureProgress" parent="stats/status_panel/cour"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = -34.0
+margin/top = 15.0
+margin/right = 103.0
+margin/bottom = 30.0
+range/min = 0.0
+range/max = 100.0
+range/step = 1.0
+range/page = 0.0
+range/value = 25.0
+range/exp_edit = false
+range/rounded = false
+texture/under = ExtResource( 5 )
+texture/over = ExtResource( 6 )
+texture/progress = ExtResource( 7 )
+radial_fill/initial_angle = 5.60519e-45
+radial_fill/fill_degrees = 360.0
+radial_fill/center_offset = Vector2( 0, 0 )
+
+[node name="courval" type="Label" parent="stats/status_panel/cour/courprog"]
+
+visibility/visible = false
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 48.0
+margin/top = -2.0
+margin/right = 89.0
+margin/bottom = 17.0
+custom_fonts/font = ExtResource( 8 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+text = "value"
+align = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="courfield" type="Control" parent="stats/status_panel/cour"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = -35.0
+margin/top = 0.0
+margin/right = 102.0
+margin/bottom = 41.0
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="conf" type="Label" parent="stats/status_panel"]
+
+anchor/left = 3
+anchor/right = 3
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = -4.5
+margin/top = -95.0
+margin/right = -91.5
+margin/bottom = -79.0
+custom_fonts/font = ExtResource( 4 )
+text = "Confidence"
+align = 1
+valign = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="confprog" type="TextureProgress" parent="stats/status_panel/conf"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = -24.0
+margin/top = 17.0
+margin/right = 113.0
+margin/bottom = 42.0
+range/min = 0.0
+range/max = 100.0
+range/step = 1.0
+range/page = 0.0
+range/value = 50.0
+range/exp_edit = false
+range/rounded = false
+texture/under = ExtResource( 5 )
+texture/over = ExtResource( 6 )
+texture/progress = ExtResource( 7 )
+radial_fill/initial_angle = 140.04
+radial_fill/fill_degrees = 360.0
+radial_fill/center_offset = Vector2( 0, 0 )
+
+[node name="confval" type="Label" parent="stats/status_panel/conf/confprog"]
+
+visibility/visible = false
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 49.0
+margin/top = -2.0
+margin/right = 90.0
+margin/bottom = 17.0
+custom_fonts/font = ExtResource( 8 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+text = "value"
+align = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="conffield" type="Control" parent="stats/status_panel/conf"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = -24.0
+margin/top = -1.0
+margin/right = 113.0
+margin/bottom = 40.0
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="wit" type="Label" parent="stats/status_panel"]
+
+anchor/left = 3
+anchor/right = 3
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = -174.5
+margin/top = -125.0
+margin/right = -261.5
+margin/bottom = -109.0
+custom_fonts/font = ExtResource( 4 )
+text = "Wit"
+align = 1
+valign = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="witprog" type="TextureProgress" parent="stats/status_panel/wit"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = -24.0
+margin/top = 17.0
+margin/right = 113.0
+margin/bottom = 42.0
+range/min = 0.0
+range/max = 100.0
+range/step = 1.0
+range/page = 0.0
+range/value = 75.0
+range/exp_edit = false
+range/rounded = false
+texture/under = ExtResource( 5 )
+texture/over = ExtResource( 6 )
+texture/progress = ExtResource( 7 )
+radial_fill/initial_angle = 9.64289e-39
+radial_fill/fill_degrees = 360.0
+radial_fill/center_offset = Vector2( 0, 0 )
+
+[node name="witval" type="Label" parent="stats/status_panel/wit/witprog"]
+
+visibility/visible = false
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 48.0
+margin/top = -2.0
+margin/right = 89.0
+margin/bottom = 17.0
+custom_fonts/font = ExtResource( 8 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+text = "value"
+align = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="witfield" type="Control" parent="stats/status_panel/wit"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = -25.0
+margin/top = 0.0
+margin/right = 112.0
+margin/bottom = 41.0
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="charm" type="Label" parent="stats/status_panel"]
+
+anchor/left = 3
+anchor/right = 3
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = -174.5
+margin/top = -95.0
+margin/right = -261.5
+margin/bottom = -79.0
+custom_fonts/font = ExtResource( 4 )
+text = "Charm"
+align = 1
+valign = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="charmprog" type="TextureProgress" parent="stats/status_panel/charm"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = -24.0
+margin/top = 17.0
+margin/right = 113.0
+margin/bottom = 42.0
+range/min = 0.0
+range/max = 100.0
+range/step = 1.0
+range/page = 0.0
+range/value = 100.0
+range/exp_edit = false
+range/rounded = false
+texture/under = ExtResource( 5 )
+texture/over = ExtResource( 6 )
+texture/progress = ExtResource( 7 )
+radial_fill/fill_degrees = 360.0
+radial_fill/center_offset = Vector2( 0, 0 )
+
+[node name="charmval" type="Label" parent="stats/status_panel/charm/charmprog"]
+
+visibility/visible = false
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 48.0
+margin/top = -3.0
+margin/right = 89.0
+margin/bottom = 16.0
+custom_fonts/font = ExtResource( 8 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+text = "value"
+align = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="charmfield" type="Control" parent="stats/status_panel/charm"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = -25.0
+margin/top = 0.0
+margin/right = 112.0
+margin/bottom = 41.0
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="training" type="Button" parent="stats"]
+
+visibility/visible = false
+anchor/left = 3
+anchor/top = 3
+anchor/right = 3
+anchor/bottom = 3
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 132.0
+margin/top = 29.0
+margin/right = 25.0
+margin/bottom = -5.0
+custom_fonts/font = ExtResource( 8 )
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Skills"
+flat = false
+
+[node name="trainskillpoints" type="Button" parent="stats" groups=[
+"prisondisable",
+]]
+
+anchor/left = 3
+anchor/top = 3
+anchor/right = 3
+anchor/bottom = 3
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 280.0
+margin/top = 29.0
+margin/right = 173.0
+margin/bottom = -5.0
+custom_fonts/font = ExtResource( 8 )
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Skillpoints"
+flat = false
+
+[node name="trainingstats" type="Button" parent="stats" groups=[
+"prisondisable",
+]]
+
+anchor/left = 3
+anchor/top = 3
+anchor/right = 3
+anchor/bottom = 3
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 57.0
+margin/top = 29.0
+margin/right = -50.0
+margin/bottom = -5.0
+custom_fonts/font = ExtResource( 8 )
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Stats"
+flat = false
+
+[node name="trainingabils" type="Button" parent="stats" groups=[
+"prisondisable",
+]]
+
+anchor/left = 3
+anchor/top = 3
+anchor/right = 3
+anchor/bottom = 3
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = -155.0
+margin/top = 29.0
+margin/right = -262.0
+margin/bottom = -5.0
+custom_fonts/font = ExtResource( 8 )
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Abilities"
+flat = false
+
+[node name="traininglabel" type="Label" parent="stats" groups=[
+"prisondisable",
+]]
+
+anchor/left = 3
+anchor/top = 3
+anchor/right = 3
+anchor/bottom = 3
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 68.0
+margin/top = 59.0
+margin/right = -78.0
+margin/bottom = 40.0
+custom_fonts/font = ExtResource( 8 )
+text = "Training"
+align = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="levelinfo" type="RichTextLabel" parent="stats"]
+
+anchor/left = 3
+anchor/right = 3
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 319.0
+margin/top = 25.0
+margin/right = 191.0
+margin/bottom = 122.0
+custom_fonts/normal_font = ExtResource( 8 )
+bbcode/enabled = true
+bbcode/bbcode = "Level - 1
+ExP - 0
+Skillpoints - 1"
+visible_characters = -1
+
+[node name="abilinfo" type="RichTextLabel" parent="stats"]
+
+anchor/left = 3
+anchor/top = 3
+anchor/right = 3
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 121.0
+margin/top = -91.0
+margin/right = -132.0
+margin/bottom = 16.0
+custom_fonts/normal_font = ExtResource( 8 )
+bbcode/enabled = true
+bbcode/bbcode = "Level - 1
+ExP - 0
+Skillpoints - 1"
+visible_characters = -1
+
+[node name="LabelPhys" type="Label" parent="stats"]
+
+editor/display_folded = true
+anchor/left = 3
+anchor/right = 3
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 278.0
+margin/top = 3.0
+margin/right = 184.0
+margin/bottom = 22.0
+custom_fonts/font = ExtResource( 8 )
+custom_colors/font_color = Color( 1, 0.937255, 0, 1 )
+text = "Stats"
+align = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="LabelSkills" type="Label" parent="stats"]
+
+visibility/visible = false
+anchor/top = 3
+anchor/bottom = 3
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 51.0
+margin/top = -69.0
+margin/right = 167.0
+margin/bottom = -88.0
+custom_fonts/font = ExtResource( 8 )
+custom_colors/font_color = Color( 1, 0.9375, 0, 1 )
+text = "Mastered Skills"
+align = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="LabelAbils" type="Label" parent="stats"]
+
+anchor/left = 3
+anchor/top = 3
+anchor/right = 3
+anchor/bottom = 1
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 71.0
+margin/top = -63.0
+margin/right = -45.0
+margin/bottom = 122.0
+custom_fonts/font = ExtResource( 8 )
+custom_colors/font_color = Color( 1, 0.9375, 0, 1 )
+text = "Learned Abilities"
+align = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="skills" type="ScrollContainer" parent="stats"]
+
+editor/display_folded = true
+visibility/visible = false
+anchor/top = 3
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = -3.0
+margin/top = -102.0
+margin/right = 229.0
+margin/bottom = 8.0
+scroll/horizontal = false
+scroll/vertical = true
+
+[node name="skilllist" type="VBoxContainer" parent="stats/skills"]
+
+rect/min_size = Vector2( 155, 0 )
+focus/ignore_mouse = false
+focus/stop_mouse = false
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 155.0
+margin/bottom = 0.0
+alignment = 0
+
+[node name="Label" type="Label" parent="stats/skills/skilllist"]
+
+visibility/visible = false
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 155.0
+margin/bottom = 65.0
+text = "Sexual Proficiency
+Apprentice
+Combat
+Novice"
+align = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="statslabel" type="RichTextLabel" parent="stats"]
+
+anchor/left = 3
+anchor/right = 3
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 190.0
+margin/top = 25.0
+margin/right = 58.0
+margin/bottom = 121.0
+bbcode/enabled = true
+bbcode/bbcode = "Strength: 1/5
+Agility: 1/3
+Magic: 1/2
+Endurance: 1/4"
+visible_characters = -1
+
+[node name="HSeparator" type="HSeparator" parent="stats"]
+
+anchor/right = 1
+anchor/bottom = 1
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = -8.0
+margin/top = 113.0
+margin/right = 1.0
+margin/bottom = 255.0
+
+[node name="spec" type="Label" parent="stats"]
+
+anchor/left = 3
+anchor/right = 3
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = -9.0
+margin/top = 94.0
+margin/right = -253.0
+margin/bottom = 110.0
+custom_colors/font_color = Color( 0.290159, 0.542969, 0.0996857, 1 )
+text = "Spec"
+align = 1
+valign = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="HSeparator1" type="HSeparator" parent="stats"]
+
+anchor/right = 1
+anchor/bottom = 1
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = -7.0
+margin/top = 231.0
+margin/right = 2.0
+margin/bottom = 137.0
+
+[node name="tooltip1" type="Panel" parent="stats"]
+
+visibility/visible = false
+anchor/left = 3
+anchor/top = 3
+anchor/right = 3
+anchor/bottom = 3
+focus/ignore_mouse = true
+focus/stop_mouse = false
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 242.0
+margin/top = 117.5
+margin/right = -236.0
+margin/bottom = -96.5
+custom_styles/panel = SubResource( 1 )
+
+[node name="tooltiptext" type="RichTextLabel" parent="stats/tooltip1"]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 16.0
+margin/top = 15.0
+margin/right = 462.0
+margin/bottom = 198.0
+custom_fonts/normal_font = ExtResource( 8 )
+bbcode/enabled = true
+bbcode/bbcode = ""
+visible_characters = -1
+
+[node name="trainingpanel" type="Panel" parent="stats"]
+
+editor/display_folded = true
+visibility/visible = false
+anchor/left = 3
+anchor/top = 3
+anchor/right = 3
+anchor/bottom = 3
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 219.0
+margin/top = 254.0
+margin/right = -628.0
+margin/bottom = -174.0
+custom_styles/panel = ExtResource( 10 )
+
+[node name="trainingconfirm" type="Button" parent="stats/trainingpanel"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 200.0
+margin/top = 378.0
+margin/right = 291.0
+margin/bottom = 414.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Confirm"
+flat = false
+
+[node name="trainingcancel" type="Button" parent="stats/trainingpanel"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 555.0
+margin/top = 377.0
+margin/right = 646.0
+margin/bottom = 413.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Cancel"
+flat = false
+
+[node name="trainingtext" type="RichTextLabel" parent="stats/trainingpanel"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 297.0
+margin/top = 19.0
+margin/right = 701.0
+margin/bottom = 368.0
+bbcode/enabled = true
+bbcode/bbcode = "Combat is a primal fighting skill representing both offensive and defensive capabilities of a person as well as knowledge of battle tools. Main use - figthing.
+
+Current level: None
+
+Reqs for next level: 20 courage, 100 gold"
+visible_characters = -1
+
+[node name="skilllevel" type="OptionButton" parent="stats/trainingpanel"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 33.0
+margin/top = 89.0
+margin/right = 212.0
+margin/bottom = 123.0
+toggle_mode = false
+click_on_press = true
+enabled_focus_mode = 0
+shortcut = null
+text = "Novice"
+flat = false
+align = 0
+selected = 0
+items = [ "Novice", null, false, -1, null, "Apprentice", null, false, -1, null, "Journeyman", null, false, -1, null, "Expert", null, false, -1, null, "Master", null, false, -1, null ]
+
+[node name="skillname" type="OptionButton" parent="stats/trainingpanel"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 32.0
+margin/top = 38.0
+margin/right = 212.0
+margin/bottom = 72.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Combat"
+flat = false
+align = 0
+selected = 0
+items = [ "Combat", null, false, -1, null, "Body Control", null, false, -1, null, "Survival", null, false, -1, null, "Management", null, false, -1, null, "Service", null, false, -1, null, "Allure", null, false, -1, null, "Sexual Proficiency", null, false, -1, null, "Magic Arts", null, false, -1, null ]
+
+[node name="trainingstatspanel" type="Panel" parent="stats"]
+
+editor/display_folded = true
+visibility/visible = false
+anchor/left = 3
+anchor/top = 3
+anchor/right = 3
+anchor/bottom = 3
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 119.0
+margin/top = 240.0
+margin/right = -507.0
+margin/bottom = -188.0
+custom_styles/panel = ExtResource( 10 )
+
+[node name="statoptionbutton" type="OptionButton" parent="stats/trainingstatspanel"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 237.0
+margin/top = 197.0
+margin/right = 379.0
+margin/bottom = 233.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Strength"
+flat = false
+align = 0
+selected = 0
+items = [ "Strength", null, false, -1, null, "Agility", null, false, -1, null, "Magic", null, false, -1, null, "Endurance", null, false, -1, null ]
+
+[node name="statcancel" type="Button" parent="stats/trainingstatspanel"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 237.0
+margin/top = 344.0
+margin/right = 379.0
+margin/bottom = 380.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Cancel"
+flat = false
+
+[node name="statconfirm" type="Button" parent="stats/trainingstatspanel"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 237.0
+margin/top = 288.0
+margin/right = 379.0
+margin/bottom = 324.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Confirm"
+flat = false
+
+[node name="trainingtext" type="RichTextLabel" parent="stats/trainingstatspanel"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 80.0
+margin/top = 28.0
+margin/right = 532.0
+margin/bottom = 157.0
+bbcode/enabled = true
+bbcode/bbcode = "Training costs 1 skillpoint. 
+
+Strength: Increase physical damage
+Agility: Increase hit and dodge chance
+Magic Affinity: Spell based abilities are more effective
+Endurance: Increase health pool"
+visible_characters = -1
+
+[node name="trainingskillpointspanel" type="Panel" parent="stats"]
+
+editor/display_folded = true
+visibility/visible = false
+anchor/left = 3
+anchor/top = 3
+anchor/right = 3
+anchor/bottom = 3
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 119.0
+margin/top = 240.0
+margin/right = -507.0
+margin/bottom = -188.0
+custom_styles/panel = ExtResource( 10 )
+
+[node name="spspin" type="SpinBox" parent="stats/trainingskillpointspanel"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 278.0
+margin/top = 172.0
+margin/right = 340.0
+margin/bottom = 208.0
+range/min = 0.0
+range/max = 100.0
+range/step = 1.0
+range/page = 0.0
+range/value = 1.0
+range/exp_edit = false
+range/rounded = false
+editable = true
+prefix = ""
+suffix = ""
+
+[node name="spcancel" type="Button" parent="stats/trainingskillpointspanel"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 237.0
+margin/top = 344.0
+margin/right = 379.0
+margin/bottom = 380.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Cancel"
+flat = false
+
+[node name="spconfirm" type="Button" parent="stats/trainingskillpointspanel"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 237.0
+margin/top = 288.0
+margin/right = 379.0
+margin/bottom = 324.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Confirm"
+flat = false
+
+[node name="trainingtext" type="RichTextLabel" parent="stats/trainingskillpointspanel"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 80.0
+margin/top = 28.0
+margin/right = 532.0
+margin/bottom = 121.0
+bbcode/enabled = true
+bbcode/bbcode = "To obtain more skillpoints you can send a servant on special training. Every additional skillpoint for same person will cost more than before. For every new skillpoint servant will be absent for 2 additional days. "
+visible_characters = -1
+
+[node name="Label" type="Label" parent="stats/trainingskillpointspanel"]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 199.0
+margin/top = 144.0
+margin/right = 416.0
+margin/bottom = 163.0
+text = "How many points you want?"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="sptext" type="RichTextLabel" parent="stats/trainingskillpointspanel"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 153.0
+margin/top = 213.0
+margin/right = 449.0
+margin/bottom = 273.0
+bbcode/enabled = false
+bbcode/bbcode = ""
+visible_characters = -1
+
+[node name="trainingabilspanel" type="Panel" parent="stats"]
+
+editor/display_folded = true
+visibility/visible = false
+anchor/left = 3
+anchor/top = 3
+anchor/right = 3
+anchor/bottom = 3
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 118.0
+margin/top = 240.0
+margin/right = -508.0
+margin/bottom = -188.0
+custom_styles/panel = ExtResource( 10 )
+
+[node name="abilcancel" type="Button" parent="stats/trainingabilspanel"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 432.0
+margin/top = 351.0
+margin/right = 574.0
+margin/bottom = 387.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Cancel"
+flat = false
+
+[node name="abilityconfirm" type="Button" parent="stats/trainingabilspanel"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 240.0
+margin/top = 351.0
+margin/right = 382.0
+margin/bottom = 387.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Learn"
+flat = false
+
+[node name="abilitytext" type="RichTextLabel" parent="stats/trainingabilspanel"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 276.0
+margin/top = 35.0
+margin/right = 590.0
+margin/bottom = 255.0
+bbcode/enabled = true
+bbcode/bbcode = ""
+visible_characters = -1
+
+[node name="ScrollContainer" type="ScrollContainer" parent="stats/trainingabilspanel"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 23.0
+margin/top = 26.0
+margin/right = 214.0
+margin/bottom = 400.0
+scroll/horizontal = true
+scroll/vertical = true
+
+[node name="VBoxContainer" type="VBoxContainer" parent="stats/trainingabilspanel/ScrollContainer"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = false
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 0.0
+margin/bottom = 0.0
+alignment = 0
+
+[node name="Button" type="Button" parent="stats/trainingabilspanel/ScrollContainer/VBoxContainer"]
+
+visibility/visible = false
+rect/min_size = Vector2( 170, 30 )
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 170.0
+margin/bottom = 30.0
+toggle_mode = true
+enabled_focus_mode = 2
+shortcut = null
+text = "Heal"
+flat = false
+
+[node name="inspect" type="Tabs" parent="."]
+
+editor/display_folded = true
+visibility/visible = false
+anchor/right = 1
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 10.0
+margin/top = 33.0
+margin/right = 10.0
+margin/bottom = 10.0
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="portaitpanel" type="Panel" parent="inspect"]
+
+anchor/left = 1
+anchor/right = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 138.0
+margin/top = -5.0
+margin/right = -2.0
+margin/bottom = 138.0
+
+[node name="Panel" type="Panel" parent="inspect"]
+
+anchor/top = 1
+anchor/right = 1
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = -6.0
+margin/top = 263.0
+margin/right = -6.0
+margin/bottom = 123.0
+
+[node name="slavedescript" type="RichTextLabel" parent="inspect"]
+
+anchor/right = 1
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 4.0
+margin/top = 0.0
+margin/right = 2.0
+margin/bottom = 273.0
+custom_fonts/normal_font = ExtResource( 8 )
+bbcode/enabled = true
+bbcode/bbcode = ""
+visible_characters = -1
+
+[node name="statustext" type="RichTextLabel" parent="inspect"]
+
+anchor/top = 1
+anchor/right = 1
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 3.0
+margin/top = 252.0
+margin/right = 0.0
+margin/bottom = 134.0
+custom_fonts/normal_font = ExtResource( 8 )
+bbcode/enabled = true
+bbcode/bbcode = "She barely pays any attention to you, as if demonstrating her independence.
+
+She prefers to avoid looking at you and reacts poorly to your commands.
+
+She shows some respect to you, but it's clear that she forces herself to do it.
+
+She is pretty considerate and tries to appeal to you, showing that your opinion is important to her."
+visible_characters = -1
+
+[node name="LabelBG" type="Label" parent="inspect"]
+
+anchor/left = 3
+anchor/top = 1
+anchor/right = 3
+anchor/bottom = 1
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = -170.0
+margin/top = 121.0
+margin/right = -264.0
+margin/bottom = 102.0
+custom_fonts/font = ExtResource( 8 )
+custom_colors/font_color = Color( 1, 0.937255, 0, 1 )
+text = "Grade"
+align = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="LabelTraits" type="Label" parent="inspect"]
+
+editor/display_folded = true
+anchor/left = 3
+anchor/top = 1
+anchor/right = 3
+anchor/bottom = 1
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 293.0
+margin/top = 121.0
+margin/right = 205.0
+margin/bottom = 102.0
+custom_fonts/font = ExtResource( 8 )
+custom_colors/font_color = Color( 1, 0.9375, 0, 1 )
+text = "Traits"
+align = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="Affiliations" type="Label" parent="inspect"]
+
+editor/display_folded = true
+anchor/left = 3
+anchor/top = 1
+anchor/right = 3
+anchor/bottom = 1
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 50.0
+margin/top = 121.0
+margin/right = -38.0
+margin/bottom = 102.0
+custom_fonts/font = ExtResource( 8 )
+custom_colors/font_color = Color( 1, 0.9375, 0, 1 )
+text = "Affiliations"
+align = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="traits" type="ScrollContainer" parent="inspect"]
+
+anchor/left = 3
+anchor/top = 1
+anchor/right = 3
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 302.0
+margin/top = 97.0
+margin/right = 174.0
+margin/bottom = -5.0
+scroll/horizontal = false
+scroll/vertical = true
+
+[node name="traitlist" type="VBoxContainer" parent="inspect/traits"]
+
+rect/min_size = Vector2( 110, 18 )
+focus/ignore_mouse = false
+focus/stop_mouse = false
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 110.0
+margin/bottom = 18.0
+alignment = 1
+
+[node name="Label" type="Label" parent="inspect/traits/traitlist"]
+
+visibility/visible = false
+rect/min_size = Vector2( 110, 18 )
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 110.0
+margin/bottom = 18.0
+text = "Trait"
+align = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="affiliations" type="ScrollContainer" parent="inspect"]
+
+anchor/left = 3
+anchor/top = 1
+anchor/right = 3
+anchor/bottom = 1
+hint/tooltip = "Affiliation with certain factions will make some servants see you
+in more positive or negative light depending on your reputation with those factions"
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 59.0
+margin/top = 97.0
+margin/right = -69.0
+margin/bottom = -5.0
+scroll/horizontal = false
+scroll/vertical = true
+
+[node name="afflist" type="VBoxContainer" parent="inspect/affiliations"]
+
+rect/min_size = Vector2( 110, 0 )
+focus/ignore_mouse = false
+focus/stop_mouse = false
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 110.0
+margin/bottom = 0.0
+alignment = 1
+
+[node name="Label" type="Label" parent="inspect/affiliations/afflist"]
+
+visibility/visible = false
+rect/min_size = Vector2( 110, 18 )
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 110.0
+margin/bottom = 18.0
+text = "Trait"
+align = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="origins" type="Label" parent="inspect"]
+
+anchor/left = 3
+anchor/top = 1
+anchor/right = 3
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = -143.0
+margin/top = 98.0
+margin/right = -289.0
+margin/bottom = 67.0
+text = "test"
+align = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="changeportait" type="TextureButton" parent="inspect"]
+
+anchor/left = 1
+anchor/right = 1
+hint/tooltip = "Set custom portait"
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 10.0
+margin/top = -6.0
+margin/right = -3.0
+margin/bottom = 7.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+textures/normal = ExtResource( 11 )
+params/resize_mode = 0
+params/scale = Vector2( 0.25, 0.25 )
+params/stretch_mode = 0
+
+[node name="tooltip" type="Panel" parent="inspect"]
+
+editor/display_folded = true
+visibility/visible = false
+anchor/left = 3
+anchor/top = 3
+anchor/right = 3
+anchor/bottom = 3
+focus/ignore_mouse = true
+focus/stop_mouse = false
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 233.0
+margin/top = 63.0
+margin/right = -235.0
+margin/bottom = -146.0
+
+[node name="tooltiptext" type="RichTextLabel" parent="inspect/tooltip"]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 9.0
+margin/top = 9.0
+margin/right = 462.0
+margin/bottom = 203.0
+custom_fonts/normal_font = ExtResource( 8 )
+bbcode/enabled = true
+bbcode/bbcode = ""
+visible_characters = -1
+
+[node name="portait" type="TextureFrame" parent="inspect"]
+
+anchor/left = 1
+anchor/right = 1
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 135.0
+margin/top = -1.0
+margin/right = 2.0
+margin/bottom = 134.0
+expand = true
+stretch_mode = 6
+
+[node name="Panel" type="WindowDialog" parent="inspect/portait" groups=[
+"blockmaininput",
+]]
+
+visibility/visible = false
+anchor/left = 3
+anchor/top = 3
+anchor/right = 3
+anchor/bottom = 3
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 512.5
+margin/top = 353.5
+margin/right = -371.5
+margin/bottom = -144.5
+popup/exclusive = false
+window/title = ""
+
+[node name="ScrollContainer" type="ScrollContainer" parent="inspect/portait/Panel"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 33.0
+margin/top = 8.0
+margin/right = 693.0
+margin/bottom = 408.0
+scroll/horizontal = false
+scroll/vertical = true
+
+[node name="GridContainer" type="GridContainer" parent="inspect/portait/Panel/ScrollContainer"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = false
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 0.0
+margin/bottom = 0.0
+custom_constants/vseparation = 15
+custom_constants/hseparation = 5
+columns = 6
+
+[node name="Button" type="TextureButton" parent="inspect/portait/Panel/ScrollContainer/GridContainer"]
+
+visibility/visible = false
+rect/min_size = Vector2( 100, 120 )
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 100.0
+margin/bottom = 120.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+params/resize_mode = 0
+params/stretch_mode = 0
+
+[node name="Label" type="Label" parent="inspect/portait/Panel/ScrollContainer/GridContainer/Button"]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 0.0
+margin/top = 100.0
+margin/right = 101.0
+margin/bottom = 137.0
+text = "nagdsagashfhahhmejgpg"
+align = 1
+autowrap = true
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="pic" type="TextureFrame" parent="inspect/portait/Panel/ScrollContainer/GridContainer/Button"]
+
+rect/min_size = Vector2( 100, 100 )
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 100.0
+margin/bottom = 100.0
+texture = ExtResource( 12 )
+expand = true
+stretch_mode = 6
+
+[node name="cancelportait" type="Button" parent="inspect/portait/Panel"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 329.0
+margin/top = 439.0
+margin/right = 543.0
+margin/bottom = 473.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Cancel"
+flat = false
+
+[node name="racelock" type="CheckBox" parent="inspect/portait/Panel"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 701.0
+margin/top = 20.0
+margin/right = 865.0
+margin/bottom = 47.0
+toggle_mode = true
+is_pressed = true
+enabled_focus_mode = 2
+shortcut = null
+text = "Race&Gender Locked"
+flat = false
+align = 0
+
+[node name="search" type="LineEdit" parent="inspect/portait/Panel"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 705.0
+margin/top = 55.0
+margin/right = 864.0
+margin/bottom = 83.0
+placeholder/text = "Search"
+placeholder/alpha = 0.6
+focus_mode = 2
+caret/caret_blink = false
+caret/caret_blink_speed = 0.65
+
+[node name="noimagestext" type="RichTextLabel" parent="inspect/portait/Panel"]
+
+visibility/visible = false
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 50.0
+margin/top = 33.0
+margin/right = 674.0
+margin/bottom = 172.0
+bbcode/enabled = true
+bbcode/bbcode = "[center]You have no images with fitting criterias available.[/center]"
+visible_characters = -1
+
+[node name="addcustom" type="Button" parent="inspect/portait/Panel"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 706.0
+margin/top = 101.0
+margin/right = 863.0
+margin/bottom = 135.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Add custom image"
+flat = false
+
+[node name="openfolder" type="Button" parent="inspect/portait/Panel"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 706.0
+margin/top = 149.0
+margin/right = 863.0
+margin/bottom = 183.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Open portrait folder"
+flat = false
+
+[node name="reloadlist" type="Button" parent="inspect/portait/Panel"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 706.0
+margin/top = 195.0
+margin/right = 863.0
+margin/bottom = 229.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Reload portraits"
+flat = false
+
+[node name="removeportrait" type="Button" parent="inspect/portait/Panel"]
+
+hint/tooltip = "Disables portait for this character"
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 706.0
+margin/top = 240.0
+margin/right = 863.0
+margin/bottom = 274.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Remove portrait"
+flat = false
+
+[node name="reverseportrait" type="Button" parent="inspect/portait/Panel"]
+
+hint/tooltip = "Restore default character's portrait (if existed)"
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 706.0
+margin/top = 286.0
+margin/right = 863.0
+margin/bottom = 320.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Reverse to default"
+flat = false
+
+[node name="FileDialog" type="FileDialog" parent="inspect/portait/Panel"]
+
+visibility/visible = false
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = -39.0
+margin/top = -4.0
+margin/right = 613.0
+margin/bottom = 401.0
+popup/exclusive = false
+window/title = "Open a File"
+dialog/text = "Select New Portait"
+dialog/hide_on_ok = true
+mode = 0
+access = 2
+filters = StringArray( "*.jpg", "*.png" )
+show_hidden_files = false
+
+[node name="descriptpanel" type="Panel" parent="inspect"]
+
+visibility/visible = false
+anchor/right = 1
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 2.0
+margin/top = 3.0
+margin/right = -2.0
+margin/bottom = 176.0
+custom_styles/panel = SubResource( 2 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="inspect"]
+
+playback/process_mode = 1
+playback/default_blend_time = 0.0
+root/root = NodePath("..")
+anims/descriptfull = SubResource( 3 )
+anims/descriptportait = SubResource( 4 )
+playback/active = true
+playback/speed = 1.0
+blend_times = [  ]
+autoplay = ""
+
+[node name="regulations" type="Tabs" parent="."]
+
+anchor/right = 1
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 10.0
+margin/top = 33.0
+margin/right = 10.0
+margin/bottom = 10.0
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="rules" type="Panel" parent="regulations"]
+
+anchor/left = 1
+anchor/right = 1
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 219.0
+margin/top = -8.0
+margin/right = -5.0
+margin/bottom = -5.0
+
+[node name="sleeplabel" type="Label" parent="regulations/rules"]
+
+anchor/left = 1
+anchor/right = 1
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 185.0
+margin/top = 12.0
+margin/right = 35.0
+margin/bottom = 31.0
+custom_fonts/font = ExtResource( 8 )
+text = "Sleeping conditions"
+align = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="rules" type="Label" parent="regulations/rules" groups=[
+"prisondisable",
+]]
+
+anchor/left = 1
+anchor/right = 1
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 168.0
+margin/top = 81.0
+margin/right = 51.0
+margin/bottom = 100.0
+custom_fonts/font = ExtResource( 8 )
+custom_colors/font_color = Color( 1, 1, 0, 1 )
+text = "Everyday Rules"
+align = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="advrules" type="Label" parent="regulations/rules" groups=[
+"advrules",
+]]
+
+anchor/left = 1
+anchor/right = 1
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 184.0
+margin/top = 264.0
+margin/right = 37.0
+margin/bottom = 305.0
+custom_fonts/font = ExtResource( 8 )
+custom_colors/font_color = Color( 1, 1, 0, 1 )
+text = "Advanced Rules"
+align = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="luxuryrules" type="Label" parent="regulations/rules" groups=[
+"prisondisable",
+]]
+
+anchor/left = 1
+anchor/right = 1
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 184.0
+margin/top = 153.0
+margin/right = 37.0
+margin/bottom = 194.0
+custom_fonts/font = ExtResource( 8 )
+custom_colors/font_color = Color( 1, 1, 0, 1 )
+text = "Luxury Rules"
+align = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="contraception" type="CheckBox" parent="regulations/rules" groups=[
+"prisondisable",
+"slaverules",
+]]
+
+anchor/left = 1
+anchor/right = 1
+hint/tooltip = "Daily intake of special herbal medicine will
+ lower chance of pregnancy occurrence at
+ minor cost in gold (5 per day)."
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 204.0
+margin/top = 104.0
+margin/right = 15.0
+margin/bottom = 132.0
+custom_styles/focus = SubResource( 5 )
+custom_fonts/font = ExtResource( 8 )
+custom_colors/font_color_pressed = Color( 0.0921321, 0.644531, 0.0453186, 1 )
+toggle_mode = true
+enabled_focus_mode = 2
+shortcut = null
+text = "Herbal contraception"
+flat = false
+align = 0
+
+[node name="aphrodisiac" type="CheckBox" parent="regulations/rules" groups=[
+"prisondisable",
+"slaverules",
+]]
+
+anchor/left = 1
+anchor/right = 1
+hint/tooltip = "Servant's daily food will be mixed with untraceable
+ amounts of aphrodisiac constantly boosting their
+ libido for some cost in (8 per day) gold. "
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 204.0
+margin/top = 127.0
+margin/right = 15.0
+margin/bottom = 155.0
+custom_styles/focus = SubResource( 6 )
+custom_fonts/font = ExtResource( 8 )
+custom_colors/font_color_pressed = Color( 0.0921321, 0.644531, 0.0453186, 1 )
+toggle_mode = true
+enabled_focus_mode = 2
+shortcut = null
+text = "Aphrodisiac in food"
+flat = false
+align = 0
+
+[node name="silence" type="CheckBox" parent="regulations/rules" groups=[
+"advrules",
+"slaverules",
+]]
+
+anchor/left = 1
+anchor/right = 1
+hint/tooltip = "Servant will not be able to talk unless addressed."
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 204.0
+margin/top = 277.0
+margin/right = 15.0
+margin/bottom = 305.0
+custom_styles/focus = SubResource( 7 )
+custom_fonts/font = ExtResource( 8 )
+custom_colors/font_color_pressed = Color( 0.0921321, 0.644531, 0.0453186, 1 )
+toggle_mode = true
+enabled_focus_mode = 2
+shortcut = null
+text = "Enforced Silence"
+flat = false
+align = 0
+
+[node name="pet" type="CheckBox" parent="regulations/rules" groups=[
+"advrules",
+"slaverules",
+]]
+
+anchor/left = 1
+anchor/right = 1
+hint/tooltip = "Servant will be forced to act like animal: 
+walk on all fours and not interact with 
+others with human words."
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 204.0
+margin/top = 301.0
+margin/right = 15.0
+margin/bottom = 329.0
+custom_styles/focus = SubResource( 8 )
+custom_fonts/font = ExtResource( 8 )
+custom_colors/font_color_pressed = Color( 0.0921321, 0.644531, 0.0453186, 1 )
+toggle_mode = true
+enabled_focus_mode = 2
+shortcut = null
+text = "Pet Behavior"
+flat = false
+align = 0
+
+[node name="masturbation" type="CheckBox" parent="regulations/rules" groups=[
+"advrules",
+"slaverules",
+]]
+
+anchor/left = 1
+anchor/right = 1
+hint/tooltip = "Servant won't be able to relieve from 
+sexual build up on their own."
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 204.0
+margin/top = 324.0
+margin/right = 15.0
+margin/bottom = 352.0
+custom_styles/focus = SubResource( 9 )
+custom_fonts/font = ExtResource( 8 )
+custom_colors/font_color_pressed = Color( 0.0921321, 0.644531, 0.0453186, 1 )
+toggle_mode = true
+enabled_focus_mode = 2
+shortcut = null
+text = "No Masturbation"
+flat = false
+align = 0
+
+[node name="nudity" type="CheckBox" parent="regulations/rules" groups=[
+"advrules",
+"slaverules",
+]]
+
+anchor/left = 1
+anchor/right = 1
+hint/tooltip = "While in mansion, servant will be wearing 
+special clothes, revealing their naughty pieces."
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 204.0
+margin/top = 347.0
+margin/right = 15.0
+margin/bottom = 375.0
+custom_styles/focus = SubResource( 10 )
+custom_fonts/font = ExtResource( 8 )
+custom_colors/font_color_pressed = Color( 0.0921321, 0.644531, 0.0453186, 1 )
+toggle_mode = true
+enabled_focus_mode = 2
+shortcut = null
+text = "Partial Nudity"
+flat = false
+align = 0
+
+[node name="betterfood" type="CheckBox" parent="regulations/rules" groups=[
+"prisondisable",
+"slaverules",
+]]
+
+anchor/left = 1
+anchor/right = 1
+hint/tooltip = "Servant will receive additional 
+selection of higher grade food 
+(-5 food per day)"
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 204.0
+margin/top = 168.0
+margin/right = 15.0
+margin/bottom = 196.0
+custom_styles/focus = SubResource( 7 )
+custom_fonts/font = ExtResource( 8 )
+custom_colors/font_color_pressed = Color( 0.0921321, 0.644531, 0.0453186, 1 )
+toggle_mode = true
+enabled_focus_mode = 2
+shortcut = null
+text = "Better food"
+flat = false
+align = 0
+
+[node name="personalbath" type="CheckBox" parent="regulations/rules" groups=[
+"prisondisable",
+"slaverules",
+]]
+
+anchor/left = 1
+anchor/right = 1
+hint/tooltip = "Servant will be able to take 
+personal bath on their own
+(-2 supplies per day)"
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 204.0
+margin/top = 192.0
+margin/right = 15.0
+margin/bottom = 220.0
+custom_styles/focus = SubResource( 8 )
+custom_fonts/font = ExtResource( 8 )
+custom_colors/font_color_pressed = Color( 0.0921321, 0.644531, 0.0453186, 1 )
+toggle_mode = true
+enabled_focus_mode = 2
+shortcut = null
+text = "Personal Bath"
+flat = false
+align = 0
+
+[node name="cosmetics" type="CheckBox" parent="regulations/rules" groups=[
+"prisondisable",
+"slaverules",
+]]
+
+anchor/left = 1
+anchor/right = 1
+hint/tooltip = "Servant will use various available cosmetics
+to keep themselves in better shape
+(-1 supply per day)"
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 204.0
+margin/top = 216.0
+margin/right = 15.0
+margin/bottom = 244.0
+custom_styles/focus = SubResource( 10 )
+custom_fonts/font = ExtResource( 8 )
+custom_colors/font_color_pressed = Color( 0.0921321, 0.644531, 0.0453186, 1 )
+toggle_mode = true
+enabled_focus_mode = 2
+shortcut = null
+text = "Cosmetics"
+flat = false
+align = 0
+
+[node name="pocketmoney" type="CheckBox" parent="regulations/rules" groups=[
+"prisondisable",
+"slaverules",
+]]
+
+anchor/left = 1
+anchor/right = 1
+hint/tooltip = "Servant will receive some money
+which they can use for their needs
+(-10 gold per day)"
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 204.0
+margin/top = 239.0
+margin/right = 15.0
+margin/bottom = 267.0
+custom_styles/focus = SubResource( 9 )
+custom_fonts/font = ExtResource( 8 )
+custom_colors/font_color_pressed = Color( 0.0921321, 0.644531, 0.0453186, 1 )
+toggle_mode = true
+enabled_focus_mode = 2
+shortcut = null
+text = "Pocket Money"
+flat = false
+align = 0
+
+[node name="bedcount" type="Label" parent="regulations/rules"]
+
+visibility/visible = false
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 146.0
+margin/top = 51.0
+margin/right = 168.0
+margin/bottom = 86.0
+custom_fonts/font = SubResource( 11 )
+custom_colors/font_color = Color( 0.0157561, 0.675781, 0.0105591, 1 )
+text = "B"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="proomcount" type="Label" parent="regulations/rules"]
+
+visibility/visible = false
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 55.0
+margin/top = 50.0
+margin/right = 77.0
+margin/bottom = 85.0
+custom_fonts/font = SubResource( 11 )
+custom_colors/font_color = Color( 0.0739976, 0.660156, 0.00773621, 1 )
+text = "P"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="SelectButtonSleep" parent="regulations/rules" instance=ExtResource( 15 )]
+
+editor/display_folded = true
+anchor/left = 1
+anchor/right = 1
+margin/left = 185.0
+margin/top = 29.0
+margin/right = 27.0
+margin/bottom = 68.0
+
+[node name="tooltip" parent="regulations/rules/SelectButtonSleep/Popup"]
+
+visibility/visible = false
+anchor/left = 3
+anchor/top = 3
+anchor/right = 3
+anchor/bottom = 3
+margin/left = -128.5
+margin/top = 26.0
+margin/right = -511.5
+margin/bottom = -296.0
+
+[node name="selecttooltip" parent="regulations/rules/SelectButtonSleep/Popup/tooltip"]
+
+margin/top = 8.0
+margin/right = 367.0
+margin/bottom = 306.0
+
+[node name="descript" type="Panel" parent="regulations"]
+
+anchor/top = 1
+anchor/right = 1
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = -5.0
+margin/top = 215.0
+margin/right = 220.0
+margin/bottom = -5.0
+
+[node name="regulationdescript" type="RichTextLabel" parent="regulations/descript" groups=[
+"prisondisable",
+]]
+
+anchor/top = 1
+anchor/right = 1
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 16.0
+margin/top = 206.0
+margin/right = 12.0
+margin/bottom = 13.0
+custom_fonts/normal_font = ExtResource( 8 )
+bbcode/enabled = true
+bbcode/bbcode = "Wears etc
+
+Is branded
+
+has etc"
+visible_characters = -1
+
+[node name="clothes&relatives&customs" type="Panel" parent="regulations"]
+
+anchor/right = 1
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = -5.0
+margin/top = -8.0
+margin/right = 220.0
+margin/bottom = 216.0
+
+[node name="Label2" type="Label" parent="regulations/clothes&relatives&customs"]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 162.0
+margin/top = 12.0
+margin/right = 209.0
+margin/bottom = 31.0
+custom_fonts/font = ExtResource( 8 )
+text = "Brand"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="Label3" type="Label" parent="regulations/clothes&relatives&customs" groups=[
+"prisondisable",
+]]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 282.0
+margin/top = 10.0
+margin/right = 371.0
+margin/bottom = 29.0
+custom_fonts/font = ExtResource( 8 )
+text = "Occupation"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="relativesbutton" type="Button" parent="regulations/clothes&relatives&customs"]
+
+anchor/left = 1
+anchor/top = 1
+anchor/right = 1
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 126.0
+margin/top = 50.0
+margin/right = 13.0
+margin/bottom = 14.0
+custom_fonts/font = ExtResource( 8 )
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "See Relatives"
+flat = false
+
+[node name="nickname" type="Button" parent="regulations/clothes&relatives&customs"]
+
+anchor/left = 1
+anchor/top = 1
+anchor/right = 1
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 242.0
+margin/top = 50.0
+margin/right = 129.0
+margin/bottom = 14.0
+custom_fonts/font = ExtResource( 8 )
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Set Nickname"
+flat = false
+
+[node name="gear" type="Button" parent="regulations/clothes&relatives&customs"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 18.0
+margin/top = 18.0
+margin/right = 89.0
+margin/bottom = 78.0
+custom_fonts/font = ExtResource( 8 )
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Gear"
+flat = false
+
+[node name="workbutton" type="Button" parent="regulations/clothes&relatives&customs" groups=[
+"prisondisable",
+]]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 264.0
+margin/top = 31.0
+margin/right = 391.0
+margin/bottom = 67.0
+custom_fonts/font = ExtResource( 8 )
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Choose work"
+flat = false
+clip_text = true
+
+[node name="description" type="Button" parent="regulations/clothes&relatives&customs" groups=[
+"prisondisable",
+]]
+
+anchor/left = 1
+anchor/top = 1
+anchor/right = 1
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 426.0
+margin/top = 50.0
+margin/right = 249.0
+margin/bottom = 14.0
+custom_fonts/font = ExtResource( 8 )
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Set Custom Description"
+flat = false
+
+[node name="brandbutton" type="Button" parent="regulations/clothes&relatives&customs"]
+
+editor/display_folded = true
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 110.0
+margin/top = 31.0
+margin/right = 258.0
+margin/bottom = 65.0
+custom_fonts/font = ExtResource( 8 )
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "None"
+flat = false
+
+[node name="brandpopup" type="WindowDialog" parent="regulations/clothes&relatives&customs/brandbutton"]
+
+visibility/visible = false
+anchor/left = 3
+anchor/top = 3
+anchor/right = 3
+anchor/bottom = 3
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+theme/theme = ExtResource( 1 )
+margin/left = 274.0
+margin/top = 260.0
+margin/right = -160.0
+margin/bottom = -6.0
+custom_styles/panel = SubResource( 12 )
+popup/exclusive = false
+window/title = "Branding"
+
+[node name="brandingtext" type="RichTextLabel" parent="regulations/clothes&relatives&customs/brandbutton/brandpopup"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 7.0
+margin/top = 7.0
+margin/right = 422.0
+margin/bottom = 107.0
+custom_fonts/normal_font = ExtResource( 8 )
+bbcode/enabled = true
+bbcode/bbcode = "Branding a person will put permanent spell on the person, preventing them from opposing the brander and ultimately making them a legitimate property. Operation requires 10 mana and 20 energy.
+"
+visible_characters = -1
+
+[node name="enhbrandingtext" type="RichTextLabel" parent="regulations/clothes&relatives&customs/brandbutton/brandpopup"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 10.0
+margin/top = 9.0
+margin/right = 425.0
+margin/bottom = 109.0
+custom_fonts/normal_font = ExtResource( 8 )
+bbcode/enabled = true
+bbcode/bbcode = "Enhanced branding will allow to issue specific rules and comands to the branded person. 
+Operation requires 15 mana and 20 energy."
+visible_characters = -1
+
+[node name="brandremovetext" type="RichTextLabel" parent="regulations/clothes&relatives&customs/brandbutton/brandpopup"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 8.0
+margin/top = 104.0
+margin/right = 430.0
+margin/bottom = 190.0
+custom_fonts/normal_font = ExtResource( 8 )
+bbcode/enabled = true
+bbcode/bbcode = "You can remove your brand for 5 mana, but this can make sudden escape more probable."
+visible_characters = -1
+
+[node name="confirm" type="Button" parent="regulations/clothes&relatives&customs/brandbutton/brandpopup"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 28.0
+margin/top = 206.0
+margin/right = 112.0
+margin/bottom = 243.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Confirm"
+flat = false
+
+[node name="remove" type="Button" parent="regulations/clothes&relatives&customs/brandbutton/brandpopup"]
+
+hint/tooltip = "This action will cost you 1 energy and 5 mana"
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 170.0
+margin/top = 206.0
+margin/right = 254.0
+margin/bottom = 243.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Remove"
+flat = false
+
+[node name="cancel" type="Button" parent="regulations/clothes&relatives&customs/brandbutton/brandpopup"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 322.0
+margin/top = 205.0
+margin/right = 406.0
+margin/bottom = 242.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Cancel"
+flat = false
+
+[node name="relativespanel" type="Panel" parent="regulations/clothes&relatives&customs"]
+
+editor/display_folded = true
+visibility/visible = false
+anchor/left = 3
+anchor/top = 3
+anchor/right = 3
+anchor/bottom = 3
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 226.5
+margin/top = 141.0
+margin/right = -727.5
+margin/bottom = -344.0
+custom_styles/panel = ExtResource( 10 )
+
+[node name="Control" type="Control" parent="regulations/clothes&relatives&customs/relativespanel"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 5.0
+margin/right = 1082.0
+margin/bottom = 608.0
+
+[node name="parentscontainer" type="ScrollContainer" parent="regulations/clothes&relatives&customs/relativespanel"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 41.0
+margin/top = 68.0
+margin/right = 307.0
+margin/bottom = 393.0
+scroll/horizontal = true
+scroll/vertical = true
+
+[node name="parentscontainer" type="VBoxContainer" parent="regulations/clothes&relatives&customs/relativespanel/parentscontainer"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = false
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 0.0
+margin/bottom = 0.0
+alignment = 0
+
+[node name="Label" type="Label" parent="regulations/clothes&relatives&customs/relativespanel/parentscontainer/parentscontainer"]
+
+visibility/visible = false
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 5.0
+margin/bottom = 18.0
+custom_fonts/font = ExtResource( 8 )
+text = "1"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="siblingscontainer" type="ScrollContainer" parent="regulations/clothes&relatives&customs/relativespanel"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 340.0
+margin/top = 68.0
+margin/right = 606.0
+margin/bottom = 393.0
+scroll/horizontal = true
+scroll/vertical = true
+
+[node name="siblingscontainer" type="VBoxContainer" parent="regulations/clothes&relatives&customs/relativespanel/siblingscontainer"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = false
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 0.0
+margin/bottom = 0.0
+alignment = 0
+
+[node name="Label" type="Label" parent="regulations/clothes&relatives&customs/relativespanel/siblingscontainer/siblingscontainer"]
+
+visibility/visible = false
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 168.0
+margin/bottom = 19.0
+custom_fonts/font = ExtResource( 8 )
+text = "Mother - $name $race"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="childrencontainer" type="ScrollContainer" parent="regulations/clothes&relatives&customs/relativespanel"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 660.0
+margin/top = 68.0
+margin/right = 926.0
+margin/bottom = 393.0
+scroll/horizontal = true
+scroll/vertical = true
+
+[node name="childrencontainer" type="VBoxContainer" parent="regulations/clothes&relatives&customs/relativespanel/childrencontainer"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = false
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 0.0
+margin/bottom = 0.0
+alignment = 0
+
+[node name="Label" type="Label" parent="regulations/clothes&relatives&customs/relativespanel/childrencontainer/childrencontainer"]
+
+visibility/visible = false
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 168.0
+margin/bottom = 19.0
+custom_fonts/font = ExtResource( 8 )
+text = "Mother - $name $race"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="relativesclose" type="Button" parent="regulations/clothes&relatives&customs/relativespanel"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 392.0
+margin/top = 409.0
+margin/right = 531.0
+margin/bottom = 456.0
+custom_fonts/font = ExtResource( 8 )
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Close"
+flat = false
+
+[node name="parentslabel" type="Label" parent="regulations/clothes&relatives&customs/relativespanel"]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 44.0
+margin/top = 34.0
+margin/right = 212.0
+margin/bottom = 53.0
+custom_fonts/font = ExtResource( 8 )
+text = "Parents"
+align = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="siblingslabel" type="Label" parent="regulations/clothes&relatives&customs/relativespanel"]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 371.0
+margin/top = 34.0
+margin/right = 539.0
+margin/bottom = 53.0
+custom_fonts/font = ExtResource( 8 )
+text = "Siblings"
+align = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="childrenlabel" type="Label" parent="regulations/clothes&relatives&customs/relativespanel"]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 714.0
+margin/top = 34.0
+margin/right = 882.0
+margin/bottom = 53.0
+custom_fonts/font = ExtResource( 8 )
+text = "Children"
+align = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="nicknamepanel" type="Popup" parent="regulations/clothes&relatives&customs" groups=[
+"blockmaininput",
+]]
+
+editor/display_folded = true
+visibility/visible = false
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 176.0
+margin/top = 61.0
+margin/right = 565.0
+margin/bottom = 303.0
+popup/exclusive = false
+
+[node name="Panel" type="Panel" parent="regulations/clothes&relatives&customs/nicknamepanel"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 392.0
+margin/bottom = 246.0
+
+[node name="nickline" type="LineEdit" parent="regulations/clothes&relatives&customs/nicknamepanel"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 81.0
+margin/top = 58.0
+margin/right = 312.0
+margin/bottom = 89.0
+placeholder/text = "Leave empty to delete"
+placeholder/alpha = 0.6
+focus_mode = 2
+caret/caret_blink = false
+caret/caret_blink_speed = 0.65
+
+[node name="nickaccept" type="Button" parent="regulations/clothes&relatives&customs/nicknamepanel"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 135.0
+margin/top = 156.0
+margin/right = 269.0
+margin/bottom = 190.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Accept"
+flat = false
+
+[node name="descriptpopup" type="Popup" parent="regulations/clothes&relatives&customs" groups=[
+"blockmaininput",
+]]
+
+visibility/visible = false
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 176.0
+margin/top = 61.0
+margin/right = 817.0
+margin/bottom = 447.0
+popup/exclusive = false
+
+[node name="Panel" type="Panel" parent="regulations/clothes&relatives&customs/descriptpopup"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 643.0
+margin/bottom = 383.0
+
+[node name="TextEdit" type="TextEdit" parent="regulations/clothes&relatives&customs/descriptpopup"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 68.0
+margin/top = 27.0
+margin/right = 568.0
+margin/bottom = 233.0
+custom_styles/focus = SubResource( 13 )
+custom_styles/normal = SubResource( 14 )
+syntax_highlighting = false
+show_line_numbers = false
+highlight_all_occurrences = false
+caret/block_caret = false
+caret/caret_blink = false
+caret/caret_blink_speed = 0.8
+
+[node name="confirmdescript" type="Button" parent="regulations/clothes&relatives&customs/descriptpopup"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 259.0
+margin/top = 299.0
+margin/right = 393.0
+margin/bottom = 333.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Confirm"
+flat = false
+
+[node name="joblist" type="Popup" parent="regulations"]
+
+visibility/visible = false
+anchor/left = 3
+anchor/top = 3
+anchor/right = 3
+anchor/bottom = 3
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 334.0
+margin/top = 239.0
+margin/right = -417.0
+margin/bottom = -288.0
+popup/exclusive = false
+
+[node name="Panel" type="Panel" parent="regulations/joblist"]
+
+anchor/right = 1
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 0.0
+margin/bottom = 0.0
+
+[node name="jobcancel" type="Button" parent="regulations/joblist"]
+
+anchor/left = 3
+anchor/top = 1
+anchor/right = 3
+anchor/bottom = 1
+rect/min_size = Vector2( 200, 20 )
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 114.5
+margin/top = 48.0
+margin/right = -85.5
+margin/bottom = 14.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Cancel"
+flat = false
+
+[node name="normaljobs" type="ScrollContainer" parent="regulations/joblist"]
+
+editor/display_folded = true
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 21.0
+margin/top = 62.0
+margin/right = 230.0
+margin/bottom = 67.0
+scroll/horizontal = false
+scroll/vertical = true
+
+[node name="VBoxContainer" type="VBoxContainer" parent="regulations/joblist/normaljobs"]
+
+rect/min_size = Vector2( 200, 20 )
+focus/ignore_mouse = false
+focus/stop_mouse = false
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 200.0
+margin/bottom = 20.0
+alignment = 1
+
+[node name="Button" type="Button" parent="regulations/joblist/normaljobs/VBoxContainer"]
+
+visibility/visible = false
+rect/min_size = Vector2( 200, 20 )
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 200.0
+margin/bottom = 34.0
+toggle_mode = true
+enabled_focus_mode = 2
+shortcut = null
+text = "Rest"
+flat = false
+clip_text = true
+
+[node name="socialjobs" type="ScrollContainer" parent="regulations/joblist"]
+
+editor/display_folded = true
+anchor/left = 3
+anchor/right = 3
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 124.5
+margin/top = 62.0
+margin/right = -93.5
+margin/bottom = 67.0
+scroll/horizontal = false
+scroll/vertical = true
+
+[node name="VBoxContainer" type="VBoxContainer" parent="regulations/joblist/socialjobs"]
+
+rect/min_size = Vector2( 200, 20 )
+focus/ignore_mouse = false
+focus/stop_mouse = false
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 200.0
+margin/bottom = 20.0
+alignment = 1
+
+[node name="sexjobs" type="ScrollContainer" parent="regulations/joblist"]
+
+editor/display_folded = true
+anchor/left = 1
+anchor/right = 1
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 260.0
+margin/top = 62.0
+margin/right = 42.0
+margin/bottom = 67.0
+scroll/horizontal = false
+scroll/vertical = true
+
+[node name="VBoxContainer" type="VBoxContainer" parent="regulations/joblist/sexjobs"]
+
+rect/min_size = Vector2( 200, 20 )
+focus/ignore_mouse = false
+focus/stop_mouse = false
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 200.0
+margin/bottom = 20.0
+alignment = 1
+
+[node name="Label" type="Label" parent="regulations/joblist"]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 103.0
+margin/top = 30.0
+margin/right = 143.0
+margin/bottom = 48.0
+text = "Basic"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="Label1" type="Label" parent="regulations/joblist"]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 332.0
+margin/top = 30.0
+margin/right = 372.0
+margin/bottom = 48.0
+text = "Social"
+align = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="Label2" type="Label" parent="regulations/joblist"]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 571.0
+margin/top = 30.0
+margin/right = 611.0
+margin/bottom = 48.0
+text = "Sexual"
+align = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="jobtooltippanel" type="Panel" parent="regulations/joblist"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = -199.0
+margin/top = 0.0
+margin/right = -5.0
+margin/bottom = 527.0
+
+[node name="tooltiptext" type="RichTextLabel" parent="regulations/joblist/jobtooltippanel"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 12.0
+margin/top = 12.0
+margin/right = 182.0
+margin/bottom = 514.0
+bbcode/enabled = true
+bbcode/bbcode = ""
+visible_characters = -1
+
+[node name="actions" type="Tabs" parent="."]
+
+editor/display_folded = true
+visibility/visible = false
+anchor/right = 1
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 10.0
+margin/top = 33.0
+margin/right = 10.0
+margin/bottom = 10.0
+script/script = ExtResource( 18 )
+
+[node name="HSeparator1" type="HSeparator" parent="actions"]
+
+anchor/top = 3
+anchor/right = 1
+anchor/bottom = 3
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = -5.0
+margin/top = -19.0
+margin/right = 0.0
+margin/bottom = -59.0
+
+[node name="HSeparator" type="HSeparator" parent="actions"]
+
+anchor/top = 3
+anchor/right = 1
+anchor/bottom = 3
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = -5.0
+margin/top = 113.0
+margin/right = 0.0
+margin/bottom = 73.0
+
+[node name="cuthair" type="Button" parent="actions"]
+
+visibility/visible = false
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 40.0
+margin/top = 27.0
+margin/right = 147.0
+margin/bottom = 55.0
+custom_fonts/font = ExtResource( 8 )
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Cut Hair"
+flat = false
+
+[node name="Label" type="Label" parent="actions/cuthair"]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = -31.0
+margin/top = -28.0
+margin/right = 116.0
+margin/bottom = -9.0
+custom_fonts/font = ExtResource( 8 )
+text = "$name's hairlength"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="useitem" type="Button" parent="actions"]
+
+anchor/left = 3
+anchor/right = 3
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 155.0
+margin/top = 65.0
+margin/right = 48.0
+margin/bottom = 99.0
+custom_fonts/font = ExtResource( 8 )
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Use Item"
+flat = false
+
+[node name="castspell" type="Button" parent="actions"]
+
+anchor/left = 3
+anchor/right = 3
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 29.0
+margin/top = 65.0
+margin/right = -78.0
+margin/bottom = 99.0
+custom_fonts/font = ExtResource( 8 )
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Cast Spell"
+flat = false
+
+[node name="hairstyle" type="OptionButton" parent="actions"]
+
+anchor/left = 3
+anchor/right = 3
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 320.0
+margin/top = 11.0
+margin/right = 168.0
+margin/bottom = 39.0
+custom_fonts/font = ExtResource( 8 )
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "straight"
+flat = false
+align = 0
+selected = 0
+items = [ "straight", null, false, 0, null, "ponytail", null, false, 1, null, "twintails", null, false, 2, null, "braid", null, false, 3, null, "two braids", null, false, 4, null, "bun", null, false, 5, null ]
+
+[node name="piercing" type="Button" parent="actions" groups=[
+"prisondisable",
+]]
+
+anchor/left = 3
+anchor/right = 3
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 154.0
+margin/top = 7.0
+margin/right = 47.0
+margin/bottom = 41.0
+custom_fonts/font = ExtResource( 8 )
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Piercing"
+flat = false
+
+[node name="tatoo" type="Button" parent="actions" groups=[
+"prisondisable",
+]]
+
+anchor/left = 3
+anchor/right = 3
+hint/tooltip = "Not implemented yet"
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 30.0
+margin/top = 7.0
+margin/right = -77.0
+margin/bottom = 41.0
+custom_fonts/font = ExtResource( 8 )
+disabled = true
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Tatoo"
+flat = false
+
+[node name="praise" type="Button" parent="actions" groups=[
+"prisondisable",
+"actions",
+]]
+
+anchor/left = 3
+anchor/top = 3
+anchor/right = 3
+anchor/bottom = 3
+hint/tooltip = "Praise the servant for recent behavior"
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 154.0
+margin/top = 43.0
+margin/right = 13.0
+margin/bottom = 9.0
+custom_fonts/font = ExtResource( 8 )
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Praise"
+flat = false
+
+[node name="talk" type="Button" parent="actions" groups=[
+"prisondisable",
+]]
+
+anchor/left = 3
+anchor/top = 3
+anchor/right = 3
+anchor/bottom = 3
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 318.0
+margin/top = 43.0
+margin/right = 177.0
+margin/bottom = 9.0
+custom_fonts/font = ExtResource( 8 )
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Talk"
+flat = false
+
+[node name="berate" type="Button" parent="actions" groups=[
+"prisondisable",
+"actions",
+]]
+
+anchor/left = 3
+anchor/top = 1
+anchor/right = 3
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 270.0
+margin/top = 106.0
+margin/right = 129.0
+margin/bottom = 72.0
+custom_fonts/font = ExtResource( 8 )
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Berate"
+flat = false
+
+[node name="gift" type="Button" parent="actions" groups=[
+"prisondisable",
+"actions",
+]]
+
+anchor/left = 3
+anchor/top = 3
+anchor/right = 3
+anchor/bottom = 3
+hint/tooltip = "Reward servant with a gift"
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = -8.0
+margin/top = 43.0
+margin/right = -149.0
+margin/bottom = 9.0
+custom_fonts/font = ExtResource( 8 )
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Gift"
+flat = false
+
+[node name="sex" type="Button" parent="actions" groups=[
+"prisondisable",
+"actions",
+]]
+
+anchor/left = 3
+anchor/top = 3
+anchor/right = 3
+anchor/bottom = 3
+hint/tooltip = "Openly propose symbiotic sex to servant
+Will unlock sex actions if succeed"
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = -173.0
+margin/top = 43.0
+margin/right = -314.0
+margin/bottom = 9.0
+custom_fonts/font = ExtResource( 8 )
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Sex"
+flat = false
+
+[node name="beat" type="Button" parent="actions" groups=[
+"actions",
+]]
+
+anchor/left = 3
+anchor/top = 1
+anchor/right = 3
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 81.0
+margin/top = 106.0
+margin/right = -60.0
+margin/bottom = 72.0
+custom_fonts/font = ExtResource( 8 )
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Beat"
+flat = false
+
+[node name="Label" type="Label" parent="actions"]
+
+anchor/left = 3
+anchor/top = 3
+anchor/right = 3
+anchor/bottom = 3
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 57.0
+margin/top = -47.0
+margin/right = -65.0
+margin/bottom = -70.0
+text = "Punishments"
+align = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="Label 2" type="Label" parent="actions" groups=[
+"prisondisable",
+]]
+
+anchor/left = 3
+anchor/top = 3
+anchor/right = 3
+anchor/bottom = 3
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 70.0
+margin/top = 86.0
+margin/right = -52.0
+margin/bottom = 63.0
+text = "Social"
+align = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="date" type="Button" parent="actions" groups=[
+"actions",
+]]
+
+visibility/visible = false
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 15.0
+margin/top = 297.0
+margin/right = 121.0
+margin/bottom = 326.0
+custom_fonts/font = ExtResource( 8 )
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Date"
+flat = false
+
+[node name="getridof" type="Button" parent="actions"]
+
+anchor/left = 3
+anchor/right = 3
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = -101.0
+margin/top = 66.0
+margin/right = -208.0
+margin/bottom = 100.0
+custom_fonts/font = ExtResource( 8 )
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Get Rid Of"
+flat = false
+
+[node name="hairstylelabel" type="Label" parent="actions"]
+
+anchor/left = 3
+anchor/right = 3
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 322.0
+margin/top = -5.0
+margin/right = 176.0
+margin/bottom = 14.0
+custom_fonts/font = ExtResource( 8 )
+text = "Hairstyle"
+align = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="publiccheckbox" type="CheckBox" parent="actions"]
+
+anchor/left = 3
+anchor/top = 1
+anchor/right = 3
+anchor/bottom = 1
+hint/tooltip = "Public actions will be observed by other servants and may
+serve as example to them."
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 36.0
+margin/top = 59.0
+margin/right = -36.0
+margin/bottom = 31.0
+custom_fonts/font = ExtResource( 8 )
+toggle_mode = true
+enabled_focus_mode = 2
+shortcut = null
+text = "Public"
+flat = false
+align = 0
+
+[node name="punishroom" type="Button" parent="actions" groups=[
+"actions",
+]]
+
+editor/display_folded = true
+anchor/left = 3
+anchor/top = 1
+anchor/right = 3
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = -112.0
+margin/top = 107.0
+margin/right = -253.0
+margin/bottom = 73.0
+custom_fonts/font = ExtResource( 8 )
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Punishment room"
+flat = false
+
+[node name="Popup" type="Popup" parent="actions/punishroom"]
+
+visibility/visible = false
+anchor/left = 3
+anchor/top = 3
+anchor/right = 3
+anchor/bottom = 3
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 257.0
+margin/top = 244.0
+margin/right = -359.0
+margin/bottom = -59.0
+popup/exclusive = false
+
+[node name="Panel" type="Panel" parent="actions/punishroom/Popup"]
+
+anchor/left = 1
+anchor/top = 1
+anchor/right = 1
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 617.0
+margin/top = 297.0
+margin/right = 1.0
+margin/bottom = 4.0
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="punishtext" type="RichTextLabel" parent="actions/punishroom/Popup/Panel"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 35.0
+margin/top = 17.0
+margin/right = 588.0
+margin/bottom = 152.0
+custom_fonts/normal_font = ExtResource( 8 )
+bbcode/enabled = true
+bbcode/bbcode = "You can take $name to the punishment room for more oscure actions. These are not specifically harmful, but sufficiently painful and stimulating to provide a lesson. 
+If 'Public' is checked, other servants will also be watching and it will severe the punishment."
+visible_characters = -1
+
+[node name="tickling" type="Button" parent="actions/punishroom/Popup/Panel" groups=[
+"actions",
+"sexpunish",
+]]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 25.0
+margin/top = 143.0
+margin/right = 154.0
+margin/bottom = 182.0
+custom_fonts/font = ExtResource( 8 )
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Tickling"
+flat = false
+
+[node name="spanking" type="Button" parent="actions/punishroom/Popup/Panel" groups=[
+"actions",
+"sexpunish",
+]]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 237.0
+margin/top = 143.0
+margin/right = 366.0
+margin/bottom = 182.0
+custom_fonts/font = ExtResource( 8 )
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Spanking"
+flat = false
+
+[node name="whipping" type="Button" parent="actions/punishroom/Popup/Panel" groups=[
+"actions",
+"sexpunish",
+]]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 446.0
+margin/top = 143.0
+margin/right = 575.0
+margin/bottom = 182.0
+custom_fonts/font = ExtResource( 8 )
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Whipping"
+flat = false
+
+[node name="hotwax" type="Button" parent="actions/punishroom/Popup/Panel" groups=[
+"actions",
+"sexpunish",
+]]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 352.0
+margin/top = 196.0
+margin/right = 481.0
+margin/bottom = 235.0
+custom_fonts/font = ExtResource( 8 )
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Hot Wax"
+flat = false
+
+[node name="woodenhorse" type="Button" parent="actions/punishroom/Popup/Panel" groups=[
+"actions",
+"sexpunish",
+]]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 140.0
+margin/top = 196.0
+margin/right = 269.0
+margin/bottom = 235.0
+custom_fonts/font = ExtResource( 8 )
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Wooden Horse"
+flat = false
+
+[node name="cancel" type="Button" parent="actions/punishroom/Popup/Panel"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 245.0
+margin/top = 252.0
+margin/right = 370.0
+margin/bottom = 285.0
+custom_fonts/font = ExtResource( 8 )
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Cancel"
+flat = false
+
+[node name="piercingpanel" type="Panel" parent="actions"]
+
+editor/display_folded = true
+visibility/visible = false
+anchor/left = 3
+anchor/top = 3
+anchor/right = 3
+anchor/bottom = 3
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 36.5
+margin/top = 211.0
+margin/right = -418.5
+margin/bottom = -274.0
+custom_styles/panel = ExtResource( 10 )
+
+[node name="closebutton" type="Button" parent="actions/piercingpanel"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 157.0
+margin/top = 425.0
+margin/right = 306.0
+margin/bottom = 468.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Close"
+flat = false
+
+[node name="ScrollContainer" type="ScrollContainer" parent="actions/piercingpanel"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 21.0
+margin/top = 65.0
+margin/right = 446.0
+margin/bottom = 408.0
+scroll/horizontal = false
+scroll/vertical = true
+
+[node name="VBoxContainer" type="VBoxContainer" parent="actions/piercingpanel/ScrollContainer"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = false
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 0.0
+margin/bottom = 0.0
+alignment = 0
+
+[node name="piercingline" type="HBoxContainer" parent="actions/piercingpanel/ScrollContainer/VBoxContainer"]
+
+visibility/visible = false
+focus/ignore_mouse = false
+focus/stop_mouse = false
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 425.0
+margin/bottom = 24.0
+custom_constants/separation = 140
+alignment = 0
+
+[node name="placename" type="Label" parent="actions/piercingpanel/ScrollContainer/VBoxContainer/piercingline"]
+
+rect/min_size = Vector2( 150, 0 )
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 0.0
+margin/top = 3.0
+margin/right = 150.0
+margin/bottom = 21.0
+text = "Nose"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="pierceoptions" type="OptionButton" parent="actions/piercingpanel/ScrollContainer/VBoxContainer/piercingline"]
+
+rect/min_size = Vector2( 135, 0 )
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 290.0
+margin/top = 0.0
+margin/right = 425.0
+margin/bottom = 24.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "None"
+flat = false
+align = 0
+selected = 0
+items = [ "None", null, false, -1, null ]
+
+[node name="piercestate" type="Label" parent="actions/piercingpanel"]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 24.0
+margin/top = 18.0
+margin/right = 436.0
+margin/bottom = 60.0
+autowrap = true
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="selectspellpanel" type="Panel" parent="actions"]
+
+editor/display_folded = true
+visibility/visible = false
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 253.0
+margin/top = 1.0
+margin/right = 814.0
+margin/bottom = 382.0
+custom_styles/panel = ExtResource( 10 )
+
+[node name="Control" type="Control" parent="actions/selectspellpanel"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = -257.0
+margin/top = -70.0
+margin/right = 827.0
+margin/bottom = 537.0
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="ScrollContainer" type="ScrollContainer" parent="actions/selectspellpanel"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 17.0
+margin/top = 15.0
+margin/right = 228.0
+margin/bottom = 333.0
+scroll/horizontal = false
+scroll/vertical = true
+
+[node name="selectspelllist" type="VBoxContainer" parent="actions/selectspellpanel/ScrollContainer"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = false
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 0.0
+margin/bottom = 0.0
+alignment = 0
+
+[node name="spellbutton" type="Button" parent="actions/selectspellpanel/ScrollContainer/selectspelllist" groups=[
+"spells",
+]]
+
+visibility/visible = false
+rect/min_size = Vector2( 200, 0 )
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+theme/theme = ExtResource( 19 )
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 200.0
+margin/bottom = 28.0
+toggle_mode = true
+enabled_focus_mode = 2
+shortcut = null
+text = "Aphrodisiac"
+flat = false
+
+[node name="spellusebutton" type="Button" parent="actions/selectspellpanel"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 114.0
+margin/top = 340.0
+margin/right = 223.0
+margin/bottom = 368.0
+custom_fonts/font = ExtResource( 8 )
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Use"
+flat = false
+
+[node name="spellcancelbutton" type="Button" parent="actions/selectspellpanel"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 329.0
+margin/top = 340.0
+margin/right = 438.0
+margin/bottom = 368.0
+custom_fonts/font = ExtResource( 8 )
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Cancel"
+flat = false
+
+[node name="spellusedescription" type="RichTextLabel" parent="actions/selectspellpanel"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 302.0
+margin/top = 153.0
+margin/right = 529.0
+margin/bottom = 320.0
+bbcode/enabled = false
+bbcode/bbcode = ""
+visible_characters = -1
+
+[node name="energycosttooltip" type="Label" parent="actions"]
+
+visibility/visible = false
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 215.0
+margin/top = 138.0
+margin/right = 281.0
+margin/bottom = 157.0
+text = "25 energy"
+align = 1
+valign = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="sexual" type="Tabs" parent="."]
+
+editor/display_folded = true
+visibility/visible = false
+anchor/right = 1
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 10.0
+margin/top = 33.0
+margin/right = 10.0
+margin/bottom = 10.0
+script/script = ExtResource( 20 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Panel" type="Panel" parent="sexual"]
+
+anchor/right = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = -5.0
+margin/top = -3.0
+margin/right = 3.0
+margin/bottom = 97.0
+
+[node name="description" type="RichTextLabel" parent="sexual"]
+
+anchor/right = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 11.0
+margin/top = 9.0
+margin/right = 8.0
+margin/bottom = 76.0
+custom_fonts/normal_font = ExtResource( 8 )
+bbcode/enabled = true
+bbcode/bbcode = "$name speaks to you softly"
+visible_characters = -1
+
+[node name="dominance" type="Label" parent="sexual"]
+
+visibility/visible = false
+hint/tooltip = "Dominance level shows servant's preferences regarding their role.
+Sexual actions categorized as dominant, submissive and natural, based on what effect they have on servant's Dominance.
+High dominance lower Lewdness requirments on dominant actions.
+Low dominance (submissiveness) will eventually abolish all but stress penalty from non-consensual interactions as long as servant's lust is high enough."
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 486.0
+margin/top = 70.0
+margin/right = 573.0
+margin/bottom = 89.0
+custom_fonts/font = ExtResource( 8 )
+text = "Dominance"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="lewdness" type="Label" parent="sexual"]
+
+hint/tooltip = "Lewdness unlocks more consensual actions
+It grows as servant practices new sexual experience"
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 11.0
+margin/top = 73.0
+margin/right = 167.0
+margin/bottom = 92.0
+custom_fonts/font = ExtResource( 8 )
+text = "Free Affection:"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="confirmbutton" type="Button" parent="sexual"]
+
+anchor/left = 1
+anchor/top = 1
+anchor/right = 1
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 110.0
+margin/top = 48.0
+margin/right = 7.0
+margin/bottom = 12.0
+custom_fonts/font = ExtResource( 8 )
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Confirm"
+flat = false
+
+[node name="unlockbutton" type="Button" parent="sexual"]
+
+editor/display_folded = true
+anchor/top = 1
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 8.0
+margin/top = 48.0
+margin/right = 109.0
+margin/bottom = 13.0
+custom_fonts/font = ExtResource( 8 )
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Unlock"
+flat = false
+
+[node name="unlockpopup" type="Popup" parent="sexual/unlockbutton"]
+
+editor/display_folded = true
+visibility/visible = false
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 127.0
+margin/top = 59.0
+margin/right = 897.0
+margin/bottom = 487.0
+popup/exclusive = false
+
+[node name="Panel" type="Panel" parent="sexual/unlockbutton/unlockpopup"]
+
+editor/display_folded = true
+anchor/left = 3
+anchor/top = 3
+anchor/right = 3
+anchor/bottom = 3
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 385.0
+margin/top = 214.0
+margin/right = -385.0
+margin/bottom = -214.0
+
+[node name="learnbutton" type="Button" parent="sexual/unlockbutton/unlockpopup/Panel"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 294.0
+margin/top = 357.0
+margin/right = 423.0
+margin/bottom = 391.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Purchase"
+flat = false
+
+[node name="closebutton" type="Button" parent="sexual/unlockbutton/unlockpopup/Panel"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 547.0
+margin/top = 355.0
+margin/right = 676.0
+margin/bottom = 389.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Close"
+flat = false
+
+[node name="ScrollContainer" type="ScrollContainer" parent="sexual/unlockbutton/unlockpopup/Panel"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 15.0
+margin/top = 101.0
+margin/right = 251.0
+margin/bottom = 398.0
+scroll/horizontal = false
+scroll/vertical = true
+
+[node name="VBoxContainer" type="VBoxContainer" parent="sexual/unlockbutton/unlockpopup/Panel/ScrollContainer"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = false
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 0.0
+margin/bottom = 0.0
+alignment = 0
+
+[node name="Button" type="Button" parent="sexual/unlockbutton/unlockpopup/Panel/ScrollContainer/VBoxContainer"]
+
+visibility/visible = false
+rect/min_size = Vector2( 210, 30 )
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 210.0
+margin/bottom = 34.0
+toggle_mode = true
+enabled_focus_mode = 2
+shortcut = null
+text = "testbutton"
+flat = false
+align = 0
+
+[node name="Label" type="Label" parent="sexual/unlockbutton/unlockpopup/Panel/ScrollContainer/VBoxContainer/Button"]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 185.0
+margin/top = 9.0
+margin/right = 205.0
+margin/bottom = 36.0
+custom_colors/font_color = Color( 0, 1, 0.0625, 1 )
+text = "10"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="unlockdescription" type="RichTextLabel" parent="sexual/unlockbutton/unlockpopup/Panel"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 282.0
+margin/top = 100.0
+margin/right = 722.0
+margin/bottom = 337.0
+bbcode/enabled = true
+bbcode/bbcode = ""
+visible_characters = -1
+
+[node name="affectionstatus" type="Label" parent="sexual/unlockbutton/unlockpopup/Panel"]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 20.0
+margin/top = 52.0
+margin/right = 130.0
+margin/bottom = 70.0
+text = "Affection points:"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="togglerape" type="Button" parent="sexual"]
+
+anchor/top = 1
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 338.0
+margin/top = 48.0
+margin/right = 439.0
+margin/bottom = 14.0
+custom_fonts/font = ExtResource( 8 )
+custom_colors/font_color_pressed = Color( 1, 0, 0, 1 )
+toggle_mode = true
+enabled_focus_mode = 2
+shortcut = null
+text = "Forced"
+flat = false
+
+[node name="group" type="Button" parent="sexual"]
+
+editor/display_folded = true
+anchor/top = 1
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 232.0
+margin/top = 48.0
+margin/right = 324.0
+margin/bottom = 14.0
+custom_fonts/font = ExtResource( 8 )
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Group"
+flat = false
+
+[node name="grouppopup" type="Popup" parent="sexual/group"]
+
+visibility/visible = false
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 340.0
+margin/top = 152.0
+margin/right = 969.0
+margin/bottom = 478.0
+popup/exclusive = false
+
+[node name="Panel" type="Panel" parent="sexual/group/grouppopup"]
+
+anchor/left = 3
+anchor/top = 3
+anchor/right = 3
+anchor/bottom = 3
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 314.5
+margin/top = 163.0
+margin/right = -314.5
+margin/bottom = -163.0
+
+[node name="threesome" type="Button" parent="sexual/group/grouppopup/Panel"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 19.0
+margin/top = 96.0
+margin/right = 144.0
+margin/bottom = 130.0
+toggle_mode = true
+enabled_focus_mode = 2
+shortcut = null
+text = "Threesome"
+flat = false
+
+[node name="orgy" type="Button" parent="sexual/group/grouppopup/Panel"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 19.0
+margin/top = 180.0
+margin/right = 144.0
+margin/bottom = 214.0
+toggle_mode = true
+enabled_focus_mode = 2
+shortcut = null
+text = "Orgy"
+flat = false
+
+[node name="confirm" type="Button" parent="sexual/group/grouppopup/Panel"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 172.0
+margin/top = 273.0
+margin/right = 297.0
+margin/bottom = 307.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Confirm"
+flat = false
+
+[node name="close" type="Button" parent="sexual/group/grouppopup/Panel"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 355.0
+margin/top = 273.0
+margin/right = 480.0
+margin/bottom = 307.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Cancel"
+flat = false
+
+[node name="partner2" type="Button" parent="sexual/group/grouppopup/Panel"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 476.0
+margin/top = 96.0
+margin/right = 599.0
+margin/bottom = 131.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Select 3rd person"
+flat = false
+
+[node name="groupdescript" type="RichTextLabel" parent="sexual/group/grouppopup/Panel"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 173.0
+margin/top = 41.0
+margin/right = 465.0
+margin/bottom = 259.0
+bbcode/enabled = true
+bbcode/bbcode = ""
+visible_characters = -1
+
+[node name="partner" type="Button" parent="sexual"]
+
+anchor/top = 1
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 120.0
+margin/top = 48.0
+margin/right = 221.0
+margin/bottom = 14.0
+custom_fonts/font = ExtResource( 8 )
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Partner"
+flat = false
+
+[node name="fix" type="Button" parent="sexual"]
+
+visibility/visible = false
+hint/tooltip = "Will attempt to fix slaves generated in earlier versions to have
+necessary actions. "
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 451.0
+margin/top = 360.0
+margin/right = 552.0
+margin/bottom = 394.0
+custom_fonts/font = ExtResource( 8 )
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Fix Old Slave"
+flat = false
+
+[node name="foreplaycontainer" type="ScrollContainer" parent="sexual"]
+
+anchor/left = 3
+anchor/right = 3
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 317.0
+margin/top = 123.0
+margin/right = 152.0
+margin/bottom = 61.0
+scroll/horizontal = false
+scroll/vertical = true
+
+[node name="VBoxContainer" type="VBoxContainer" parent="sexual/foreplaycontainer"]
+
+rect/min_size = Vector2( 150, 35 )
+focus/ignore_mouse = false
+focus/stop_mouse = false
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 150.0
+margin/bottom = 35.0
+alignment = 0
+
+[node name="Button" type="Button" parent="sexual/foreplaycontainer/VBoxContainer" groups=[
+"sexactions",
+]]
+
+visibility/visible = false
+rect/min_size = Vector2( 0, 30 )
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 150.0
+margin/bottom = 30.0
+toggle_mode = true
+enabled_focus_mode = 2
+shortcut = null
+text = "Action Name"
+flat = false
+align = 0
+
+[node name="Label" type="Label" parent="sexual/foreplaycontainer/VBoxContainer/Button"]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 111.0
+margin/top = 8.0
+margin/right = 143.0
+margin/bottom = 26.0
+text = "10"
+align = 2
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="penetrationcontainer" type="ScrollContainer" parent="sexual"]
+
+anchor/left = 3
+anchor/right = 3
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 95.0
+margin/top = 123.0
+margin/right = -73.0
+margin/bottom = 61.0
+scroll/horizontal = false
+scroll/vertical = true
+
+[node name="VBoxContainer" type="VBoxContainer" parent="sexual/penetrationcontainer"]
+
+rect/min_size = Vector2( 150, 35 )
+focus/ignore_mouse = false
+focus/stop_mouse = false
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 150.0
+margin/bottom = 35.0
+alignment = 0
+
+[node name="fetishcontainer" type="ScrollContainer" parent="sexual"]
+
+editor/display_folded = true
+anchor/left = 3
+anchor/right = 3
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = -115.0
+margin/top = 123.0
+margin/right = -283.0
+margin/bottom = 61.0
+scroll/horizontal = false
+scroll/vertical = true
+
+[node name="VBoxContainer" type="VBoxContainer" parent="sexual/fetishcontainer"]
+
+rect/min_size = Vector2( 150, 35 )
+focus/ignore_mouse = false
+focus/stop_mouse = false
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 150.0
+margin/bottom = 35.0
+alignment = 0
+
+[node name="Label" type="Label" parent="sexual"]
+
+anchor/left = 3
+anchor/right = 3
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 275.0
+margin/top = 102.0
+margin/right = 216.0
+margin/bottom = 124.0
+text = "Foreplay"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="Label1" type="Label" parent="sexual"]
+
+anchor/left = 3
+anchor/right = 3
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 43.0
+margin/top = 102.0
+margin/right = -38.0
+margin/bottom = 124.0
+text = "Penetration"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="Label2" type="Label" parent="sexual"]
+
+anchor/left = 3
+anchor/right = 3
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = -177.0
+margin/top = 102.0
+margin/right = -219.0
+margin/bottom = 124.0
+text = "Fetish"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="hidingpanel" type="Panel" parent="sexual"]
+
+visibility/visible = false
+anchor/right = 1
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = -8.0
+margin/top = -7.0
+margin/right = -7.0
+margin/bottom = -5.0
+custom_styles/panel = SubResource( 15 )
+
+[node name="RichTextLabel" type="RichTextLabel" parent="sexual/hidingpanel"]
+
+anchor/left = 3
+anchor/top = 3
+anchor/right = 3
+anchor/bottom = 3
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 247.5
+margin/top = 165.0
+margin/right = -244.5
+margin/bottom = -74.0
+bbcode/enabled = true
+bbcode/bbcode = "You don't have $name's consent for personal actions. 
+[color=red]Forcing $him into having sex will greatly impact $his opinion of you.[/color]"
+visible_characters = -1
+
+[node name="announcerape" type="Button" parent="sexual/hidingpanel"]
+
+anchor/left = 3
+anchor/top = 3
+anchor/right = 3
+anchor/bottom = 3
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 114.5
+margin/top = -136.0
+margin/right = -123.5
+margin/bottom = -170.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Proceed anyway"
+flat = false
+
+[node name="groupsexpanel" type="Panel" parent="sexual"]
+
+editor/display_folded = true
+visibility/visible = false
+anchor/left = 3
+anchor/top = 3
+anchor/right = 3
+anchor/bottom = 3
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 241.0
+margin/top = 208.0
+margin/right = -278.0
+margin/bottom = -109.0
+custom_styles/panel = ExtResource( 10 )
+
+[node name="Control" type="Control" parent="sexual/groupsexpanel"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = -58.0
+margin/top = -19.0
+margin/right = 1030.0
+margin/bottom = 592.0
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="groupsexcancel" type="Button" parent="sexual/groupsexpanel"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 298.0
+margin/top = 250.0
+margin/right = 401.0
+margin/bottom = 280.0
+custom_fonts/font = ExtResource( 8 )
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Cancel"
+flat = false
+
+[node name="groupsexinitiate" type="Button" parent="sexual/groupsexpanel"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 102.0
+margin/top = 250.0
+margin/right = 205.0
+margin/bottom = 280.0
+custom_fonts/font = ExtResource( 8 )
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Initiate"
+flat = false
+
+[node name="selectpartner" type="Button" parent="sexual/groupsexpanel"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 31.0
+margin/top = 28.0
+margin/right = 152.0
+margin/bottom = 58.0
+custom_fonts/font = ExtResource( 8 )
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Select Partner"
+flat = false
+
+[node name="groupsextext" type="RichTextLabel" parent="sexual/groupsexpanel"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 176.0
+margin/top = 22.0
+margin/right = 490.0
+margin/bottom = 232.0
+custom_fonts/normal_font = ExtResource( 8 )
+bbcode/enabled = true
+bbcode/bbcode = "Selected: "
+visible_characters = -1
+
+[node name="descriptpanel" type="Panel" parent="sexual"]
+
+visibility/visible = false
+anchor/left = 1
+anchor/top = 3
+anchor/right = 1
+anchor/bottom = 3
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = -13.0
+margin/top = 144.0
+margin/right = -416.0
+margin/bottom = -79.0
+
+[node name="RichTextLabel" type="RichTextLabel" parent="sexual/descriptpanel"]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 8.0
+margin/top = 6.0
+margin/right = 396.0
+margin/bottom = 155.0
+bbcode/enabled = true
+bbcode/bbcode = ""
+visible_characters = -1
+
+[node name="holebutton" type="OptionButton" parent="sexual/descriptpanel"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 126.0
+margin/top = 179.0
+margin/right = 279.0
+margin/bottom = 213.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Pussy"
+flat = false
+align = 0
+selected = 0
+items = [ "Pussy", null, false, -1, null, "Ass", null, false, -1, null ]
+
+[node name="statistics" type="Tabs" parent="."]
+
+editor/display_folded = true
+visibility/visible = false
+anchor/right = 1
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 10.0
+margin/top = 33.0
+margin/right = 10.0
+margin/bottom = 10.0
+
+[node name="statstext" type="RichTextLabel" parent="statistics"]
+
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 285.0
+margin/bottom = -3.0
+bbcode/enabled = true
+bbcode/bbcode = ""
+visible_characters = -1
+
+[node name="statssextext" type="RichTextLabel" parent="statistics"]
+
+anchor/left = 1
+anchor/right = 1
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 289.0
+margin/top = 0.0
+margin/right = 4.0
+margin/bottom = -3.0
+bbcode/enabled = true
+bbcode/bbcode = ""
+visible_characters = -1
+
+[connection signal="visibility_changed" from="." to="." method="_on_slave_tab_visibility_changed"]
+
+[connection signal="visibility_changed" from="stats" to="stats" method="_on_stats_visibility_changed"]
+
+[connection signal="mouse_enter" from="stats/status_panel/cour/courfield" to="." method="_on_courfield_mouse_enter"]
+
+[connection signal="mouse_exit" from="stats/status_panel/cour/courfield" to="." method="_on_courfield_mouse_exit"]
+
+[connection signal="mouse_enter" from="stats/status_panel/conf/conffield" to="." method="_on_conffield_mouse_enter"]
+
+[connection signal="mouse_exit" from="stats/status_panel/conf/conffield" to="." method="_on_conffield_mouse_exit"]
+
+[connection signal="mouse_enter" from="stats/status_panel/wit/witfield" to="." method="_on_witfield_mouse_enter"]
+
+[connection signal="mouse_exit" from="stats/status_panel/wit/witfield" to="." method="_on_witfield_mouse_exit"]
+
+[connection signal="mouse_enter" from="stats/status_panel/charm/charmfield" to="." method="_on_charmfield_mouse_enter"]
+
+[connection signal="mouse_exit" from="stats/status_panel/charm/charmfield" to="." method="_on_charmfield_mouse_exit"]
+
+[connection signal="pressed" from="stats/training" to="stats" method="_on_training_pressed"]
+
+[connection signal="pressed" from="stats/trainskillpoints" to="stats" method="_on_trainskillpoints_pressed"]
+
+[connection signal="pressed" from="stats/trainingstats" to="stats" method="_on_trainingstats_pressed"]
+
+[connection signal="pressed" from="stats/trainingabils" to="stats" method="_on_trainingabils_pressed"]
+
+[connection signal="mouse_enter" from="stats/spec" to="." method="_on_spec_mouse_enter"]
+
+[connection signal="mouse_exit" from="stats/spec" to="." method="_on_spec_mouse_exit"]
+
+[connection signal="pressed" from="stats/trainingpanel/trainingconfirm" to="stats" method="_on_trainingconfirm_pressed"]
+
+[connection signal="pressed" from="stats/trainingpanel/trainingcancel" to="stats" method="_on_trainingcancel_pressed"]
+
+[connection signal="item_selected" from="stats/trainingpanel/skilllevel" to="stats" method="_on_skilllevel_item_selected"]
+
+[connection signal="item_selected" from="stats/trainingpanel/skillname" to="stats" method="_on_skillname_item_selected"]
+
+[connection signal="pressed" from="stats/trainingstatspanel/statcancel" to="stats" method="_on_statcancel_pressed"]
+
+[connection signal="pressed" from="stats/trainingstatspanel/statconfirm" to="stats" method="_on_statconfirm_pressed"]
+
+[connection signal="value_changed" from="stats/trainingskillpointspanel/spspin" to="stats" method="_on_spspin_value_changed"]
+
+[connection signal="pressed" from="stats/trainingskillpointspanel/spcancel" to="stats" method="_on_spcancel_pressed"]
+
+[connection signal="pressed" from="stats/trainingskillpointspanel/spconfirm" to="stats" method="_on_spconfirm_pressed"]
+
+[connection signal="pressed" from="stats/trainingabilspanel/abilcancel" to="stats" method="_on_abilcancel_pressed"]
+
+[connection signal="pressed" from="stats/trainingabilspanel/abilityconfirm" to="stats" method="_on_abilityconfirm_pressed"]
+
+[connection signal="meta_clicked" from="inspect/slavedescript" to="." method="_on_slavedescript_meta_clicked"]
+
+[connection signal="mouse_enter" from="inspect/origins" to="." method="_on_childhood_mouse_enter"]
+
+[connection signal="mouse_exit" from="inspect/origins" to="." method="_on_childhood_mouse_exit"]
+
+[connection signal="pressed" from="inspect/changeportait" to="." method="_on_changeportait_pressed"]
+
+[connection signal="pressed" from="inspect/portait/Panel/cancelportait" to="." method="_on_cancelportait_pressed"]
+
+[connection signal="pressed" from="inspect/portait/Panel/racelock" to="." method="_on_racelock_pressed"]
+
+[connection signal="text_changed" from="inspect/portait/Panel/search" to="." method="_on_search_text_changed"]
+
+[connection signal="pressed" from="inspect/portait/Panel/addcustom" to="." method="_on_addcustom_pressed"]
+
+[connection signal="pressed" from="inspect/portait/Panel/openfolder" to="." method="_on_openfolder_pressed"]
+
+[connection signal="pressed" from="inspect/portait/Panel/reloadlist" to="." method="_on_reloadlist_pressed"]
+
+[connection signal="pressed" from="inspect/portait/Panel/removeportrait" to="." method="_on_removeportrait_pressed"]
+
+[connection signal="pressed" from="inspect/portait/Panel/reverseportrait" to="." method="_on_reverseportrait_pressed"]
+
+[connection signal="file_selected" from="inspect/portait/Panel/FileDialog" to="." method="_on_FileDialog_file_selected"]
+
+[connection signal="button_selected" from="regulations/rules/SelectButtonSleep" to="." method="_on_SelectButtonSleep_button_selected"]
+
+[connection signal="pressed" from="regulations/clothes&relatives&customs/relativesbutton" to="." method="_on_relativesbutton_pressed"]
+
+[connection signal="pressed" from="regulations/clothes&relatives&customs/nickname" to="." method="_on_nickname_pressed"]
+
+[connection signal="pressed" from="regulations/clothes&relatives&customs/gear" to="." method="_on_gear_pressed"]
+
+[connection signal="pressed" from="regulations/clothes&relatives&customs/workbutton" to="." method="joblist"]
+
+[connection signal="pressed" from="regulations/clothes&relatives&customs/description" to="." method="_on_description_pressed"]
+
+[connection signal="pressed" from="regulations/clothes&relatives&customs/brandbutton" to="." method="_on_brandbutton_pressed"]
+
+[connection signal="pressed" from="regulations/clothes&relatives&customs/brandbutton/brandpopup/confirm" to="." method="_on_confirm_pressed"]
+
+[connection signal="pressed" from="regulations/clothes&relatives&customs/brandbutton/brandpopup/remove" to="." method="_on_remove_pressed"]
+
+[connection signal="pressed" from="regulations/clothes&relatives&customs/brandbutton/brandpopup/cancel" to="." method="_on_cancel_pressed"]
+
+[connection signal="pressed" from="regulations/clothes&relatives&customs/relativespanel/relativesclose" to="." method="_on_relativesclose_pressed"]
+
+[connection signal="pressed" from="regulations/clothes&relatives&customs/nicknamepanel/nickaccept" to="." method="_on_nickaccept_pressed"]
+
+[connection signal="pressed" from="regulations/clothes&relatives&customs/descriptpopup/confirmdescript" to="." method="_on_confirmdescript_pressed"]
+
+[connection signal="pressed" from="regulations/joblist/jobcancel" to="." method="_on_jobcancel_pressed"]
+
+[connection signal="visibility_changed" from="actions" to="actions" method="_on_actions_visibility_changed"]
+
+[connection signal="pressed" from="actions/cuthair" to="actions" method="_on_cuthair_pressed"]
+
+[connection signal="pressed" from="actions/useitem" to="actions" method="_on_useitem_pressed"]
+
+[connection signal="pressed" from="actions/castspell" to="actions" method="_on_castspell_pressed"]
+
+[connection signal="item_selected" from="actions/hairstyle" to="actions" method="_on_hairstyle_item_selected"]
+
+[connection signal="pressed" from="actions/piercing" to="actions" method="_on_piercing_pressed"]
+
+[connection signal="pressed" from="actions/talk" to="actions" method="_on_talk_pressed"]
+
+[connection signal="pressed" from="actions/getridof" to="actions" method="_on_getridof_pressed"]
+
+[connection signal="pressed" from="actions/punishroom" to="actions" method="_on_punishroom_pressed"]
+
+[connection signal="pressed" from="actions/punishroom/Popup/Panel/cancel" to="actions" method="_on_cancel_pressed"]
+
+[connection signal="pressed" from="actions/piercingpanel/closebutton" to="actions" method="_on_closebutton_pressed"]
+
+[connection signal="pressed" from="actions/selectspellpanel/spellusebutton" to="actions" method="_on_spellusebutton_pressed"]
+
+[connection signal="pressed" from="actions/selectspellpanel/spellcancelbutton" to="actions" method="_on_spellcancelbutton_pressed"]
+
+[connection signal="visibility_changed" from="sexual" to="sexual" method="_on_sexual_visibility_changed"]
+
+[connection signal="pressed" from="sexual/confirmbutton" to="sexual" method="_on_confirmbutton_pressed"]
+
+[connection signal="pressed" from="sexual/unlockbutton" to="sexual" method="_on_unlockbutton_pressed"]
+
+[connection signal="pressed" from="sexual/unlockbutton/unlockpopup/Panel/learnbutton" to="sexual" method="_on_learnbutton_pressed"]
+
+[connection signal="pressed" from="sexual/unlockbutton/unlockpopup/Panel/closebutton" to="sexual" method="_on_closebutton_pressed"]
+
+[connection signal="pressed" from="sexual/togglerape" to="sexual" method="_on_togglerape_pressed"]
+
+[connection signal="pressed" from="sexual/group" to="sexual" method="_on_group_pressed"]
+
+[connection signal="pressed" from="sexual/group/grouppopup/Panel/threesome" to="sexual" method="_on_threesome_pressed"]
+
+[connection signal="pressed" from="sexual/group/grouppopup/Panel/orgy" to="sexual" method="_on_orgy_pressed"]
+
+[connection signal="pressed" from="sexual/group/grouppopup/Panel/confirm" to="sexual" method="_on_confirm_pressed"]
+
+[connection signal="pressed" from="sexual/group/grouppopup/Panel/close" to="sexual" method="_on_close_pressed"]
+
+[connection signal="pressed" from="sexual/group/grouppopup/Panel/partner2" to="sexual" method="_on_partner2_pressed"]
+
+[connection signal="pressed" from="sexual/partner" to="sexual" method="_on_patrner_pressed"]
+
+[connection signal="pressed" from="sexual/fix" to="sexual" method="_on_fix_pressed"]
+
+[connection signal="pressed" from="sexual/hidingpanel/announcerape" to="sexual" method="_on_announcerape_pressed"]
+
+[connection signal="pressed" from="sexual/groupsexpanel/groupsexcancel" to="sexual" method="_on_groupsexcancel_pressed"]
+
+[connection signal="pressed" from="sexual/groupsexpanel/groupsexinitiate" to="sexual" method="_on_groupsexinitiate_pressed"]
+
+[connection signal="pressed" from="sexual/groupsexpanel/selectpartner" to="sexual" method="_on_selectpartner_pressed"]
+
+
+[editable path="regulations/rules/SelectButtonSleep"]

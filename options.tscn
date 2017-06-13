@@ -1,0 +1,947 @@
+[gd_scene load_steps=4 format=1]
+
+[ext_resource path="res://files/theme.tres" type="Theme" id=1]
+[ext_resource path="res://files/scripts/options.tres.gd" type="Script" id=2]
+[ext_resource path="res://files/theme slavetab.tres" type="Theme" id=3]
+
+[node name="options" type="WindowDialog"]
+
+visibility/self_opacity = 0.85
+anchor/left = 3
+anchor/top = 3
+anchor/right = 3
+anchor/bottom = 3
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+theme/theme = ExtResource( 1 )
+margin/left = 540.0
+margin/top = 301.0
+margin/right = -210.0
+margin/bottom = -179.0
+popup/exclusive = false
+window/title = "Options"
+script/script = ExtResource( 2 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="TabContainer" type="TabContainer" parent="."]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 751.0
+margin/bottom = 477.0
+tab_align = 0
+tabs_visible = true
+
+[node name="Settings" type="Tabs" parent="TabContainer"]
+
+editor/display_folded = true
+anchor/right = 1
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 10.0
+margin/top = 33.0
+margin/right = 10.0
+margin/bottom = 10.0
+
+[node name="screenresize" type="CheckBox" parent="TabContainer/Settings"]
+
+hint/tooltip = "Switch to full screen mode"
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 53.0
+margin/right = 156.0
+margin/bottom = 80.0
+toggle_mode = true
+enabled_focus_mode = 2
+shortcut = null
+text = "Basic Screen Resize"
+flat = false
+align = 0
+
+[node name="fading" type="CheckBox" parent="TabContainer/Settings"]
+
+hint/tooltip = "Switch to full screen mode"
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 78.0
+margin/right = 243.0
+margin/bottom = 105.0
+toggle_mode = true
+enabled_focus_mode = 2
+shortcut = null
+text = "Use animation on screen change"
+flat = false
+align = 0
+
+[node name="Label2" type="Label" parent="TabContainer/Settings"]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 465.0
+margin/top = 9.0
+margin/right = 565.0
+margin/bottom = 27.0
+text = "Main Font Size"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="fullscreen" type="CheckBox" parent="TabContainer/Settings"]
+
+hint/tooltip = "Switch to full screen mode"
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 2.0
+margin/right = 136.0
+margin/bottom = 29.0
+toggle_mode = true
+enabled_focus_mode = 2
+shortcut = null
+text = "Fullscreen Mode"
+flat = false
+align = 0
+
+[node name="custommouse" type="CheckBox" parent="TabContainer/Settings"]
+
+hint/tooltip = "Disable/enable hardware mouse cursor"
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 27.0
+margin/right = 167.0
+margin/bottom = 54.0
+toggle_mode = true
+enabled_focus_mode = 2
+shortcut = null
+text = "Use custom cursor"
+flat = false
+align = 0
+
+[node name="fontsize" type="SpinBox" parent="TabContainer/Settings"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 386.0
+margin/top = -1.0
+margin/right = 460.0
+margin/bottom = 37.0
+range/min = 10.0
+range/max = 24.0
+range/step = 1.0
+range/page = 0.0
+range/value = 10.0
+range/exp_edit = false
+range/rounded = false
+editable = true
+prefix = ""
+suffix = ""
+
+[node name="soundslider" type="HSlider" parent="TabContainer/Settings"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 407.0
+margin/top = 73.0
+margin/right = 564.0
+margin/bottom = 90.0
+range/min = 0.0
+range/max = 100.0
+range/step = 1.0
+range/page = 0.0
+range/value = 1.0
+range/exp_edit = false
+range/rounded = false
+tick_count = 0
+ticks_on_borders = false
+focus_mode = 2
+
+[node name="Label3" type="Label" parent="TabContainer/Settings/soundslider"]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 21.0
+margin/top = -25.0
+margin/right = 121.0
+margin/bottom = -7.0
+text = "Music volume"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="Game" type="Tabs" parent="TabContainer"]
+
+visibility/visible = false
+anchor/right = 1
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 4.0
+margin/top = 32.0
+margin/right = 4.0
+margin/bottom = 4.0
+
+[node name="futa" type="CheckBox" parent="TabContainer/Game"]
+
+hint/tooltip = "Allow random generation of futanari characters"
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 5.0
+margin/top = 20.0
+margin/right = 66.0
+margin/bottom = 47.0
+toggle_mode = true
+enabled_focus_mode = 2
+shortcut = null
+text = "Futa"
+flat = false
+align = 0
+
+[node name="futaballs" type="CheckBox" parent="TabContainer/Game"]
+
+hint/tooltip = "Random futanari characters will be generated with testicles"
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 80.0
+margin/top = 20.0
+margin/right = 229.0
+margin/bottom = 47.0
+toggle_mode = true
+enabled_focus_mode = 2
+shortcut = null
+text = "Futa with testicles"
+flat = false
+align = 0
+
+[node name="furry" type="CheckBox" parent="TabContainer/Game"]
+
+hint/tooltip = "Allow random generation of furry characters"
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 5.0
+margin/top = 44.0
+margin/right = 69.0
+margin/bottom = 71.0
+toggle_mode = true
+enabled_focus_mode = 2
+shortcut = null
+text = "Furry"
+flat = false
+align = 0
+
+[node name="furrynipples" type="CheckBox" parent="TabContainer/Game"]
+
+hint/tooltip = "Furry characters will posses more nipples"
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 81.0
+margin/top = 43.0
+margin/right = 356.0
+margin/bottom = 70.0
+toggle_mode = true
+enabled_focus_mode = 2
+shortcut = null
+text = "Additional nipples on furry characters"
+flat = false
+align = 0
+
+[node name="slaverguildraces" type="CheckBox" parent="TabContainer/Game"]
+
+hint/tooltip = "This option will allow starting town's slavers' guild to offer slaves of any possible race. 
+Turning this off will only make it offer local races."
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 5.0
+margin/top = 66.0
+margin/right = 279.0
+margin/bottom = 93.0
+toggle_mode = true
+enabled_focus_mode = 2
+shortcut = null
+text = "Allow all possible races in slavers guild"
+flat = false
+align = 0
+
+[node name="receive" type="CheckBox" parent="TabContainer/Game"]
+
+hint/tooltip = "This option will enable unlock of sex options
+which put you on receiving side i.e. be fucked in the ass"
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 5.0
+margin/top = 88.0
+margin/right = 224.0
+margin/bottom = 115.0
+toggle_mode = true
+enabled_focus_mode = 2
+shortcut = null
+text = "Enable Receiving Sex Options"
+flat = false
+align = 0
+
+[node name="childlike" type="CheckBox" parent="TabContainer/Game"]
+
+hint/tooltip = "Turn on 'childlike' age for characters."
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 5.0
+margin/top = 131.0
+margin/right = 160.0
+margin/bottom = 158.0
+toggle_mode = true
+enabled_focus_mode = 2
+shortcut = null
+text = "Childlike characters"
+flat = false
+align = 0
+
+[node name="permadeath" type="CheckBox" parent="TabContainer/Game"]
+
+hint/tooltip = "Members of your party reaching 0 hp in combat will die 
+instead of going on the rest"
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 5.0
+margin/top = 110.0
+margin/right = 160.0
+margin/bottom = 137.0
+toggle_mode = true
+enabled_focus_mode = 2
+shortcut = null
+text = "Permadeath"
+flat = false
+align = 0
+
+[node name="noadults" type="CheckBox" parent="TabContainer/Game"]
+
+hint/tooltip = "Turn off 'adult' characters generation."
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 178.0
+margin/top = 131.0
+margin/right = 363.0
+margin/bottom = 158.0
+toggle_mode = true
+enabled_focus_mode = 2
+shortcut = null
+text = "Disable adult characters"
+flat = false
+align = 0
+
+[node name="malesslider" type="HSlider" parent="TabContainer/Game"]
+
+editor/display_folded = true
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 379.0
+margin/top = 44.0
+margin/right = 614.0
+margin/bottom = 60.0
+range/min = 0.0
+range/max = 100.0
+range/step = 1.0
+range/page = 0.0
+range/value = 1.0
+range/exp_edit = false
+range/rounded = true
+tick_count = 10
+ticks_on_borders = true
+focus_mode = 2
+
+[node name="malesliderlabel" type="Label" parent="TabContainer/Game"]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 406.0
+margin/top = 21.0
+margin/right = 594.0
+margin/bottom = 39.0
+text = "Gender occurrence balance: "
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="futaslider" type="HSlider" parent="TabContainer/Game"]
+
+editor/display_folded = true
+hint/tooltip = "Futas occur only among females"
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 377.0
+margin/top = 90.0
+margin/right = 612.0
+margin/bottom = 106.0
+range/min = 0.0
+range/max = 100.0
+range/step = 1.0
+range/page = 0.0
+range/value = 1.0
+range/exp_edit = false
+range/rounded = true
+tick_count = 10
+ticks_on_borders = true
+focus_mode = 2
+
+[node name="futasliderlabel" type="Label" parent="TabContainer/Game"]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 401.0
+margin/top = 66.0
+margin/right = 573.0
+margin/bottom = 84.0
+text = "Random futa occurrence: "
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="Label 3" type="Label" parent="TabContainer/Game"]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 216.0
+margin/top = -3.0
+margin/right = 447.0
+margin/bottom = 15.0
+text = "Random Slave Generation Settings"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="Supporter section" type="Tabs" parent="TabContainer"]
+
+visibility/visible = false
+anchor/right = 1
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 4.0
+margin/top = 32.0
+margin/right = 4.0
+margin/bottom = 4.0
+
+[node name="Label1" type="Label" parent="TabContainer/Supporter section"]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 296.0
+margin/top = 91.0
+margin/right = 432.0
+margin/bottom = 109.0
+text = "Supporter password"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="RichTextLabel" type="RichTextLabel" parent="TabContainer/Supporter section"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 15.0
+margin/top = 5.0
+margin/right = 716.0
+margin/bottom = 69.0
+bbcode/enabled = true
+bbcode/bbcode = "To unlock more options, become a suporter on [color=yellow][url=patreon]Patreon[/url][/color]. For more information please refer to the Patreon page. "
+visible_characters = -1
+
+[node name="cheats" type="Button" parent="TabContainer/Supporter section"]
+
+hint/tooltip = "Password is available for patrons."
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 262.0
+margin/top = 159.0
+margin/right = 475.0
+margin/bottom = 196.0
+disabled = true
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Access supporter panel"
+flat = false
+
+[node name="cheatpassword" type="LineEdit" parent="TabContainer/Supporter section"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 298.0
+margin/top = 115.0
+margin/right = 422.0
+margin/bottom = 153.0
+placeholder/text = "Enter password"
+placeholder/alpha = 0.6
+focus_mode = 2
+caret/caret_blink = false
+caret/caret_blink_speed = 0.65
+
+[node name="cheatpasswordenter" type="Button" parent="TabContainer/Supporter section"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 429.0
+margin/top = 117.0
+margin/right = 522.0
+margin/bottom = 152.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Confirm"
+flat = false
+
+[node name="cheatpanel" type="Panel" parent="TabContainer/Supporter section"]
+
+visibility/visible = false
+anchor/left = 3
+anchor/top = 3
+anchor/right = 3
+anchor/bottom = 3
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+theme/theme = ExtResource( 3 )
+margin/left = 355.5
+margin/top = 233.5
+margin/right = -332.5
+margin/bottom = -214.5
+
+[node name="close" type="Button" parent="TabContainer/Supporter section/cheatpanel"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 300.0
+margin/top = 404.0
+margin/right = 410.0
+margin/bottom = 441.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Close"
+flat = false
+
+[node name="cheatgold" type="Button" parent="TabContainer/Supporter section/cheatpanel"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 16.0
+margin/top = 50.0
+margin/right = 111.0
+margin/bottom = 82.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Set Gold"
+flat = false
+
+[node name="cheatfood" type="Button" parent="TabContainer/Supporter section/cheatpanel"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 16.0
+margin/top = 93.0
+margin/right = 111.0
+margin/bottom = 125.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Set Food"
+flat = false
+
+[node name="cheatmana" type="Button" parent="TabContainer/Supporter section/cheatpanel"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 16.0
+margin/top = 137.0
+margin/right = 111.0
+margin/bottom = 169.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Set Mana"
+flat = false
+
+[node name="removepopcap" type="Button" parent="TabContainer/Supporter section/cheatpanel"]
+
+hint/tooltip = "Huge population may impact performance greatly"
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 16.0
+margin/top = 185.0
+margin/right = 111.0
+margin/bottom = 217.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Remove population limits"
+flat = false
+
+[node name="unlockspells" type="Button" parent="TabContainer/Supporter section/cheatpanel"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 139.0
+margin/top = 11.0
+margin/right = 256.0
+margin/bottom = 43.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Unlock all spells"
+flat = false
+
+[node name="selectslave" type="Button" parent="TabContainer/Supporter section/cheatpanel"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 504.0
+margin/top = 30.0
+margin/right = 621.0
+margin/bottom = 62.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Select Slave"
+flat = false
+
+[node name="maxloyalty" type="Button" parent="TabContainer/Supporter section/cheatpanel"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 346.0
+margin/top = 64.0
+margin/right = 469.0
+margin/bottom = 96.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Max Loyalty"
+flat = false
+
+[node name="maxobed" type="Button" parent="TabContainer/Supporter section/cheatpanel"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 347.0
+margin/top = 109.0
+margin/right = 470.0
+margin/bottom = 141.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Max Obedience"
+flat = false
+
+[node name="maxlewd" type="Button" parent="TabContainer/Supporter section/cheatpanel"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 348.0
+margin/top = 155.0
+margin/right = 471.0
+margin/bottom = 189.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Max Affection"
+flat = false
+
+[node name="maxlust" type="Button" parent="TabContainer/Supporter section/cheatpanel"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 348.0
+margin/top = 200.0
+margin/right = 471.0
+margin/bottom = 232.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Max Lust"
+flat = false
+
+[node name="nostress" type="Button" parent="TabContainer/Supporter section/cheatpanel"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 348.0
+margin/top = 249.0
+margin/right = 471.0
+margin/bottom = 281.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Remove Stress"
+flat = false
+
+[node name="addskillpoints" type="Button" parent="TabContainer/Supporter section/cheatpanel"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 348.0
+margin/top = 299.0
+margin/right = 471.0
+margin/bottom = 331.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Add Skillpoint"
+flat = false
+
+[node name="levelup" type="Button" parent="TabContainer/Supporter section/cheatpanel"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 17.0
+margin/top = 269.0
+margin/right = 140.0
+margin/bottom = 301.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Add Skillpoint"
+flat = false
+
+[node name="selectedslavelabel" type="Label" parent="TabContainer/Supporter section/cheatpanel"]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 518.0
+margin/top = 93.0
+margin/right = 623.0
+margin/bottom = 107.0
+text = "Selected slave - "
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="SpinBox" type="SpinBox" parent="TabContainer/Supporter section/cheatpanel"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 14.0
+margin/top = 13.0
+margin/right = 125.0
+margin/bottom = 37.0
+range/min = 0.0
+range/max = 500000.0
+range/step = 100.0
+range/page = 0.0
+range/value = 100.0
+range/exp_edit = false
+range/rounded = true
+editable = true
+prefix = ""
+suffix = ""
+
+[node name="supporterpanel" type="AcceptDialog" parent="TabContainer/Supporter section"]
+
+visibility/visible = false
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 165.0
+margin/top = 98.0
+margin/right = 771.0
+margin/bottom = 351.0
+popup/exclusive = false
+window/title = "Thank you!"
+dialog/text = "You are now registered as a supporter! Thank you for helping to make this game greater!"
+dialog/hide_on_ok = true
+
+[node name="Done" type="Button" parent="."]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 321.0
+margin/top = 424.0
+margin/right = 431.0
+margin/bottom = 461.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Confirm"
+flat = false
+
+[connection signal="visibility_changed" from="." to="." method="_on_options_visibility_changed"]
+
+[connection signal="pressed" from="TabContainer/Settings/screenresize" to="." method="_on_screenresize_pressed"]
+
+[connection signal="pressed" from="TabContainer/Settings/fading" to="." method="_on_fading_pressed"]
+
+[connection signal="pressed" from="TabContainer/Settings/fullscreen" to="." method="_on_fullscreen_pressed"]
+
+[connection signal="pressed" from="TabContainer/Settings/custommouse" to="." method="_on_custommouse_pressed"]
+
+[connection signal="value_changed" from="TabContainer/Settings/fontsize" to="." method="_on_fontsize_value_changed"]
+
+[connection signal="value_changed" from="TabContainer/Settings/soundslider" to="." method="_on_soundslider_value_changed"]
+
+[connection signal="pressed" from="TabContainer/Game/futa" to="." method="_on_futa_pressed"]
+
+[connection signal="pressed" from="TabContainer/Game/futaballs" to="." method="_on_futaballs_pressed"]
+
+[connection signal="pressed" from="TabContainer/Game/furry" to="." method="_on_furry_pressed"]
+
+[connection signal="pressed" from="TabContainer/Game/furrynipples" to="." method="_on_furrynipples_pressed"]
+
+[connection signal="pressed" from="TabContainer/Game/slaverguildraces" to="." method="_on_slaverguildraces_pressed"]
+
+[connection signal="pressed" from="TabContainer/Game/receive" to="." method="_on_receive_pressed"]
+
+[connection signal="pressed" from="TabContainer/Game/childlike" to="." method="_on_childlike_pressed"]
+
+[connection signal="pressed" from="TabContainer/Game/permadeath" to="." method="_on_permadeath_pressed"]
+
+[connection signal="pressed" from="TabContainer/Game/noadults" to="." method="_on_noadults_pressed"]
+
+[connection signal="value_changed" from="TabContainer/Game/malesslider" to="." method="_on_malesslider_value_changed"]
+
+[connection signal="value_changed" from="TabContainer/Game/futaslider" to="." method="_on_futaslider_value_changed"]
+
+[connection signal="meta_clicked" from="TabContainer/Supporter section/RichTextLabel" to="." method="_on_RichTextLabel_meta_clicked"]
+
+[connection signal="pressed" from="TabContainer/Supporter section/cheats" to="." method="_on_cheats_pressed"]
+
+[connection signal="pressed" from="TabContainer/Supporter section/cheatpasswordenter" to="." method="_on_cheatpasswordenter_pressed"]
+
+[connection signal="visibility_changed" from="TabContainer/Supporter section/cheatpanel" to="." method="_on_cheatpanel_visibility_changed"]
+
+[connection signal="pressed" from="TabContainer/Supporter section/cheatpanel/close" to="." method="_on_close_pressed"]
+
+[connection signal="pressed" from="TabContainer/Supporter section/cheatpanel/cheatgold" to="." method="_on_gold_pressed"]
+
+[connection signal="pressed" from="TabContainer/Supporter section/cheatpanel/cheatfood" to="." method="_on_food_pressed"]
+
+[connection signal="pressed" from="TabContainer/Supporter section/cheatpanel/cheatmana" to="." method="_on_mana_pressed"]
+
+[connection signal="pressed" from="TabContainer/Supporter section/cheatpanel/removepopcap" to="." method="_on_removepopcap_pressed"]
+
+[connection signal="pressed" from="TabContainer/Supporter section/cheatpanel/unlockspells" to="." method="_on_unlockspells_pressed"]
+
+[connection signal="pressed" from="TabContainer/Supporter section/cheatpanel/selectslave" to="." method="_on_selectslave_pressed"]
+
+[connection signal="pressed" from="TabContainer/Supporter section/cheatpanel/maxloyalty" to="." method="_on_maxloyalty_pressed"]
+
+[connection signal="pressed" from="TabContainer/Supporter section/cheatpanel/maxobed" to="." method="_on_maxobed_pressed"]
+
+[connection signal="pressed" from="TabContainer/Supporter section/cheatpanel/maxlewd" to="." method="_on_maxlewd_pressed"]
+
+[connection signal="pressed" from="TabContainer/Supporter section/cheatpanel/maxlust" to="." method="_on_maxlust_pressed"]
+
+[connection signal="pressed" from="TabContainer/Supporter section/cheatpanel/nostress" to="." method="_on_nostress_pressed"]
+
+[connection signal="pressed" from="TabContainer/Supporter section/cheatpanel/addskillpoints" to="." method="_on_addskillpoints_pressed"]
+
+[connection signal="pressed" from="TabContainer/Supporter section/cheatpanel/levelup" to="." method="_on_levelup_pressed"]
+
+[connection signal="pressed" from="Done" to="." method="_on_Done_pressed"]
+
+

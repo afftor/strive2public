@@ -1,0 +1,1012 @@
+[gd_scene load_steps=18 format=1]
+
+[ext_resource path="res://mainfont.tres" type="DynamicFont" id=1]
+[ext_resource path="res://files/buttons/chek-Active.png" type="Texture" id=2]
+[ext_resource path="res://files/buttons/chek-noactive.png" type="Texture" id=3]
+[ext_resource path="res://files/buttons/tex-wind.png" type="Texture" id=4]
+[ext_resource path="res://files/buttons/img-kurs.png" type="Texture" id=5]
+[ext_resource path="res://files/buttons/img-kurs-act.png" type="Texture" id=6]
+[ext_resource path="res://files/buttons/img-scr.png" type="Texture" id=7]
+[ext_resource path="res://files/scripts/combat.gd" type="Script" id=8]
+[ext_resource path="res://Roundo-Medium.otf" type="DynamicFontData" id=9]
+[ext_resource path="res://files/paneltexturebland.tres" type="StyleBox" id=10]
+
+[sub_resource type="StyleBoxTexture" id=1]
+
+content_margin/left = -1.0
+content_margin/right = -1.0
+content_margin/top = -1.0
+content_margin/bottom = -1.0
+texture = ExtResource( 4 )
+margin/left = 10.0
+margin/right = 10.0
+margin/top = 10.0
+margin/bottom = 10.0
+expand_margin/left = 0.0
+expand_margin/right = 0.0
+expand_margin/top = 0.0
+expand_margin/bottom = 0.0
+draw_center = true
+
+[sub_resource type="StyleBoxTexture" id=2]
+
+content_margin/left = -1.0
+content_margin/right = -1.0
+content_margin/top = -1.0
+content_margin/bottom = -1.0
+texture = ExtResource( 5 )
+margin/left = 21.0
+margin/right = 21.0
+margin/top = 21.0
+margin/bottom = 21.0
+expand_margin/left = 0.0
+expand_margin/right = 0.0
+expand_margin/top = 0.0
+expand_margin/bottom = 0.0
+draw_center = true
+
+[sub_resource type="StyleBoxTexture" id=3]
+
+content_margin/left = -1.0
+content_margin/right = -1.0
+content_margin/top = -1.0
+content_margin/bottom = -1.0
+texture = ExtResource( 6 )
+margin/left = 21.0
+margin/right = 21.0
+margin/top = 21.0
+margin/bottom = 21.0
+expand_margin/left = 0.0
+expand_margin/right = 0.0
+expand_margin/top = 0.0
+expand_margin/bottom = 0.0
+draw_center = true
+
+[sub_resource type="StyleBoxTexture" id=4]
+
+content_margin/left = -1.0
+content_margin/right = -1.0
+content_margin/top = -1.0
+content_margin/bottom = -1.0
+texture = ExtResource( 7 )
+margin/left = 9.0
+margin/right = 9.0
+margin/top = 20.0
+margin/bottom = 20.0
+expand_margin/left = 0.0
+expand_margin/right = 0.0
+expand_margin/top = 0.0
+expand_margin/bottom = 0.0
+draw_center = true
+
+[sub_resource type="Theme" id=5]
+
+default_font = ExtResource( 1 )
+CheckBox/colors/font_color = Color( 0.878431, 0.878431, 0.878431, 1 )
+CheckBox/colors/font_color_disabled = Color( 0.9, 0.9, 0.9, 0.2 )
+CheckBox/colors/font_color_hover = Color( 0.941176, 0.941176, 0.941176, 1 )
+CheckBox/colors/font_color_pressed = Color( 1, 1, 1, 1 )
+CheckBox/constants/check_vadjust = 0
+CheckBox/constants/hseparation = 4
+CheckBox/fonts/font = ExtResource( 1 )
+CheckBox/icons/checked = ExtResource( 2 )
+CheckBox/icons/radio_checked = null
+CheckBox/icons/radio_unchecked = null
+CheckBox/icons/unchecked = ExtResource( 3 )
+CheckBox/styles/disabled = null
+CheckBox/styles/focus = null
+CheckBox/styles/hover = null
+CheckBox/styles/normal = null
+CheckBox/styles/pressed = null
+Panel/styles/panel = SubResource( 1 )
+Panel/styles/panelf = null
+Panel/styles/panelnc = null
+ProgressBar/colors/font_color = Color( 0.941176, 0.941176, 0.941176, 1 )
+ProgressBar/colors/font_color_shadow = Color( 0, 0, 0, 1 )
+ProgressBar/fonts/font = null
+ProgressBar/styles/bg = null
+ProgressBar/styles/fg = null
+VScrollBar/icons/decrement = null
+VScrollBar/icons/decrement_hilite = null
+VScrollBar/icons/increment = null
+VScrollBar/icons/increment_hilite = null
+VScrollBar/styles/grabber = SubResource( 2 )
+VScrollBar/styles/grabber_hilite = SubResource( 3 )
+VScrollBar/styles/scroll = SubResource( 4 )
+VScrollBar/styles/scroll_focus = null
+
+[sub_resource type="DynamicFont" id=6]
+
+font/size = 30
+extra_spacing/top = 3
+font/use_mipmaps = false
+font/use_filter = true
+font/font = ExtResource( 9 )
+
+[sub_resource type="DynamicFont" id=7]
+
+font/size = 30
+extra_spacing/top = 3
+font/use_mipmaps = false
+font/use_filter = true
+font/font = ExtResource( 9 )
+
+[node name="combat" type="Control"]
+
+anchor/right = 1
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+theme/theme = SubResource( 5 )
+margin/left = 0.0
+margin/top = 53.0
+margin/right = -3.0
+margin/bottom = 3.0
+script/script = ExtResource( 8 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Panel" type="Panel" parent="."]
+
+visibility/opacity = 0.5
+anchor/right = 1
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 5.0
+margin/top = 0.0
+margin/right = 3.0
+margin/bottom = 0.0
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="grouppanel" type="Panel" parent="."]
+
+anchor/top = 1
+anchor/right = 1
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 6.0
+margin/top = 163.0
+margin/right = 1.0
+margin/bottom = -1.0
+
+[node name="skilline" type="HBoxContainer" parent="grouppanel"]
+
+anchor/top = 1
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = false
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 11.0
+margin/top = 57.0
+margin/right = 927.0
+margin/bottom = 12.0
+custom_constants/separation = 8
+alignment = 0
+
+[node name="skill" type="TextureButton" parent="grouppanel/skilline"]
+
+visibility/visible = false
+rect/min_size = Vector2( 45, 45 )
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 50.0
+margin/bottom = 50.0
+toggle_mode = true
+enabled_focus_mode = 2
+shortcut = null
+textures/normal = ExtResource( 4 )
+params/resize_mode = 0
+params/stretch_mode = 7
+
+[node name="Label" type="Label" parent="grouppanel/skilline/skill"]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 3.0
+margin/top = 31.0
+margin/right = 43.0
+margin/bottom = 47.0
+custom_colors/font_color = Color( 1, 0.960938, 0, 1 )
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+text = "Cost"
+align = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="number" type="Label" parent="grouppanel/skilline/skill"]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 4.0
+margin/top = 3.0
+margin/right = 14.0
+margin/bottom = 19.0
+custom_colors/font_color = Color( 0.945313, 1, 0, 1 )
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+text = "0"
+align = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="Panel" type="Panel" parent="grouppanel/skilline/skill"]
+
+visibility/visible = false
+visibility/self_opacity = 0.5
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 45.0
+margin/bottom = 44.0
+
+[node name="groupline" type="HBoxContainer" parent="grouppanel"]
+
+anchor/top = 1
+anchor/right = 1
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = false
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 12.0
+margin/top = 157.0
+margin/right = 152.0
+margin/bottom = 73.0
+custom_constants/separation = 21
+alignment = 0
+
+[node name="character" type="Button" parent="grouppanel/groupline"]
+
+editor/display_folded = true
+visibility/visible = false
+rect/min_size = Vector2( 200, 0 )
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 200.0
+margin/bottom = 84.0
+toggle_mode = true
+enabled_focus_mode = 2
+shortcut = null
+flat = false
+
+[node name="portait" type="TextureFrame" parent="grouppanel/groupline/character"]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 6.0
+margin/top = 4.0
+margin/right = 56.0
+margin/bottom = 54.0
+expand = true
+stretch_mode = 6
+
+[node name="hp" type="Label" parent="grouppanel/groupline/character"]
+
+hint/tooltip = "Health"
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 102.0
+margin/top = 9.0
+margin/right = 192.0
+margin/bottom = 28.0
+text = "0"
+align = 2
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="energy" type="Label" parent="grouppanel/groupline/character"]
+
+hint/tooltip = "Energy.
+Energy is used for abilities"
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 100.0
+margin/top = 33.0
+margin/right = 192.0
+margin/bottom = 52.0
+text = "0"
+align = 2
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="speed" type="Label" parent="grouppanel/groupline/character"]
+
+hint/tooltip = "Speed
+Speed determines hit and dodge chances"
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 134.0
+margin/top = 58.0
+margin/right = 191.0
+margin/bottom = 77.0
+text = "110"
+align = 2
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="power" type="Label" parent="grouppanel/groupline/character"]
+
+hint/tooltip = "Power
+Power determines strength of physical attacks"
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 99.0
+margin/top = 58.0
+margin/right = 153.0
+margin/bottom = 77.0
+text = "75"
+align = 2
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="name" type="Label" parent="grouppanel/groupline/character"]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 5.0
+margin/top = 3.0
+margin/right = 50.0
+margin/bottom = 22.0
+text = "Name"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="target" type="Label" parent="grouppanel/groupline/character"]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 9.0
+margin/top = 59.0
+margin/right = 54.0
+margin/bottom = 73.0
+text = "Target"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="Panel" type="Panel" parent="grouppanel/groupline/character"]
+
+visibility/visible = false
+visibility/self_opacity = 0.5
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 201.0
+margin/bottom = 85.0
+
+[node name="enemypanel" type="Panel" parent="."]
+
+editor/display_folded = true
+anchor/right = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 10.0
+margin/top = 2.0
+margin/right = 1.0
+margin/bottom = 129.0
+
+[node name="enemyline" type="GridContainer" parent="enemypanel"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = false
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 3.0
+margin/right = 1064.0
+margin/bottom = 123.0
+columns = 5
+
+[node name="character" type="Button" parent="enemypanel/enemyline"]
+
+visibility/visible = false
+rect/min_size = Vector2( 200, 50 )
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 200.0
+margin/bottom = 50.0
+toggle_mode = false
+enabled_focus_mode = 0
+shortcut = null
+flat = false
+
+[node name="hp" type="Label" parent="enemypanel/enemyline/character"]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 139.0
+margin/top = 9.0
+margin/right = 192.0
+margin/bottom = 23.0
+text = "100/100"
+align = 2
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="name" type="Label" parent="enemypanel/enemyline/character"]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 8.0
+margin/top = 7.0
+margin/right = 50.0
+margin/bottom = 21.0
+text = "Name"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="Panel" type="Panel" parent="enemypanel/enemyline/character"]
+
+visibility/visible = false
+visibility/self_opacity = 0.8
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 200.0
+margin/bottom = 50.0
+
+[node name="combatlog" type="RichTextLabel" parent="."]
+
+anchor/right = 1
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 16.0
+margin/top = 134.0
+margin/right = 18.0
+margin/bottom = 172.0
+custom_fonts/normal_font = ExtResource( 1 )
+bbcode/enabled = true
+bbcode/bbcode = ""
+visible_characters = -1
+
+[node name="tooltippanel" type="Panel" parent="."]
+
+visibility/visible = false
+visibility/self_opacity = 0.8
+anchor/left = 3
+anchor/top = 3
+anchor/right = 3
+anchor/bottom = 3
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 141.5
+margin/top = 139.0
+margin/right = -119.5
+margin/bottom = -96.0
+
+[node name="tooltiptext" type="RichTextLabel" parent="tooltippanel"]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 14.0
+margin/top = 19.0
+margin/right = 248.0
+margin/bottom = 223.0
+bbcode/enabled = true
+bbcode/bbcode = ""
+visible_characters = -1
+
+[node name="warning" type="Label" parent="."]
+
+visibility/opacity = 0.0
+anchor/left = 3
+anchor/top = 3
+anchor/right = 3
+anchor/bottom = 3
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 325.5
+margin/top = 98.0
+margin/right = -283.5
+margin/bottom = 7.0
+custom_fonts/font = SubResource( 6 )
+text = "Cant"
+align = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="confirm" type="Button" parent="."]
+
+anchor/left = 1
+anchor/top = 1
+anchor/right = 1
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 138.0
+margin/top = 56.0
+margin/right = 9.0
+margin/bottom = 15.0
+custom_fonts/font = ExtResource( 1 )
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Confirm (F)"
+flat = false
+
+[node name="autowin" type="Button" parent="."]
+
+anchor/left = 1
+anchor/top = 1
+anchor/right = 1
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 137.0
+margin/top = 103.0
+margin/right = 8.0
+margin/bottom = 62.0
+custom_fonts/font = ExtResource( 1 )
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "autowin"
+flat = false
+
+[node name="abilitites" type="Button" parent="."]
+
+anchor/left = 1
+anchor/top = 1
+anchor/right = 1
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 138.0
+margin/top = 149.0
+margin/right = 9.0
+margin/bottom = 108.0
+custom_fonts/font = ExtResource( 1 )
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Abilities"
+flat = false
+
+[node name="Panel" type="Panel" parent="abilitites"]
+
+visibility/visible = false
+anchor/left = 3
+anchor/top = 3
+anchor/right = 3
+anchor/bottom = 3
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 973.5
+margin/top = 467.5
+margin/right = 377.5
+margin/bottom = 2.5
+custom_styles/panel = ExtResource( 10 )
+
+[node name="inactivecontainer" type="ScrollContainer" parent="abilitites/Panel"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 40.0
+margin/top = 54.0
+margin/right = 257.0
+margin/bottom = 366.0
+scroll/horizontal = false
+scroll/vertical = true
+
+[node name="VBoxContainer" type="VBoxContainer" parent="abilitites/Panel/inactivecontainer"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = false
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 0.0
+margin/bottom = 0.0
+alignment = 0
+
+[node name="Button" type="Button" parent="abilitites/Panel/inactivecontainer/VBoxContainer"]
+
+visibility/visible = false
+rect/min_size = Vector2( 150, 30 )
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 150.0
+margin/bottom = 30.0
+custom_fonts/font = ExtResource( 1 )
+toggle_mode = true
+enabled_focus_mode = 2
+shortcut = null
+flat = false
+
+[node name="CheckBox" type="CheckBox" parent="abilitites/Panel/inactivecontainer/VBoxContainer/Button"]
+
+hint/tooltip = "Show in cast bar"
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 156.0
+margin/top = 5.0
+margin/right = 182.0
+margin/bottom = 28.0
+toggle_mode = true
+enabled_focus_mode = 2
+shortcut = null
+flat = false
+align = 0
+
+[node name="label" type="Label" parent="abilitites/Panel"]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 46.0
+margin/top = 25.0
+margin/right = 182.0
+margin/bottom = 44.0
+custom_fonts/font = ExtResource( 1 )
+text = "Ability List"
+align = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="abilitydescript" type="RichTextLabel" parent="abilitites/Panel"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 293.0
+margin/top = 60.0
+margin/right = 559.0
+margin/bottom = 371.0
+custom_fonts/normal_font = ExtResource( 1 )
+bbcode/enabled = true
+bbcode/bbcode = ""
+visible_characters = -1
+
+[node name="use" type="Button" parent="abilitites/Panel"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 134.0
+margin/top = 400.0
+margin/right = 244.0
+margin/bottom = 434.0
+custom_fonts/font = ExtResource( 1 )
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Use"
+flat = false
+
+[node name="close" type="Button" parent="abilitites/Panel"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 362.0
+margin/top = 400.0
+margin/right = 472.0
+margin/bottom = 434.0
+custom_fonts/font = ExtResource( 1 )
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Close"
+flat = false
+
+[node name="escapewarn" type="Panel" parent="."]
+
+visibility/visible = false
+anchor/left = 3
+anchor/top = 3
+anchor/right = 3
+anchor/bottom = 3
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 180.5
+margin/top = 173.0
+margin/right = -234.5
+margin/bottom = -149.0
+
+[node name="Control" type="Control" parent="escapewarn"]
+
+anchor/right = 1
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = -365.0
+margin/top = -156.0
+margin/right = -311.0
+margin/bottom = -138.0
+
+[node name="escapedescript" type="RichTextLabel" parent="escapewarn"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 28.0
+margin/top = 24.0
+margin/right = 387.0
+margin/bottom = 180.0
+custom_fonts/normal_font = ExtResource( 1 )
+bbcode/enabled = true
+bbcode/bbcode = "$Name tries to escape. Send someone to stop them? (cost 40 energy and will be unable to attack for 1 turn)"
+visible_characters = -1
+
+[node name="escapeoption" type="OptionButton" parent="escapewarn"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 114.0
+margin/top = 183.0
+margin/right = 311.0
+margin/bottom = 224.0
+custom_fonts/font = ExtResource( 1 )
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Let them escape"
+flat = false
+align = 0
+selected = 0
+items = [ "Let them escape", null, false, -1, null ]
+
+[node name="escapeconfirm" type="Button" parent="escapewarn"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 144.0
+margin/top = 256.0
+margin/right = 277.0
+margin/bottom = 296.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Confirm"
+flat = false
+
+[node name="win" type="Panel" parent="."]
+
+visibility/visible = false
+visibility/self_opacity = 0.8
+anchor/left = 3
+anchor/top = 3
+anchor/right = 3
+anchor/bottom = 3
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 187.5
+margin/top = 113.0
+margin/right = -227.5
+margin/bottom = -84.0
+
+[node name="Control" type="Control" parent="win"]
+
+anchor/right = 1
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = -365.0
+margin/top = -212.0
+margin/right = -311.0
+margin/bottom = -207.0
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="windescript" type="RichTextLabel" parent="win"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 28.0
+margin/top = 24.0
+margin/right = 387.0
+margin/bottom = 83.0
+custom_fonts/normal_font = ExtResource( 1 )
+bbcode/enabled = true
+bbcode/bbcode = "[center]You have defeated all opponents.[/center]"
+visible_characters = -1
+
+[node name="winconfirm" type="Button" parent="win"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 144.0
+margin/top = 136.0
+margin/right = 277.0
+margin/bottom = 176.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Confirm"
+flat = false
+
+[node name="selectedskill" type="RichTextLabel" parent="."]
+
+visibility/visible = false
+anchor/left = 3
+anchor/top = 3
+anchor/right = 3
+anchor/bottom = 3
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 221.5
+margin/top = 118.0
+margin/right = -263.5
+margin/bottom = -61.0
+custom_fonts/normal_font = SubResource( 7 )
+bbcode/enabled = true
+bbcode/bbcode = "[center]Choose target: [/center]
+[center][color=yellow]Ability: [/color][/center]"
+visible_characters = -1
+
+[node name="bufftooltip" type="Panel" parent="."]
+
+visibility/visible = false
+anchor/left = 3
+anchor/top = 3
+anchor/right = 3
+anchor/bottom = 3
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 535.5
+margin/top = 43.0
+margin/right = 293.5
+margin/bottom = -83.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="bufftooltip"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = false
+size_flags/horizontal = 3
+size_flags/vertical = 3
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 240.0
+margin/bottom = 42.0
+alignment = 0
+
+[node name="tooltipbase" type="RichTextLabel" parent="bufftooltip/VBoxContainer"]
+
+visibility/visible = false
+rect/min_size = Vector2( 240, 20 )
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 240.0
+margin/bottom = 20.0
+bbcode/enabled = true
+bbcode/bbcode = "l;ulalulfujaljlfdj"
+visible_characters = -1
+
+[connection signal="pressed" from="confirm" to="." method="_on_confirm_pressed"]
+
+[connection signal="pressed" from="autowin" to="." method="_on_autowin_pressed"]
+
+[connection signal="pressed" from="abilitites" to="." method="_on_abilitites_pressed"]
+
+[connection signal="pressed" from="abilitites/Panel/use" to="." method="_on_use_pressed"]
+
+[connection signal="pressed" from="abilitites/Panel/close" to="." method="_on_close_pressed"]
+
+[connection signal="pressed" from="escapewarn/escapeconfirm" to="." method="_on_escapeconfirm_pressed"]
+
+[connection signal="pressed" from="win/winconfirm" to="." method="_on_winconfirm_pressed"]
+
+

@@ -1,0 +1,2378 @@
+[gd_scene load_steps=23 format=1]
+
+[ext_resource path="res://files/theme.tres" type="Theme" id=1]
+[ext_resource path="res://files/scripts/outside.gd" type="Script" id=2]
+[ext_resource path="res://files/paneltexturebland.tres" type="StyleBox" id=3]
+[ext_resource path="res://mainfont.tres" type="DynamicFont" id=4]
+[ext_resource path="res://files/buttons/img-pl-vkladki.png" type="Texture" id=5]
+[ext_resource path="res://files/buttons/btn-noact-oran.png" type="Texture" id=6]
+[ext_resource path="res://files/buttons/btn-hover-oran.png" type="Texture" id=7]
+[ext_resource path="res://files/buttons/btn-norm-oran.png" type="Texture" id=8]
+[ext_resource path="res://files/buttons/btn-act-oran.png" type="Texture" id=9]
+[ext_resource path="res://files/buttongrouptheme.tres" type="Theme" id=10]
+[ext_resource path="res://Roundo-Medium.otf" type="DynamicFontData" id=11]
+[ext_resource path="res://files/theme slavetab.tres" type="Theme" id=12]
+[ext_resource path="res://files/buttons/itemactive.png" type="Texture" id=13]
+[ext_resource path="res://files/buttons/itemnormal.png" type="Texture" id=14]
+
+[sub_resource type="StyleBoxTexture" id=1]
+
+content_margin/left = -1.0
+content_margin/right = -1.0
+content_margin/top = -1.0
+content_margin/bottom = -1.0
+texture = ExtResource( 5 )
+margin/left = 10.0
+margin/right = 10.0
+margin/top = 10.0
+margin/bottom = 10.0
+expand_margin/left = 0.0
+expand_margin/right = 0.0
+expand_margin/top = 0.0
+expand_margin/bottom = 0.0
+draw_center = true
+
+[sub_resource type="StyleBoxTexture" id=2]
+
+content_margin/left = -1.0
+content_margin/right = -1.0
+content_margin/top = -1.0
+content_margin/bottom = -1.0
+texture = ExtResource( 6 )
+margin/left = 8.0
+margin/right = 8.0
+margin/top = 8.0
+margin/bottom = 8.0
+expand_margin/left = 0.0
+expand_margin/right = 0.0
+expand_margin/top = 0.0
+expand_margin/bottom = 0.0
+draw_center = true
+
+[sub_resource type="StyleBoxTexture" id=3]
+
+content_margin/left = -1.0
+content_margin/right = -1.0
+content_margin/top = -1.0
+content_margin/bottom = -1.0
+texture = ExtResource( 7 )
+margin/left = 8.0
+margin/right = 8.0
+margin/top = 8.0
+margin/bottom = 8.0
+expand_margin/left = 0.0
+expand_margin/right = 0.0
+expand_margin/top = 0.0
+expand_margin/bottom = 0.0
+draw_center = true
+
+[sub_resource type="StyleBoxTexture" id=4]
+
+content_margin/left = -1.0
+content_margin/right = -1.0
+content_margin/top = -1.0
+content_margin/bottom = -1.0
+texture = ExtResource( 8 )
+margin/left = 8.0
+margin/right = 8.0
+margin/top = 8.0
+margin/bottom = 8.0
+expand_margin/left = 0.0
+expand_margin/right = 0.0
+expand_margin/top = 0.0
+expand_margin/bottom = 0.0
+draw_center = true
+
+[sub_resource type="StyleBoxTexture" id=5]
+
+content_margin/left = -1.0
+content_margin/right = -1.0
+content_margin/top = -1.0
+content_margin/bottom = -1.0
+texture = ExtResource( 9 )
+margin/left = 8.0
+margin/right = 8.0
+margin/top = 8.0
+margin/bottom = 8.0
+expand_margin/left = 0.0
+expand_margin/right = 0.0
+expand_margin/top = 0.0
+expand_margin/bottom = 0.0
+draw_center = true
+
+[sub_resource type="Theme" id=6]
+
+Button/colors/font_color = Color( 0.878431, 0.878431, 0.878431, 1 )
+Button/colors/font_color_disabled = Color( 0.9, 0.9, 0.9, 0.2 )
+Button/colors/font_color_hover = Color( 0.941176, 0.941176, 0.941176, 1 )
+Button/colors/font_color_pressed = Color( 1, 1, 1, 1 )
+Button/constants/hseparation = 2
+Button/fonts/font = null
+Button/styles/disabled = SubResource( 2 )
+Button/styles/focus = null
+Button/styles/hover = SubResource( 3 )
+Button/styles/normal = SubResource( 4 )
+Button/styles/pressed = SubResource( 5 )
+
+[sub_resource type="DynamicFont" id=7]
+
+font/size = 20
+extra_spacing/top = 3
+font/use_mipmaps = false
+font/use_filter = true
+font/font = ExtResource( 11 )
+
+[sub_resource type="Animation" id=8]
+
+length = 0.3
+loop = false
+step = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath("charactersprite:visibility/visible")
+tracks/0/interp = 1
+tracks/0/imported = false
+tracks/0/keys = {
+"times": FloatArray( 0 ),
+"transitions": FloatArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("charactersprite:margin/left")
+tracks/1/interp = 1
+tracks/1/imported = false
+tracks/1/keys = {
+"times": FloatArray( 0, 0.3 ),
+"transitions": FloatArray( 1, 1 ),
+"update": 0,
+"values": [ -527.5, -96.5 ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("charactersprite:margin/top")
+tracks/2/interp = 1
+tracks/2/imported = false
+tracks/2/keys = {
+"times": FloatArray( 0, 0.3 ),
+"transitions": FloatArray( 1, 1 ),
+"update": 0,
+"values": [ 150.0, -12.0 ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("charactersprite:margin/right")
+tracks/3/interp = 1
+tracks/3/imported = false
+tracks/3/keys = {
+"times": FloatArray( 0, 0.3 ),
+"transitions": FloatArray( 1, 1 ),
+"update": 0,
+"values": [ -540.0, -109.0 ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("charactersprite:margin/bottom")
+tracks/4/interp = 1
+tracks/4/imported = false
+tracks/4/keys = {
+"times": FloatArray( 0, 0.3 ),
+"transitions": FloatArray( 1, 1 ),
+"update": 0,
+"values": [ -246.0, -84.0 ]
+}
+
+[node name="outside" type="Panel"]
+
+visibility/self_opacity = 0.4
+anchor/right = 1
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+theme/theme = ExtResource( 1 )
+margin/left = 3.0
+margin/top = 55.0
+margin/right = 2.0
+margin/bottom = 91.0
+script/script = ExtResource( 2 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="playergrouppanel" type="Panel" parent="."]
+
+editor/display_folded = true
+anchor/top = 1
+anchor/right = 1
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = -2.0
+margin/right = 0.0
+margin/bottom = -84.0
+
+[node name="VBoxContainer" type="HBoxContainer" parent="playergrouppanel"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = false
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 6.0
+margin/top = 9.0
+margin/right = 841.0
+margin/bottom = 70.0
+alignment = 0
+
+[node name="Panel" type="Panel" parent="playergrouppanel/VBoxContainer"]
+
+visibility/visible = false
+rect/min_size = Vector2( 260, 60 )
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 260.0
+margin/bottom = 61.0
+custom_styles/panel = ExtResource( 3 )
+
+[node name="name" type="Label" parent="playergrouppanel/VBoxContainer/Panel"]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 58.0
+margin/top = 8.0
+margin/right = 103.0
+margin/bottom = 27.0
+custom_fonts/font = ExtResource( 4 )
+text = "Name"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="health" type="Label" parent="playergrouppanel/VBoxContainer/Panel"]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 137.0
+margin/top = 8.0
+margin/right = 191.0
+margin/bottom = 27.0
+custom_fonts/font = ExtResource( 4 )
+text = "Health:"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="energy" type="Label" parent="playergrouppanel/VBoxContainer/Panel"]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 136.0
+margin/top = 28.0
+margin/right = 194.0
+margin/bottom = 47.0
+custom_fonts/font = ExtResource( 4 )
+text = "Energy:"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="portait" type="TextureFrame" parent="playergrouppanel/VBoxContainer/Panel"]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 8.0
+margin/top = 7.0
+margin/right = 53.0
+margin/bottom = 52.0
+expand = true
+stretch_mode = 6
+
+[node name="charactersprite" type="TextureFrame" parent="."]
+
+visibility/visible = false
+anchor/left = 3
+anchor/right = 1
+anchor/bottom = 1
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = -96.5
+margin/top = -12.0
+margin/right = -109.0
+margin/bottom = -84.0
+expand = true
+stretch_mode = 5
+
+[node name="questlog" type="Button" parent="."]
+
+anchor/left = 1
+anchor/right = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 219.0
+margin/top = -55.0
+margin/right = 108.0
+margin/bottom = -20.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Quest Log"
+flat = false
+
+[node name="textpanel" type="Panel" parent="."]
+
+anchor/right = 3
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 300.0
+margin/top = 4.0
+margin/right = -208.5
+margin/bottom = 2.0
+
+[node name="buttonpanel" type="Panel" parent="."]
+
+visibility/opacity = 0.7
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = -4.0
+margin/top = 0.0
+margin/right = 299.0
+margin/bottom = -3.0
+custom_styles/panel = SubResource( 1 )
+
+[node name="outsidetextbox" type="RichTextLabel" parent="."]
+
+anchor/right = 3
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 314.0
+margin/top = 18.0
+margin/right = -193.5
+margin/bottom = 11.0
+custom_fonts/normal_font = ExtResource( 4 )
+bbcode/enabled = true
+bbcode/bbcode = "\"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\""
+visible_characters = -1
+
+[node name="exploreprogress" type="ProgressBar" parent="."]
+
+editor/display_folded = true
+anchor/left = 1
+anchor/right = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 387.0
+margin/top = -21.0
+margin/right = 6.0
+margin/bottom = -3.0
+range/min = 0.0
+range/max = 100.0
+range/step = 1.0
+range/page = 0.0
+range/value = 1.0
+range/exp_edit = false
+range/rounded = false
+percent/visible = false
+
+[node name="locationname" type="Label" parent="exploreprogress"]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 3.0
+margin/top = 0.0
+margin/right = 380.0
+margin/bottom = 18.0
+align = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="outsidebuttoncontainer" type="VBoxContainer" parent="."]
+
+editor/display_folded = true
+focus/ignore_mouse = false
+focus/stop_mouse = false
+size_flags/horizontal = 2
+size_flags/vertical = 2
+theme/theme = SubResource( 6 )
+margin/left = 11.0
+margin/top = 13.0
+margin/right = 283.0
+margin/bottom = 441.0
+alignment = 0
+
+[node name="buttontemplate" type="Button" parent="outsidebuttoncontainer"]
+
+visibility/visible = false
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 272.0
+margin/bottom = 34.0
+custom_fonts/font = ExtResource( 4 )
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Button 1"
+flat = false
+align = 0
+
+[node name="slavebuypanel" type="Control" parent="."]
+
+visibility/visible = false
+anchor/right = 1
+anchor/bottom = 1
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = -79.0
+margin/top = -49.0
+margin/right = 1085.0
+margin/bottom = 448.0
+
+[node name="slavebuypanel" type="Panel" parent="slavebuypanel"]
+
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 79.0
+margin/top = 89.0
+margin/right = 370.0
+margin/bottom = -443.0
+
+[node name="ScrollContainer" type="ScrollContainer" parent="slavebuypanel/slavebuypanel"]
+
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 10.0
+margin/top = 11.0
+margin/right = 286.0
+margin/bottom = 10.0
+scroll/horizontal = false
+scroll/vertical = true
+
+[node name="VBoxContainer" type="VBoxContainer" parent="slavebuypanel/slavebuypanel/ScrollContainer"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = false
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 0.0
+margin/bottom = 0.0
+alignment = 0
+
+[node name="slavebutton" type="Button" parent="slavebuypanel/slavebuypanel/ScrollContainer/VBoxContainer"]
+
+visibility/visible = false
+rect/min_size = Vector2( 265, 75 )
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+theme/theme = ExtResource( 10 )
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 265.0
+margin/bottom = 75.0
+toggle_mode = true
+enabled_focus_mode = 2
+shortcut = null
+flat = false
+
+[node name="name" type="Label" parent="slavebuypanel/slavebuypanel/ScrollContainer/VBoxContainer/slavebutton"]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 14.0
+margin/top = 6.0
+margin/right = 119.0
+margin/bottom = 28.0
+custom_fonts/font = ExtResource( 4 )
+text = "Maria Human"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="age" type="Label" parent="slavebuypanel/slavebuypanel/ScrollContainer/VBoxContainer/slavebutton"]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 15.0
+margin/top = 24.0
+margin/right = 52.0
+margin/bottom = 46.0
+custom_fonts/font = ExtResource( 4 )
+text = "Teen"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="origins" type="Label" parent="slavebuypanel/slavebuypanel/ScrollContainer/VBoxContainer/slavebutton"]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 15.0
+margin/top = 46.0
+margin/right = 139.0
+margin/bottom = 68.0
+custom_fonts/font = ExtResource( 4 )
+text = "From rich family"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="price" type="Label" parent="slavebuypanel/slavebuypanel/ScrollContainer/VBoxContainer/slavebutton"]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 199.0
+margin/top = 27.0
+margin/right = 262.0
+margin/bottom = 47.0
+custom_fonts/font = ExtResource( 4 )
+text = "150 gold"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="purchasebutton" type="Button" parent="slavebuypanel"]
+
+anchor/left = 3
+anchor/top = 1
+anchor/right = 3
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = -295.5
+margin/top = -470.0
+margin/right = -451.5
+margin/bottom = -512.0
+custom_fonts/font = ExtResource( 4 )
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Purchase"
+flat = false
+
+[node name="mindreadbutton" type="Button" parent="slavebuypanel"]
+
+anchor/left = 3
+anchor/top = 1
+anchor/right = 3
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = -495.5
+margin/top = -469.0
+margin/right = -651.5
+margin/bottom = -511.0
+custom_fonts/font = ExtResource( 4 )
+disabled = true
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Use Mind Read"
+flat = false
+
+[node name="slavelistcancel" type="Button" parent="slavebuypanel"]
+
+anchor/left = 3
+anchor/top = 1
+anchor/right = 3
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = -694.5
+margin/top = -470.0
+margin/right = -850.5
+margin/bottom = -512.0
+custom_fonts/font = ExtResource( 4 )
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Cancel"
+flat = false
+
+[node name="Label" type="Label" parent="slavebuypanel"]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 96.0
+margin/top = 58.0
+margin/right = 216.0
+margin/bottom = 83.0
+custom_fonts/font = ExtResource( 4 )
+text = "Available slaves"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="slavedescription" type="RichTextLabel" parent="slavebuypanel"]
+
+anchor/right = 3
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 393.0
+margin/top = 70.0
+margin/right = -779.5
+margin/bottom = -430.0
+custom_fonts/normal_font = ExtResource( 4 )
+bbcode/enabled = true
+bbcode/bbcode = "\"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\""
+visible_characters = -1
+
+[node name="slavesellpanel" type="Control" parent="."]
+
+editor/display_folded = true
+visibility/visible = false
+anchor/right = 1
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 3.0
+margin/top = 44.0
+margin/right = 785.0
+margin/bottom = 23.0
+
+[node name="ScrollContainer" type="ScrollContainer" parent="slavesellpanel"]
+
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 3.0
+margin/top = 2.0
+margin/right = 283.0
+margin/bottom = 4.0
+scroll/horizontal = false
+scroll/vertical = true
+
+[node name="VBoxContainer" type="VBoxContainer" parent="slavesellpanel/ScrollContainer"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = false
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 0.0
+margin/bottom = 0.0
+alignment = 0
+
+[node name="slavebutton" type="Button" parent="slavesellpanel/ScrollContainer/VBoxContainer"]
+
+visibility/visible = false
+rect/min_size = Vector2( 280, 50 )
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+theme/theme = ExtResource( 10 )
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 280.0
+margin/bottom = 50.0
+toggle_mode = true
+enabled_focus_mode = 2
+shortcut = null
+flat = false
+
+[node name="name" type="Label" parent="slavesellpanel/ScrollContainer/VBoxContainer/slavebutton"]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 14.0
+margin/top = 6.0
+margin/right = 119.0
+margin/bottom = 28.0
+custom_fonts/font = ExtResource( 4 )
+text = "Maria Human"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="price" type="Label" parent="slavesellpanel/ScrollContainer/VBoxContainer/slavebutton"]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 206.0
+margin/top = 25.0
+margin/right = 269.0
+margin/bottom = 45.0
+custom_fonts/font = ExtResource( 4 )
+text = "150 gold"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="slavesellbutton" type="Button" parent="slavesellpanel"]
+
+anchor/left = 3
+anchor/top = 1
+anchor/right = 3
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = -160.5
+margin/top = -34.0
+margin/right = -314.5
+margin/bottom = -88.0
+custom_fonts/font = ExtResource( 4 )
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Sell slave"
+flat = false
+
+[node name="slavesellcancel" type="Button" parent="slavesellpanel"]
+
+anchor/left = 3
+anchor/top = 1
+anchor/right = 3
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = -423.5
+margin/top = -34.0
+margin/right = -577.5
+margin/bottom = -88.0
+custom_fonts/font = ExtResource( 4 )
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Cancel"
+flat = false
+
+[node name="Label" type="Label" parent="slavesellpanel"]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 17.0
+margin/top = -31.0
+margin/right = 137.0
+margin/bottom = -6.0
+custom_fonts/font = ExtResource( 4 )
+text = "Available slaves"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="slavedescription" type="RichTextLabel" parent="slavesellpanel"]
+
+anchor/right = 3
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 314.0
+margin/top = -17.0
+margin/right = -583.5
+margin/bottom = 15.0
+custom_fonts/normal_font = ExtResource( 4 )
+bbcode/enabled = true
+bbcode/bbcode = "—Oh, you have someone, you would like to part with? That's fine, but don't expect us to pay you full price. We are just humble retailers after all. If you want better price, you should find a buyer yourself. "
+visible_characters = -1
+
+[node name="slaveguildquestpanel" type="Control" parent="."]
+
+editor/display_folded = true
+visibility/visible = false
+anchor/right = 1
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 3.0
+margin/top = 44.0
+margin/right = 783.0
+margin/bottom = 23.0
+
+[node name="ScrollContainer" type="ScrollContainer" parent="slaveguildquestpanel"]
+
+editor/display_folded = true
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 6.0
+margin/top = 2.0
+margin/right = 291.0
+margin/bottom = 4.0
+scroll/horizontal = false
+scroll/vertical = true
+
+[node name="VBoxContainer" type="VBoxContainer" parent="slaveguildquestpanel/ScrollContainer"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = false
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 0.0
+margin/bottom = 0.0
+alignment = 0
+
+[node name="questbutton" type="Button" parent="slaveguildquestpanel/ScrollContainer/VBoxContainer"]
+
+visibility/visible = false
+rect/min_size = Vector2( 275, 75 )
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+theme/theme = ExtResource( 10 )
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 275.0
+margin/bottom = 75.0
+toggle_mode = true
+enabled_focus_mode = 2
+shortcut = null
+flat = false
+
+[node name="name" type="RichTextLabel" parent="slaveguildquestpanel/ScrollContainer/VBoxContainer/questbutton"]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 16.0
+margin/top = 10.0
+margin/right = 263.0
+margin/bottom = 49.0
+custom_fonts/normal_font = ExtResource( 4 )
+custom_colors/default_color = Color( 0, 0, 0, 1 )
+bbcode/enabled = true
+bbcode/bbcode = "Local aristocrat wants an obedient servant for his house."
+visible_characters = -1
+
+[node name="reward" type="Label" parent="slaveguildquestpanel/ScrollContainer/VBoxContainer/questbutton"]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 178.0
+margin/top = 47.0
+margin/right = 260.0
+margin/bottom = 67.0
+custom_fonts/font = ExtResource( 4 )
+text = "150 gold"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="difficulty" type="Label" parent="slaveguildquestpanel/ScrollContainer/VBoxContainer/questbutton"]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 10.0
+margin/top = 50.0
+margin/right = 92.0
+margin/bottom = 70.0
+custom_fonts/font = ExtResource( 4 )
+text = "1"
+align = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="questaccept" type="Button" parent="slaveguildquestpanel"]
+
+anchor/left = 3
+anchor/top = 1
+anchor/right = 3
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = -101.5
+margin/top = -35.0
+margin/right = -255.5
+margin/bottom = -89.0
+custom_fonts/font = ExtResource( 4 )
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Accept"
+flat = false
+
+[node name="questcancel" type="Button" parent="slaveguildquestpanel"]
+
+anchor/left = 3
+anchor/top = 1
+anchor/right = 3
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = -293.5
+margin/top = -35.0
+margin/right = -447.5
+margin/bottom = -89.0
+custom_fonts/font = ExtResource( 4 )
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Forfeit"
+flat = false
+
+[node name="questhide" type="Button" parent="slaveguildquestpanel"]
+
+anchor/left = 3
+anchor/top = 1
+anchor/right = 3
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = -481.5
+margin/top = -35.0
+margin/right = -635.5
+margin/bottom = -89.0
+custom_fonts/font = ExtResource( 4 )
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Leave"
+flat = false
+
+[node name="Label" type="Label" parent="slaveguildquestpanel"]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 17.0
+margin/top = -31.0
+margin/right = 141.0
+margin/bottom = 10.0
+custom_fonts/font = ExtResource( 4 )
+text = "Available quests"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="questdescription" type="RichTextLabel" parent="slaveguildquestpanel"]
+
+anchor/right = 3
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 315.0
+margin/top = -16.0
+margin/right = -581.5
+margin/bottom = 7.0
+custom_fonts/normal_font = ExtResource( 4 )
+bbcode/enabled = true
+bbcode/bbcode = "qu"
+visible_characters = -1
+
+[node name="slaveservicepanel" type="Control" parent="."]
+
+editor/display_folded = true
+visibility/visible = false
+anchor/right = 1
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 3.0
+margin/top = 44.0
+margin/right = 786.0
+margin/bottom = 15.0
+
+[node name="Control" type="Control" parent="slaveservicepanel"]
+
+visibility/visible = false
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = -7.0
+margin/top = -97.0
+margin/right = 1079.0
+margin/bottom = 508.0
+
+[node name="ScrollContainer" type="ScrollContainer" parent="slaveservicepanel"]
+
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 4.0
+margin/top = 2.0
+margin/right = 284.0
+margin/bottom = 12.0
+scroll/horizontal = false
+scroll/vertical = true
+
+[node name="VBoxContainer" type="VBoxContainer" parent="slaveservicepanel/ScrollContainer"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = false
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 0.0
+margin/bottom = 0.0
+alignment = 0
+
+[node name="Button" type="Button" parent="slaveservicepanel/ScrollContainer/VBoxContainer"]
+
+visibility/visible = false
+rect/min_size = Vector2( 280, 30 )
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+theme/theme = ExtResource( 10 )
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 280.0
+margin/bottom = 30.0
+custom_fonts/font = ExtResource( 4 )
+toggle_mode = true
+enabled_focus_mode = 2
+shortcut = null
+text = "Hair Cut"
+flat = false
+align = 0
+
+[node name="price" type="Label" parent="slaveservicepanel/ScrollContainer/VBoxContainer/Button"]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 217.0
+margin/top = 6.0
+margin/right = 265.0
+margin/bottom = 24.0
+text = "100"
+align = 2
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="speccontainer" type="ScrollContainer" parent="slaveservicepanel"]
+
+anchor/left = 3
+anchor/right = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = -597.0
+margin/top = -32.0
+margin/right = -654.0
+margin/bottom = 280.0
+scroll/horizontal = false
+scroll/vertical = true
+
+[node name="VBoxContainer" type="VBoxContainer" parent="slaveservicepanel/speccontainer"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = false
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 0.0
+margin/bottom = 0.0
+custom_constants/separation = -2
+alignment = 0
+
+[node name="Button" type="Button" parent="slaveservicepanel/speccontainer/VBoxContainer" groups=[
+"specsbutton",
+]]
+
+visibility/visible = false
+rect/min_size = Vector2( 200, 30 )
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+theme/theme = ExtResource( 10 )
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 200.0
+margin/bottom = 30.0
+custom_fonts/font = ExtResource( 4 )
+toggle_mode = true
+enabled_focus_mode = 2
+shortcut = null
+text = "Hair Cut"
+flat = false
+align = 0
+
+[node name="price" type="Label" parent="slaveservicepanel/speccontainer/VBoxContainer/Button"]
+
+visibility/visible = false
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 217.0
+margin/top = 6.0
+margin/right = 265.0
+margin/bottom = 24.0
+text = "100"
+align = 2
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="serviceconfirm" type="Button" parent="slaveservicepanel"]
+
+anchor/left = 3
+anchor/top = 1
+anchor/right = 3
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = -287.0
+margin/top = -28.0
+margin/right = -441.0
+margin/bottom = -82.0
+custom_fonts/font = ExtResource( 4 )
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Confirm"
+flat = false
+
+[node name="selectslavebutton" type="Button" parent="slaveservicepanel"]
+
+anchor/left = 3
+anchor/top = 1
+anchor/right = 3
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = -69.0
+margin/top = -28.0
+margin/right = -223.0
+margin/bottom = -82.0
+custom_fonts/font = ExtResource( 4 )
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Select Slave"
+flat = false
+
+[node name="slaveservicecancel" type="Button" parent="slaveservicepanel"]
+
+anchor/left = 3
+anchor/top = 1
+anchor/right = 3
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = -507.0
+margin/top = -28.0
+margin/right = -661.0
+margin/bottom = -82.0
+custom_fonts/font = ExtResource( 4 )
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Cancel"
+flat = false
+
+[node name="Label" type="Label" parent="slaveservicepanel"]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 38.0
+margin/top = -30.0
+margin/right = 166.0
+margin/bottom = -5.0
+custom_fonts/font = ExtResource( 4 )
+text = "Available actions"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="servicedescription" type="RichTextLabel" parent="slaveservicepanel"]
+
+anchor/right = 3
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 316.0
+margin/top = -17.0
+margin/right = -586.0
+margin/bottom = 51.0
+custom_fonts/normal_font = ExtResource( 4 )
+bbcode/enabled = true
+bbcode/bbcode = ""
+visible_characters = -1
+
+[node name="hairlengthbutton" type="OptionButton" parent="slaveservicepanel"]
+
+anchor/left = 3
+anchor/top = 1
+anchor/right = 3
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = -314.0
+margin/top = 38.0
+margin/right = -443.0
+margin/bottom = 3.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+flat = false
+align = 0
+selected = -1
+items = [  ]
+
+[node name="mageorderservices" type="Panel" parent="."]
+
+editor/display_folded = true
+visibility/visible = false
+anchor/left = 3
+anchor/top = 3
+anchor/right = 3
+anchor/bottom = 3
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 537.5
+margin/top = 227.0
+margin/right = -539.5
+margin/bottom = -224.0
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Control" type="Control" parent="mageorderservices"]
+
+anchor/right = 1
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = -1.0
+margin/top = -54.0
+margin/right = -5.0
+margin/bottom = -93.0
+
+[node name="Label" type="Label" parent="mageorderservices"]
+
+anchor/left = 3
+anchor/top = 3
+anchor/right = 3
+anchor/bottom = 3
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 363.5
+margin/top = 217.5
+margin/right = 221.5
+margin/bottom = 194.5
+custom_fonts/font = SubResource( 7 )
+text = "Available spells"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="ScrollContainer" type="ScrollContainer" parent="mageorderservices"]
+
+anchor/left = 3
+anchor/top = 3
+anchor/right = 3
+anchor/bottom = 3
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 528.5
+margin/top = 184.5
+margin/right = 325.5
+margin/bottom = -199.5
+scroll/horizontal = false
+scroll/vertical = true
+
+[node name="spelllist" type="VBoxContainer" parent="mageorderservices/ScrollContainer"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = false
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 0.0
+margin/bottom = 0.0
+custom_constants/separation = 15
+alignment = 0
+
+[node name="spellbutton" type="Button" parent="mageorderservices/ScrollContainer/spelllist"]
+
+visibility/visible = false
+rect/min_size = Vector2( 200, 40 )
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+theme/theme = ExtResource( 10 )
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 200.0
+margin/bottom = 40.0
+custom_fonts/font = ExtResource( 4 )
+toggle_mode = true
+enabled_focus_mode = 2
+shortcut = null
+text = "Mind Read- learned"
+flat = false
+
+[node name="learnspellbutton" type="Button" parent="mageorderservices"]
+
+anchor/left = 3
+anchor/top = 3
+anchor/right = 3
+anchor/bottom = 3
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 218.5
+margin/top = -99.5
+margin/right = 87.5
+margin/bottom = -161.5
+custom_fonts/font = ExtResource( 4 )
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Purchase spell"
+flat = false
+
+[node name="spelldescription" type="RichTextLabel" parent="mageorderservices"]
+
+anchor/left = 3
+anchor/top = 3
+anchor/right = 3
+anchor/bottom = 3
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 293.5
+margin/top = 183.5
+margin/right = 17.5
+margin/bottom = -46.5
+custom_fonts/normal_font = ExtResource( 4 )
+bbcode/enabled = true
+bbcode/bbcode = ""
+visible_characters = -1
+
+[node name="librarydescription" type="RichTextLabel" parent="mageorderservices"]
+
+anchor/left = 3
+anchor/top = 3
+anchor/right = 3
+anchor/bottom = 3
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = -44.5
+margin/top = 192.5
+margin/right = -272.5
+margin/bottom = 72.5
+custom_fonts/normal_font = ExtResource( 4 )
+bbcode/enabled = true
+bbcode/bbcode = "This is spell description
+balbalblablabl 
+balbla blalblablablb balblab
+"
+visible_characters = -1
+
+[node name="alchemydescription" type="RichTextLabel" parent="mageorderservices"]
+
+anchor/left = 3
+anchor/top = 3
+anchor/right = 3
+anchor/bottom = 3
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = -43.5
+margin/top = 62.5
+margin/right = -271.5
+margin/bottom = -65.5
+custom_fonts/normal_font = ExtResource( 4 )
+bbcode/enabled = true
+bbcode/bbcode = "This is spell description
+balbalblablabl 
+balbla blalblablablb balblab
+"
+visible_characters = -1
+
+[node name="laboratorydescription" type="RichTextLabel" parent="mageorderservices"]
+
+anchor/left = 3
+anchor/top = 3
+anchor/right = 3
+anchor/bottom = 3
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = -42.5
+margin/top = -84.5
+margin/right = -270.5
+margin/bottom = -204.5
+custom_fonts/normal_font = ExtResource( 4 )
+bbcode/enabled = true
+bbcode/bbcode = "This is spell description
+balbalblablabl 
+balbla blalblablablb balblab
+"
+visible_characters = -1
+
+[node name="VSeparator" type="VSeparator" parent="mageorderservices"]
+
+anchor/left = 3
+anchor/top = 3
+anchor/right = 3
+anchor/bottom = 3
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 28.5
+margin/top = 225.5
+margin/right = -11.5
+margin/bottom = -228.5
+
+[node name="upgradelibrary" type="Button" parent="mageorderservices"]
+
+anchor/left = 3
+anchor/top = 3
+anchor/right = 3
+anchor/bottom = 3
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = -353.5
+margin/top = 186.5
+margin/right = -522.5
+margin/bottom = 130.5
+custom_fonts/font = ExtResource( 4 )
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Upgrade"
+flat = false
+
+[node name="upgradealchemy" type="Button" parent="mageorderservices"]
+
+anchor/left = 3
+anchor/top = 3
+anchor/right = 3
+anchor/bottom = 3
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = -354.5
+margin/top = 45.5
+margin/right = -523.5
+margin/bottom = -10.5
+custom_fonts/font = ExtResource( 4 )
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Upgrade"
+flat = false
+
+[node name="upgradelaboratory" type="Button" parent="mageorderservices"]
+
+anchor/left = 3
+anchor/top = 3
+anchor/right = 3
+anchor/bottom = 3
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = -354.5
+margin/top = -107.5
+margin/right = -523.5
+margin/bottom = -163.5
+custom_fonts/font = ExtResource( 4 )
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Upgrade"
+flat = false
+
+[node name="Panel" type="Panel" parent="mageorderservices"]
+
+visibility/self_opacity = 0.7
+anchor/left = 3
+anchor/top = 3
+anchor/right = 3
+anchor/bottom = 3
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 534.5
+margin/top = -229.5
+margin/right = -534.5
+margin/bottom = -317.5
+
+[node name="close" type="Button" parent="mageorderservices"]
+
+anchor/left = 3
+anchor/top = 3
+anchor/right = 3
+anchor/bottom = 3
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 94.5
+margin/top = -232.5
+margin/right = -74.5
+margin/bottom = -294.5
+custom_fonts/font = ExtResource( 4 )
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Close"
+flat = false
+
+[node name="carpenter" type="Panel" parent="."]
+
+editor/display_folded = true
+visibility/visible = false
+anchor/left = 3
+anchor/top = 3
+anchor/right = 3
+anchor/bottom = 3
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 294.5
+margin/top = 271.0
+margin/right = -314.5
+margin/bottom = -309.0
+
+[node name="Control" type="Control" parent="carpenter"]
+
+anchor/right = 1
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = -244.0
+margin/top = -15.0
+margin/right = -224.0
+margin/bottom = -5.0
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="upgradecommunal" type="Button" parent="carpenter"]
+
+anchor/left = 3
+anchor/top = 3
+anchor/right = 3
+anchor/bottom = 3
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = -133.5
+margin/top = 264.0
+margin/right = -270.5
+margin/bottom = 226.0
+custom_fonts/font = ExtResource( 4 )
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Upgrade"
+flat = false
+
+[node name="upgradepersonal" type="Button" parent="carpenter"]
+
+anchor/left = 3
+anchor/top = 3
+anchor/right = 3
+anchor/bottom = 3
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = -133.5
+margin/top = 184.0
+margin/right = -270.5
+margin/bottom = 146.0
+custom_fonts/font = ExtResource( 4 )
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Upgrade"
+flat = false
+
+[node name="upgradejail" type="Button" parent="carpenter"]
+
+anchor/left = 3
+anchor/top = 3
+anchor/right = 3
+anchor/bottom = 3
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = -133.5
+margin/top = 22.0
+margin/right = -270.5
+margin/bottom = -16.0
+custom_fonts/font = ExtResource( 4 )
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Upgrade"
+flat = false
+
+[node name="upgradefarm" type="Button" parent="carpenter"]
+
+anchor/left = 3
+anchor/top = 3
+anchor/right = 3
+anchor/bottom = 3
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = -133.5
+margin/top = -48.0
+margin/right = -270.5
+margin/bottom = -86.0
+custom_fonts/font = ExtResource( 4 )
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Upgrade"
+flat = false
+
+[node name="upgradebed" type="Button" parent="carpenter"]
+
+anchor/left = 3
+anchor/top = 3
+anchor/right = 3
+anchor/bottom = 3
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = -133.5
+margin/top = 105.0
+margin/right = -270.5
+margin/bottom = 67.0
+custom_fonts/font = ExtResource( 4 )
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Upgrade"
+flat = false
+
+[node name="RichTextLabel" type="RichTextLabel" parent="carpenter"]
+
+anchor/left = 3
+anchor/top = 3
+anchor/right = 3
+anchor/bottom = 3
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 252.5
+margin/top = 271.0
+margin/right = -54.5
+margin/bottom = 208.0
+custom_fonts/normal_font = ExtResource( 4 )
+bbcode/enabled = true
+bbcode/bbcode = "Restructure communal room and fit 2 additional beds - 300 gold."
+visible_characters = -1
+
+[node name="RichTextLabel1" type="RichTextLabel" parent="carpenter"]
+
+anchor/left = 3
+anchor/top = 3
+anchor/right = 3
+anchor/bottom = 3
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 254.5
+margin/top = 181.0
+margin/right = -52.5
+margin/bottom = 130.0
+custom_fonts/normal_font = ExtResource( 4 )
+bbcode/enabled = true
+bbcode/bbcode = "Build additional personal room - 500 gold"
+visible_characters = -1
+
+[node name="RichTextLabel2" type="RichTextLabel" parent="carpenter"]
+
+anchor/left = 3
+anchor/top = 3
+anchor/right = 3
+anchor/bottom = 3
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 256.5
+margin/top = 110.0
+margin/right = -50.5
+margin/bottom = 46.0
+custom_fonts/normal_font = ExtResource( 4 )
+bbcode/enabled = true
+bbcode/bbcode = "Improve your room and expand sleeping space - 250 gold."
+visible_characters = -1
+
+[node name="RichTextLabel3" type="RichTextLabel" parent="carpenter"]
+
+anchor/left = 3
+anchor/top = 3
+anchor/right = 3
+anchor/bottom = 3
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 257.5
+margin/top = 17.0
+margin/right = -49.5
+margin/bottom = -28.0
+custom_fonts/normal_font = ExtResource( 4 )
+bbcode/enabled = true
+bbcode/bbcode = "Increase jail's capacity - 250 gold"
+visible_characters = -1
+
+[node name="RichTextLabel5" type="RichTextLabel" parent="carpenter"]
+
+anchor/left = 3
+anchor/top = 3
+anchor/right = 3
+anchor/bottom = 3
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 258.5
+margin/top = -49.0
+margin/right = -48.5
+margin/bottom = -94.0
+custom_fonts/normal_font = ExtResource( 4 )
+bbcode/enabled = true
+bbcode/bbcode = "Set up mansion's farm - 650 gold"
+visible_characters = -1
+
+[node name="RichTextLabel4" type="RichTextLabel" parent="carpenter"]
+
+anchor/left = 3
+anchor/top = 3
+anchor/right = 3
+anchor/bottom = 3
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 278.5
+margin/top = -127.0
+margin/right = -281.5
+margin/bottom = -194.0
+custom_fonts/normal_font = ExtResource( 4 )
+bbcode/enabled = true
+bbcode/bbcode = ""
+visible_characters = -1
+
+[node name="carpenterleave" type="Button" parent="carpenter"]
+
+anchor/left = 3
+anchor/top = 3
+anchor/right = 3
+anchor/bottom = 3
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 176.5
+margin/top = -222.0
+margin/right = -158.5
+margin/bottom = -269.0
+custom_fonts/font = ExtResource( 4 )
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Leave"
+flat = false
+
+[node name="shoppanel" type="Control" parent="."]
+
+visibility/visible = false
+anchor/right = 1
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = -12.0
+margin/top = -57.0
+margin/right = -8.0
+margin/bottom = -91.0
+
+[node name="Panel" type="Panel" parent="shoppanel"]
+
+editor/display_folded = true
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+theme/theme = ExtResource( 12 )
+margin/left = 37.0
+margin/top = 63.0
+margin/right = 260.0
+margin/bottom = 346.0
+
+[node name="buybutton" type="Button" parent="shoppanel/Panel"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 37.0
+margin/top = 41.0
+margin/right = 194.0
+margin/bottom = 76.0
+toggle_mode = true
+enabled_focus_mode = 2
+shortcut = null
+text = "Buy"
+flat = false
+
+[node name="sellbutton" type="Button" parent="shoppanel/Panel"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 37.0
+margin/top = 81.0
+margin/right = 194.0
+margin/bottom = 116.0
+toggle_mode = true
+enabled_focus_mode = 2
+shortcut = null
+text = "Sell"
+flat = false
+
+[node name="closebutton" type="Button" parent="shoppanel/Panel"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 37.0
+margin/top = 201.0
+margin/right = 194.0
+margin/bottom = 236.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Close"
+flat = false
+
+[node name="title" type="Label" parent="shoppanel/Panel"]
+
+anchor/left = 3
+anchor/right = 3
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 97.5
+margin/top = 5.0
+margin/right = -95.5
+margin/bottom = 48.0
+text = "Shopname"
+align = 1
+valign = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="itempanel" type="Panel" parent="shoppanel"]
+
+anchor/right = 3
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 264.0
+margin/top = 64.0
+margin/right = -232.5
+margin/bottom = 46.0
+
+[node name="iconbig" type="TextureFrame" parent="shoppanel/itempanel"]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 277.0
+margin/top = 19.0
+margin/right = 477.0
+margin/bottom = 219.0
+expand = true
+stretch_mode = 0
+
+[node name="ScrollContainer" type="ScrollContainer" parent="shoppanel/itempanel"]
+
+editor/display_folded = true
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 41.0
+margin/top = 61.0
+margin/right = 259.0
+margin/bottom = 130.0
+scroll/horizontal = false
+scroll/vertical = true
+
+[node name="GridContainer" type="GridContainer" parent="shoppanel/itempanel/ScrollContainer"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = false
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 0.0
+margin/bottom = 0.0
+columns = 4
+
+[node name="Button" type="TextureButton" parent="shoppanel/itempanel/ScrollContainer/GridContainer"]
+
+visibility/visible = false
+rect/min_size = Vector2( 50, 50 )
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 50.0
+margin/bottom = 50.0
+toggle_mode = true
+enabled_focus_mode = 2
+shortcut = null
+textures/pressed = ExtResource( 13 )
+textures/hover = ExtResource( 14 )
+params/resize_mode = 0
+params/stretch_mode = 0
+
+[node name="icon" type="TextureFrame" parent="shoppanel/itempanel/ScrollContainer/GridContainer/Button"]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 7.0
+margin/top = 7.0
+margin/right = 42.0
+margin/bottom = 42.0
+expand = true
+stretch_mode = 7
+
+[node name="price" type="Label" parent="shoppanel/itempanel/ScrollContainer/GridContainer/Button"]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 17.0
+margin/top = 33.0
+margin/right = 47.0
+margin/bottom = 51.0
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+text = "1234"
+align = 2
+valign = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="amount" type="Label" parent="shoppanel/itempanel/ScrollContainer/GridContainer/Button"]
+
+visibility/visible = false
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 17.0
+margin/top = -1.0
+margin/right = 47.0
+margin/bottom = 17.0
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+text = "15"
+align = 2
+valign = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="name" type="Label" parent="shoppanel/itempanel/ScrollContainer/GridContainer/Button"]
+
+visibility/visible = false
+anchor/right = 1
+anchor/bottom = 1
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 0.0
+margin/bottom = 0.0
+align = 1
+valign = 1
+autowrap = true
+clip_text = true
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="itemdescript" type="RichTextLabel" parent="shoppanel/itempanel"]
+
+anchor/right = 1
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 286.0
+margin/top = 237.0
+margin/right = 34.0
+margin/bottom = 82.0
+bbcode/enabled = true
+bbcode/bbcode = ""
+visible_characters = -1
+
+[node name="buysellbutton" type="Button" parent="shoppanel/itempanel"]
+
+anchor/left = 3
+anchor/top = 1
+anchor/right = 3
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 83.0
+margin/top = 54.0
+margin/right = -74.0
+margin/bottom = 19.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Buy"
+flat = false
+
+[node name="SpinBox" type="SpinBox" parent="shoppanel/itempanel/buysellbutton" groups=[
+"blockoutsideinput",
+]]
+
+hint/tooltip = "Amount"
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 169.0
+margin/top = -2.0
+margin/right = 241.0
+margin/bottom = 36.0
+range/min = 0.0
+range/max = 100.0
+range/step = 1.0
+range/page = 0.0
+range/value = 1.0
+range/exp_edit = false
+range/rounded = false
+editable = true
+prefix = ""
+suffix = ""
+
+[node name="sebastiannode" type="Control" parent="."]
+
+editor/display_folded = true
+visibility/visible = false
+anchor/right = 1
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = -2.0
+margin/top = -52.0
+margin/right = -4.0
+margin/bottom = -88.0
+
+[node name="sebastionorder" type="OptionButton" parent="sebastiannode"]
+
+anchor/left = 3
+anchor/top = 3
+anchor/right = 3
+anchor/bottom = 3
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 496.5
+margin/top = 84.0
+margin/right = 313.5
+margin/bottom = 40.0
+custom_fonts/font = ExtResource( 4 )
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Elf"
+flat = false
+align = 0
+selected = 0
+items = [ "Elf", null, false, 0, null, "Dark Elf", null, false, 1, null, "Drow", null, false, 2, null, "Orc", null, false, 3, null, "Beastkin Cat", null, false, 4, null, "Beastkin Wolf", null, false, 5, null, "Beastkin Fox", null, false, 6, null, "Beastkin Bunny", null, false, 7, null, "Beastkin Tanuki", null, false, 8, null, "Halfkin Cat", null, false, 9, null, "Halfkin Wolf", null, false, 10, null, "Halfkin Fox", null, false, 11, null, "Halfkin Tanuki", null, false, 12, null, "Halfkin Bunny", null, false, 13, null, "Fairy", null, false, 14, null, "Dryad", null, false, 15, null, "Demon", null, false, 16, null, "Seraph", null, false, 17, null, "Taurus", null, false, 18, null, "Dragonkin", null, false, 19, null, "Gnome", null, false, 20, null, "Goblin", null, false, 21, null ]
+
+[node name="sebastianconfirm" type="Button" parent="sebastiannode"]
+
+anchor/left = 3
+anchor/top = 3
+anchor/right = 3
+anchor/bottom = 3
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 496.5
+margin/top = -5.0
+margin/right = 367.5
+margin/bottom = -40.0
+custom_fonts/font = ExtResource( 4 )
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Confirm"
+flat = false
+
+[node name="sebastiancancel" type="Button" parent="sebastiannode"]
+
+anchor/left = 3
+anchor/top = 3
+anchor/right = 3
+anchor/bottom = 3
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 496.5
+margin/top = -61.0
+margin/right = 367.5
+margin/bottom = -96.0
+custom_fonts/font = ExtResource( 4 )
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Cancel"
+flat = false
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+
+playback/process_mode = 1
+playback/default_blend_time = 0.0
+root/root = NodePath("..")
+anims/spritemovefairy = SubResource( 8 )
+playback/active = true
+playback/speed = 1.0
+blend_times = [  ]
+autoplay = "spritemovefairy"
+
+[connection signal="pressed" from="questlog" to="." method="_on_questlog_pressed"]
+
+[connection signal="pressed" from="slavebuypanel/purchasebutton" to="." method="_on_purchasebutton_pressed"]
+
+[connection signal="pressed" from="slavebuypanel/mindreadbutton" to="." method="_on_mindreadbutton_pressed"]
+
+[connection signal="pressed" from="slavebuypanel/slavelistcancel" to="." method="_on_slavelistcancel_pressed"]
+
+[connection signal="meta_clicked" from="slavebuypanel/slavedescription" to="." method="_on_slavedescription_meta_clicked"]
+
+[connection signal="pressed" from="slavesellpanel/slavesellbutton" to="." method="_on_slavesellbutton_pressed"]
+
+[connection signal="pressed" from="slavesellpanel/slavesellcancel" to="." method="_on_slavesellcancel_pressed"]
+
+[connection signal="pressed" from="slaveguildquestpanel/questaccept" to="." method="_on_questaccept_pressed"]
+
+[connection signal="pressed" from="slaveguildquestpanel/questcancel" to="." method="_on_questcancel_pressed"]
+
+[connection signal="pressed" from="slaveguildquestpanel/questhide" to="." method="_on_questhide_pressed"]
+
+[connection signal="pressed" from="slaveservicepanel/serviceconfirm" to="." method="_on_serviceconfirm_pressed"]
+
+[connection signal="pressed" from="slaveservicepanel/selectslavebutton" to="." method="_on_selectslavebutton_pressed"]
+
+[connection signal="pressed" from="slaveservicepanel/slaveservicecancel" to="." method="_on_slaveservicecancel_pressed"]
+
+[connection signal="visibility_changed" from="mageorderservices" to="." method="_on_mageorderservices_visibility_changed"]
+
+[connection signal="pressed" from="mageorderservices/learnspellbutton" to="." method="_on_learnspellbutton_pressed"]
+
+[connection signal="pressed" from="mageorderservices/upgradelibrary" to="." method="_on_upgradelibrary_pressed"]
+
+[connection signal="pressed" from="mageorderservices/upgradealchemy" to="." method="_on_upgradealchemy_pressed"]
+
+[connection signal="pressed" from="mageorderservices/upgradelaboratory" to="." method="_on_upgradelaboratory_pressed"]
+
+[connection signal="pressed" from="mageorderservices/close" to="." method="_on_close_pressed"]
+
+[connection signal="pressed" from="carpenter/upgradecommunal" to="." method="_on_upgradecommunal_pressed"]
+
+[connection signal="pressed" from="carpenter/upgradepersonal" to="." method="_on_upgradepersonal_pressed"]
+
+[connection signal="pressed" from="carpenter/upgradejail" to="." method="_on_upgradejail_pressed"]
+
+[connection signal="pressed" from="carpenter/upgradefarm" to="." method="_on_upgradefarm_pressed"]
+
+[connection signal="pressed" from="carpenter/upgradebed" to="." method="_on_upgradebed_pressed"]
+
+[connection signal="pressed" from="carpenter/carpenterleave" to="." method="_on_carpenterleave_pressed"]
+
+[connection signal="pressed" from="shoppanel/Panel/buybutton" to="." method="shopbuy"]
+
+[connection signal="pressed" from="shoppanel/Panel/sellbutton" to="." method="shopsell"]
+
+[connection signal="pressed" from="shoppanel/Panel/closebutton" to="." method="shopclose"]
+
+[connection signal="pressed" from="shoppanel/itempanel/buysellbutton" to="." method="_on_buysellbutton_pressed"]
+
+[connection signal="pressed" from="sebastiannode/sebastianconfirm" to="." method="_on_sebastianconfirm_pressed"]
+
+[connection signal="pressed" from="sebastiannode/sebastiancancel" to="." method="_on_sebastiancancel_pressed"]
+
+
