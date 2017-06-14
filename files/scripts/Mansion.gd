@@ -580,7 +580,6 @@ func _on_end_pressed():
 				slave.health = 15
 			elif slave.race == 'Slime':
 				slave.toxicity = -200
-			
 			#Traits
 			if slave.traits.has("Uncivilized"):
 				for i in globals.slaves:
