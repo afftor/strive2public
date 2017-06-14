@@ -3,10 +3,10 @@ extends Node
 var traits = {
   "Foul Mouth": {
     "name": "Foul Mouth",
-    "description": "All too often, $name uses words more suited for construction workers and sailors. \n\n[color=aqua]Vocal occupations less effective, -Charm. [/color]",
+    "description": "All too often, $name uses words more suited for construction workers and sailors. \n\n[color=aqua]Vocal occupations less effective, -Max Charm. [/color]",
     "effect": {
       "code": "foul_mouth",
-      "charm_cur": -25
+      "charm_max": -25
     },
     "tags": [
       "mental",
@@ -245,7 +245,7 @@ var traits = {
   },
   "Prude": {
     "name": "Prude",
-    "description": "$name is very intolerant of many sexual practices, believing there's too many inappropriate behaviors which shouldn't be practiced.\n\n[color=aqua]Sexual actions are harder to initiate and are less impactful. [/color]",
+    "description": "$name is very intolerant of many sexual practices, believing there's too many inappropriate behaviors which shouldn't be practiced.\n\n[color=aqua]Sexual actions are harder to initiate and are less impactful. Refuses to work on sex-related jobs. [/color]",
     "effect": {
       
     },

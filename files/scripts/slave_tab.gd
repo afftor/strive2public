@@ -559,7 +559,7 @@ reqs = 'true',
 unlockreqs = 'true',
 maxnumber = 0,
 order = 2,
-tags = ['wild'],
+tags = ['wild','physical'],
 },hunt = {
 code = 'hunt',
 name = "Hunt",
@@ -570,7 +570,7 @@ reqs = 'true',
 unlockreqs = 'true',
 maxnumber = 0,
 order = 3,
-tags = ['wild'],
+tags = ['wild','physical'],
 },library = {
 code = 'library',
 name = "Library",
@@ -592,7 +592,7 @@ reqs = 'globals.originsarray.find(globals.currentslave.origins) >= 1',
 unlockreqs = 'true',
 maxnumber = 1,
 order = 5,
-tags = ['mansion'],
+tags = ['mansion','physical'],
 },maid = {
 code = 'maid',
 name = "Cleaning",
@@ -603,7 +603,7 @@ reqs = 'true',
 unlockreqs = 'true',
 maxnumber = 0,
 order = 4,
-tags = ['mansion'],
+tags = ['mansion','physical'],
 },nurse = {
 code = 'nurse',
 name = "Nurse",
@@ -659,7 +659,7 @@ reqs = 'true',
 unlockreqs = 'true',
 maxnumber = 0,
 order = 8,
-tags = ['wimborn','vocal', 'social'],
+tags = ['wimborn','vocal', 'social','physical'],
 },assistwimborn = {
 code = 'assistwimborn',
 name = "W - Mage Order Assistant",
@@ -670,7 +670,7 @@ reqs = "globals.originsarray.find(globals.currentslave.origins) >= 2 && globals.
 unlockreqs = 'globals.state.rank >= 2',
 maxnumber = 0,
 order = 10,
-tags = ['wimborn','social'],
+tags = ['wimborn','social','physical'],
 },artistwimborn = {
 code = 'artistwimborn',
 name = "W - Public Entertainer",
@@ -692,7 +692,7 @@ reqs = "true",
 unlockreqs = 'true',
 maxnumber = 0,
 order = 9,
-tags = ['gorn'],
+tags = ['gorn','physical'],
 },ffprostitution = {
 code = 'ffprostitution',
 name = "F - Prostitution",
@@ -736,7 +736,7 @@ reqs = "globals.originsarray.find(globals.currentslave.origins) >= 1",
 unlockreqs = 'true',
 maxnumber = 0,
 order = 9,
-tags = ['gorn','social'],
+tags = ['gorn','social','physical'],
 },headgirl = {
 code = 'headgirl',
 name = "Headgirl",
@@ -826,6 +826,10 @@ func joblist():
 				elif slave.tags.find('nosex') >= 0:
 					newbutton.set_disabled(true)
 					newbutton.set_tooltip(slave.dictionary("$name refuses to participate in sexual activities at this moment. "))
+				elif slave.traits.has("Monogamous") || slave.traits.has("Prude"):
+					newbutton.set_disabled(true)
+					newbutton.set_tooltip(slave.dictionary("$name refuses to whore $himself."))
+
 			if i.tags.find('social') >= 0:
 				if slave.traits.has('Uncivilized') || slave.traits.has('Regressed'):
 					newbutton.set_disabled(true)

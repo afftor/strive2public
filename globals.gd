@@ -721,7 +721,10 @@ class slave:
 	
 	func name_long():
 		if nickname == '':
-			return name + ' ' + surname
+			if surname != "":
+				return name + ' ' + surname
+			else:
+				return name
 		else:
 			return nickname
 	

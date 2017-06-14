@@ -832,7 +832,7 @@ func _on_confirmwinning_pressed(secondary = false):
 				else:
 					text += defeated.units[i].dictionary("You have released $race $child and set $him free.\n")
 					globals.state.reputation[location] += rand_range(2,3)
-					if rand_range(0,100) < 25 && reward == false:
+					if rand_range(0,100) < 25 + globals.state.reputation[location]/3 && reward == false:
 						reward = true
 						rewardslave = defeated.units[i]
 						rewardslavename = defeated.names[i]
@@ -921,13 +921,13 @@ func capturedecide(stage): #1 - no reward, 2 - material, 3 - sex, 4 - join
 		text = "After getting through $his belongings, $name passes you some valueable and gold. "
 		globals.resources.gold += round(rand_range(3,6)*10)
 	elif stage == 3:
-		if rand_range(0,100) >= 35:
+		if rand_range(0,100) >= 35 + globals.state.reputation[location]/2:
 			text = "$name hastily refuses and retreats excusing $himself. "
 		else:
 			text = "After brief pause, $name gives you an accepting nod. After you seclude to nearby bushes, $he rewards you with passionate session. "
 			globals.resources.mana += 5
 	elif stage == 4:
-		if rand_range(0,100) >= 20:
+		if rand_range(0,100) >= 20 + globals.state.reputation[location]/4:
 			text = "$name excuses $himself, but can't accept your proposal and quickly leaves. "
 		else:
 			globals.slaves = rewardslave
