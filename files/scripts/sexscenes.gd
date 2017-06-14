@@ -8,15 +8,16 @@ text3 = {consensual = 'consensual', titsize = 'flat', loyaltybelow = 70, text = 
 text4 = {consensual = 'consensual', titsize = 'flat', loyaltyabove = 70, text = 'You instruct $name to sit on the bed beside you. SHe looks a bit anxious or possibly hopeful? Difficult to tell. You start slow, your hands tracing thier neck, gently rubbing thier shoulders. As $he begins to relax, your hands begin to slip around towards the sides, then the front, progressivly moving closer and closer to thier nipples. When you finally do reach them, it takes a disapointingly low number to pinches and tweaks to bring them close to the edge, and you secretly enjoy the disbelieving look $he gives you as you casually dismiss them.'},
 },
 pussy = {
-text1 = {function = 'pussysex'}
+text1 = {function = 'pussysex'},
+text2 = {consensual = 'nonconsensualdislike', pchaspenis = true, function = 'pussyrape'},
 },
 ass = {
 text1 = {function = 'analsex'},
-text2 = {consensual = 'nonconsensualdislike', pchaspenis = true, text = '$name averts $his eyes, as you position $him to have access to $his rear. Not waiting for long, you push cock inside of $his ass making $him yelp at the sudden invasion. $He tries to get away and break free but you firmly hold his body in place. As you move inside of $his ass, tears start falling down here cheeks and $he begs you to stop. $His desperation brings you closer to climax.'},
+text2 = {consensual = 'nonconsensualdislike', pchaspenis = true, text = '$name averts $his eyes, as you position $him to have access to $his rear. Not waiting for long, you push cock inside of $his ass making $him yelp at the sudden invasion. $He tries to get away and break free but you firmly hold $his body in place. As you move inside of $his ass, tears start falling down $his cheeks and $he begs you to stop. $His desperation brings you closer to climax.'},
 },
 blowjob = {
 text1 = {function = 'blowjobsex'},
-text2 = {consensual = 'nonconsensualdislike', text = "You tightly tie $name in place. Brushing over $his cheek, you take a ring gag. After a moment you have fix a gag in the $child's mouth. You take off your pants and direct your cock into the poor thing's face. $His clumsy attempts to evade it only provoke you further. With force you insert you cock into $his open mouth, making $him moan in protest. $His warm and damp tongue instinctively tries to push out the invader, but it only increases your pleasure. With glee you grabs the victim's head and hold it in place. With every thrust you force yourself into $his throat deeper and deeper. By this time moans are replaced with whimper and cries while $his tear-stained eyes begin to express humility. The sight of $him choking on you cock brings you closer to climax."},
+text2 = {consensual = 'nonconsensualdislike', text = "You tightly tie $name in place. Brushing over $his cheek, you take a ring gag. After a moment you have fixed the gag in the $child's mouth. You take off your pants and direct your cock into the poor thing's face. $His clumsy attempts to evade it only provoke you further. With force you insert you cock into $his open mouth, making $him moan in protest. $His warm and damp tongue instinctively tries to push out the invader, but it only increases your pleasure. With glee you grabs the victim's head and hold it in place. With every thrust you force yourself into $his throat deeper and deeper. By this time moans are replaced with whimper and cries while $his tear-stained eyes begin to express humility. The sight of $him choking on your cock brings you closer to climax."},
 },
 hairjob = {
 text1 = {function = 'hairjob'}
@@ -38,15 +39,15 @@ group = {code = 'group', name = 'Group', actions = [], cost = 70, description = 
 
 var normalscenes = {
 'kiss': {
-consensual = 'You deeply kiss $name and tightly hug $his body. $He responds to your embrace and takes noticable pleasure from the contact. ',
-rape = "You forcefully push your way into $name's mouth and spend some time exploring it with your tongue. ",
+consensual = 'You deeply kiss $name, tightly hug $his body. $He responds to your embrace and takes noticable pleasure from the contact. ',
+rape = "You forcefully push your way into $name's mouth and spend some time exploring it with your tongue. $He squirms trying to break your embrace. ",
 swing = "$2name and $name share a passionate kiss. They clearly enjoy each other as you watch. ",
 swingforced = "$name forcefully embraces and kisses $name at your order. ",
 }, 'massage': {
 consensual = 'You give $name a gentle massage helping $him to relax and improve $his mood.',
 swing = "$2name gives $name a gentle massage helping $him to relax and improve $his mood.",
 }, 'handjob': {
-consensual = '$name obediently jerks you off bringing you to climax in few minutes. ',
+consensual = '$name wraps $his hand about your $penis and begins to jerk you off, you climax in few minutes. ',
 swing = "$name obediently jerks off $2name's cock. ",
 }, 'fingering': {
 consensual = "You thoroughly work on $name's $hole with your hand until $he cums.",
@@ -56,7 +57,7 @@ consensual = 'You make $name spread $his legs for you and thoroughly lick $his p
 swing = "$name lets $2name thoroughly lick $his pussy. ",
 }, 'blowjob': {
 consensual = '$name takes your cock into $his mouth and gives you a blowjob, eventually making you cum.',
-rape = "You force your cock into $name's mouth, raping it and pouring everything down $his throat. ",
+rape = "You force your cock into $name's mouth. Grabing $his head you rape it and pouring everything down $his throat. ",
 swing = "$name takes $2name's cock into $his mouth and gives $2him a blowjob, eventually making @2him cum.",
 swingforced = "$2name forces $2his cock into $name's mouth, raping it and pouring everything down $his throat. ",
 }, 'titfuck': {
@@ -677,10 +678,19 @@ func pussysex(slave):
 		text += "$He agrees readily and without fuss, stripping and giving you full access to $his body. "
 	else:
 		text += " $He hesitates for a moment, but eventually agrees, stripping to give you full access to $his body. "
-	text += "You don’t keep $him waiting for very long. Leaning down, you press your mouth against $his " + globals.fastif(slave.bodyshape == 'bestial', "muzzle", "own") + " eagerly tasting inside, even as $he starts to respond.  Your hands stroke over $his body, things growing more heated as you line up the tip of " +  globals.player.dictionaryplayer("$penis") + " sliding up and down $his lower lips. $He’s already more than soaked, and you have no trouble at all parting $his folds and pushing into $his body. $He " + globals.fastif(slave.pussy.virgin == true, "winces rather hard, the resistance within her breaking away a moment later as she gasps, then", "") + globals.fastif(slave.sexuals.actions.pussy >= 4, " gives a lusty moan and", "") + " squirms under you as you start a steady pace of thrusts into $his body, holding $him to you as $his legs wrap around your back almost instinctively" + globals.fastif(slave.tail != "none", " and $his tail wraps around your leg", "" )+ ". $His insides are hot and wet against your " +  globals.player.dictionaryplayer("$penis") + ", feeling amazing and you slide in and out of $his body. " + globals.fastif(slave.pussy.virgin == true, "A small amount of pink tinting to the fluids around your connection prove it.  You’ve taken $his virginity. ", "")
+	text += "You don’t keep $him waiting for very long. Leaning down, you press your mouth against $his " + globals.fastif(slave.bodyshape == 'bestial', "muzzle", "own") + " eagerly tasting inside, even as $he starts to respond.  Your hands stroke over $his body, things growing more heated as you line up the tip of " +  globals.player.dictionaryplayer("$penis") + " sliding up and down $his lower lips. $He’s already more than soaked, and you have no trouble at all parting $his folds and pushing into $his body. $He " + globals.fastif(slave.pussy.virgin == true, "winces rather hard, the resistance within her breaking away a moment later as she gasps, then", "") + globals.fastif(slave.sexuals.actions.pussy >= 4, " gives a lusty moan and", "") + " squirms under you as you start a steady pace of thrusts into $his body, holding $him to you as $his legs wrap around your back almost instinctively" + globals.fastif(slave.tail != "none", " and $his tail wraps around your leg", "" )+ ". $His insides are hot and wet against your " +  globals.player.dictionaryplayer("$penis") + ", feeling amazing as you slide in and out of $his body. " + globals.fastif(slave.pussy.virgin == true, "A small amount of pink tinting to the fluids around your connection prove it.  You’ve taken $his virginity. ", "")
 	text += "\n\nIt doesn’t take long before you feel yourself nearing the end, and pick up the pace pounding into $his body, possessively kissing $him as you hold her down. Taken by $his own instincts, $name moans into the kiss as $his whole body rocks under you. " +  globals.fastif(globals.player.penis.number >= 1, "$He clenches down a moment later, shivering as you feel $his walls start to squeeze and contract around you, almost begging you for your seed. " , "" ) + globals.fastif(slave.penis.number >= 1, "Her own dick twitches as well, messily splattering up $his stomach.", "") + globals.fastif(globals.player.penis.number >= 1, " Soon you slam in as deep as you can go and flooding her core with your cum. ", "")
 	return text
 
+func pussyrape(slave):
+	var text = ''
+	if slave.traits.has('Likes it rough'):
+		text += "$name makes a show of struggling "
+	else:
+		text += "$name struggles "
+	text += "as you roughly toss $him onto the bed. Forcing $his legs apart you open $his pussy to you. Pressing your " + globals.player.dictionaryplayer("$penis") + " against $his pussy $he begs you not to do it. With a single thrust you slam your " +  globals.player.dictionaryplayer("$penis") + " all the way into $his pussy. $He " + globals.fastif(slave.pussy.virgin == true, "screams in pain as your " + globals.player.dictionaryplayer("$penis") + " tears through her virginity.", "yells out in protest at your sudden assault.") + "\n\n Wraping your arms about $his legs you hold $him in position as you thrust your " +  globals.player.dictionaryplayer("$penis") + " in and out of $his pussy with hard violent strokes. $He squirms trying to break free and get away but you hold on tightly. Tears start falling down $his cheeks and $he begs you to stop. $His desperation brings you closer to climax."
+	return text
+	
 func analsex(slave):
 	var text = "With a simple gesture, you order $name to strip, moving around behind $him as $he does. " 
 	if slave.sexuals.actions.ass >= 5:
