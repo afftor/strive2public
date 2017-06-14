@@ -86,7 +86,7 @@ func _on_futaballs_pressed():
 
 func _on_fullscreen_pressed():
 	OS.set_window_fullscreen(get_node("TabContainer/Settings/fullscreen").is_pressed())
-	globals.rules.fullscreen = get_node("TabContainer/Settings/fullscreen").is_pressed()
+	get_node("screenpopup").popup()
 
 func _on_childlike_pressed():
 	globals.rules.children = get_node("TabContainer/Game/childlike").is_pressed()
@@ -269,3 +269,16 @@ func _on_RichTextLabel_meta_clicked( meta ):
 
 func _on_permadeath_pressed():
 	globals.rules.permadeath = get_node("TabContainer/Game/permadeath").is_pressed()
+
+
+func _on_confirm_pressed():
+	globals.rules.fullscreen = get_node("TabContainer/Settings/fullscreen").is_pressed()
+	globals.overwritesettings()
+	get_node("screenpopup").set_hidden(true)
+
+
+
+func _on_cancel_pressed():
+	OS.set_window_fullscreen(!get_node("TabContainer/Settings/fullscreen").is_pressed())
+	get_node("TabContainer/Settings/fullscreen").set_pressed(globals.rules.fullscreen)
+	get_node("screenpopup").set_hidden(true)

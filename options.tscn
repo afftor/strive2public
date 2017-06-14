@@ -200,6 +200,7 @@ max_lines_visible = -1
 
 [node name="Game" type="Tabs" parent="TabContainer"]
 
+editor/display_folded = true
 visibility/visible = false
 anchor/right = 1
 anchor/bottom = 1
@@ -469,6 +470,7 @@ max_lines_visible = -1
 
 [node name="Supporter section" type="Tabs" parent="TabContainer"]
 
+editor/display_folded = true
 visibility/visible = false
 anchor/right = 1
 anchor/bottom = 1
@@ -870,6 +872,83 @@ shortcut = null
 text = "Confirm"
 flat = false
 
+[node name="screenpopup" type="Popup" parent="."]
+
+anchor/left = 3
+anchor/top = 3
+anchor/right = 3
+anchor/bottom = 3
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 188.0
+margin/top = 121.0
+margin/right = -198.0
+margin/bottom = -77.0
+popup/exclusive = false
+
+[node name="Panel" type="Panel" parent="screenpopup"]
+
+anchor/left = 3
+anchor/top = 3
+anchor/right = 3
+anchor/bottom = 3
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 193.0
+margin/top = 99.0
+margin/right = -193.0
+margin/bottom = -99.0
+
+[node name="RichTextLabel" type="RichTextLabel" parent="screenpopup/Panel"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 27.0
+margin/top = 24.0
+margin/right = 358.0
+margin/bottom = 124.0
+bbcode/enabled = true
+bbcode/bbcode = "[center]Screen changed. Save new mode?[/center]"
+visible_characters = -1
+
+[node name="confirm" type="Button" parent="screenpopup/Panel"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 42.0
+margin/top = 136.0
+margin/right = 154.0
+margin/bottom = 175.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Confirm"
+flat = false
+
+[node name="cancel" type="Button" parent="screenpopup/Panel"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 227.0
+margin/top = 136.0
+margin/right = 339.0
+margin/bottom = 175.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Cancel"
+flat = false
+
 [connection signal="visibility_changed" from="." to="." method="_on_options_visibility_changed"]
 
 [connection signal="pressed" from="TabContainer/Settings/screenresize" to="." method="_on_screenresize_pressed"]
@@ -943,5 +1022,9 @@ flat = false
 [connection signal="pressed" from="TabContainer/Supporter section/cheatpanel/levelup" to="." method="_on_levelup_pressed"]
 
 [connection signal="pressed" from="Done" to="." method="_on_Done_pressed"]
+
+[connection signal="pressed" from="screenpopup/Panel/confirm" to="." method="_on_confirm_pressed"]
+
+[connection signal="pressed" from="screenpopup/Panel/cancel" to="." method="_on_cancel_pressed"]
 
 
