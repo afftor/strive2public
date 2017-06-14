@@ -2060,6 +2060,7 @@ func brewlistpressed(potion):
 		else:
 			text = text + '[color=red]' + str(item.amount) + '[/color]\n'
 			brewable = false
+	text = text + '\n[color=white]'+ potselected.name + ': ' + '[color=green]' + potselected.description + '\n'		
 	for i in get_tree().get_nodes_in_group('alchemypot'):
 		if i.get_text() != potion.name && i.is_pressed() == true:
 			i.set_pressed(false)
