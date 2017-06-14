@@ -279,7 +279,7 @@ class progress:
 	var currentversion = 0336
 	var unstackables = {}
 	var supplykeep = 10
-	
+	var tutorialstate = {basics = false, slave = false, alchemy = false, jail = false, lab = false, farm = false, outside = false, combat = false}
 	var itemcounter = 0
 	
 	func cond_set(value):

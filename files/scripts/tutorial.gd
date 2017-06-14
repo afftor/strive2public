@@ -1,5 +1,28 @@
 extends Node
 
+var spritedict = {
+sprite1 = load('res://files/images/1character/11.png')
+}
+
+var textdict = {
+introduction = [
+{sprite = 'sprite1',text = "Hehe"}
+],
+basicstext = [
+{sprite = 'sprite1', text = 'Hi!'},
+],
+}
+
+
+
+
+
+
+
+
+
+
+
 var scripttext = {
 1 : "This is your main mansion screen. Here you can navigate through your rooms and slaves in your possession. Right now you only have one slave, let's go through $him. ",
 1.1 : "Slave list showcases your present servants. You can interact and inspect them with buttons and see their status on the right. ",
@@ -146,6 +169,3 @@ func _on_tutorialprevious_pressed():
 	tutorialwindow()
 
 
-func _on_receivecheckbox_pressed():
-	globals.rules.receiving = get_node("receivecheckbox").is_pressed()
-	globals.overwritesettings()

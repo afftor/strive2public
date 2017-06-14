@@ -114,7 +114,7 @@ func _on_sexual_visibility_changed():
 	
 	if slave.sexuals.unlocks.has('swing') == false && rape == false:
 		get_node("partner").set_disabled(true)
-		get_node("partner").set_tooltip(slave.dictionary("Must unlock Swing category before $name would agree to change partner"))
+		get_node("partner").set_tooltip(slave.dictionary("Must unlock Swing category before $name would agree to change partners."))
 	else:
 		get_node("partner").set_disabled(false)
 		get_node("partner").set_tooltip("")
@@ -177,7 +177,7 @@ func sexactionchosen(button):
 	text = partner.dictionary(text)
 	if slave.sexuals.actions.has(action.code):
 		if slave.sexuals.actions[action.code] >= 1:
-			text += slave.dictionary("\n\n$name has engaged into this action " + str(slave.sexuals.actions[action.code]) + " times. ")
+			text += slave.dictionary("\n\n$name has engaged in this " + str(slave.sexuals.actions[action.code]) + " times. ")
 	get_node("descriptpanel").set_hidden(false)
 	get_node("confirmbutton").set_disabled(false)
 	get_node("descriptpanel/holebutton").set_hidden(true)
@@ -237,7 +237,7 @@ func _on_confirmbutton_pressed():
 		difficulty -= slave.lust/5 + slave.sexuals.actions.size()
 		difficulty += max(80-slave.obed, 0) + max(15-slave.loyal, 0)
 		if difficulty >= 15:
-			text += slave.dictionary("[color=yellow]—I'm sorry $master, but I'm not in the mood for this... [/color]\n\n$name looks reluctant to your suggestion. Perhaps it's better to start with something smaller. Or force $him...")
+			text += slave.dictionary("[color=yellow]—I'm sorry $master, but I'm not in the mood for this... [/color]\n\n$name looks reluctant at your suggestion. Perhaps it's better to start with something smaller. Or force $him...")
 			get_tree().get_current_scene().popup(text)
 			return
 	
@@ -314,7 +314,7 @@ func sexinitiate(secondtime = false):
 	if partner.sex == slave.sex && slave.traits.has("Bisexual") == false && slave.traits.has("Sex-crazed") == false && !slave.spec in ['geisha','nympho']:
 		slave.stress += max(-20 + slave.conf, 0)
 		lusteffect = lusteffect*0.8
-		text += "\n\n[color=yellow]$name experience some discomfort by having sex with someone of $his gender. [/color]"
+		text += "\n\n[color=yellow]$name experience some discomfort by having sex with someone of $his own gender. [/color]"
 	if action.tags.find('sub') >= 0:
 		slave.dom -= lusteffect/8
 	elif action.tags.find('dom') >= 0:
@@ -338,7 +338,7 @@ func sexinitiate(secondtime = false):
 		slave.loyal -= slave.conf/4
 		slave.obed -= slave.cour/2
 		lusteffect = lusteffect/2
-		text += "\nAfter some time $name drops any active resistance and just endures through your abuse. "
+		text += "\nAfter some time $name drops any active resistance and attempts to endure through your abuse. "
 		consecheck = 'nonconsensualdislike'
 	
 	if slave.effects.has("stimulated"):
@@ -377,7 +377,7 @@ func sexinitiate(secondtime = false):
 					text += "\n\n[color=yellow]You tear through $name's hymen and claim $his virginity. [/color]"
 				else:
 					slave.pussy.first = partner.id
-					text += ("\n\n[color=yellow]$2name tear through $name's hymen and claim $his virginity. [/color]")
+					text += ("\n\n[color=yellow]$2name tears through $name's hymen and claims $his virginity. [/color]")
 				if (rape == false || rapelike == true) && partner == globals.player:
 					slave.loyal += 10
 					text += "[color=green]$He seems to be glad about it. [/color]"
@@ -387,9 +387,9 @@ func sexinitiate(secondtime = false):
 			partner.pussy.virgin = false
 			partner.pussy.first = slave.id
 			if globals.player == partner:
-				text += slave.dictionary("[color=yellow]\n\n$name has took your virginity.[/color] ")
+				text += slave.dictionary("[color=yellow]\n\n$name has taken your virginity.[/color] ")
 			else:
-				text += slave.dictionary("[color=yellow]\n\n$name") + partner.dictionary(" has took $name's virginity.[/color] ")
+				text += slave.dictionary("[color=yellow]\n\n$name") + partner.dictionary(" has taken $name's virginity.[/color] ")
 	elif action.tags.find('penetration') >= 0  && (hole == 'ass' || action.tags.find('anal') >= 0):
 		slave.metrics.anal += 1
 	elif action.tags.find('selfpenetration') >= 0  && (hole == 'ass' || action.tags.find('anal') >= 0):
@@ -478,7 +478,7 @@ func sexinitiate(secondtime = false):
 				else:
 					array.append(sexbuttons[i])
 		if array.size() < 1:
-			text += "\n\n$name does not seem to be completely satisfied, but won't dare to ask you for something bigger."
+			text += "\n\n$name does not seem to be completely satisfied, but won't dare to ask you for something more."
 		else:
 			var tempaction = array[rand_range(0,array.size())]
 			if tempaction.tags.find('choosehole') >= 0:
@@ -518,11 +518,11 @@ func moresexline(actionname):
 	"Receive Anal Sex":"$name requests you to let $him fuck you in the ass. ",
 	"Nipplefuck":"$name presents you with $his soaking, stretched nipples and begs you to fuck them. ",
 	"Tailpegging":"$name hopes you could fuck $his $hole with your tail. ",
-	"Oral":"$name presents you with $his pussy, hinting $he would love a cunnilingus from you. ",
+	"Oral":"$name presents you with $his pussy, hinting $he would love cunnilingus from you. ",
 	"Anal Sex":"$name begs you to fuck $his ass. ",
 	"Fingering":"$name hopes you could finger $his $hole. ",
 	"Light bondage":"$name timidly suggests you to tie $him up and punish $him for being a bad $child. ",
-	"Hard bondage":"$name tells you, $he's in the mood for heavy punishment delivered by you. ",
+	"Hard bondage":"$name tells you, $he's in the mood for some heavy punishment delivered by you. ",
 	}
 	if dict.has(text):
 		return dict[text]
@@ -558,7 +558,7 @@ func groupcheck(slave2 = null):
 		get_node("group/grouppopup/Panel/partner2").set_hidden(false)
 		get_node("group/grouppopup/Panel/confirm").set_disabled(false)
 		get_node("group/grouppopup/Panel/confirm").set_meta("action",'threesome')
-		text = "Threesome will include additional person, who has group sex unlocked. You can only do group sex once a day. "
+		text = "Threesome will include an additional person, who has group sex unlocked. You can only have group sex once a day. "
 		text += "You've selected " + globals.fastif(threesomepartner == null, 'nobody', '[color=aqua]$name[/color]') + " as third person. "
 		if threesomepartner != null:
 			text = threesomepartner.dictionary(text)
@@ -604,7 +604,7 @@ func _on_confirm_pressed():
 	if action == 'threesome':
 		array = [slave, threesomepartner]
 		globals.player.energy = -30
-		text += "You, " + slave.dictionary("$name, ") + threesomepartner.dictionary("and $name get onto the bed and spend next few hours in wild sex with each other. ")
+		text += "You, " + slave.dictionary("$name, ") + threesomepartner.dictionary("and $name get onto the bed and spend next few hours having wild sex with each other. ")
 		mana += round(slave.lust/15 + threesomepartner.lust/15 + 4)
 		slave.metrics.manaearn += round(mana/2)
 		threesomepartner.metrics.manaearn += round(mana/2)
@@ -630,7 +630,7 @@ func _on_confirm_pressed():
 			i.energy = -30
 			get_tree().get_current_scene().impregnation(i, globals.player)
 			get_tree().get_current_scene().impregnation(globals.player, i)
-		text += "\nAfter you done your both partners look exhausted and satisfied. "
+		text += "\nAfter you're done your both partners look exhausted and satisfied. "
 	elif action == 'orgy':
 		for i in globals.slaves:
 			if i.sexuals.unlocks.has('group') && i.away.duration == 0:
@@ -639,7 +639,7 @@ func _on_confirm_pressed():
 			text += "You don't have enough slaves who would willingly participate in orgy. " 
 			get_tree().get_current_scene().popup(text)
 			return
-		text += "You gather " + str(array.size()) + " servants and make an announcement, that today they will be learning more about themselves and those around them. As you pass everyone some spiked drinks it does not take long for them to lose themselves into lust and beging pleasuring eachother. " 
+		text += "You gather " + str(array.size()) + " servants and make an announcement, that today they will be learning more about themselves and those around them. As you pass everyone some spiked drinks it does not take long for them to lose themselves in their lust and begin pleasuring eachother. " 
 		for i in array:
 			i.metrics.orgy += 1
 			globals.state.condition = -rand_range(5,10)
@@ -729,7 +729,7 @@ func _on_piercing_pressed():
 			i.set_hidden(true)
 			i.queue_free()
 	if slave.lewd >= 100:
-		get_node("piercingpanel/piercestate").set_text(slave.dictionary('$name does not seems to mind you pierce $his private places.'))
+		get_node("piercingpanel/piercestate").set_text(slave.dictionary('$name does not seems to mind you piercing $his private places.'))
 	else:
 		get_node("piercingpanel/piercestate").set_text(slave.dictionary('$name refuses to let you pierce $his private places'))
 	
