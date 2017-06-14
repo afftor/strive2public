@@ -41,7 +41,7 @@ func _on_actions_visibility_changed():
 		return
 	if slave.hairlength == 'ear':
 		get_node("cuthair").set_disabled(true)
-		get_node("cuthair").set_tooltip(slave.dictionary("$name's hair are already at minimum length."))
+		get_node("cuthair").set_tooltip(slave.dictionary("$name's hair cannot get any shorter."))
 	else:
 		get_node("cuthair").set_disabled(false)
 		get_node("cuthair").set_tooltip('')
@@ -63,7 +63,7 @@ func _on_actions_visibility_changed():
 		get_node("sex").set_disabled(false)
 		get_node("punishroom").set_disabled(false)
 		get_node("punishroom").set_tooltip("")
-		get_node("sex").set_tooltip(slave.dictionary("Openly propose consensual sex to $name\nWill unlock sex actions if succeed"))
+		get_node("sex").set_tooltip(slave.dictionary("Openly propose consensual sex to $name\nWill unlock sex actions if sucessful"))
 
 
 func showenergytooltip(button):
@@ -89,12 +89,12 @@ func actionbuttons(button):
 		return
 	globals.player.energy = -button.get_meta('cost')
 	if buttonname == 'berate':
-		text = "You scold $name for lousy behavior and make few remarks on possible future punishments if $he won't improve it. "
+		text = "You scold $name for their lousy behavior and make few remarks on possible future punishments if $he doesn't improve it. "
 		if slave.obed < 85 && slave.punish.expect == false:
 			if slave.effects.has('captured') == true:
 				slave.effects.captured.duration -= 1
 			slave.obed += 30 - slave.conf/5
-			text = text + "\n$He seems to be taking your reproach seriously."
+			text = text + "\n$He seems to be taking your repremand seriously."
 			slave.punish.expect = true
 			if slave.race == 'Human':
 				slave.punish.strength = 10 - slave.cour/25
@@ -102,10 +102,10 @@ func actionbuttons(button):
 				slave.punish.strength = 5 - slave.cour/25
 			slave.stress += rand_range(5,10)
 		elif slave.obed >= 85:
-			text = text + '\n$He reacts disturbingly to your reproach, as $he does not seems to believe $he offended you rightly.'
+			text = text + '\n$He unhappy to your repremand, as $he does not believe $he has offended you rightly.'
 			slave.stress += 15
 		else:
-			text = text + "\n$He does not seems to be very afraid of your threats, as you haven't executed them previously." 
+			text = text + "\n$He does not seems to be very afraid of your threats, as you haven't followed through on them previously." 
 			slave.obed += max(20 - slave.conf/5,0)
 			slave.punish.expect = true
 			if slave.race == 'Human':
@@ -116,15 +116,15 @@ func actionbuttons(button):
 			if slave.effects.has('captured') == true:
 				slave.effects.captured.duration += 1
 	elif buttonname == 'beat':
-		text = "You give $name a painful, but relatively safe beating, providing $him a valueable lesson of subordination. "
+		text = "You give $name a painful, but relatively harmless beating, providing $him a valueable lesson in subordination. "
 		slave.stress += rand_range(15,25)
 		slave.health = -rand_range(5,10)
 		if slave.obed < 75||slave.traits.has('Masochist') == true:
 			if slave.effects.has('captured') == true:
 				slave.effects.captured.duration -= 1
-				text = text + "\nBy the end $he glares at you with sorrow and hatred, showing leftovers of yet untamed spirit."
+				text = text + "\nBy the end $he glares at you with sorrow and hatred, showing leftovers of a yet untamed spirit."
 			else:
-				text = text + "\nBy the end $he begged for mercy and noticably took your lesson to heart." 
+				text = text + "\nBy the end $he begged for mercy and has taken your lesson to heart." 
 				slave.obed += rand_range(30,60)
 			if slave.punish.expect == true:
 				slave.obed += rand_range(20,40)
@@ -143,15 +143,15 @@ func actionbuttons(button):
 			slave.stress += rand_range(5,15)
 			slave.loyal -= rand_range(4,8)
 	elif buttonname == 'tickling':
-		text = "As you bring $name to the torture room, you fixate $him on the special chair and work your way with the feathers and brushes, until $his laughs turn into cries for mercy. You give $him small break then start over. $His overstimulated feet, armpits and genitals aching $he nearly loses coherence.. "
+		text = "As you bring $name to the torture room, you tie $him to the special chair and work your way over $his with the feathers and brushes, until $his laughter turn into cries for mercy. You give $him small break then start over. $His overstimulated feet, armpits and genitals aching $he nearly loses coherence.. "
 	elif buttonname == 'spanking':
-		text = "As you bring $name to the torture room, You tightly fixate $name on the table, bending $his defenseless bare butt wide open for your interractions. Slowly you begin the procedure. With each hit $his bottom gets redder and $his sudden cries fill with whimps and tears. Despite $his appeals you don't stop until $he nearly speechless, making sure your lesson made its point. "
+		text = "As you bring $name to the torture room, You tightly tie $name to the table, bending $his defenseless bare butt wide open for your administrations. Slowly you begin the procedure. With each hit $his bottom gets redder and $his cries are fill with whimpers and tears. Despite $his appeals you don't stop until $he nearly speechless, making sure your lesson made its point. "
 	elif buttonname == 'whipping':
-		text = "As you bring $name to the torture room, You fixate $name in standing position while naked and open for your sight and action. You take a whip and start the execution. At first $he stays silent but soon $he burst in tears and painful cries as you run hits across $his body making them especially sting on $his delicate parts. Despite $his appeals you don't stop until $he nearly speechless, making sure your lesson made its point. "
+		text = "As you bring $name to the torture room, You place $name in standing position, naked before you. You take out a whip and start the lashings. At first $he stays silent but soon $he burst out in tears and painful cries as you rain lashes across $his body making them string, especially when you focus on $his delicate parts. Despite $his appeals you don't stop until $he nearly speechless, making sure your lesson made its point. "
 	elif buttonname == 'hotwax':
-		text = "As you bring $name to the torture room, You tightly fixate $name on the bed wide open and naked. Next you bring few lighted candles and proceed slowly dripping hot wax over $his body. $He tries to break free and avoid painful sensation to no success. Irritating $his nipples and genitals seems to produce best results. After some time you finally stop, making sure the lesson had an impact. "
+		text = "As you bring $name to the torture room, You tightly tie $name on the bed spread eagled and naked. Next you bring few light candles and proceed to slowly dripping hot wax over $his body. $He tries to break free and avoid the painful sensation to no avail. Irritating $his nipples and genitals seems to produce best results. After some time you finally stop, making sure the lesson had an impact. "
 	elif buttonname == 'woodenhorse':
-		text = "As you bring $name to the torture room, You tightly fixate $name on wooden horse with $his legs spread. On $his feet you tie some extra weights and proceed watching $sex_child's sufferings. In no time $he starts begging for mercy, but you already made a decision and not about to stop now. After some time you finally untie $him, making sure the lesson had an impact. "
+		text = "As you bring $name to the torture room, You tightly tie $name to the wooden horse with $his legs spread wide. On $his feet you tie some extra weights and proceed to watch $his sufferings. In no time $he starts begging for mercy, but you already made a decision and are not about to stop now. After some time you finally untie $him, making sure the lesson had an impact. "
 	elif buttonname == 'praise':
 		text = "You give $name short speech praising $his recent behavior and achievments. "
 		if slave.obed >= 85 && slave.praise == 0:
@@ -168,7 +168,7 @@ func actionbuttons(button):
 			text = text + "$He takes your words calmly without much of enthusiasm. You probably overpraised $him lately. "
 			slave.praise += 1
 		else:
-			text = text + "$He takes your praise arrogantly, taking joy from it. "
+			text = text + "$He takes your praise arrogantly, gaining joy from it. "
 			if slave.race == 'Human':
 				slave.praise = 2
 			else:
@@ -362,7 +362,7 @@ func _on_talk_pressed():
 		text = text + "— I don't care about my life, or anything, can we just fuck here, Master?"
 	else:
 		if slave.loyal < 25:
-			text = text + globals.player.dictionaryplayer('— Yes, I will obey to your orders, $master. \n')
+			text = text + globals.player.dictionaryplayer('— Yes, I will obey your orders, $master. \n')
 			if slave.brand != 'none':
 				text = text + "It's not like I have much of an option anyway. \n$name gives you a trapped look. "
 		elif slave.loyal < 60:
