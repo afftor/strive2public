@@ -3560,6 +3560,5 @@ func _on_personal_pressed():
 	_on_selfbutton_pressed()
 
 
-
 func _on_combatgroup_pressed():
 	_on_assignbutton_pressed()
