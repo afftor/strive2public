@@ -412,7 +412,6 @@ func enemyencounter():
 						location = 'frostford'
 					elif currentzone.exits.find("gornoutskirts") >= 0:
 						location = 'gorn'
-					slavetemp.affiliation[location] = rand_range(30,80)
 				enemygroup.units[counter].capture = slavetemp
 			counter += 1
 		if enemygroup.captured != null:

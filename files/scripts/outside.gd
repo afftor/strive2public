@@ -171,7 +171,6 @@ func newslaveinguild(number, town = 'wimborn'):
 					break
 		var newslave = globals.slavegen.newslave(race, 'random', 'random', origin)
 		newslave.obed += 95
-		newslave.affiliation[town] = rand_range(30,90)
 		globals.guildslaves[town].append(newslave)
 		number -= 1
 
@@ -1581,7 +1580,6 @@ func calimake():
 	calitemp.relatives.mother = -1
 	calitemp.obed += 65
 	calitemp.unique = "Cali"
-	calitemp.affiliation.wimborn = 33
 	calitemp.cleartraits()
 	cali = calitemp
 
@@ -1759,7 +1757,6 @@ func emily(state = 1):
 		emily.imageportait = "res://files/images/emilyportrait.png"
 		emily.obed += 80
 		emily.skin = 'pale'
-		emily.affiliation.wimborn = 55
 		emily.cleartraits()
 		globals.state.upcomingevents.append({code = 'tishaappearance',duration =7})
 		globals.slaves = emily

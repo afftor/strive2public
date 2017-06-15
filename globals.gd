@@ -5,7 +5,7 @@ var itemdict = {}
 var spelldict = {}
 var effectdict = {}
 var guildslaves = {wimborn = [], gorn = [], frostford = []}
-var gameversion = 044
+var gameversion = 442
 var state = progress.new()
 
 var resources = resource.new()
@@ -368,7 +368,6 @@ class slave:
 	var attention = 0
 	var sexuals = {actions = {}, unlocked = false, affection = 0, kinks = {}, unlocks = []}
 	var kinks = []
-	var affiliation = {wimborn = 0, frostford = 0, gorn = 0}
 	var metrics = {ownership = 0, jail = 0, mods = 0, brothel = 0, sex = 0, partners = [], randompartners = 0, item = 0, spell = 0, orgy = 0, threesome = 0, win = 0, capture = 0, goldearn = 0, foodearn = 0, manaearn = 0, birth = 0, preg = 0, vag = 0, anal = 0, oral = 0, roughsex = 0, roughsexlike = 0, orgasm = 0}
 	var stats = {
 		str_cur = 0,
@@ -1155,8 +1154,11 @@ func repairsave():
 	#repairing items
 	if state.alchemy >= 2:
 		itemdict.aphroditebrew.unlocked = true
+	if state.currentversion <= 44:
+		showalisegreet = true
 	state.currentversion = gameversion
 
+var showalisegreet = false
 
 func dir_contents(target = "user://saves"):
 	var dir = Directory.new()

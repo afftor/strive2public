@@ -361,7 +361,7 @@ clothmaid = {
 clothkimono = {
 	code = 'clothkimono',
 	name = 'Kimono',
-	icon = null,
+	icon = load("res://files/images/items/clothkimono.png"),
 	description = "Brightly colored foreign clothes which are pretty popular for certain people.",
 	effect = [{type = 'onequip', effect = 'beauty', effectvalue = 10, descript = "Slightly increases beauty"}],
 	recipe = '',
@@ -375,7 +375,7 @@ clothkimono = {
 clothmiko = {
 	code = 'clothmiko',
 	name = 'Miko Outfit',
-	icon = null,
+	icon = load("res://files/images/items/clothmiko.png"),
 	description = "Contrasting red and white clothes, originally worn by young women of certain foreign religions. They are now fetishized by certain people...",
 	effect = [{type = 'onendday', effect = 'mikoeffect', descript = "Reduces stress and lust by the end of a day"}],
 	recipe = '',
@@ -389,7 +389,7 @@ clothmiko = {
 clothninja = {
 	code = 'clothninja',
 	name = 'Ninja Suit',
-	icon = null,
+	icon = load("res://files/images/items/clothninja.png"),
 	description = "A compact and versatile outfit rumored to be used by foreign assassins.",
 	effect = [{type = 'onequip', effect = 'agi', effectvalue = 1, descript = "+1 Agility"}],
 	recipe = '',

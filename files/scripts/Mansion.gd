@@ -74,13 +74,14 @@ func _ready():
 			i.enabled = false
 	globals.resources.panel = get_node("ResourcePanel")
 	if globals.player.name == null:
-		globals.player = globals.slavegen.newslave('Human', 'teen', 'futanari')
+		globals.player = globals.slavegen.newslave('Human', 'teen', 'male')
 		globals.player.relatives.father = 0
 		globals.player.relatives.mother = 0
 		globals.player.ability.append('escape')
 		globals.player.abilityactive.append('escape')
 		globals.player.level.skillpoints = 5
 		globals.player.level.value = 10
+		globals.state.supporter = true
 		_on_new_slave_button_pressed()
 	rebuild_slave_list()
 	get_node("itemnode").main = get_tree().get_current_scene()
@@ -104,6 +105,9 @@ func _ready():
 	
 	if globals.state.tutorialcomplete == false && globals.resources.day == 1:
 		get_node("tutorialnode").set_hidden(false)
+	
+	if globals.showalisegreet == true:
+		alisegreet()
 	#OS.set_window_fullscreen(true)
 
 func mansion():
@@ -199,7 +203,6 @@ func _on_new_slave_button_pressed():
 	slave.sexuals.unlocks.append('swing')
 	slave.level.skillpointsbought = 1
 	slave.ability.append('debilitate')
-	slave.affiliation.wimborn = 50
 	for i in globals.state.portals:
 		i.enabled = true
 	for i in slave.skills:
@@ -565,13 +568,6 @@ func _on_end_pressed():
 			if slave.lust >= 90 && slave.rules.masturbation == true && slave.traits.has('Sex-crazed') == false && (rand_range(0,10)>7 || slave.effects.has('stimulated')):
 				slave.add_trait(globals.origins.trait('Sex-crazed'))
 				text0.set_bbcode(text0.get_bbcode() + slave.dictionary("[color=yellow]Left greatly excited and prohibited from masturbating, $name desperate state led $him to become insanely obsessed with sex.[/color]\n"))
-			#Reputation
-			if !slave.sleep in ['jail','farm']:
-				for i in globals.state.reputation:
-					if slave.affiliation[i] >= 25 && (globals.state.reputation[i] >= 10 || globals.state.reputation[i] <= -10) && rand_range(0,3) >= 2 && slave.traits.has("Loner") == false:
-						text2.set_bbcode(text2.get_bbcode() + slave.dictionary("$name has been influenced by $his connections and your reputation with " + i.capitalize() + '.\n'))
-						reputationinfluence(slave.affiliation[i], globals.state.reputation[i], slave)
-					slave.affiliation[i] = max(slave.affiliation[i] - rand_range(0,1), 0)
 			#Races
 			if slave.race == 'Elf':
 				slave.dom = -200
@@ -1122,7 +1118,6 @@ func lumberer(slave):
 	var gold = max(slave.sstr*rand_range(4,8) + slave.send*rand_range(4,8),5)
 	slave.level.xp += gold/4
 	text += "In the end $he made " + str(round(gold)) + " gold\n"
-	slave.affiliation.frostford += 1
 	var dict = {text = text, gold = gold}
 	return dict
 
@@ -1130,7 +1125,6 @@ func ffprostitution(slave):
 	var text = "$name spent the day at Frostford, selling $his body for sexual pleasure.\n"
 	var gold = 0
 	slave.metrics.brothel += 1
-	slave.affiliation.frostford += 0.5
 	var jobactions = ['vaginal','anal','oral','toys']
 	if slave.pussy.virgin == true:
 		slave.sexuals.actions.pussy = 1
@@ -1177,7 +1171,6 @@ func guardian(slave):
 	var gold = max(slave.sstr*rand_range(5,10) + slave.cour/4,5)
 	slave.level.xp += gold/6
 	text += "In the end $he made " + str(round(gold)) + " gold\n"
-	slave.affiliation.gorn += 1
 	slave.loyal -= 1
 	var dict = {text = text, gold = gold}
 	return dict
@@ -1187,7 +1180,6 @@ func research(slave):
 	var gold = max(slave.send*rand_range(6,12) + slave.smaf*rand_range(7,12),5)
 	slave.level.xp += gold/6
 	text += "In the end $he made " + str(round(gold)) + " gold\n"
-	slave.affiliation.gorn += 1
 	slave.stress += rand_range(15,30)
 	slave.health = -rand_range(2,4)
 	var dict = {text = text, gold = gold}
@@ -1198,7 +1190,6 @@ func slavecatcher(slave):
 	var gold = slave.sstr*rand_range(5,10) + slave.sagi*rand_range(5,10) + slave.cour/4
 	slave.level.xp += gold/6
 	text += "In the end $he made " + str(round(gold)) + " gold\n"
-	slave.affiliation.gorn += 1
 	slave.stress += rand_range(5,15)
 	slave.loyal -= rand_range(1,3)
 	var dict = {text = text, gold = gold}
@@ -1211,7 +1202,6 @@ func storewimborn(slave):
 	var supplyprice = round(rand_range(3,5))
 	var supplysold
 	text = "$name worked at the local market. "
-	slave.affiliation.wimborn += 0.5
 	gold = rand_range(1,5) + (slave.charm + slave.wit)/3
 	gold = gold*(min(0.30*(globals.originsarray.find(slave.origins)+1),1))
 	if slave.race.find("Tanuki")>= 0:
@@ -1246,7 +1236,6 @@ func assistwimborn(slave):
 	var text
 	var gold
 	text = "$name worked at the Mage's Order.\n"
-	slave.affiliation.wimborn += 1
 	gold = rand_range(1,5) + slave.stats.maf_cur*7 + slave.wit/1.4 + min(globals.state.reputation.wimborn/1.5,50)
 	gold = round(gold)
 	slave.metrics.goldearn += gold
@@ -1260,7 +1249,6 @@ func artistwimborn(slave):
 	var text
 	var gold
 	text ="$name worked in town as a public entertainer.\n"
-	slave.affiliation.wimborn += 1
 	gold = rand_range(1,5) + slave.cour/4 + slave.charm/3 + slave.sagi*15 + slave.face.beauty/3.5
 	if slave.race == 'Nereid':
 		gold = gold*1.25
@@ -1279,7 +1267,6 @@ func whorewimborn(slave):
 	var text = "$name went to work as whore at the brothel.\n"
 	var gold = 0
 	slave.metrics.brothel += 1
-	slave.affiliation.wimborn += 0.5
 	var jobactions = ['vaginal','anal','oral','toys']
 	if slave.pussy.virgin == true:
 		slave.sexuals.actions.pussy = 1
@@ -1335,7 +1322,6 @@ func whorewimborn(slave):
 
 func escortwimborn(slave):
 	slave.metrics.brothel += 1
-	slave.affiliation.wimborn += 0.8
 	var text = "$name provided escort service to rich clients of the brothel.\n"
 	var gold
 	if slave.pussy.virgin == true:
@@ -1384,7 +1370,6 @@ func fucktoywimborn(slave):
 	var gold
 	var text
 	slave.metrics.brothel += 1
-	slave.affiliation.wimborn += 0.4
 	text = "$name departed to work as an exclusive fucktoy.\n"
 	var jobactions = ['oral','anal','vaginal','fetish','fetish2','toy','group']
 	if slave.pussy.virgin == true:
@@ -1496,47 +1481,6 @@ func rebuildrepeatablequests():
 
 func _on_FinishDayCloseButton_pressed():
 	get_node("FinishDayPanel").set_hidden(true)
-
-func reputationinfluence(affiliation, reputation, slave):
-	if affiliation >= 70:
-		if reputation >= 30:
-			slave.obed += rand_range(75,100)
-			slave.loyal += rand_range(5,10)
-		elif reputation >= 10:
-			slave.obed += rand_range(35,70)
-			slave.loyal += rand_range(3,6)
-		elif reputation <= -30:
-			slave.obed -= rand_range(75,100)
-			slave.loyal -= rand_range(5,10)
-		elif reputation <= -10:
-			slave.obed -= rand_range(35,70)
-			slave.loyal -= rand_range(3,6)
-	elif affiliation >= 50:
-		if reputation >= 30:
-			slave.obed += rand_range(50,80)
-			slave.loyal += rand_range(5,8)
-		elif reputation >= 10:
-			slave.obed += rand_range(30,60)
-			slave.loyal += rand_range(3,5)
-		elif reputation <= -30:
-			slave.obed -= rand_range(40,65)
-			slave.loyal -= rand_range(5,8)
-		elif reputation <= -10:
-			slave.obed -= rand_range(30,60)
-			slave.loyal -= rand_range(3,5)
-	elif affiliation >= 25:
-		if reputation >= 30:
-			slave.obed += rand_range(30,50)
-			slave.loyal += rand_range(4,6)
-		elif reputation >= 10:
-			slave.obed += rand_range(20,35)
-			slave.loyal += rand_range(2,4)
-		elif reputation <= -30:
-			slave.obed -= rand_range(30,50)
-			slave.loyal -= rand_range(4,6)
-		elif reputation <= -10:
-			slave.obed -= rand_range(20,35)
-			slave.loyal -= rand_range(2,4)
 
 #####GUI ELEMENTS
 
@@ -2490,6 +2434,9 @@ func glossaryselect(element):
 	get_node("glossarynode/Panel/glossarytext").set_bbcode(element.text)
 
 func _on_helpglossary_pressed():
+	get_node("tutorialnode").callalise()
+
+func oldglossary():
 	get_node("glossarynode").popup()
 	get_node("glossarynode/Panel/glossarysearch").set_text("")
 	glossarysearch()
@@ -3537,11 +3484,11 @@ func _on_wiki_pressed():
 	OS.shell_open('http://strive4power.wikia.com/wiki/Strive4power_Wiki')
 
 
-var panelshown = false
+var panelshown = true
 
 func _on_buttonpanel_mouse_enter():
+	get_node("buttonpanel/leavenode").set_hidden(false)
 	if panelshown == false:
-		get_node("buttonpanel/leavenode").set_hidden(false)
 		get_node("AnimationPlayer").play("panelshow")
 		panelshown = true
 
@@ -3562,3 +3509,7 @@ func _on_personal_pressed():
 
 func _on_combatgroup_pressed():
 	_on_assignbutton_pressed()
+
+func alisegreet():
+	get_node("tutorialnode").set_hidden(false)
+	get_node("tutorialnode").alisegreet()

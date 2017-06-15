@@ -20,15 +20,6 @@ func _input(event):
 			if event.is_action_pressed(str(key)) == true && self.is_visible() == true && get_tree().get_current_scene().get_node("dialogue").is_hidden() == true:
 				set_current_tab(key-1)
 
-func affiliationdict(value):
-	var text = ""
-	if value < 50:
-		text = 'Weak'
-	elif value < 75:
-		text = 'Medium'
-	else:
-		text = 'Strong'
-	return text
 
 func _on_slave_tab_visibility_changed():
 	#get_node("sexual").partner = null
@@ -54,9 +45,6 @@ func _on_slave_tab_visibility_changed():
 	for i in get_node("inspect/traits/traitlist").get_children():
 		if i != get_node("inspect/traits/traitlist/Label"):
 			i.free()
-	for i in get_node("inspect/affiliations/afflist").get_children():
-		if i != get_node("inspect/affiliations/afflist/Label"):
-			i.free()
 	for i in get_node("stats/skills/skilllist").get_children():
 		i.free()
 	for i in slave.traits.values():
@@ -68,14 +56,6 @@ func _on_slave_tab_visibility_changed():
 		label.set_ignore_mouse(false)
 		label.connect("mouse_enter", self, 'traittooltip', [label])
 		label.connect("mouse_exit", self, 'traittooltiphide')
-	for i in slave.affiliation:
-		if slave.affiliation[i] < 25:
-			continue
-		label = get_node("inspect/affiliations/afflist/Label").duplicate()
-		label.set_hidden(false)
-		get_node("inspect/affiliations/afflist").add_child(label)
-		text = i.capitalize() + ": " + affiliationdict(slave.affiliation[i])
-		label.set_text(text)
 	for i in slave.skills:
 		if slave['skills'][i]['value'] >= 15:
 			var label = Label.new()
