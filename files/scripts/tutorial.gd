@@ -39,7 +39,7 @@ var textdict = {
 loadgreeting = [
 {sprite = 'norhap', text = "Pleased to meet you! We might not have met before, but from now I'll be around in case you need some help! I hope we will get along!"},
 {text = "Now, to call me up, just hit that question mark at the top!"},
-{sprite = 'pos', text = 'Not distracting you anymore! Surely, you have more important things to take care of. '},
+{sprite = 'poshap', text = 'Not distracting you anymore! Surely, you have more important things to take care of. '},
 {funct = 'close'}
 ],
 introduction = [
@@ -117,7 +117,7 @@ jail = [
 {text = "This is your Jail and it allows you to imprison bad people or those that you wish to become a slave of yours. "},
 {text = "Being locked behind bars and shackled to a wall is not very pleasant for most humanoids, but that's exactly what helps in the creation of a servant out of a hostile captive.  "},
 {text = "Some of these servants may still carry a grudge for their initial incarceration even after you release them to servant duties.  There are other magical means that could allow one to forget the jail time they served.  "},
-{text = "You can also use this area to punish your unruly servants.  You can perform some forms of bondage in this area in order to make those here more subservient."},
+{sprite = 'altwin', text = "You can also use this area to punish your unruly servants.  You can perform some forms of bondage in this area in order to make those here more subservient."},
 {text = "In order to take advantage of this place you will have to establish a Jailer.  A Jailer is pretty much a guard that holds the keys to the Jail and makes sure that all prisoners have some form of basic care."},
 {text = "Naturally, anyone within the Jail won't be able to escape or cause any sort of mischief.  Please remember this because it can come in handy from time to time. "},
 {funct = 'closeorcont'},
@@ -126,7 +126,7 @@ alchemy = [
 {sprite = 'norhap', text = "This is a pretty cool place; don't you think?  All the beakers, flasks, vials, and magical ingredients is almost intoxicating! "},
 {text = "Well, to be honest, if you didn't know what alchemy is then I will give you a basic "+ ' "run-down".' + "  You introduce ingredients to other types of ingredients in order to gain a desired effect."},
 {text = "An ingredient is an herb or substance and can be found at stores or while exploring the world."},
-{text = "In addition, some substances can be gained from performing lewd acts with specific races.  I've also heard, but can't confirm myself, that chances are higher with the magically gifted!"},
+{sprite = 'poswin',text = "In addition, some substances can be gained from performing lewd acts with specific races.  I've also heard, but can't confirm myself, that chances are higher with the magically gifted!"},
 {text = "Many potions are very convenient for your daily tasks, so keep an eye out for the possibilities!"},
 {text = "Lastly, potions are considered wild magic and will build up a magical" +  ' "toxicity" '+", if that is what you want to call it, in those that consume them.  This can produce wild, probably negative effects, that affect the health and well-being of those consumers. "},
 {text = "Please use your discretion and great care should you use them."},
@@ -160,13 +160,13 @@ combatintro = [
 combat = [
 {sprite = 'norhap', text = "A few things will happen here in the wilds. The bulk of it revolves around your party fighting your enemies."},
 {text = "If you are fighting against sentient beings, then you may be able to capture them and force them into servitude!"},
-{text = "Sometimes the enemy gets the upper-hand on you and get the jump on you.  Generally, servants with a high Agility and Wit will be able to prevent such actions by your enemy. "},
+{sprite = 'poswin',text = "Sometimes the enemy gets the upper-hand on you and get the jump on you.  Generally, servants with a high Agility and Wit will be able to prevent such actions by your enemy. "},
 {text = "Sometimes you run into typical, innocent people.  Starting a fight with these citizens will cause the local controlling faction's reputation, with you, to drop.  This can cause many significant issues in the future. "},
 {text = "When an opposing enemy drops too low they may and probably will try to run.  You can manually send your servants after them to try and intercept those that flee.  "},
 {text = "The last opponent standing in combat will always stand their ground and do not need a servant to pursue them. This is notable because you could make the most desired enemy, that you would like to capture, the last one standing.  "},
-{text = "When you capture enemies you can decide several fates for them.  Some of these choices are violent, some are vile, some are selfless, and some are simply gains for you.  Although, those you make captives won’t be happy."},
+{sprite = 'norsid', text = "When you capture enemies you can decide several fates for them.  Some of these choices are violent, some are vile, some are selfless, and some are simply gains for you.  Although, those you make captives won’t be happy."},
 {text = "You also are able to use abilities, that you have learned, during combat.  Keep in mind though that these skills will require energy so it is good practice to keep your energy at a decent level."},
-{text = "Regardless, always remember that during combat you can die.  If you do depart this realm as a spirit, it's game over! So do yourself and me a favor and don't die."},
+{sprite = 'altsmi',text = "Regardless, always remember that during combat you can die.  If you do depart this realm as a spirit, it's game over! So do yourself and me a favor and don't die."},
 {funct = 'closeorcont'},
 ],
 
@@ -417,6 +417,8 @@ func oldhelp():
 	get_parent().oldglossary()
 
 func alisegreet():
+	for i in globals.state.tutorial:
+		globals.state.tutorial[i] = true
 	self.currentdict = textdict.loadgreeting
 
 func endtutorial():

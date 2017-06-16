@@ -182,7 +182,9 @@ func _on_closegroup_pressed():
 
 
 func _on_new_slave_button_pressed():
-	globals.resources.day = 1
+	globals.resources.day = 2
+	for i in globals.state.tutorial:
+		globals.state.tutorial[i] = true
 	music_set('mansion')
 	var slave = globals.slavegen.newslave(testslaverace[rand_range(0,testslaverace.size())], testslaveage, testslavegender, testslaveorigin[rand_range(0,testslaveorigin.size())])
 	slave.obed += 200
@@ -381,6 +383,7 @@ func _on_end_pressed():
 	var deads_array = []
 	var gold_consumption = 0
 	var lacksupply = false
+	var results = 'normal'
 	enddayprocess = true
 	_on_mansion_pressed()
 	for i in range(globals.slaves.size()):
@@ -924,31 +927,59 @@ func _on_end_pressed():
 	globals.player.health = 50
 	
 	#####         Results
-	if start_gold <= globals.resources.gold:
+	if start_gold < globals.resources.gold:
+		results = 'good'
 		text = 'Your residents earned ' + str(globals.resources.gold - start_gold) + ' gold by the end of day. \n'
+	elif start_gold == globals.resources.gold:
+		results = 'med'
+		text = "By the end of day your gold reserve didn't change. "
 	else:
+		results = 'bad'
 		text = "By the end of day your gold reserve shrunk by " + str(start_gold - globals.resources.gold) + " pieces. "
 	if start_food > globals.resources.food:
 		text = text + 'Your food storage shrank by ' + str(start_food - globals.resources.food) + ' units of food.\n'
 	else:
 		text = text + 'Your food storage grew by ' + str(globals.resources.food - start_food) + ' units of food.\n'
 	text0.set_bbcode(text0.get_bbcode() + text)
-	deads_array.invert()
-	for i in deads_array:
-		if globals.slaves[i.number].work == 'companion':
-			globals.state.companion = -1
-		globals.slaves.remove(i.number)
-		text0.set_bbcode(text0.get_bbcode() + i.reason)
+	if deads_array.size() > 0:
+		results = 'worst'
+		deads_array.invert()
+		for i in deads_array:
+			if globals.slaves[i.number].work == 'companion':
+				globals.state.companion = -1
+			globals.slaves.remove(i.number)
+			text0.set_bbcode(text0.get_bbcode() + i.reason)
 	text0.set_bbcode(text0.get_bbcode()+str(round(gold_consumption))+' gold was used for various tasks.\n'  )
 	get_node("FinishDayPanel/FinishDayScreen").set_current_tab(0)
+	alisebuild(results)
 	if lacksupply == true:
 		text0.set_bbcode(text0.get_bbcode()+"[color=red]You have expended your supplies and some of the actions couldn't be finished. [/color]\n")
 	enddayprocess = false
 	nextdayevents()
 
 var luxurydict = {slave = 0,poor = 5,commoner = 15,rich = 25,noble = 40,}
-
 var checkforevents = false
+
+func alisebuild(state):
+	if globals.resources.gold > 5000 && state in ['bad','med']:
+		state = 'good'
+	var sprite = {
+	good = ['norhap','norwin',"poshap",'poswin','altwin','althap'],
+	med = ["norneu",'posneu'],
+	bad = ["norneu",'posneu'],
+	worst = ["nornes"]
+	}
+	var text = {
+	good = ['Nice job! Money are coming to us!', 'Great work, $name, We are getting richer! ', 'Things are going well, $name!', "If we go like that, can I get a vacation one day? ", 'Another great day, high-five!'],
+	med = ['We might need to start making money soon.'],
+	bad = ['We are losing money, $name. ', 'Things are not going too well.', 'We should do something about the cash. '],
+	worst = ["Well... looks like we lost one of our workers. Don't let that to discourage you though!"]
+	}
+	var truesprite = sprite[state][rand_range(0,sprite[state].size())]
+	get_node("FinishDayPanel/alise/speech/RichTextLabel").set_bbcode(globals.player.dictionary(text[state][rand_range(0,sprite[state].size()-1)]))
+	get_node("tutorialnode").buildbody(get_node("FinishDayPanel/alise"), truesprite)
+	
+
 
 func nextdayevents():
 	var player = globals.player
