@@ -113,7 +113,7 @@ slaveend = [
 {funct = 'closeorcont'}
 ],
 jail = [
-{sprite = 'norhap', text = "It is a bit grim here isn't it?  What did you expect, a resort?  "},
+{sprite = 'norhap', text = "It is a bit grim here isn't it? It is a bit grim here isn't it? You didn’t expect a resort, did you? "},
 {text = "This is your Jail and it allows you to imprison bad people or those that you wish to become a slave of yours. "},
 {text = "Being locked behind bars and shackled to a wall is not very pleasant for most humanoids, but that's exactly what helps in the creation of a servant out of a hostile captive.  "},
 {text = "Some of these servants may still carry a grudge for their initial incarceration even after you release them to servant duties.  There are other magical means that could allow one to forget the jail time they served.  "},
@@ -187,14 +187,26 @@ redressback = [
 {text = "You want anything else?", choice = 'menu'}
 ],
 returntomain = [
-{sprite = 'normhap', text = "Any other questions, hun?", choice = 'help'},
+{sprite = 'norhap', text = "Any other questions, hun?", choice = 'gamehelp'},
+],
+bugreport = [
+{sprite = 'norneu',text = "Oh, I'm so sorry you happened to come across the bug. Strive is still heavily in development, so please excuse us. "},
+{text = "You can report it either at [color=aqua][url=patreon]Patreon[/url][/color], or at [color=aqua][url=itch]itch.io bug report thread[/url][/color]. Click on one of the links to open it in your browser."},
+{sprite = 'possmi', text = "Thank you for helping us make game better!", choice = 'help'}
+],
+helpproject = [
+{sprite = 'althap', text = "That's amazing! I'm trully happy to hear, that you enjoy it. " },
+{text = "You can support us at [color=aqua][url=patreon]Patreon[/url][/color] and become our literal employer, we also give our supporters access to earlier version and some additional features, make sure to check it out. "},
+{text = 'Alternatively, you can donate via [color=aqua][url=irch]Itch.io[/url][/color] page. This platform helps us to easily update and destribute latest versions as well.'},
+{sprite = 'poswin', text = "Can't spare any money? We understand, everyone has their hardships. If you could recommend Strive to others or anyhow promote it, we also would really appreciate it!"},
+{text = "Lastly, if you want to offer your skills to the project, make sure to visit our [color=aqua][url=blogpost]blogspot[/url][/color] and contact us via striveforpower@gmail.com. ", choice = 'help'},
 ],
 }
 
 var choices = {
 intro = [{text = "— Go on (enable tutorial help)", funct = 'basics'}, {text = "— No need (skip tutorial)", funct = "endtutorial"}],
 close = [{text = "End", funct = 'close'}],
-menu = [{text = "I want to ask about...", funct = 'infochoose'}, {text = "I want to see the old help section", funct = "oldhelp"}, {text = "I want you to wear something more revealing", funct = 'alisechange', reqs = "globals.state.alisecloth != 'naked'"},{text = "I want you to wear your normal costume", funct = 'alisechangeback', reqs = "globals.state.alisecloth != 'normal'"},{text = "Nothing", funct = 'close'}],
+menu = [{text = "I want to ask about...", funct = 'help'}, {text = "I want to see the old help section", funct = "oldhelp"}, {text = "I want you to wear something more revealing", funct = 'alisechange', reqs = "globals.state.alisecloth != 'naked'"},{text = "I want you to wear your normal costume", funct = 'alisechangeback', reqs = "globals.state.alisecloth != 'normal'"},{text = "Nothing", funct = 'close'}],
 slave = [
 {text = 'Characteristics', funct = 'slavechar'},
 {text = 'Conditions', funct = 'slavecond'},
@@ -204,7 +216,13 @@ slave = [
 {text = 'I know what I need', funct = 'slaveend'},
 ],
 help = [
-{text = "That's all I need to know", funct = "menu"},
+{text = "Return", funct = "menu"},
+{text = "Gameplay", funct = "gamehelp"},
+{text = "I want to report a bug...", funct = "bugreport"},
+{text = "I want to help this project...", funct = "projecthelp"},
+],
+gamehelp = [
+{text = "Return", funct = "help"},
 {text = "Basics", funct = 'basics'},
 {text = "Servants", funct = 'slavechoice', reqs = 'globals.state.tutorial.slave == true'},
 {text = "Jail", funct = "jail", reqs = 'globals.state.tutorial.jail == true'},
@@ -216,6 +234,11 @@ help = [
 ],
 }
 
+func bugreport():
+	self.currentdict = textdict.bugreport
+
+func projecthelp():
+	self.currentdict = textdict.helpproject
 
 var currentdict setget currentdict_set
 var counter
@@ -228,6 +251,9 @@ signal textshown
 func _ready():
 	set_process_input(true)
 	set_process(true)
+	get_node("speech/RichTextLabel").connect("mouse_enter", self, 'stopinput')
+	get_node("speech/RichTextLabel").connect("mouse_exit", self, 'startinput')
+	
 #	starttutorial()
 
 func _input(event):
@@ -245,6 +271,11 @@ func _process(delta):
 		emit_signal('textshown')
 		set_process(false)
 
+func stopinput():
+	set_process_input(false)
+
+func startinput():
+	set_process_input(true)
 
 func advance():
 	show(currentline)
@@ -264,11 +295,7 @@ func show(dict):
 	set_process_input(true)
 	set_process(true)
 	if dict.has('sprite'):
-		#get_node("tutsprite").set_texture(spritedict[dict.sprite])
 		buildbody(get_node("tutsprite"), dict.sprite)
-		#get_node("tutsprite").set_texture(pieces.body[character[dict.sprite].body])
-		#get_node("tutsprite/mouth").set_texture(pieces.mouth[character[dict.sprite].mouth])
-		#get_node("tutsprite/face").set_texture(character[dict.sprite].eyes)
 		if is_visible() == false:
 			set_hidden(false)
 			get_parent().get_node("AnimationPlayer").play("aliseshow")
@@ -375,11 +402,14 @@ func starttutorial():
 func menu():
 	showchoice('menu')
 
-func infochoose():
-	showchoice('help')
+func gamehelp():
+	showchoice('gamehelp')
 
 func slavechoice():
 	showchoice('slave')
+
+func help():
+	showchoice('help')
 
 func oldhelp():
 	close()
@@ -402,7 +432,7 @@ func alisechange():
 	if globals.state.supporter == true:
 		self.currentdict = textdict.redress
 	else:
-		get_parent().popup("This function is available only to supporters. Please, apply to [color=yellow][url=patreon]Patreon[/url][/color] to unlock it, or enter your Supporter code in options if you have it. ")
+		get_parent().popup("This function is available only to supporters. Please, apply to [color=aqua][url=patreon]Patreon[/url][/color] to unlock it, or enter your Supporter code in options if you have it. ")
 
 func alisenaked():
 	globals.state.alisecloth = 'naked'
@@ -475,4 +505,12 @@ func close():
 	if OS.get_name() != "HTML5":
 		yield(get_parent().get_node("AnimationPlayer"), 'finished')
 	set_hidden(true)
+
+func _on_RichTextLabel_meta_clicked( meta ):
+	if meta == 'patreon':
+		OS.shell_open('https://www.patreon.com/maverik')
+	elif meta == 'itch':
+		OS.shell_open('https://itch.io/t/89635/bug-report-thread')
+	elif meta == "blogpost":
+		OS.shell_open('http://strivefopower.blogspot.com')
 

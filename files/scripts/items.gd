@@ -474,7 +474,7 @@ underwearlacy = {
 armorleather = {
 	code = 'armorleather',
 	name = 'Leather Armor',
-	icon = null,
+	icon = load("res://files/images/items/armorleather.png"),
 	description = "Suit of tanned leather, providing some protection while not restricting movement too much.",
 	effect = [{type = 'onequip', effect = 'armor', effectvalue = 2, descript = "+2 Armor"}],
 	recipe = '',
@@ -488,7 +488,7 @@ armorleather = {
 armorchain = {
 	code = 'armorchain',
 	name = 'Chain Armor',
-	icon = null,
+	icon = load("res://files/images/items/armorchain.png"),
 	description = "A finely crafted suit of armor created from interwoven iron rings. Offers reasonable protection against sharp objects. ",
 	effect = [{type = 'onequip', effect = 'armor', effectvalue = 5, descript = "+5 Armor"}],
 	recipe = '',
