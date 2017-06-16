@@ -213,6 +213,10 @@ func start_battle():
 	set_process_input(true)
 	nocaptures = false
 	updatepanels()
+	
+	if globals.state.tutorial.combat == false:
+		get_tree().get_current_scene().get_node("tutorialnode").combat()
+	
 
 func damage(combatant, value):
 	combatant.power += value

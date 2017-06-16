@@ -103,6 +103,8 @@ func gooutside():
 	main.get_node("charlistcontrol").set_hidden(true)
 	set_hidden(false)
 	playergrouppanel()
+	if globals.state.tutorial.outside == false:
+		main.get_node("tutorialnode").outside()
 
 func outskirts():
 	main.get_node("explorationnode").zoneenter('wimbornoutskirts')

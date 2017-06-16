@@ -104,7 +104,7 @@ func _ready():
 		i.connect("pressed",self,i.get_name())
 	
 	if globals.state.tutorialcomplete == false && globals.resources.day == 1:
-		get_node("tutorialnode").set_hidden(false)
+		get_node("tutorialnode").starttutorial()
 	
 	if globals.showalisegreet == true:
 		alisegreet()
@@ -182,7 +182,7 @@ func _on_closegroup_pressed():
 
 
 func _on_new_slave_button_pressed():
-	globals.resources.day = 2
+	globals.resources.day = 1
 	music_set('mansion')
 	var slave = globals.slavegen.newslave(testslaverace[rand_range(0,testslaverace.size())], testslaveage, testslavegender, testslaveorigin[rand_range(0,testslaveorigin.size())])
 	slave.obed += 200
@@ -445,11 +445,11 @@ func _on_end_pressed():
 								workdict.food *= 0.7
 						for i in globals.state.reputation:
 							if globals.state.reputation[i] < -10 && rand_range(0,100) < 33 && get_node("MainScreen/slave_tab").jobdict[slave.work].tags.find(i) >= 0:
-								slave.obedience -= max(abs(globals.state.reputation[i])*2 - slave.loyal/6,0)
+								slave.obed -= max(abs(globals.state.reputation[i])*2 - slave.loyal/6,0)
 								slave.loyal -= rand_range(1,3)
 								text += "[color=red]$name has been influenced by local townfolk, which is hostile towards you. [/color]\n"
 							elif globals.state.reputation[i] > 10 && rand_range(0,100) < 20:
-								slave.obedience += max(abs(globals.state.reputation[i]))
+								slave.obed += abs(globals.state.reputation[i])
 								slave.loyal += rand_range(1,3)
 								text += "[color=green]$name has been influenced by local townfolk, which is loyal towards you. [/color]\n"
 						text = workdict.text
@@ -1489,6 +1489,10 @@ func popup(text):
 	get_node("popupmessage/popupmessagetext").set_bbcode(globals.player.dictionaryplayer(text))
 
 
+func _on_popupmessagetext_meta_clicked( meta ):
+	if meta == 'patreon':
+		OS.shell_open('https://www.patreon.com/maverik')
+
 var spritedict = {
 fairy = load("res://files/images/fairy.png"),
 melissafriendly = load("res://files/images/melissafriendly.png"),
@@ -1847,6 +1851,8 @@ func _on_jailbutton_pressed():
 		yield(self, 'animfinished')
 	hide_everything()
 	get_node("MainScreen/mansion/jailpanel").set_hidden(false)
+	if globals.state.tutorial.jail == false:
+		get_node("tutorialnode").jail()
 
 func _on_jailpanel_visibility_changed():
 	var temp = ''
@@ -1936,6 +1942,8 @@ func _on_alchemy_pressed():
 		yield(self, 'animfinished')
 	hide_everything()
 	get_node("MainScreen/mansion/alchemypanel").set_hidden(false)
+	if globals.state.tutorial.alchemy == false:
+		get_node("tutorialnode").alchemy()
 
 var potselected
 
@@ -2953,6 +2961,8 @@ func _on_farm_pressed(inputslave = null):
 	text = text + '\n\nYou have ' + str(counter)+ '/10 people present in farm. '
 	get_node("MainScreen/mansion/farmpanel").set_hidden(false)
 	get_node("MainScreen/mansion/farmpanel/farminfo").set_bbcode(text)
+	if globals.state.tutorial.farm == false:
+		get_node("tutorialnode").farm()
 
 func farminspect(slave):
 	get_node("MainScreen/mansion/farmpanel/slavefarminsepct").set_hidden(false)
@@ -3160,13 +3170,6 @@ func _on_defeateddescript_meta_clicked( meta ):
 
 
 
-func _on_tutorialstart_pressed():
-	get_node("tutorialnode").starttutorial()
-
-
-func _on_tutorialskip_pressed():
-	get_node("tutorialnode").set_hidden(true)
-	globals.state.tutorialcomplete = true
 
 
 func _on_selloutclose_pressed():
@@ -3513,3 +3516,4 @@ func _on_combatgroup_pressed():
 func alisegreet():
 	get_node("tutorialnode").set_hidden(false)
 	get_node("tutorialnode").alisegreet()
+

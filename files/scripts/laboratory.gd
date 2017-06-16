@@ -32,6 +32,8 @@ func _on_lab_pressed(slave = null):
 		text = text + labassist.dictionary("\n[color=aqua]$name[/color] taking care of the lab and it's residents. ")
 	set_hidden(false)
 	get_node("labinfo").set_bbcode(text)
+	if globals.state.tutorial.lab == false:
+		get_tree().get_current_scene().get_node("tutorialnode").lab()
 
 func _on_chooseassist_pressed():
 	if get_node("chooseassist").get_text() == ("Choose Assistant"):

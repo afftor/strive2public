@@ -98,12 +98,6 @@ func _on_slave_tab_visibility_changed():
 		if slave.rules.has(i.get_name()):
 			i.set_pressed(slave.rules[i.get_name()])
 	get_node("regulations/clothes&relatives&customs/workbutton").set_text(jobdict[slave.work].name)
-#	get_node("regulations/rules/contraception").set_pressed(slave.rules.contraception)
-#	get_node("regulations/rules/aphrodisiac").set_pressed(slave.rules.aphrodisiac)
-#	get_node("regulations/rules/silence").set_pressed(slave.rules.silence)
-#	get_node("regulations/rules/pet").set_pressed(slave.rules.pet)
-#	get_node("regulations/rules/masturbation").set_pressed(slave.rules.masturbation)
-#	get_node("regulations/rules/nudity").set_pressed(slave.rules.nudity)
 	get_node("regulations/clothes&relatives&customs/brandbutton/").set_text(slave.brand.capitalize())
 	if globals.state.branding == 0:
 		find_node('brandbutton').set_disabled(true)
@@ -121,7 +115,10 @@ func _on_slave_tab_visibility_changed():
 		else:
 			i.set_hidden(false)
 	buildmetrics()
-# vag = 0, anal = 0, roughsex = 0, roughsexlike = 0}
+	if globals.state.tutorial.slave == false:
+		globals.state.tutorial.slave = true
+		get_tree().get_current_scene().get_node("tutorialnode").slaveinitiate()
+
 func buildmetrics():
 	var text = ""
 	text += "[center]Personal achievments[/center]\n"

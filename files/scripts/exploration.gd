@@ -467,7 +467,6 @@ func enemyencounter():
 						location = 'frostford'
 					elif currentzone.exits.find("gornoutskirts") >= 0:
 						location = 'gorn'
-					slave.affiliation[location] = rand_range(30,80)
 				enemygroup.captured.append(slave)
 	if scoutawareness < enemygroup.awareness:
 		ambush = true
