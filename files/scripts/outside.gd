@@ -671,7 +671,7 @@ func operationselected(operation):
 		text += '\nRequired time: 5 days.'
 	elif operation == 'uprise':
 		price = 100 * (globals.originsarray.find(slave.origins)+1)
-		text += slave.dictionary("\n\n$name's grade will become [color=aqua]") + globals.originsarray[globals.originsarray.find(slave.origins)+1].capitalize() + "[/color]. Required time: " + str(globals.originsarray.find(slave.origins)+1) + " days."
+		text += slave.dictionary("\n\n$name's grade will become [color=aqua]") + globals.originsarray[globals.originsarray.find(slave.origins)+1].capitalize() + "[/color]. Required time: " + str(globals.originsarray.find(slave.origins)+2) + " days."
 	elif operation == 'subjugate':
 		text += slave.dictionary("\n\n$name's grade will become [color=aqua]") + globals.originsarray[globals.originsarray.find(slave.origins)-1].capitalize() + "[/color]. Required time: 1 day"
 	elif operation == 'spec':
@@ -1428,7 +1428,7 @@ func selectshopitem(tempitem, unstuck = null):
 				text += '\n' + i.descript
 	get_node("shoppanel/itempanel/itemdescript").set_bbcode(text)
 	get_node("shoppanel/itempanel/buysellbutton").set_hidden(false)
-	if mode == 'buy' && item.cost >= globals.resources.gold:
+	if mode == 'buy' && item.cost > globals.resources.gold:
 		get_node("shoppanel/itempanel/buysellbutton").set_disabled(true)
 	else:
 		get_node("shoppanel/itempanel/buysellbutton").set_disabled(false)

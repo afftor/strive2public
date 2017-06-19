@@ -5,7 +5,7 @@ var itemdict = {}
 var spelldict = {}
 var effectdict = {}
 var guildslaves = {wimborn = [], gorn = [], frostford = []}
-var gameversion = 442
+var gameversion = 4421
 var state = progress.new()
 
 var resources = resource.new()
@@ -276,7 +276,7 @@ class progress:
 	var reputation = {wimborn = 0, frostford = 0, gorn = 0}
 	var dailyeventcountdown = 0
 	var dailyeventprevious = 0
-	var currentversion = 0336
+	var currentversion = 0442
 	var unstackables = {}
 	var supplykeep = 10
 	var tutorial = {basics = false, slave = false, alchemy = false, jail = false, lab = false, farm = false, outside = false, combat = false}
@@ -1157,6 +1157,8 @@ func repairsave():
 		itemdict.aphroditebrew.unlocked = true
 	if state.currentversion <= 44:
 		showalisegreet = true
+	if state.currentversion < 4421:
+		state.portals = progress.new().portals
 	state.currentversion = gameversion
 
 var showalisegreet = false

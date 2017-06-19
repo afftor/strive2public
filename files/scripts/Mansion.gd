@@ -960,23 +960,33 @@ func _on_end_pressed():
 var luxurydict = {slave = 0,poor = 5,commoner = 15,rich = 25,noble = 40,}
 var checkforevents = false
 
+
+var alisesprite = {
+good = ['norhap','norwin',"poshap",'poswin','altwin','althap'],
+med = ["norneu",'posneu'],
+bad = ["norneu",'posneu'],
+worst = ["nornes"]
+}
+var alisetext = {
+good = ['Nice job! Income is currently on the rise!', 'Great work, $name, We are currently getting wealthier!', 'Things are doing well, $name!', 'If we keep gaining like this, could I get a vacation one day?', 'Another great day, high-five!', 'Remarkable work! Income outlook at this time is positive.', 'A great poetic group of men once said, "Money, Money, Money, Money... Money!"', 'A well known artist once stated, "Making money is art and working is art and business is the best art."', 'They say money talks... what does yours say?', 'We are doing great!  Please keep this up $name!'],
+med = ['We might need to start making money soon.', 'Things are steady... but should be better financially', "Well we aren't losing money... but we aren't really gaining any either", 'We have added next to nothing to our coffers.  We need a stronger income.', 'I believe it is about time we gain some money.', 'Time waits for no man, neither does good commerce.'],
+bad = ['We are losing money $name!', 'Things are not going too well.', 'We should do something about this cash loss.', 'Oh dear! We are bleeding gold.', 'This funding loss needs to be addressed.', 'You must be scaring the gold away, it is disappearing!', 'A financial analysis of assets states a net loss by my calculations.', '$name, do something about this funding leak before you end up poor!', 'Did I miss a memo as to why there is a loss in funds?'],
+worst = ["Well... looks like we lost one of our workers. Don't let that to discourage you though!", "So we lost a worker... Let's move on and fix issues for the future.", 'This is an unfortunate situation', "The outlook is unfavorable, let's change that!", "It's just one bad day out of how many other days.", "Don't get discouraged, learn from these failures and fix the issues.", 'I am very sorry about your bad day, let us proceed to fix this.']
+}
+
 func alisebuild(state):
 	if globals.resources.gold > 5000 && state in ['bad','med']:
 		state = 'good'
-	var sprite = {
-	good = ['norhap','norwin',"poshap",'poswin','altwin','althap'],
-	med = ["norneu",'posneu'],
-	bad = ["norneu",'posneu'],
-	worst = ["nornes"]
-	}
-	var text = {
-	good = ['Nice job! Money are coming to us!', 'Great work, $name, We are getting richer! ', 'Things are going well, $name!', "If we go like that, can I get a vacation one day? ", 'Another great day, high-five!'],
-	med = ['We might need to start making money soon.'],
-	bad = ['We are losing money, $name. ', 'Things are not going too well.', 'We should do something about the cash. '],
-	worst = ["Well... looks like we lost one of our workers. Don't let that to discourage you though!"]
-	}
-	var truesprite = sprite[state][rand_range(0,sprite[state].size())]
-	get_node("FinishDayPanel/alise/speech/RichTextLabel").set_bbcode(globals.player.dictionary(text[state][rand_range(0,sprite[state].size()-1)]))
+	
+	var truesprite = alisesprite[state][rand_range(0,alisesprite[state].size())]
+	var showtext = globals.player.dictionary(alisetext[state][rand_range(0,alisetext[state].size())])
+	if state == 'good':
+		showtext = '[color=#19ec1c]' + showtext + '[/color]'
+	elif state == 'med':
+		showtext = '[color=yellow]' + showtext + '[/color]'
+	elif state in ['bad','worst']:
+		showtext = '[color=red]' + showtext + '[/color]'
+	get_node("FinishDayPanel/alise/speech/RichTextLabel").set_bbcode(showtext)
 	get_node("tutorialnode").buildbody(get_node("FinishDayPanel/alise"), truesprite)
 	
 
@@ -2928,8 +2938,6 @@ func _on_orderbutton_pressed():
 
 ####### PORTALS
 func _on_portals_pressed():
-	_on_mansion_pressed()
-	
 	var list = get_node("MainScreen/mansion/portalspanel/ScrollContainer/VBoxContainer")
 	var button = get_node("MainScreen/mansion/portalspanel/ScrollContainer/VBoxContainer/portalbutton")
 	get_node("MainScreen/mansion/portalspanel").set_hidden(false)

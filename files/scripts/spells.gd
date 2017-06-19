@@ -170,15 +170,6 @@ func mindreadeffect():
 		for i in slave.traits.values():
 			text += ' ' +i.name
 		text += '.'
-	text += "\nAffiliations: "
-	for i in slave.affiliation:
-		text += i.capitalize() + " - " + str(floor(slave.affiliation[i])) + ", "
-#	if globals.rules.children == true:
-#		text += "\nMentally,"
-#		if slave.mindage == 'adult':
-#			text += " $he's matured. "
-#		else:
-#			text += " $he's still immature and can act childish at times. "
 	text += "Pregnancy: " + str(slave.preg.duration)
 	text = slave.dictionary(text)
 	main.dialogue(true, self, text)

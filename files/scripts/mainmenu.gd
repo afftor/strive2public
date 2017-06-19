@@ -7,6 +7,7 @@ var introtext = "The world of Acheron is going through a period of peace.What fe
 var introtext2 = "Although you have managed to dodge any sort of terrible fate, your life still wasn't anything to be happy about. That changed one day when you received a message, informing you that your old uncle had recently passed away. You barely remembered anything about him, but there were no other close relatives and as such he bequeathed his belongings to you. \n\nWhat surprised you even more; it was a reasonably sized two story mansion near one of the local city centers. While  there's really nothing special about it, a building of this degree is a respectable possession on its own. After making up your mind you leave your old life for this new, better opportunity to make a name for yourself. Access to the local Mage's Order will also allow you to gain access to more power and knowledge, as long as you can be accepted into it... Be it a taste of real political power, rowdy big city life, or magic research, you will figure it out once you get there. Managing your own estate might prove to be difficult, but nothing should be too bad once you get a few personal servants..."
 
 func _ready():
+	globals.showalisegreet = false
 	if OS.get_name() == "HTML5":
 		globals.rules.custommouse = false
 	globals.resources.panel = null

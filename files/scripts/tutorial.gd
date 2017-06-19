@@ -37,9 +37,9 @@ win3 = load("res://files/images/alise/facewink3.png"),
 
 var textdict = {
 loadgreeting = [
-{sprite = 'norhap', text = "Pleased to meet you! We might not have met before, but from now I'll be around in case you need some help! I hope we will get along!"},
-{text = "Now, to call me up, just hit that question mark at the top!"},
-{sprite = 'poshap', text = 'Not distracting you anymore! Surely, you have more important things to take care of. '},
+{sprite = 'norhap', text = "A pleasure to meet you! Although we have not have met before, from now on I'll be around should you need any help.  I hope we'll get along!"},
+{text = "From now on, to call on me, just hit the question mark at the top."},
+{sprite = 'poshap', text = "I'm not going to distract you anymore.  You probably have more important things to address.  "},
 {funct = 'close'}
 ],
 introduction = [
@@ -47,8 +47,8 @@ introduction = [
 {text = "I’m here to teach you the basic functions needed to be successful within this realm.",  choice = 'intro'},
 ],
 endtutorial = [
-{sprite = 'norneu', text = 'Got you! Not distracting you anymore! '},
-{sprite = 'poswin', text = "In case you need me again, hit that question mark at the top!"},
+{sprite = 'norneu', text = "I understand... I'm not going to distract you anymore."},
+{sprite = 'poswin', text = "If you have need of me, just hit that question mark at the top."},
 {funct = 'close'},
 ],
 basicstext = [
@@ -113,7 +113,7 @@ slaveend = [
 {funct = 'closeorcont'}
 ],
 jail = [
-{sprite = 'norhap', text = "It is a bit grim here isn't it? It is a bit grim here isn't it? You didn’t expect a resort, did you? "},
+{sprite = 'norhap', text = "It is a bit grim here isn't it? You didn’t expect a resort, did you? "},
 {text = "This is your Jail and it allows you to imprison bad people or those that you wish to become a slave of yours. "},
 {text = "Being locked behind bars and shackled to a wall is not very pleasant for most humanoids, but that's exactly what helps in the creation of a servant out of a hostile captive.  "},
 {text = "Some of these servants may still carry a grudge for their initial incarceration even after you release them to servant duties.  There are other magical means that could allow one to forget the jail time they served.  "},
@@ -172,34 +172,34 @@ combat = [
 
 call = [
 {sprite = 'poshap', text = "At your service!"},
-{text = "How can I please you?", choice = 'menu'},
+{text = "What could I do for you?", choice = 'menu'},
 ],
 redress = [
 {sprite = 'nornes', text = "Ahem... This kind of serivce is a bit..."},
-{text = "..............Fine, how can I say no to you? Just give me a moment.", funct = ['hide', 'alisenaked']},
-{sprite = 'posneu', text = "Do you like it?", funct = ['unhide']},
-{text = "Please, just don't stare too hard. Even I can get embarrassed sometimes. "},
-{sprite = 'norhap',text = "You want anything else?", choice = 'menu'}
+{text = ".............fine, how could I say no to you?  Please give me a moment.", funct = ['hide', 'alisenaked']},
+{sprite = 'posneu', text = "Do you enjoy what you see?", funct = ['unhide']},
+{text = "Please, try not to stare too hard.  Even I can get embarrassed at times."},
+{sprite = 'norhap',text = "Would you like anything else?", choice = 'menu'}
 ],
 redressback = [
-{sprite = 'nornes', text = "If you wish so.", funct = ['hide', 'alisenormal']},
+{sprite = 'nornes', text = "As you wish.", funct = ['hide', 'alisenormal']},
 {sprite = 'altsmi', text = "Done!", funct = ['unhide']},
-{text = "You want anything else?", choice = 'menu'}
+{text = "Would you like anything else?", choice = 'menu'}
 ],
 returntomain = [
 {sprite = 'norhap', text = "Any other questions, hun?", choice = 'gamehelp'},
 ],
 bugreport = [
-{sprite = 'norneu',text = "Oh, I'm so sorry you happened to come across the bug. Strive is still heavily in development, so please excuse us. "},
-{text = "You can report it either at [color=aqua][url=patreon]Patreon[/url][/color], or at [color=aqua][url=itch]itch.io bug report thread[/url][/color]. Click on one of the links to open it in your browser."},
-{sprite = 'possmi', text = "Thank you for helping us make game better!", choice = 'help'}
+{sprite = 'norneu',text = "Oh dear!  I'm so sorry that a bug found its way to you.  Strive is still heavily in development, so please forgive us. "},
+{text = "You can make a report at [color=aqua][url=patreon]Patreon[/url][/color] or at [color=aqua][url=itch]itch.io in the bug report thread[/url][/color].  Click on any one of the links to open the site within your browser."},
+{sprite = 'possmi', text = "Thank you for helping us improve the game!", choice = 'help'}
 ],
 helpproject = [
-{sprite = 'althap', text = "That's amazing! I'm trully happy to hear, that you enjoy it. " },
-{text = "You can support us at [color=aqua][url=patreon]Patreon[/url][/color] and become our literal employer, we also give our supporters access to earlier version and some additional features, make sure to check it out. "},
-{text = 'Alternatively, you can donate via [color=aqua][url=irch]Itch.io[/url][/color] page. This platform helps us to easily update and destribute latest versions as well.'},
-{sprite = 'poswin', text = "Can't spare any money? We understand, everyone has their hardships. If you could recommend Strive to others or anyhow promote it, we also would really appreciate it!"},
-{text = "Lastly, if you want to offer your skills to the project, make sure to visit our [color=aqua][url=blogpost]blogspot[/url][/color] and contact us via striveforpower@gmail.com. ", choice = 'help'},
+{sprite = 'althap', text = "That's amazing! I'm truly happy to hear that you enjoyed it. "},
+{text = "You can support us on [color=aqua][url=patreon]Patreon[/url][/color] and become our literal employer.  We provide our supporters with access to earlier version and some additional features.  Make sure to check it out!"},
+{text = 'Alternatively, you can donate to the development via the [color=aqua][url=irch]Itch.io[/url][/color] page.  This platform helps us to easily update and to distribute the latest versions as well.'},
+{sprite = 'poswin', text = "Don't have free funds to aid us?  Everyone has hard times and we fully understand that.  You could support us by recommending Strive to others or promote it in other locations.  We are really appreciative of any help anyone can provide!"},
+{text = "If you have some skills and would like to offer your time and assistance to the game, please visit our [color=aqua][url=blogpost]blogspot[/url][/color] and contact us via striveforpower@gmail.com. ", choice = 'help'},
 ],
 }
 
