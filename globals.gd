@@ -8,6 +8,7 @@ var guildslaves = {wimborn = [], gorn = [], frostford = []}
 var gameversion = 4421
 var state = progress.new()
 
+
 var resources = resource.new()
 var slavegen = load("res://files/scripts/slavegen.gd").new()
 var assets = load("res://files/scripts/assets.gd").new()
@@ -369,6 +370,7 @@ class slave:
 	var attention = 0
 	var sexuals = {actions = {}, unlocked = false, affection = 0, kinks = {}, unlocks = []}
 	var kinks = []
+	var forcedsex = false
 	var metrics = {ownership = 0, jail = 0, mods = 0, brothel = 0, sex = 0, partners = [], randompartners = 0, item = 0, spell = 0, orgy = 0, threesome = 0, win = 0, capture = 0, goldearn = 0, foodearn = 0, manaearn = 0, birth = 0, preg = 0, vag = 0, anal = 0, oral = 0, roughsex = 0, roughsexlike = 0, orgasm = 0}
 	var stats = {
 		str_cur = 0,
@@ -585,7 +587,7 @@ class slave:
 			text = self.dictionary("[color=green]$name's stress has reduced " + string + " [/color]")
 			stats.stress_cur -= difference*(1 + stats.stress_mod/100)
 		
-		stats.stress_cur = max(min(stats.stress_cur, stats.stress_max),stats.stress_min)
+		stats.stress_cur = max(min(stats.stress_cur, 150),stats.stress_min)
 		if globals.get_tree().get_current_scene().has_node("infotext") && globals.slaves.find(self) >= 0 && away.at != 'hidden':
 			globals.get_tree().get_current_scene().infotext(text)
 		
@@ -1150,6 +1152,9 @@ func repairsave():
 		if i.origins == 'royal':
 			i.origins = 'noble'
 		i.rules = {'silence':false, 'pet':false, 'contraception':false, 'aphrodisiac':false, 'masturbation':false, 'nudity':false, 'betterfood':false, 'personalbath':false,'cosmetics':false,'pocketmoney':false} 
+		if i.gear.has('clothes'):
+			i.gear = {costume = 'clothcommon', underwear = 'underwearplain', armor = null, weapon = null, accessory = null}
+	for i in state.babylist:
 		if i.gear.has('clothes'):
 			i.gear = {costume = 'clothcommon', underwear = 'underwearplain', armor = null, weapon = null, accessory = null}
 	#repairing items

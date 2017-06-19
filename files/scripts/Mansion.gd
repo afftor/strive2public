@@ -701,12 +701,14 @@ func _on_end_pressed():
 					text2.set_bbcode(text2.get_bbcode() + slave.dictionary("Wearing no underwear causes $name to become more open to dirty behavior, but $he seems to accept it surprisingly well.\n"))
 			if slave.stress > 80 && slave.sleep != 'jail' && slave.sleep != 'farm' && slave.away.duration < 1:
 				text0.set_bbcode(text0.get_bbcode() + slave.dictionary("$name complained "+globals.fastif(headgirl == null, "to you, ", "to your headgirl, ")+"that $he's having it too hard and hoped to get some rest.\n"))
-			if slave.stress >= 95 && slave.cour+slave.conf+slave.wit+slave.charm > 50:
-				text0.set_bbcode(text0.get_bbcode() + slave.dictionary("$name had a severe mental breakdown due to high stress. \n"))
+			if slave.stress >= 100 && slave.cour+slave.conf+slave.wit+slave.charm > 50:
+				text0.set_bbcode(text0.get_bbcode() + slave.dictionary("[color=red]$name had a severe mental breakdown due to high stress.[/color] \n"))
 				slave.cour += -rand_range(0,slave.cour/4)
 				slave.conf += -rand_range(0,slave.conf/4)
 				slave.wit += -rand_range(0,slave.wit/4)
 				slave.charm += -rand_range(0,slave.charm/4)
+				if slave.effects.has('captured') == true:
+					slave.add_effect(globals.effectdict.captured, true)
 				slave.health = -rand_range(0,slave.stats.health_max/6)
 			if slave.level.skillpoints == -1:
 				slave.level.skillpoints = 0
@@ -758,7 +760,7 @@ func _on_end_pressed():
 				if rand_range(0,100) < 40:
 					slave.stress += rand_range(15,20)
 			if slave.away.duration == 0 && !slave.sleep in ['jail','farm']:
-				if luxury < luxurydict[slave.origins] && slave.metrics.ownership > 7:
+				if luxury < luxurydict[slave.origins] && slave.metrics.ownership - slave.metrics.jail > 7 :
 					slave.loyal -= (luxurydict[slave.origins] - luxury)/2.5
 					slave.obed -= (luxurydict[slave.origins] - luxury)
 					text0.set_bbcode(text0.get_bbcode() + slave.dictionary("[color=red]$name appears to be rather unhappy about quality of $his life and demands better living conditions from you. [/color]\n"))
@@ -968,7 +970,7 @@ bad = ["norneu",'posneu'],
 worst = ["nornes"]
 }
 var alisetext = {
-good = ['Nice job! Income is currently on the rise!', 'Great work, $name, We are currently getting wealthier!', 'Things are doing well, $name!', 'If we keep gaining like this, could I get a vacation one day?', 'Another great day, high-five!', 'Remarkable work! Income outlook at this time is positive.', 'A great poetic group of men once said, "Money, Money, Money, Money... Money!"', 'A well known artist once stated, "Making money is art and working is art and business is the best art."', 'They say money talks... what does yours say?', 'We are doing great!  Please keep this up $name!'],
+good = ['Nice job! Income is currently on the rise!', 'Great work, $name, We are currently getting wealthier!', 'Things are doing well, $name!', 'If we keep gaining like this, could I get a vacation one day?', 'Another great day, high-five!', 'Remarkable work! Income outlook at this time is positive.', 'A well known artist once stated, "Making money is art and working is art and business is the best art."', 'They say money talks... what does yours say?', 'We are doing great!  Please keep this up $name!'],
 med = ['We might need to start making money soon.', 'Things are steady... but should be better financially', "Well we aren't losing money... but we aren't really gaining any either", 'We have added next to nothing to our coffers.  We need a stronger income.', 'I believe it is about time we gain some money.', 'Time waits for no man, neither does good commerce.'],
 bad = ['We are losing money $name!', 'Things are not going too well.', 'We should do something about this cash loss.', 'Oh dear! We are bleeding gold.', 'This funding loss needs to be addressed.', 'You must be scaring the gold away, it is disappearing!', 'A financial analysis of assets states a net loss by my calculations.', '$name, do something about this funding leak before you end up poor!', 'Did I miss a memo as to why there is a loss in funds?'],
 worst = ["Well... looks like we lost one of our workers. Don't let that to discourage you though!", "So we lost a worker... Let's move on and fix issues for the future.", 'This is an unfortunate situation', "The outlook is unfavorable, let's change that!", "It's just one bad day out of how many other days.", "Don't get discouraged, learn from these failures and fix the issues.", 'I am very sorry about your bad day, let us proceed to fix this.']
@@ -3555,4 +3557,6 @@ func _on_combatgroup_pressed():
 func alisegreet():
 	get_node("tutorialnode").set_hidden(false)
 	get_node("tutorialnode").alisegreet()
+
+
 

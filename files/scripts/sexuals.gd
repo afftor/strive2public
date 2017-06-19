@@ -26,15 +26,18 @@ func _ready():
 		sexbuttons[i].code = i
 
 func _on_sexual_visibility_changed():
+	slave = globals.slaves[get_tree().get_current_scene().currentslave]
 	var tab = get_parent().tab
 	var text = ''
 	var button
+	
+	get_node("togglerape").set_pressed(slave.forcedsex)
+	
 	var rape = get_node("togglerape").is_pressed()
 	
 	if partner == null:
 		partner = globals.player
 	globals.partner = partner
-	slave = globals.slaves[get_tree().get_current_scene().currentslave]
 	
 	if tab == 'prison':
 		get_node("togglerape").set_pressed(true)
@@ -160,6 +163,7 @@ func updateinfo():
 
 func _on_togglerape_pressed():
 	partner = null
+	slave.forcedsex = get_node("togglerape").is_pressed()
 	_on_sexual_visibility_changed()
 
 func sexactionchosen(button):

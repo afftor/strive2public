@@ -403,7 +403,7 @@ clothninja = {
 clothpet = {
 	code = 'clothpet',
 	name = 'Pet Suit',
-	icon = null,
+	icon = load("res://files/images/items/clothbdsm.png"),
 	description = "Specially designed pieces of leather decoration which represent a domestic animal, and force the wearer to walk on all fours. For obvious reasons, this should generally not be worn outside.",
 	effect = [{type = 'onendday', effect = 'peteffect', descript = "Greatly increases obedience. If Confidence above 40, cause stress penalty and lowers it by the end of a day."}],
 	recipe = '',
@@ -431,7 +431,7 @@ clothchain = {
 clothbedlah = {
 	code = 'clothbedlah',
 	name = 'Bedlah',
-	icon = null,
+	icon = load("res://files/images/items/clothbedlah.png"),
 	description = "Loose, translucent clothing from southern regions, generally worn by dancers and members of a harem.",
 	effect = [{type = 'onendday', effect = 'bedlaheffect', descript = "Slightly increases Charm by the end of a day."}],
 	recipe = '',
@@ -460,7 +460,7 @@ underwearplain = {
 underwearlacy = {
 	code = 'underwearlacy',
 	name = 'Lacy Underwear',
-	icon = null,
+	icon = load("res://files/images/items/underwearlacy.png"),
 	description = "Fancy and cute underwear available for people with moderate income.\n[color=green]Increases slave's luxury[/color]",
 	effect = [],
 	recipe = '',
@@ -502,7 +502,7 @@ armorchain = {
 weapondagger = {
 	code = 'weapondagger',
 	name = 'Dagger',
-	icon = null,
+	icon = load("res://files/images/items/weapondagger.png"),
 	description = "A simple weapon providing bare minimum of physical power. ",
 	effect = [{type = 'incombat', effect = 'damage', effectvalue = 4, descript = "+4 Damage"}],
 	recipe = '',
@@ -516,7 +516,7 @@ weapondagger = {
 weaponsword = {
 	code = 'weaponsword',
 	name = 'Long Sword',
-	icon = null,
+	icon = load("res://files/images/items/weaponsword.png"),
 	description = "Medium sized sword perfectly balanced for close combat. ",
 	effect = [{type = 'incombat', effect = 'damage', effectvalue = 7, descript = "+7 Damage"}],
 	recipe = '',
@@ -530,7 +530,7 @@ weaponsword = {
 weaponclaymore = {
 	code = 'weaponclaymore',
 	name = 'Claymore',
-	icon = null,
+	icon = load("res://files/images/items/weaponclaymore.png"),
 	description = "Large, two-handed sword for extra punch. Sloweres the wielder.\n[color=yellow]Requirements: 2 Strength[/color] ",
 	effect = [{type = 'incombat', effect = 'damage', effectvalue = 12, descript = "+12 Damage"}, {type = 'incombat', effect = 'speed', effectvalue = -3, descript = "-3 speed"}],
 	recipe = '',

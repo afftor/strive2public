@@ -120,6 +120,17 @@ func actionbuttons(button):
 		slave.stress += rand_range(15,25)
 		slave.health = -rand_range(5,10)
 		if slave.obed < 75||slave.traits.has('Masochist') == true:
+			if slave.health <= 0:
+				text += "[color=red]Due to poor health that was too much for $name and $he lost consciousness. Unable to recuperate $him, you can't help, but accept $his death.[/color] "
+				globals.slaves.erase(slave)
+				if globals.slaves.size() > 1:
+					text += "\n[color=red]Other servants are shocked by this incident. [/color]"
+					for i in globals.slaves:
+						i.obed += rand_range(10, 50)
+						i.stress += rand_range(25, 50)
+				get_tree().get_current_scene().popup(slave.dictionary(text))
+				get_tree().get_current_scene().rebuild_slave_list()
+				return
 			if slave.effects.has('captured') == true:
 				slave.effects.captured.duration -= 1
 				text = text + "\nBy the end $he glares at you with sorrow and hatred, showing leftovers of a yet untamed spirit."

@@ -1404,6 +1404,7 @@ func selectshopitem(tempitem, unstuck = null):
 		if i.is_pressed() == true && i != tempitem:
 			i.set_pressed(false)
 	tempitem.set_pressed(true)
+	get_node("shoppanel/itempanel/iconbig").set_hidden(true)
 	selecteditem = tempitem
 	text = "[center]" + item.name + "[/center]\n"
 	if mode == 'buy':

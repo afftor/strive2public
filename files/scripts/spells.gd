@@ -170,7 +170,8 @@ func mindreadeffect():
 		for i in slave.traits.values():
 			text += ' ' +i.name
 		text += '.'
-	text += "Pregnancy: " + str(slave.preg.duration)
+	if slave.preg.duration > 0:
+		text += "\nPregnancy: " + str(slave.preg.duration)
 	text = slave.dictionary(text)
 	main.dialogue(true, self, text)
 
@@ -252,6 +253,9 @@ func feareffect():
 		text = text + '$name reacts disturbingly to your punishment, as $he does not seems to believe $he offended you rightly.'
 		slave.stress += 45
 		slave.cour -= rand_range(5,10)
+	if slave.effects.has('captured') == true:
+		text += "\n[color=green]$name becomes less rebellious towards you.[/color]"
+		slave.effects.captured.duration -= 1+globals.player.smaf
 	main.popup(slave.dictionary(text))
 	main.rebuild_slave_list()
 
@@ -274,6 +278,9 @@ func dominationeffect():
 			text = 'Your spell greatly affected $name and $he became way more submissive towards you.  '
 			slave.loyal += rand_range(25,50)
 			slave.obed += 100
+			if slave.effects.has('captured') == true:
+				text += "\n[color=green]$name becomes less rebellious towards you.[/color]"
+				slave.effects.captured.duration -= 3+(1*globals.player.smaf)
 	main.popup(slave.dictionary(text))
 	main.rebuild_slave_list()
 
