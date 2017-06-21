@@ -5,7 +5,7 @@ var itemdict = {}
 var spelldict = {}
 var effectdict = {}
 var guildslaves = {wimborn = [], gorn = [], frostford = []}
-var gameversion = 4421
+var gameversion = 4423
 var state = progress.new()
 
 
@@ -382,6 +382,9 @@ class slave:
 		maf_cur = 0,
 		maf_max = 0,
 		maf_base = 0,
+		end_base = 0,
+		end_cur = 0,
+		end_max = 0,
 		cour_max = 0,
 		cour_base = 0,
 		conf_max = 0,
@@ -1158,6 +1161,9 @@ func repairsave():
 		if i.gear.has('clothes'):
 			i.gear = {costume = 'clothcommon', underwear = 'underwearplain', armor = null, weapon = null, accessory = null}
 	#repairing items
+	if globals.player.ability.find('escape') < 0:
+		globals.player.ability.append('escape')
+		globals.player.abilityactive.append('escape')
 	if state.alchemy >= 2:
 		itemdict.aphroditebrew.unlocked = true
 	if state.currentversion <= 44:

@@ -222,6 +222,8 @@ func _on_new_slave_button_pressed():
 	globals.player.abilityactive.append("mindread")
 	globals.player.ability.append('heal')
 	globals.player.stats.maf_cur = 3
+	globals.player.level.value = 10
+	globals.player.level.skillpoints = 10
 	globals.state.branding = 2
 	globals.resources.gold += 1000
 	globals.resources.food += 1000
