@@ -671,7 +671,7 @@ func _on_partner2_pressed():
 
 
 func checktext(action, cons):
-	var text = globals.sexscenes.getscene(action, slave, cons)
+	var text = globals.sexscenes.getscene(action, slave, cons, hole)
 	return text
 
 func getessencesfromsex(slave, mana):

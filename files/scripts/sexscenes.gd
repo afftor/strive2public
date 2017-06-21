@@ -8,11 +8,11 @@ text3 = {consensual = 'consensual', titsize = 'flat', loyaltybelow = 70, text = 
 text4 = {consensual = 'consensual', titsize = 'flat', loyaltyabove = 70, text = 'You instruct $name to sit on the bed beside you. SHe looks a bit anxious or possibly hopeful? Difficult to tell. You start slow, your hands tracing thier neck, gently rubbing thier shoulders. As $he begins to relax, your hands begin to slip around towards the sides, then the front, progressivly moving closer and closer to thier nipples. When you finally do reach them, it takes a disapointingly low number to pinches and tweaks to bring them close to the edge, and you secretly enjoy the disbelieving look $he gives you as you casually dismiss them.'},
 },
 pussy = {
-text1 = {function = 'pussysex'},
-text2 = {consensual = 'nonconsensualdislike', pchaspenis = true, function = 'pussyrape'},
+text1 = {function = 'pussysex', hole="pussy"},
+text2 = {consensual = 'nonconsensualdislike', pchaspenis = true, function = 'pussyrape', hole="pussy"},
 },
 ass = {
-text1 = {function = 'analsex'},
+text1 = {function = 'analsex', hole="ass"},
 text2 = {consensual = 'nonconsensualdislike', pchaspenis = true, text = '$name averts $his eyes, as you position $him to have access to $his rear. Not waiting for long, you push cock inside of $his ass making $him yelp at the sudden invasion. $He tries to get away and break free but you firmly hold $his body in place. As you move inside of $his ass, tears start falling down $his cheeks and $he begs you to stop. $His desperation brings you closer to climax.'},
 },
 blowjob = {
@@ -20,7 +20,11 @@ text1 = {function = 'blowjobsex'},
 text2 = {consensual = 'nonconsensualdislike', text = "You tightly tie $name in place. Brushing over $his cheek, you take a ring gag. After a moment you have fixed the gag in the $child's mouth. You take off your pants and direct your cock into the poor thing's face. $His clumsy attempts to evade it only provoke you further. With force you insert you cock into $his open mouth, making $him moan in protest. $His warm and damp tongue instinctively tries to push out the invader, but it only increases your pleasure. With glee you grabs the victim's head and hold it in place. With every thrust you force yourself into $his throat deeper and deeper. By this time moans are replaced with whimper and cries while $his tear-stained eyes begin to express humility. The sight of $him choking on your cock brings you closer to climax."},
 },
 hairjob = {
-text1 = {function = 'hairjob'}
+text1 = {function = 'hairjob'},
+},
+fingering = {
+text1 = {function = 'fingering', hole='pussy'},
+text2 = {function = 'fingeringass', hole='ass'},
 },
 }
 
@@ -746,8 +750,18 @@ func hairjob(slave):
 	var text = ''
 	text += slave.dictionary("$name gives your cock tender care with $his $haircolor hair. ")
 	return text
+	
+func fingering(slave):
+	var text = ''
+	text += "You move your hand over $name's pussy, gently teasing the outside of $his lips. As $he gets wetter you slide your finger between $his lips and rub $his clit. $name gasps as you shove your middle finger into $his wet pussy. You begin to move your finger in and out while carressing $his clit."
+	return text
+	
+func fingeringass(slave):
+	var text = ''
+	text += "You lube up your fingers before spreading $name's ass cheeks. You gently tease the outside of $his ass transfering some of the lube. You slowly press your finger into $his hole, the tight muscles squeezing down on you as you work your way in deeper. When $he is ready you add an additional finger to $his hole and begin to fuck it in ernest."
+	return text	
 
-func getscene(sexaction, slave, consensual):
+func getscene(sexaction, slave, consensual, hole):
 	if texts.has(sexaction) == false:
 		return ''
 	var dict = texts[sexaction]
@@ -777,6 +791,9 @@ func getscene(sexaction, slave, consensual):
 				check = false
 		if i.has('pchaspenis'):
 			if globals.player.penis.number == 0:
+				check = false
+		if i.has('hole'):
+			if i.hole != hole:
 				check = false
 		if i.has('function') && check == true:
 			array.append(call(i.function, slave))
