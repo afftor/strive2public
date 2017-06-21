@@ -8,23 +8,24 @@ text3 = {consensual = 'consensual', titsize = 'flat', loyaltybelow = 70, text = 
 text4 = {consensual = 'consensual', titsize = 'flat', loyaltyabove = 70, text = 'You instruct $name to sit on the bed beside you. SHe looks a bit anxious or possibly hopeful? Difficult to tell. You start slow, your hands tracing thier neck, gently rubbing thier shoulders. As $he begins to relax, your hands begin to slip around towards the sides, then the front, progressivly moving closer and closer to thier nipples. When you finally do reach them, it takes a disapointingly low number to pinches and tweaks to bring them close to the edge, and you secretly enjoy the disbelieving look $he gives you as you casually dismiss them.'},
 },
 pussy = {
-text1 = {function = 'pussysex', hole="pussy"},
-text2 = {consensual = 'nonconsensualdislike', pchaspenis = true, function = 'pussyrape', hole="pussy"},
+text1 = {consensual = 'consensual', function = 'pussysex', hole = 'pussy'},
+text2 = {consensual = 'nonconsensualdislike', pchaspenis = true, function = 'pussyrape',hole = 'pussy'},
+text3 = {consensual = 'nonconsensuallike', function = 'pussysex', hole = 'pussy'},
 },
 ass = {
-text1 = {function = 'analsex', hole="ass"},
+text1 = {function = 'analsex', hole = 'ass'},
 text2 = {consensual = 'nonconsensualdislike', pchaspenis = true, text = '$name averts $his eyes, as you position $him to have access to $his rear. Not waiting for long, you push cock inside of $his ass making $him yelp at the sudden invasion. $He tries to get away and break free but you firmly hold $his body in place. As you move inside of $his ass, tears start falling down $his cheeks and $he begs you to stop. $His desperation brings you closer to climax.'},
 },
 blowjob = {
-text1 = {function = 'blowjobsex'},
-text2 = {consensual = 'nonconsensualdislike', text = "You tightly tie $name in place. Brushing over $his cheek, you take a ring gag. After a moment you have fixed the gag in the $child's mouth. You take off your pants and direct your cock into the poor thing's face. $His clumsy attempts to evade it only provoke you further. With force you insert you cock into $his open mouth, making $him moan in protest. $His warm and damp tongue instinctively tries to push out the invader, but it only increases your pleasure. With glee you grabs the victim's head and hold it in place. With every thrust you force yourself into $his throat deeper and deeper. By this time moans are replaced with whimper and cries while $his tear-stained eyes begin to express humility. The sight of $him choking on your cock brings you closer to climax."},
+text1 = {consensual = 'consensual', function = 'blowjobsex'},
+text2 = {consensual = 'nonconsensualdislike', function = 'blowjobrape'},
 },
 hairjob = {
-text1 = {function = 'hairjob'},
+text1 = {consensual = 'consensual', function = 'hairjob'}
 },
 fingering = {
-text1 = {function = 'fingering', hole='pussy'},
-text2 = {function = 'fingeringass', hole='ass'},
+text1 = {consensual = 'consensual', function = 'fingering', hole = 'pussy'},
+text2 = {consensual = 'consensual', function = 'fingeringass', hole = 'ass'},
 },
 }
 
@@ -43,45 +44,45 @@ group = {code = 'group', name = 'Group', actions = [], cost = 70, description = 
 
 var normalscenes = {
 'kiss': {
-consensual = 'You deeply kiss $name, tightly hug $his body. $He responds to your embrace and takes noticable pleasure from the contact. ',
-rape = "You forcefully push your way into $name's mouth and spend some time exploring it with your tongue. $He squirms trying to break your embrace. ",
-swing = "$2name and $name share a passionate kiss. They clearly enjoy each other as you watch. ",
-swingforced = "$name forcefully embraces and kisses $name at your order. ",
+consensual = 'You deeply kiss $name and tightly hug $his body. $He responds to your embrace, taking noticeable pleasure from the contact. Proceeding to make out with $him for a little while, you eventually pull back, slightly breathless and definitively aroused. ',
+rape = "Sliding a hand behind $name's head, you grab $him by the hair and hold him tight. With $him at your mercy now, you are free to give $name a forceful kiss. Exploring $his mouth with your tongue is fun, although $he struggles a little in your grasp. ",
+swing = "$2name and $name touch each other's bodies a little and share a passionate kiss. They clearly enjoy making out with each other as you watch them go at it. ",
+swingforced = "Accepting your order, $name steps up to $2name and pulls $2him into a forceful kiss. $2name struggles a little bit in $his grasp, but has no choice but to obey your wishes. ",
 }, 'massage': {
-consensual = 'You give $name a gentle massage helping $him to relax and improve $his mood.',
-swing = "$2name gives $name a gentle massage helping $him to relax and improve $his mood.",
+consensual = 'You direct $name to lie down on a bed, then proceed to give $him a gentle massage. Kneading and stroking $his muscles with your hands, you help $name relax quite a bit. By the time you finish and give $his body a last stroke, $name lets out a pleased groan.',
+swing = "You tell $2name to take care of $name and $2he proceeds to guide $him to a bed, then gives $him a gentle massage. $name groans in pleasure as $his muscles are kneaded, helping $him relax and improving $his mood.",
 }, 'handjob': {
-consensual = '$name wraps $his hand about your $penis and begins to jerk you off, you climax in few minutes. ',
-swing = "$name obediently jerks off $2name's cock. ",
+consensual = '$name obediently steps up beside you, wrapping $his hand around your manhood and starts to jerk. With $him slowly stroking up and down on your shaft at first, then going faster and faster, $he brings you to a breathtaking climax in a few minutes. Spurts of cum shoot out of your cock in a high arch, showing your slave how much you liked $his attention. ',
+swing = "Instructing $name to take care of $2name, you watch as $he obediently steps up to the other slave and takes hold of $2his cock. Stroking up and down on the erect pole with a smile on $his face, it doesn't take long before $2name is pushed to a gasp out loud as $he comes. ",
 }, 'fingering': {
 consensual = "You thoroughly work on $name's $hole with your hand until $he cums.",
-swing = "$2name thoroughly work on $name's $hole with $2his hand until $he cums.",
+swing = "You direct $2name to take care of $name's need and watch them get into bed together. Soon, $name is lying back with $his legs spread wide, $his friend lying between $his thighs and lapping at $name's pussy. It doesn't take all that long before the stimulation pushes $him to a gasping climax, splashing $2name's smiling face with pussy juice.",
 }, 'oral': {
 consensual = 'You make $name spread $his legs for you and thoroughly lick $his pussy.',
 swing = "$name lets $2name thoroughly lick $his pussy. ",
 }, 'blowjob': {
 consensual = '$name takes your cock into $his mouth and gives you a blowjob, eventually making you cum.',
 rape = "You force your cock into $name's mouth. Grabing $his head you rape it and pouring everything down $his throat. ",
-swing = "$name takes $2name's cock into $his mouth and gives $2him a blowjob, eventually making @2him cum.",
-swingforced = "$2name forces $2his cock into $name's mouth, raping it and pouring everything down $his throat. ",
+swing = "With a smile on $his face, $name kneels in front of $2name and takes $2his cock into $his mouth. Bobbing up and down on the hard rod, $he gives $2him an eager blowjob, eventually making $2him cum. $name turns $his head to you and shows off a tongue covered in creamy white before $he closes $his mouth and swallows demonstratively.",
+swingforced = "After you point $name out to $2name, $2he walks over to $him and pushes down on $his shoulders, forcing the slave to kneel. Then $2he forces $2his cock into $name's mouth, face-fucking $him hard. It doesn't take long before $2he shoots $2his load down $his throat, holding $name tightly as spurt after spurt is pumped into $him.",
 }, 'titfuck': {
-consensual = '$name takes your cock between $his breasts and stimulates it with passion, soon making you cum.',
+consensual = "Being presented with your hard cock and the request to take care of it, $name sinks to $his knees and slides it between $his breasts. $he stimulates your erection by rubbing up against it, an eager smile on $his face. It doesn't take long before you cum, splashing your seed over $name's chest, neck and lower face.",
 swing = "$name takes $2name's cock between $his breasts and stimulates it with passion, soon making $2him cum.",
 }, 'handjobgive': {
-consensual = 'You give $name a handjob as $he moans pleasantly eventually spraying $his cum.',
-swing = "",
+consensual = "You give step up to $name and slide a hand down to $his crotch, taking hold of the slave's manhood. Wrapping your fingers around it, you proceed to stroke it, drawing eager moans from $him. Eventually, your stimulation pushes $him to come, pumping out long spurts of cum to splatter on the ground.",
+swing = "$2name wraps $2his hand around $name's cock and begins to stroke it. Eventually $2his stimulation pushes $him over the edge, long spurts of cum splattering onto the ground.",
 }, 'fingeringtake': {
-consensual = '$name stimulates your $hole with $his hand until you quickly come.',
+consensual = "$name puts a hand on your hip and strokes your thigh, before moving on from there to stimulates your $hole with $his talented fingers, driving your arousal up and up. Thanks to $his eager attention, it doesn't take all that long until you come with a gasped-out moan.",
 swing = "",
 }, 'oraltake': {
-consensual = '$name thoroughly tongues your pussy until you finally cum into $his mouth. ',
+consensual = "$name kneels before you and obediently opens his mouth to start licking, his tongue playing over your nether lips in pleasurable swipes that make you all tingly inside. Thanks to $his eager oral service, it doesn't take all that long until you soon come, squirting pussy juice over $his face.",
 swing = "",
 }, 'blowjobgive': {
 consensual = 'You give $name a fine blowjob as $he moans in pleasure being brushed by your tongue.',
 swing = "$2name takes $name's cock into $2his mouth and makes @him moan in pleasure from the stimulation. ",
 }, 'titfuckgive': {
 consensual = "You give $name's cock a pleasant treatment with your boobs and mouth.",
-swing = "$2name gives $name a tifuck with $2his ample breasts. ",
+swing = "$2name gives $name a titfuck with $2his ample breasts. ",
 }, 'pussy': {
 consensual = "$name lets you pound $his pussy while moaning in ecstasy. ",
 rape = "You overpower and rape $name's pussy. ",
@@ -120,8 +121,8 @@ swing = "$2name jerks off $2name with $his lengthy ears. ",
 consensual = "With naughty smile, $name wraps $his tail over your cock providing enough stimulation for you to reach orgasm in few minutes. ",
 swing = "$name skillfully uses $his tail over $2name's cock, providing enough stimulation for $2him to reach orgasm in few minutes. ",
 }, 'footjobgive': {
-consensual = "You dominatively stroke $name's cock with your feet. ",
-swing = "$2name dominatively strokes $name's cock with $2his feet. ",
+consensual = "You dominantly stroke $name's cock with your feet. ",
+swing = "$2name dominantly strokes $name's cock with $2his feet. ",
 }, 'rimjobgive': {
 consensual = "You use your tongue to stimulate $name's ass. ",
 swing = "$2name uses $2his tongue to stimulate $name's ass. ",
@@ -627,7 +628,7 @@ lusteffect = 20,
 lbondage = {
 name = "Light bondage",
 type = 'fetish',
-description = "You will restirct $name's limbs and play with $his body. ",
+description = "You will restrict $name's limbs and play with $his body. ",
 energycost = 20,
 cost = 20,
 basereward = 3,
@@ -643,7 +644,7 @@ lusteffect = 30,
 hbondage = {
 name = "Hard bondage",
 type = 'fetish',
-description = "You will restirct $name's whole body and provide $him with some heavy-handed discipline. ",
+description = "You will restrict $name's whole body and provide $him with some heavy-handed discipline. ",
 energycost = 25,
 cost = 20,
 basereward = 4,
@@ -745,6 +746,11 @@ func blowjobsex(slave):
 	else:
 		text += "As you climax, you pull out of $his mouth and covering $his "+ globals.fastif(slave.face.beauty >= 70, "pretty", "") + " face and "+slave.haircolor + " hair with your seed."
 	return text
+	
+func blowjobrape(slave):
+	var text = ''
+	text += "You tightly tie $name in place. Brushing over $his cheek, you take a ring gag. After a moment you have fixed the gag in the $child's mouth. You take off your pants and direct your cock into the poor thing's face. $His clumsy attempts to evade it only provoke you further. With force you insert you cock into $his open mouth, making $him moan in protest. $His warm and damp tongue instinctively tries to push out the invader, but it only increases your pleasure. \n\nWith glee you grabs the victim's head and hold it in place. With every thrust you force yourself into $his throat deeper and deeper. By this time moans are replaced with whimpers and cries while $his tear-stained eyes begin to express humility. The sight of $him choking on your cock brings you closer to climax. With one last thrust you pump your load down $his throat. Letting go of $name, $he collapses to the ground, reaching a little and gasping for air."
+	return text
 
 func hairjob(slave):
 	var text = ''
@@ -794,7 +800,7 @@ func getscene(sexaction, slave, consensual, hole):
 				check = false
 		if i.has('hole'):
 			if i.hole != hole:
-				check = false
+ 				check = false
 		if i.has('function') && check == true:
 			array.append(call(i.function, slave))
 		elif check == true:
