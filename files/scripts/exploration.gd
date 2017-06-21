@@ -325,7 +325,10 @@ func healeveryone():
 			manaused += 5
 	manaused = min(manaused, globals.resources.mana)
 	globals.resources.mana -= manaused
-	main.popup("You've patched up everyone by using " + str(manaused) +  " mana. ")
+	if manaused > 0:
+		main.popup("You've patched up everyone by using " + str(manaused) +  " mana. ")
+	else:
+		main.popup("Nobody has injuries in your party. ")
 	outside.playergrouppanel()
 
 func enemyencounter():

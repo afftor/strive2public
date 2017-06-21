@@ -426,7 +426,7 @@ func sleeprooms():
 	dict[count].tooltip = slave.dictionary('$name will have personal room')
 	if slave.sleep == 'personal':
 		dict[count].state = 'selected'
-	elif beds.personal == globals.state.rooms.personal:
+	elif beds.personal >= globals.state.rooms.personal:
 		dict[count].state =  'disabled'
 		dict[count].tooltip = 'You have no more available personal rooms'
 	else:

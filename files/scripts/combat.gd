@@ -332,8 +332,8 @@ func updatepanels():
 		newbutton.get_node("name").set_text(combatant.name)
 		if (combatant.health/combatant.healthmax) < 0.35:
 			newbutton.get_node("hp").set('custom_colors/font_color', Color(1,0,0,1))
-		newbutton.get_node("hp").set_text('HP: ' + str(round(combatant.health)) +'/'+ str(round(combatant.healthmax)))
-		newbutton.get_node("energy").set_text('E:'+str(round(combatant.energy)) +'/'+ str(round(combatant.energymax)))
+		newbutton.get_node("hp").set_text('HP: ' + str(ceil(combatant.health)) +'/'+ str(ceil(combatant.healthmax)))
+		newbutton.get_node("energy").set_text('E:'+str(floor(combatant.energy)) +'/'+ str(floor(combatant.energymax)))
 		newbutton.get_node("power").set_text('P:'+str(round(combatant.power)))
 		newbutton.get_node("speed").set_text('S:'+str(round(combatant.speed)))
 		newbutton.set_meta("char", combatant)
@@ -348,7 +348,7 @@ func updatepanels():
 			get_node("enemypanel/enemyline").add_child(newbutton)
 			newbutton.set_meta("char", combatant)
 			newbutton.get_node("name").set_text(combatant.name)
-			newbutton.get_node("hp").set_text(str(round(combatant.health)) +'/'+ str(round(combatant.healthmax)))
+			newbutton.get_node("hp").set_text(str(ceil(combatant.health)) +'/'+ str(ceil(combatant.healthmax)))
 			newbutton.connect("pressed",self,'chooseenemy',[combatant])
 			newbutton.connect("mouse_enter", self, 'enemytooltip', [combatant])
 			newbutton.connect("mouse_exit", self, 'enemytooltiphide')
@@ -599,6 +599,7 @@ func actionexecute(actor, target, skill):
 		actor.sendbuff()
 	if skill.code == 'heal':
 		globals.abilities.restorehealth(actor,target)
+	target.health = ceil(target.health)
 	text = combatantdictionary(actor, text)
 	return text
 

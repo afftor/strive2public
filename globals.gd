@@ -1164,6 +1164,8 @@ func repairsave():
 	if globals.player.ability.find('escape') < 0:
 		globals.player.ability.append('escape')
 		globals.player.abilityactive.append('escape')
+		if globals.spelldict.heal.learned == true && globals.player.ability.find('heal') < 0:
+			globals.player.ability.append('heal')
 	if state.alchemy >= 2:
 		itemdict.aphroditebrew.unlocked = true
 	if state.currentversion <= 44:

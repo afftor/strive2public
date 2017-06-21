@@ -229,7 +229,7 @@ func _on_new_slave_button_pressed():
 	globals.resources.food += 1000
 	globals.resources.mana += 1000
 	globals.player.energy = 100
-	for i in ['clothmaid','underwearlacy','armorleather','weapondagger','clothbedlah','clothmiko','clothkimono']:
+	for i in ['clothmaid','underwearlacy','armorleather','weapondagger','clothbedlah','clothmiko','clothkimono','clothpet']:
 		var tmpitem = get_node("itemnode").createunstackable(i)
 		globals.state.unstackables[str(tmpitem.id)] = tmpitem
 	globals.state.sidequests.brothel = 2

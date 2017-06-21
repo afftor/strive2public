@@ -848,6 +848,8 @@ func _on_slaveconfirm_pressed():
 			globals.state.unstackables[str(tempitem.id)] = tempitem
 	elif background == 'mage':
 		globals.spelldict.heal.learned = true
+		globals.player.ability.append('heal')
+		globals.player.abilityactive.append('heal')
 		globals.state.alchemy += 1
 		var array = ['aphrodisiac','hairgrowthpot','amnesiapot','lactationpot','miscariagepot','stimulantpot','deterrentpot']
 		for i in array:
