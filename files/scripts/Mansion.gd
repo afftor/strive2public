@@ -496,7 +496,7 @@ func _on_end_pressed():
 					text = slave.dictionary('[color=red]$name has died of starvation.[/color]\n')
 					deads_array.append({number = count, reason = text})
 			if slave.obed < 25 && slave.cour >= 50 && slave.rules.silence == false && slave.traits.has('Mute') == false && slave.sleep != 'jail' && slave.sleep != 'farm' && rand_range(0,1) > 0.5:
-				text0.set_bbcode(text0.get_bbcode()+slave.dictionary('$name dares to openly show her disrespect towards you and instigates other servants. \n'))
+				text0.set_bbcode(text0.get_bbcode()+slave.dictionary('$name dares to openly show $his disrespect towards you and instigates other servants. \n'))
 				for ii in globals.slaves:
 					if ii != slave && ii.loyal < 30 && ii.traits.has('Loner') == false:
 						ii.obed += -(slave.charm/3)
