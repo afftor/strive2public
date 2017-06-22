@@ -722,7 +722,7 @@ func handcuffeffect(slave):
 	return text
 
 #			elif slave.gear.clothes.code == 'bedlah':
-#				text2.set_bbcode(text2.get_bbcode() + slave.dictionary("$name's revealing clothes cause her to become more open to dirty things.\n"))
+#				text2.set_bbcode(text2.get_bbcode() + slave.dictionary("$name's revealing clothes cause $him to become more open to dirty things.\n"))
 
 
 
@@ -747,7 +747,7 @@ func regressionpoteffect():
 	slave.add_trait(globals.origins.trait('Pliable'))
 	slave.add_trait(globals.origins.trait('Regressed'))
 	slave.loyal += rand_range(15,25)
-	var text = slave.dictionary("As $name drinks the potion, the look on his face becomes less and less focused, until eventually $his mind is reformed back into a very young and learning state. With this you can leave much greater impact on $his consciousness. ")
+	var text = slave.dictionary("As $name drinks the potion, the look on $his face becomes less and less focused, until eventually $his mind is reformed back into a very young and learning state. With this you can leave much greater impact on $his consciousness. ")
 	return text
 
 func hairdyeeffect():
