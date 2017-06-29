@@ -156,8 +156,8 @@ func questarray():
 	quest011 = {
 	code = '011',
 	shortdescription = "Local nobleman looks for a bride for his son.",
-	description = "The head of a noble house is arranging a marriage for his love-timid son. In order to preserve their aristocratic namesake, a pure maiden of royal descent is required. Must be knowledgeable in the management of an estate, and have an attractiveness befitting of nobility. ",
-	reqs = [['obed','gte', 80], ['sex','eq','female'],['origins','eq','royal'],['face.beauty','gte',80] ],
+	description = "The head of a noble house is arranging a marriage for his love-timid son. In order to preserve their aristocratic namesake, a pure maiden of noble descent is required. Must be knowledgeable in the management of an estate, and have an attractiveness befitting of nobility. ",
+	reqs = [['obed','gte', 80], ['sex','eq','female'],['origins','eq','noble'],['face.beauty','gte',80] ],
 	reqstemp = [],
 	time = round(rand_range(6,12)),
 	reward = round(rand_range(80,120))*10,

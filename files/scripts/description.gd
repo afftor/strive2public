@@ -115,7 +115,7 @@ static func getHair(slave):
 	twintails = 'It managed in a girly [color=aqua]twintails[/color]. ',
 	braid = 'It combed into a single [color=aqua]braid[/color]. ',
 	'two braids' : 'It combed into [color=aqua]two braids[/color]. ',
-	bun = "It's tied into a neat [color=aqua]bum[/color]. ",
+	bun = "It's tied into a neat [color=aqua]bun[/color]. ",
 	}
 	color = '[color=aqua]' + slave['eyecolor'] + '[/color]'
 	text2 = text2 + text[slave['hairstyle']] + '$His eyes are ' + color + '. '
