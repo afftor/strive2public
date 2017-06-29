@@ -43,7 +43,7 @@ loadgreeting = [
 {funct = 'close'}
 ],
 introduction = [
-{sprite = 'norhap',text = "My pleasure to meet you! You can call me Alise, and starting today I’ll be helping you out with this lengthy adventure! "},
+{sprite = 'norhap',text = "It's a pleasure to meet you! You can call me Alise, and starting today I’ll be helping you out with this lengthy adventure! "},
 {text = "I’m here to teach you the basic functions needed to be successful within this realm.",  choice = 'intro'},
 ],
 endtutorial = [
@@ -54,7 +54,7 @@ endtutorial = [
 basicstext = [
 {sprite = 'poshap', text = "Ahhh, the advantages by owning your own estate, so many possibilities are now available.  It feels amazing doesn't it?"},
 {text = "Please keep in mind that you are responsible for yourself, the estate, and its residents.  Please take care of them.  If you do, they will take care of you. "},
-{text = "Your main goal is survival it its truest form. To do so you need to make a steady income and stockpile basic supplies such as food to which you will need on a daily basis. "},
+{text = "Your main goal is survival it its truest form. To do so you need to bring in a steady income and stockpile basic supplies such as food to which you will need on a daily basis. "},
 {sprite = 'poswin',text = "You can find your current Money and Food stock in the panel at the top of the screen. "},
 {text = 'To earn food and income you will need to assign your servants to various occupations, then end the current day by clicking the button at the bottom of the screen or by pressing your "F" key.'},
 {sprite = 'althap',text = "You can see the current available servants you have on the right hand side of screen. "},
@@ -74,8 +74,8 @@ slavechar = [
 {text = "Lastly, your servants will gain experience from their actions and from combat, battling your enemies.  When a servant gains a level they also gain extra skill points which you can assign at a later time.", choice = 'slave'},
 ],
 slavecond = [
-{sprite = 'norwin', text = "There are three things you need to have knowledge of about your servants.  These are: Obedience, Stress and Loyalty."},
-{text = "All of these are important. Let's start off with Obedience.  You simply can't force a servant to do work unless you  cater to them or savagely control them.  A disobedient servant is a recipe for disaster as they can refuse to follow orders, publicly cause discord, or escape your control. "},
+{sprite = 'norwin', text = "There are three things you need to have knowledge of regarding your servants.  These are: Obedience, Stress and Loyalty."},
+{text = "All of these are important. Let's start off with Obedience.  You simply can't force a servant to do work unless you cater to their needs or savagely control them.  A disobedient servant is a recipe for disaster as they can refuse to follow orders, publicly cause discord, or escape your control. "},
 {sprite = 'poshap', text = "Obedience can generally be raised by your interactions with the servant and the punishments you hand out to them. However, don't overdo punishments or overpraise your pets as that can cause disobedience."},
 {text = 'If you are an effective master, you will understand how to hand out just enough punishment and praise to keep your pets "in line".'},
 {text = "Stress is the gauge which shows a servant's reaction to recent events happening to them. A high stress can cause mental and emotional scarring to a servant and will impede your progress with them."},
@@ -125,7 +125,7 @@ jail = [
 alchemy = [
 {sprite = 'norhap', text = "This is a pretty cool place; don't you think?  All the beakers, flasks, vials, and magical ingredients is almost intoxicating! "},
 {text = "Well, to be honest, if you didn't know what alchemy is then I will give you a basic "+ ' "run-down".' + "  You introduce ingredients to other types of ingredients in order to gain a desired effect."},
-{text = "An ingredient is an herb or substance and can be found at stores or while exploring the world."},
+{text = "An ingredient is an herb or substance and can be found in stores or while exploring the world."},
 {sprite = 'poswin',text = "In addition, some substances can be gained from performing lewd acts with specific races.  I've also heard, but can't confirm myself, that chances are higher with the magically gifted!"},
 {text = "Many potions are very convenient for your daily tasks, so keep an eye out for the possibilities!"},
 {text = "Lastly, potions are considered wild magic and will build up a magical" +  ' "toxicity" '+", if that is what you want to call it, in those that consume them.  This can produce wild, probably negative effects, that affect the health and well-being of those consumers. "},
@@ -162,7 +162,7 @@ combat = [
 {text = "If you are fighting against sentient beings, then you may be able to capture them and force them into servitude!"},
 {sprite = 'poswin',text = "Sometimes the enemy gets the upper-hand on you and get the jump on you.  Generally, servants with a high Agility and Wit will be able to prevent such actions by your enemy. "},
 {text = "Sometimes you run into typical, innocent people.  Starting a fight with these citizens will cause the local controlling faction's reputation, with you, to drop.  This can cause many significant issues in the future. "},
-{text = "When an opposing enemy drops too low they may and probably will try to run.  You can manually send your servants after them to try and intercept those that flee.  "},
+{text = "When an opposing enemies health drops too low they may and probably will try to run.  You can manually send your servants after them to try and intercept those that attempt to flee.  "},
 {text = "The last opponent standing in combat will always stand their ground and do not need a servant to pursue them. This is notable because you could make the most desired enemy, that you would like to capture, the last one standing.  "},
 {sprite = 'norsid', text = "When you capture enemies you can decide several fates for them.  Some of these choices are violent, some are vile, some are selfless, and some are simply gains for you.  Although, those you make captives won’t be happy."},
 {text = "You also are able to use abilities, that you have learned, during combat.  Keep in mind though that these skills will require energy so it is good practice to keep your energy at a decent level."},
@@ -172,7 +172,7 @@ combat = [
 
 call = [
 {sprite = 'poshap', text = "At your service!"},
-{text = "What could I do for you?", choice = 'menu'},
+{text = "What can I do for you?", choice = 'menu'},
 ],
 redress = [
 {sprite = 'nornes', text = "Ahem... This kind of serivce is a bit..."},
