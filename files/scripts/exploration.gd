@@ -56,7 +56,7 @@ combat = true,
 code = 'amberguardforest',
 name = 'Amber Road',
 description = "Amber Road is a long way through seeming glade and various small settlements and hills. ",
-enemies = [['solobear', 15], ['wolveshard', 45], ['direwolveseasy', 75]],
+enemies = [['solobear', 15], ['wolveshard', 65], ['direwolveseasy', 100]],
 encounters = [],
 length = 4,
 exits = ['amberguard','witchhut','undercityentrance'],
@@ -432,6 +432,12 @@ func zoneenter(zone):
 		array.append({name = "Find Cali's village",function = 'event',args = 'calireturnhome'})
 	if globals.state.mainquest == 13 && zone.code == 'gornoutskirtsexplore':
 		array.append({name = "Search for Ivran's location",function = 'event',args = 'gornivran'})
+	if zone.code == 'undercitytunnels' && progress >= 6 && globals.state.lorefound.find('amberguardlog1') < 0:
+		globals.state.lorefound.append('amberguardlog1')
+		outside.maintext.set_bbcode(outside.maintext.get_bbcode() + "[color=yellow]\n\nYou've found some old writings in the ruins. Does not look like what you came for, but you can read them later.[/color]")
+	if zone.code == 'undercityruins' && progress >= 5 && globals.state.lorefound.find('amberguardlog2') < 0:
+		globals.state.lorefound.append('amberguardlog2')
+		outside.maintext.set_bbcode(outside.maintext.get_bbcode() + "[color=yellow]\n\nYou've found some old writings in the ruins. Does not look like what you came for, but you can read them later.[/color]")
 	var hasinjuries = false
 	for i in globals.state.playergroup:
 		var slave = globals.state.findslave(i)
