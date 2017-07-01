@@ -231,7 +231,21 @@ func gornaydaivran(stage = 0):
 	#globals.get_tree().get_current_scene().dialogue(state, self, text, buttons, sprite)
 
 
-
+func undercitybosswin():
+	var reward
+	var text = ''
+	var rewarddict = ['armorplate']
+	reward = rewarddict[rand_range(0,rewarddict.size())]
+	reward = globals.get_tree().get_current_scene().get_node("itemnode").createunstackable(reward)
+	globals.state.unstackables[str(reward.id)] = reward
+	if globals.state.mainquest == 24:
+		text += "After defeating the awoken golem, you spend some time searching around, until one of the piles reveals an ancient looking documents. Being unable to read them due to magical protection and unknown language, you decide to bring it back to Melissa.\n\n[color=yellow]There might be some additional treasures, but you'd have to come for them next time. [/color] "
+		globals.state.mainquest = 25
+	else:
+		pass
+	globals.get_tree().get_current_scene().get_node("explorationnode").zoneenter('undercityruins')
+	text += "\n[color=green]After searching through the building ruins you managed to find 1 [color=aqua]" + reward.name + "[/color]. [/color]"
+	globals.get_tree().get_current_scene().popup(text)
 
 
 

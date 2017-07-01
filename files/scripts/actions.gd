@@ -359,6 +359,7 @@ func _on_spellusebutton_pressed():
 	slave.attention = 0
 	get_node("selectspellpanel").set_hidden(true)
 	get_parent()._on_slave_tab_visibility_changed()
+	get_tree().get_current_scene().rebuild_slave_list()
 
 
 

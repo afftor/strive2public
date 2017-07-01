@@ -86,6 +86,8 @@ func _on_futaballs_pressed():
 
 func _on_fullscreen_pressed():
 	OS.set_window_fullscreen(get_node("TabContainer/Settings/fullscreen").is_pressed())
+	set_hidden(true)
+	popup()
 	get_node("screenpopup").popup()
 
 func _on_childlike_pressed():

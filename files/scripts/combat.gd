@@ -2,6 +2,7 @@
 extends Node
 
 var nocaptures = false
+var area
 var currentenemies
 var playergroup = []
 var enemygroup = []
@@ -40,6 +41,7 @@ class fighter:
 	var lasttarget
 	var party
 	var button
+	var icon
 	
 	func sendbuff():
 		var effect = str2var(var2str(globals.abilities.effects[action.effect]))
@@ -95,6 +97,7 @@ func start_battle():
 	var slave
 	var combatant
 	trapper = false
+	get_node("autoattack").set_pressed(globals.rules.autoattack)
 	get_tree().get_current_scene().get_node("outside").set_hidden(true)
 	get_tree().get_current_scene().music_set('combat')
 	deads = []
@@ -150,7 +153,7 @@ func start_battle():
 		combatant.name = slave.dictionary('$name')
 		combatant.health = slave.health
 		combatant.healthmax = slave.stats.health_max
-		combatant.speed = 10 + slave.stats.agi_cur*3
+		combatant.speed = 6 + slave.stats.agi_cur*3
 		combatant.power = 3 + slave.stats.str_cur*2
 		if slave.race == 'Seraph':
 			combatant.speed += 4
@@ -185,8 +188,12 @@ func start_battle():
 	#build enemy group
 	for i in currentenemies:
 		combatant = fighter.new()
-		if nocaptures == false:
+		if i.icon != null:
+			combatant.icon = i.icon
+		if nocaptures == false && i.capture != null:
 			combatant.person = i.capture
+			if i.capture.sex in ['female','futa'] && i.has('iconalt'):
+				combatant.icon = i.iconalt
 		else:
 			combatant.person = null
 		combatant.name = i.name
@@ -344,11 +351,16 @@ func updatepanels():
 		if combatant.state in ['normal']:
 			var slave = combatant.person
 			newbutton = get_node("enemypanel/enemyline/character").duplicate()
+			if combatant.icon != null:
+				newbutton.get_node("icon").set_texture(combatant.icon)
 			newbutton.set_hidden(false)
 			get_node("enemypanel/enemyline").add_child(newbutton)
 			newbutton.set_meta("char", combatant)
 			newbutton.get_node("name").set_text(combatant.name)
-			newbutton.get_node("hp").set_text(str(ceil(combatant.health)) +'/'+ str(ceil(combatant.healthmax)))
+			newbutton.get_node("hpbar").set_val((combatant.health/combatant.healthmax)*100)
+			newbutton.get_node("hpbar/hp").set_text(str(ceil(combatant.health)) +'/'+ str(ceil(combatant.healthmax)))
+			if playergroup[0].effects.has('mindreadeffect') == false:
+				newbutton.get_node("hpbar/hp").set_hidden(true)
 			newbutton.connect("pressed",self,'chooseenemy',[combatant])
 			newbutton.connect("mouse_enter", self, 'enemytooltip', [combatant])
 			newbutton.connect("mouse_exit", self, 'enemytooltiphide')
@@ -445,6 +457,10 @@ func choosecharacter(combatant):
 		get_node("grouppanel/groupline").get_child(playergroup.find(combatant)+1).set_pressed(false)
 
 func activateskill(skill, combatant):
+	if skill.code == 'escape' && area.tags.find("noreturn") >= 0:
+		get_node("warning").set_text("Can't escape in this location")
+		get_node("warning").set_opacity(1)
+		return
 	if selectmode != null:
 		selectmode = null
 	combatant.target = null
@@ -509,6 +525,7 @@ func actionexecute(actor, target, skill):
 	var damage
 	var group
 	var hit
+	var targetparty
 	var targethealthinit = target.health
 	if skill.cooldown > 0:
 		actor.cooldowns[skill.code] = skill.cooldown
@@ -521,6 +538,7 @@ func actionexecute(actor, target, skill):
 		text = skill.usetext 
 	if skill.target == 'enemy':
 		if group == 'enemy':#Checking for blockers
+			targetparty = playergroup
 			for i in playergroup:
 				if i.target == playergroup.find(target) && i.action.code == 'protect' && i != target:
 					text = actor.name + ' tries to attack ' + target.name + ', but ' + i.name + ' moves in and takes the hit. '
@@ -529,6 +547,7 @@ func actionexecute(actor, target, skill):
 					text += actionexecute(actor, i, skill)
 					return text
 		else:
+			targetparty = enemygroup
 			for i in enemygroup:
 				if i.target == enemygroup.find(target) && i.action.code == 'protect':
 					text = actor.name + ' tries to attack ' + target.name + ', but ' + i.name + ' moves in and takes the hit. '
@@ -539,7 +558,7 @@ func actionexecute(actor, target, skill):
 		#checking hit chance
 		if skill.attributes.find('damage') >= 0:
 			if skill.can_miss == true && target.action.code != 'protect':
-				hit = hitchance(actor.speed, target.speed)
+				hit = hitchance(actor, target)
 			else:
 				hit = 'hit'
 			
@@ -553,6 +572,8 @@ func actionexecute(actor, target, skill):
 						damage = damage - damage*0.7
 					else:
 						damage = damage - damage*0.35
+			elif skill.type == 'spell':
+				damage = skill.power*actor.magic
 			if actor.energy == 0:
 				damage = damage/2
 			actor.energy = max(actor.energy - skill.costenergy,0)
@@ -584,6 +605,11 @@ func actionexecute(actor, target, skill):
 				target.energy -= (targethealthinit - target.health)/5
 			else:
 				target.energy -= (targethealthinit - target.health)/2.5
+			if skill.attributes.find('allparty') >= 0:
+				text += "\nStrong attack affects everyone in opposing party."
+				for i in targetparty:
+					if i != target:
+						i.health -= damage
 			if target.energy < 0:
 				target.energy = 0
 			if skill.attributes.find('lifesteal') >= 0:
@@ -642,8 +668,13 @@ func combatantdictionary(combatant, text):
 			text = text.replace("$targetname", enemygroup[combatant.target].name)
 	return text
 
-func hitchance(attackspeed, targetspeed):
+func hitchance(attacker, target):
 	var hit = ''
+	var attackspeed = attacker.speed
+	var targetspeed = target.speed
+	if playergroup.find(target) >= 0:
+		if target.person.race.findn("cat") >= 0:
+			targetspeed += 4
 	var hitchance = attackspeed - targetspeed
 	if hitchance > 10 && rand_range(0,100) < (hitchance-5) * 5:
 		hit = 'precise'
@@ -704,10 +735,24 @@ func _on_confirm_pressed():
 	var text = ''
 	for combatant in playergroup:
 		if combatant.action == null:
-			combatant.action = globals.abilities.abilitydict['pass']
-			combatant.target = playergroup.find(combatant)
+			if globals.rules.autoattack == false:
+				combatant.action = globals.abilities.abilitydict['pass']
+				combatant.target = playergroup.find(combatant)
+			else:
+				combatant.action = globals.abilities.abilitydict.attack
+				for i in enemygroup:
+					if i.state == 'normal':
+						combatant.target = enemygroup.find(i)
+						continue
 	for combatant in enemygroup:
-		combatant.action = globals.abilities.abilitydict['attack']
+		for i in combatant.cooldowns:
+			combatant.cooldowns[i] -= 1
+			if combatant.cooldowns[i] <= 0:
+				combatant.cooldowns.erase(i)
+		for i in combatant.abilities:
+			if combatant.cooldowns.has(i.code):
+				continue
+			combatant.action = i
 		combatant.target = floor(rand_range(0,playergroup.size())-1)
 		if combatant.action.target == 'enemy' && combatant.state in ['normal']:
 			text += actionexecute(combatant, playergroup[combatant.target], combatant.action) + '\n'
@@ -730,6 +775,7 @@ func _on_confirm_pressed():
 func resolution(text = ''):
 	var counter = 0
 	for i in playergroup:
+		i.person.stress += 3
 		for effect in i.effects.values():
 			if effect.duration <= 0:
 				i.removebuff(effect.code)
@@ -954,3 +1000,7 @@ func _on_use_pressed():
 func _on_autowin_pressed():
 	set_process(false)
 	victory()
+
+
+func _on_autoattack_pressed():
+	globals.rules.autoattack = get_node("autoattack").is_pressed()
