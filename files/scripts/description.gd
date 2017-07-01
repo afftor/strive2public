@@ -331,7 +331,7 @@ static func getSexFeatures(slave):
 		text2 = text2+text[slave['balls']]
 	
 	if slave.preg.duration > 24:
-		text2 = text2 + "\n\nThe unborn child forces her belly to protrude massively; $he is going to give birth soon."
+		text2 = text2 + "\n\nThe unborn child forces $his belly to protrude massively; $he is going to give birth soon."
 	elif slave.preg.duration > 16:
 		text2 = text2 + "\n\n$His advanced pregnancy is clearly evident by the moderate bulge in $his belly."
 	elif slave.preg.duration > 8:

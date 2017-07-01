@@ -1,4 +1,4 @@
-[gd_scene load_steps=36 format=1]
+[gd_scene load_steps=35 format=1]
 
 [ext_resource path="res://files/theme.tres" type="Theme" id=1]
 [ext_resource path="res://files/scripts/slave_tab.gd" type="Script" id=2]
@@ -11,15 +11,14 @@
 [ext_resource path="res://files/buttons/tex-wind.png" type="Texture" id=9]
 [ext_resource path="res://files/paneltexturebland.tres" type="StyleBox" id=10]
 [ext_resource path="res://files/buttons/Panel.png" type="Texture" id=11]
-[ext_resource path="res://files/buttons/day.png" type="Texture" id=12]
-[ext_resource path="res://files/buttons/img-backG-popup.png" type="Texture" id=13]
-[ext_resource path="res://Roundo-Medium.otf" type="DynamicFontData" id=14]
-[ext_resource path="res://files/SelectButton.tscn" type="PackedScene" id=15]
-[ext_resource path="res://files/buttons/textfield.png" type="Texture" id=16]
-[ext_resource path="res://files/buttons/textfieldinact.png" type="Texture" id=17]
-[ext_resource path="res://files/scripts/actions.gd" type="Script" id=18]
-[ext_resource path="res://files/buttongrouptheme.tres" type="Theme" id=19]
-[ext_resource path="res://files/scripts/sexuals.gd" type="Script" id=20]
+[ext_resource path="res://files/buttons/img-backG-popup.png" type="Texture" id=12]
+[ext_resource path="res://Roundo-Medium.otf" type="DynamicFontData" id=13]
+[ext_resource path="res://files/SelectButton.tscn" type="PackedScene" id=14]
+[ext_resource path="res://files/buttons/textfield.png" type="Texture" id=15]
+[ext_resource path="res://files/buttons/textfieldinact.png" type="Texture" id=16]
+[ext_resource path="res://files/scripts/actions.gd" type="Script" id=17]
+[ext_resource path="res://files/buttongrouptheme.tres" type="Theme" id=18]
+[ext_resource path="res://files/scripts/sexuals.gd" type="Script" id=19]
 
 [sub_resource type="StyleBoxTexture" id=1]
 
@@ -44,7 +43,7 @@ content_margin/left = -1.0
 content_margin/right = -1.0
 content_margin/top = -1.0
 content_margin/bottom = -1.0
-texture = ExtResource( 13 )
+texture = ExtResource( 12 )
 margin/left = 10.0
 margin/right = 10.0
 margin/top = 10.0
@@ -249,7 +248,7 @@ font/size = 32
 extra_spacing/top = 3
 font/use_mipmaps = false
 font/use_filter = true
-font/font = ExtResource( 14 )
+font/font = ExtResource( 13 )
 
 [sub_resource type="StyleBoxTexture" id=12]
 
@@ -257,7 +256,7 @@ content_margin/left = -1.0
 content_margin/right = -1.0
 content_margin/top = -1.0
 content_margin/bottom = -1.0
-texture = ExtResource( 13 )
+texture = ExtResource( 12 )
 margin/left = 4.0
 margin/right = 4.0
 margin/top = 4.0
@@ -274,7 +273,7 @@ content_margin/left = -1.0
 content_margin/right = -1.0
 content_margin/top = -1.0
 content_margin/bottom = -1.0
-texture = ExtResource( 16 )
+texture = ExtResource( 15 )
 margin/left = 10.0
 margin/right = 10.0
 margin/top = 10.0
@@ -291,7 +290,7 @@ content_margin/left = -1.0
 content_margin/right = -1.0
 content_margin/top = -1.0
 content_margin/bottom = -1.0
-texture = ExtResource( 17 )
+texture = ExtResource( 16 )
 margin/left = 10.0
 margin/right = 10.0
 margin/top = 10.0
@@ -308,7 +307,7 @@ content_margin/left = -1.0
 content_margin/right = -1.0
 content_margin/top = -1.0
 content_margin/bottom = -1.0
-texture = ExtResource( 13 )
+texture = ExtResource( 12 )
 margin/left = 0.0
 margin/right = 0.0
 margin/top = 0.0
@@ -341,8 +340,6 @@ __meta__ = {
 
 [node name="stats" type="Tabs" parent="."]
 
-editor/display_folded = true
-visibility/visible = false
 anchor/right = 1
 anchor/bottom = 1
 focus/ignore_mouse = false
@@ -357,7 +354,6 @@ script/script = ExtResource( 3 )
 
 [node name="status_panel" type="Panel" parent="stats"]
 
-editor/display_folded = true
 anchor/right = 1
 anchor/bottom = 1
 focus/ignore_mouse = false
@@ -892,7 +888,6 @@ max_lines_visible = -1
 
 [node name="skills" type="ScrollContainer" parent="stats"]
 
-editor/display_folded = true
 visibility/visible = false
 anchor/top = 3
 anchor/bottom = 1
@@ -1322,7 +1317,6 @@ visible_characters = -1
 
 [node name="trainingabilspanel" type="Panel" parent="stats"]
 
-editor/display_folded = true
 visibility/visible = false
 anchor/left = 3
 anchor/top = 3
@@ -1394,7 +1388,7 @@ margin/left = 23.0
 margin/top = 26.0
 margin/right = 214.0
 margin/bottom = 400.0
-scroll/horizontal = true
+scroll/horizontal = false
 scroll/vertical = true
 
 [node name="VBoxContainer" type="VBoxContainer" parent="stats/trainingabilspanel/ScrollContainer"]
@@ -1429,7 +1423,6 @@ flat = false
 
 [node name="inspect" type="Tabs" parent="."]
 
-editor/display_folded = true
 visibility/visible = false
 anchor/right = 1
 anchor/bottom = 1
@@ -1743,7 +1736,6 @@ columns = 6
 
 [node name="Button" type="TextureButton" parent="inspect/portait/Panel/ScrollContainer/GridContainer"]
 
-visibility/visible = false
 rect/min_size = Vector2( 100, 120 )
 focus/ignore_mouse = false
 focus/stop_mouse = true
@@ -1787,7 +1779,6 @@ margin/left = 0.0
 margin/top = 0.0
 margin/right = 100.0
 margin/bottom = 100.0
-texture = ExtResource( 12 )
 expand = true
 stretch_mode = 6
 
@@ -2414,7 +2405,7 @@ percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
 
-[node name="SelectButtonSleep" parent="regulations/rules" instance=ExtResource( 15 )]
+[node name="SelectButtonSleep" parent="regulations/rules" instance=ExtResource( 14 )]
 
 editor/display_folded = true
 anchor/left = 1
@@ -3350,7 +3341,7 @@ margin/left = 10.0
 margin/top = 33.0
 margin/right = 10.0
 margin/bottom = 10.0
-script/script = ExtResource( 18 )
+script/script = ExtResource( 17 )
 
 [node name="HSeparator1" type="HSeparator" parent="actions"]
 
@@ -3864,8 +3855,8 @@ If 'Public' is checked, other servants will also be watching and it will severe 
 visible_characters = -1
 
 [node name="tickling" type="Button" parent="actions/punishroom/Popup/Panel" groups=[
-"actions",
 "sexpunish",
+"actions",
 ]]
 
 focus/ignore_mouse = false
@@ -3884,8 +3875,8 @@ text = "Tickling"
 flat = false
 
 [node name="spanking" type="Button" parent="actions/punishroom/Popup/Panel" groups=[
-"actions",
 "sexpunish",
+"actions",
 ]]
 
 focus/ignore_mouse = false
@@ -3904,8 +3895,8 @@ text = "Spanking"
 flat = false
 
 [node name="whipping" type="Button" parent="actions/punishroom/Popup/Panel" groups=[
-"actions",
 "sexpunish",
+"actions",
 ]]
 
 focus/ignore_mouse = false
@@ -3924,8 +3915,8 @@ text = "Whipping"
 flat = false
 
 [node name="hotwax" type="Button" parent="actions/punishroom/Popup/Panel" groups=[
-"actions",
 "sexpunish",
+"actions",
 ]]
 
 focus/ignore_mouse = false
@@ -3944,8 +3935,8 @@ text = "Hot Wax"
 flat = false
 
 [node name="woodenhorse" type="Button" parent="actions/punishroom/Popup/Panel" groups=[
-"actions",
 "sexpunish",
+"actions",
 ]]
 
 focus/ignore_mouse = false
@@ -4167,7 +4158,7 @@ focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
-theme/theme = ExtResource( 19 )
+theme/theme = ExtResource( 18 )
 margin/left = 0.0
 margin/top = 0.0
 margin/right = 200.0
@@ -4246,6 +4237,7 @@ max_lines_visible = -1
 
 [node name="sexual" type="Tabs" parent="."]
 
+editor/display_folded = true
 visibility/visible = false
 anchor/right = 1
 anchor/bottom = 1
@@ -4257,7 +4249,7 @@ margin/left = 10.0
 margin/top = 33.0
 margin/right = 10.0
 margin/bottom = 10.0
-script/script = ExtResource( 20 )
+script/script = ExtResource( 19 )
 __meta__ = {
 "_edit_lock_": true
 }
@@ -4352,7 +4344,6 @@ flat = false
 
 [node name="unlockbutton" type="Button" parent="sexual"]
 
-editor/display_folded = true
 anchor/top = 1
 anchor/bottom = 1
 focus/ignore_mouse = false
@@ -4386,7 +4377,6 @@ popup/exclusive = false
 
 [node name="Panel" type="Panel" parent="sexual/unlockbutton/unlockpopup"]
 
-editor/display_folded = true
 anchor/left = 3
 anchor/top = 3
 anchor/right = 3

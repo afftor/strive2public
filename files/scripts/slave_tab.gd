@@ -426,7 +426,7 @@ func sleeprooms():
 	dict[count].tooltip = slave.dictionary('$name will have personal room')
 	if slave.sleep == 'personal':
 		dict[count].state = 'selected'
-	elif beds.personal == globals.state.rooms.personal:
+	elif beds.personal >= globals.state.rooms.personal:
 		dict[count].state =  'disabled'
 		dict[count].tooltip = 'You have no more available personal rooms'
 	else:
@@ -642,7 +642,7 @@ code = 'assistwimborn',
 name = "W - Mage Order Assistant",
 type = 'social',
 description = "$name will work as a staff member on various guild assignments. \n\n[color=yellow]Requires grade of a [color=aqua]Commoner[/color] or higher. \n\nEfficiency grows with Magic Affinity, Wits and your reputation.[/color]",
-workline = '$name will be working as public entertainer.',
+workline = "$name will be working at Mage's Order.",
 reqs = "globals.originsarray.find(globals.currentslave.origins) >= 2 && globals.currentslave.traits.has('Mute') == false ",
 unlockreqs = 'globals.state.rank >= 2',
 maxnumber = 0,
@@ -653,7 +653,7 @@ code = 'artistwimborn',
 name = "W - Public Entertainer",
 type = 'social',
 description = "$name will earn money by doing dances, shows and other stage performances. \n\n[color=yellow]Requires grade of a [color=aqua]Commoner[/color] or higher. \n\nEfficiency grows with Charm, Courage, Agility and beauty.[/color]",
-workline = "$name will be working at Mage's Order.",
+workline = "$name will be working as public entertainer.",
 reqs = "globals.originsarray.find(globals.currentslave.origins) >= 2 && globals.currentslave.traits.has('Mute') == false",
 unlockreqs = 'true',
 maxnumber = 0,
@@ -1070,7 +1070,7 @@ func _on_reverseportrait_pressed():
 		if slave.unique == 'Cali':
 			slave.imageportait = 'res://files/images/caliportrait.png'
 		elif slave.unique == 'Emily':
-			slave.imageportait = "res://files/images/emilyportrait.png"
+			slave.imageportait = "res://files/images/emily/emilyportrait.png"
 		get_node("inspect/portait/Panel").set_hidden(true)
 		_on_slave_tab_visibility_changed()
 		get_tree().get_current_scene().rebuild_slave_list()

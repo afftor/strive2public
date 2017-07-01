@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=1]
+[gd_scene load_steps=27 format=1]
 
 [ext_resource path="res://mainfont.tres" type="DynamicFont" id=1]
 [ext_resource path="res://files/buttons/chek-Active.png" type="Texture" id=2]
@@ -8,8 +8,12 @@
 [ext_resource path="res://files/buttons/img-kurs-act.png" type="Texture" id=6]
 [ext_resource path="res://files/buttons/img-scr.png" type="Texture" id=7]
 [ext_resource path="res://files/scripts/combat.gd" type="Script" id=8]
-[ext_resource path="res://Roundo-Medium.otf" type="DynamicFontData" id=9]
-[ext_resource path="res://files/paneltexturebland.tres" type="StyleBox" id=10]
+[ext_resource path="res://files/buttons/img-text-in-act.png" type="Texture" id=9]
+[ext_resource path="res://files/buttons/img-text-in.png" type="Texture" id=10]
+[ext_resource path="res://files/buttons/hpbar.png" type="Texture" id=11]
+[ext_resource path="res://files/buttons/hpbarbot.png" type="Texture" id=12]
+[ext_resource path="res://Roundo-Medium.otf" type="DynamicFontData" id=13]
+[ext_resource path="res://files/paneltexturebland.tres" type="StyleBox" id=14]
 
 [sub_resource type="StyleBoxTexture" id=1]
 
@@ -115,21 +119,105 @@ VScrollBar/styles/grabber_hilite = SubResource( 3 )
 VScrollBar/styles/scroll = SubResource( 4 )
 VScrollBar/styles/scroll_focus = null
 
-[sub_resource type="DynamicFont" id=6]
+[sub_resource type="StyleBoxTexture" id=11]
+
+content_margin/left = -1.0
+content_margin/right = -1.0
+content_margin/top = -1.0
+content_margin/bottom = -1.0
+texture = ExtResource( 9 )
+margin/left = 10.0
+margin/right = 10.0
+margin/top = 10.0
+margin/bottom = 10.0
+expand_margin/left = 5.0
+expand_margin/right = 5.0
+expand_margin/top = 5.0
+expand_margin/bottom = 5.0
+draw_center = true
+
+[sub_resource type="StyleBoxTexture" id=13]
+
+content_margin/left = -1.0
+content_margin/right = -1.0
+content_margin/top = -1.0
+content_margin/bottom = -1.0
+margin/left = 0.0
+margin/right = 0.0
+margin/top = 0.0
+margin/bottom = 0.0
+expand_margin/left = 0.0
+expand_margin/right = 0.0
+expand_margin/top = 0.0
+expand_margin/bottom = 0.0
+draw_center = true
+
+[sub_resource type="StyleBoxTexture" id=10]
+
+content_margin/left = -1.0
+content_margin/right = -1.0
+content_margin/top = -1.0
+content_margin/bottom = -1.0
+texture = ExtResource( 10 )
+margin/left = 10.0
+margin/right = 10.0
+margin/top = 10.0
+margin/bottom = 10.0
+expand_margin/left = 5.0
+expand_margin/right = 5.0
+expand_margin/top = 5.0
+expand_margin/bottom = 5.0
+draw_center = true
+
+[sub_resource type="StyleBoxTexture" id=6]
+
+content_margin/left = -1.0
+content_margin/right = -1.0
+content_margin/top = -1.0
+content_margin/bottom = -1.0
+texture = ExtResource( 11 )
+margin/left = 0.0
+margin/right = 0.0
+margin/top = 0.0
+margin/bottom = 0.0
+expand_margin/left = 0.0
+expand_margin/right = 0.0
+expand_margin/top = 0.0
+expand_margin/bottom = 0.0
+draw_center = true
+
+[sub_resource type="StyleBoxTexture" id=7]
+
+content_margin/left = -1.0
+content_margin/right = -1.0
+content_margin/top = -1.0
+content_margin/bottom = -1.0
+texture = ExtResource( 12 )
+margin/left = 3.0
+margin/right = 3.0
+margin/top = 5.0
+margin/bottom = 5.0
+expand_margin/left = 0.0
+expand_margin/right = 0.0
+expand_margin/top = 0.0
+expand_margin/bottom = 0.0
+draw_center = true
+
+[sub_resource type="DynamicFont" id=8]
 
 font/size = 30
 extra_spacing/top = 3
 font/use_mipmaps = false
 font/use_filter = true
-font/font = ExtResource( 9 )
+font/font = ExtResource( 13 )
 
-[sub_resource type="DynamicFont" id=7]
+[sub_resource type="DynamicFont" id=9]
 
 font/size = 30
 extra_spacing/top = 3
 font/use_mipmaps = false
 font/use_filter = true
-font/font = ExtResource( 9 )
+font/font = ExtResource( 13 )
 
 [node name="combat" type="Control"]
 
@@ -177,7 +265,7 @@ size_flags/horizontal = 2
 size_flags/vertical = 2
 margin/left = 6.0
 margin/top = 163.0
-margin/right = 1.0
+margin/right = 4.0
 margin/bottom = -1.0
 
 [node name="skilline" type="HBoxContainer" parent="grouppanel"]
@@ -292,6 +380,10 @@ margin/left = 0.0
 margin/top = 0.0
 margin/right = 200.0
 margin/bottom = 84.0
+custom_styles/hover = SubResource( 11 )
+custom_styles/pressed = SubResource( 11 )
+custom_styles/focus = SubResource( 13 )
+custom_styles/normal = SubResource( 10 )
 toggle_mode = true
 enabled_focus_mode = 2
 shortcut = null
@@ -426,13 +518,12 @@ margin/bottom = 85.0
 
 [node name="enemypanel" type="Panel" parent="."]
 
-editor/display_folded = true
 anchor/right = 1
 focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
-margin/left = 10.0
+margin/left = 5.0
 margin/top = 2.0
 margin/right = 1.0
 margin/bottom = 129.0
@@ -443,9 +534,9 @@ focus/ignore_mouse = false
 focus/stop_mouse = false
 size_flags/horizontal = 2
 size_flags/vertical = 2
-margin/left = 0.0
-margin/top = 3.0
-margin/right = 1064.0
+margin/left = 5.0
+margin/top = 5.0
+margin/right = 1071.0
 margin/bottom = 123.0
 columns = 5
 
@@ -461,23 +552,48 @@ margin/left = 0.0
 margin/top = 0.0
 margin/right = 200.0
 margin/bottom = 50.0
+custom_styles/hover = SubResource( 11 )
+custom_styles/pressed = SubResource( 11 )
+custom_styles/focus = SubResource( 13 )
+custom_styles/normal = SubResource( 10 )
 toggle_mode = false
 enabled_focus_mode = 0
 shortcut = null
 flat = false
 
-[node name="hp" type="Label" parent="enemypanel/enemyline/character"]
+[node name="hpbar" type="ProgressBar" parent="enemypanel/enemyline/character"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 69.0
+margin/top = 32.0
+margin/right = 188.0
+margin/bottom = 48.0
+custom_styles/fg = SubResource( 6 )
+custom_styles/bg = SubResource( 7 )
+range/min = 0.0
+range/max = 100.0
+range/step = 1.0
+range/page = 0.0
+range/value = 50.0
+range/exp_edit = false
+range/rounded = false
+percent/visible = false
+
+[node name="hp" type="Label" parent="enemypanel/enemyline/character/hpbar"]
 
 focus/ignore_mouse = true
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 0
-margin/left = 139.0
-margin/top = 9.0
-margin/right = 192.0
-margin/bottom = 23.0
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 118.0
+margin/bottom = 16.0
 text = "100/100"
-align = 2
+align = 1
 percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
@@ -488,10 +604,10 @@ focus/ignore_mouse = true
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 0
-margin/left = 8.0
+margin/left = 69.0
 margin/top = 7.0
-margin/right = 50.0
-margin/bottom = 21.0
+margin/right = 111.0
+margin/bottom = 23.0
 text = "Name"
 percent_visible = 1.0
 lines_skipped = 0
@@ -509,6 +625,19 @@ margin/left = 0.0
 margin/top = 0.0
 margin/right = 200.0
 margin/bottom = 50.0
+
+[node name="icon" type="TextureFrame" parent="enemypanel/enemyline/character"]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 1.0
+margin/top = 0.0
+margin/right = 51.0
+margin/bottom = 50.0
+expand = true
+stretch_mode = 0
 
 [node name="combatlog" type="RichTextLabel" parent="."]
 
@@ -573,7 +702,7 @@ margin/left = 325.5
 margin/top = 98.0
 margin/right = -283.5
 margin/bottom = 7.0
-custom_fonts/font = SubResource( 6 )
+custom_fonts/font = SubResource( 8 )
 text = "Cant"
 align = 1
 percent_visible = 1.0
@@ -611,10 +740,10 @@ focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
-margin/left = 137.0
-margin/top = 103.0
-margin/right = 8.0
-margin/bottom = 62.0
+margin/left = 271.0
+margin/top = 148.0
+margin/right = 142.0
+margin/bottom = 107.0
 custom_fonts/font = ExtResource( 1 )
 toggle_mode = false
 enabled_focus_mode = 2
@@ -658,7 +787,7 @@ margin/left = 973.5
 margin/top = 467.5
 margin/right = 377.5
 margin/bottom = 2.5
-custom_styles/panel = ExtResource( 10 )
+custom_styles/panel = ExtResource( 14 )
 
 [node name="inactivecontainer" type="ScrollContainer" parent="abilitites/Panel"]
 
@@ -945,7 +1074,7 @@ margin/left = 221.5
 margin/top = 118.0
 margin/right = -263.5
 margin/bottom = -61.0
-custom_fonts/normal_font = SubResource( 7 )
+custom_fonts/normal_font = SubResource( 9 )
 bbcode/enabled = true
 bbcode/bbcode = "[center]Choose target: [/center]
 [center][color=yellow]Ability: [/color][/center]"
@@ -995,6 +1124,28 @@ bbcode/enabled = true
 bbcode/bbcode = "l;ulalulfujaljlfdj"
 visible_characters = -1
 
+[node name="autoattack" type="CheckBox" parent="."]
+
+anchor/left = 1
+anchor/top = 1
+anchor/right = 1
+anchor/bottom = 1
+hint/tooltip = "When toggled, will make characters with no actions selected to attack last enemy.  "
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 138.0
+margin/top = 95.0
+margin/right = 9.0
+margin/bottom = 70.0
+toggle_mode = true
+enabled_focus_mode = 2
+shortcut = null
+text = "Autoattack"
+flat = false
+align = 0
+
 [connection signal="pressed" from="confirm" to="." method="_on_confirm_pressed"]
 
 [connection signal="pressed" from="autowin" to="." method="_on_autowin_pressed"]
@@ -1008,5 +1159,7 @@ visible_characters = -1
 [connection signal="pressed" from="escapewarn/escapeconfirm" to="." method="_on_escapeconfirm_pressed"]
 
 [connection signal="pressed" from="win/winconfirm" to="." method="_on_winconfirm_pressed"]
+
+[connection signal="pressed" from="autoattack" to="." method="_on_autoattack_pressed"]
 
 

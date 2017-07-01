@@ -25,7 +25,7 @@ food = {
 supply = {
 	code = 'supply',
 	name = 'Supplies',
-	icon = null,
+	icon = load("res://files/images/items/supply.png"),
 	description = "Assemblence of various commodities which can be sold or used in certain tasks.",
 	effect = "supplypurchase",
 	recipe = '',
@@ -312,7 +312,23 @@ fluidsubstanceing = {
 	type = 'ingredient',
 	unlocked = false,
 	amount = 0
-	},######################################GEAR
+	},
+gem = {
+	code = 'gem',
+	name = 'Precious Gem',
+	icon = null,
+	description = "An unusually big precious gem. Traders will pay huge sum for it. ",
+	effect = '',
+	recipe = '',
+	cost = 1250,
+	type = 'ingredient',
+	unlocked = false,
+	amount = 0
+	},
+	
+	
+	
+	######################################GEAR
 clothcommon = {
 	code = 'clothcommon',
 	name = 'Common Clothes',
@@ -403,7 +419,7 @@ clothninja = {
 clothpet = {
 	code = 'clothpet',
 	name = 'Pet Suit',
-	icon = load("res://files/images/items/clothbdsm.png"),
+	icon = load("res://files/images/items/clothpet.png"),
 	description = "Specially designed pieces of leather decoration which represent a domestic animal, and force the wearer to walk on all fours. For obvious reasons, this should generally not be worn outside.",
 	effect = [{type = 'onendday', effect = 'peteffect', descript = "Greatly increases obedience. If Confidence above 40, cause stress penalty and lowers it by the end of a day."}],
 	recipe = '',
@@ -494,6 +510,20 @@ armorchain = {
 	recipe = '',
 	reqs = null,
 	cost = 250,
+	type = 'gear',
+	subtype = 'armor',
+	amount = 0,
+	unlocked = true,
+},
+armorplate = {
+	code = 'armorplate',
+	name = 'Plate Armor',
+	icon = load("res://files/images/items/armorplate.png"),
+	description = "An old, durable suit of plate armor. Protects the wearer against most physical damage. ",
+	effect = [{type = 'onequip', effect = 'armor', effectvalue = 10, descript = "+10 Armor"}],
+	recipe = '',
+	reqs = null,
+	cost = 500,
 	type = 'gear',
 	subtype = 'armor',
 	amount = 0,
@@ -677,7 +707,7 @@ func mikoeffect(slave):
 	return text
 
 func bedlaheffect(slave):
-	var text = slave.dictionary("$name's revealing clothes teach $him how to better present $himself to others. ")
+	var text = slave.dictionary("$name's revealing clothes teach $him how to better present $himself to others. \n")
 	slave.charm += rand_range(1,3)
 	return text
 
@@ -722,7 +752,7 @@ func handcuffeffect(slave):
 	return text
 
 #			elif slave.gear.clothes.code == 'bedlah':
-#				text2.set_bbcode(text2.get_bbcode() + slave.dictionary("$name's revealing clothes cause her to become more open to dirty things.\n"))
+#				text2.set_bbcode(text2.get_bbcode() + slave.dictionary("$name's revealing clothes cause $him to become more open to dirty things.\n"))
 
 
 
@@ -747,7 +777,7 @@ func regressionpoteffect():
 	slave.add_trait(globals.origins.trait('Pliable'))
 	slave.add_trait(globals.origins.trait('Regressed'))
 	slave.loyal += rand_range(15,25)
-	var text = slave.dictionary("As $name drinks the potion, the look on his face becomes less and less focused, until eventually $his mind is reformed back into a very young and learning state. With this you can leave much greater impact on $his consciousness. ")
+	var text = slave.dictionary("As $name drinks the potion, the look on $his face becomes less and less focused, until eventually $his mind is reformed back into a very young and learning state. With this you can leave much greater impact on $his consciousness. ")
 	return text
 
 func hairdyeeffect():

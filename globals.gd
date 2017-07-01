@@ -5,9 +5,9 @@ var itemdict = {}
 var spelldict = {}
 var effectdict = {}
 var guildslaves = {wimborn = [], gorn = [], frostford = []}
-var gameversion = 4423
+var gameversion = 4430
 var state = progress.new()
-
+var developmode = false
 
 var resources = resource.new()
 var slavegen = load("res://files/scripts/slavegen.gd").new()
@@ -71,13 +71,16 @@ highlands = load("res://files/backgrounds/highlands.jpg"),
 marsh = load("res://files/backgrounds/marsh.jpg"),
 meadows = load("res://files/backgrounds/meadows.jpg"),
 sea = load("res://files/backgrounds/sea.jpg"),
-undercity = load("res://files/backgrounds/undercity.jpg"),
 lab1 = load("res://files/backgrounds/laboratory1.jpg"),
 lab2 = load("res://files/backgrounds/laboratory2.jpg"),
 gorn = load("res://files/backgrounds/gorn.jpg"),
 frostford = load("res://files/backgrounds/frostford.jpg"),
 mountains = load("res://files/backgrounds/mountains.jpg"),
 borealforest = load("res://files/backgrounds/borealforest.jpg"),
+amberguard = load("res://files/backgrounds/amberguard.jpg"),
+amberroad = load("res://files/backgrounds/amberroad.png"),
+undercity = load("res://files/backgrounds/undercity.jpg"),
+tunnels = load("res://files/backgrounds/tunnels.jpg"),
 }
 
 var noimage = load("res://files/buttons/noimagesmall.png")
@@ -155,6 +158,7 @@ fullscreen = false,
 oldresize = false,
 fadinganimation = true,
 permadeath = false,
+autoattack = true,
 }
 
 class resource:
@@ -264,7 +268,7 @@ class progress:
 	var babylist = []
 	var companion = -1
 	var headgirlbehavior = 'none'
-	var portals = [{'enabled' : true, 'code' : 'wimborn'}, {'enabled':true, 'code' : 'gorn'}, {'enabled':true, 'code' : 'frostford'}, {'enabled':false, 'code':'shaliq'}]
+	var portals = [{'enabled' : true, 'code' : 'wimborn'}, {'enabled':true, 'code' : 'gorn'}, {'enabled':true, 'code' : 'frostford'}, {'enabled':false, 'code':'shaliq'}, {'enabled':false, 'code':'amberguard'}]
 	var sebastianorder = {race = 'none', taken = false, duration = 0}
 	var sebastianslave
 	var sandbox = false
@@ -283,6 +287,7 @@ class progress:
 	var tutorial = {basics = false, slave = false, alchemy = false, jail = false, lab = false, farm = false, outside = false, combat = false}
 	var itemcounter = 0
 	var alisecloth = 'normal'
+	var lorefound = []
 	
 	func cond_set(value):
 		condition += value*conditionmod
@@ -501,6 +506,7 @@ class slave:
 	
 	
 	func health_set(value):
+		stats.health_max = 35 + stats.end_cur*20
 		stats.health_cur = min(stats.health_cur + value, stats.health_max) 
 	
 	func obed_set(value):
@@ -1164,6 +1170,8 @@ func repairsave():
 	if globals.player.ability.find('escape') < 0:
 		globals.player.ability.append('escape')
 		globals.player.abilityactive.append('escape')
+		if globals.spelldict.heal.learned == true && globals.player.ability.find('heal') < 0:
+			globals.player.ability.append('heal')
 	if state.alchemy >= 2:
 		itemdict.aphroditebrew.unlocked = true
 	if state.currentversion <= 44:

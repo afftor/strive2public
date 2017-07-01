@@ -1,19 +1,21 @@
-[gd_scene load_steps=23 format=1]
+[gd_scene load_steps=28 format=1]
 
 [ext_resource path="res://files/theme.tres" type="Theme" id=1]
 [ext_resource path="res://files/scripts/outside.gd" type="Script" id=2]
-[ext_resource path="res://files/paneltexturebland.tres" type="StyleBox" id=3]
+[ext_resource path="res://files/buttons/img-text-in.png" type="Texture" id=3]
 [ext_resource path="res://mainfont.tres" type="DynamicFont" id=4]
 [ext_resource path="res://files/buttons/img-pl-vkladki.png" type="Texture" id=5]
-[ext_resource path="res://files/buttons/btn-noact-oran.png" type="Texture" id=6]
-[ext_resource path="res://files/buttons/btn-hover-oran.png" type="Texture" id=7]
-[ext_resource path="res://files/buttons/btn-norm-oran.png" type="Texture" id=8]
-[ext_resource path="res://files/buttons/btn-act-oran.png" type="Texture" id=9]
-[ext_resource path="res://files/buttongrouptheme.tres" type="Theme" id=10]
-[ext_resource path="res://Roundo-Medium.otf" type="DynamicFontData" id=11]
-[ext_resource path="res://files/theme slavetab.tres" type="Theme" id=12]
-[ext_resource path="res://files/buttons/itemactive.png" type="Texture" id=13]
-[ext_resource path="res://files/buttons/itemnormal.png" type="Texture" id=14]
+[ext_resource path="res://files/buttons/explorebar2.png" type="Texture" id=6]
+[ext_resource path="res://files/buttons/explorebar.png" type="Texture" id=7]
+[ext_resource path="res://files/buttons/btn-noact-oran.png" type="Texture" id=8]
+[ext_resource path="res://files/buttons/btn-hover-oran.png" type="Texture" id=9]
+[ext_resource path="res://files/buttons/btn-norm-oran.png" type="Texture" id=10]
+[ext_resource path="res://files/buttons/btn-act-oran.png" type="Texture" id=11]
+[ext_resource path="res://files/buttongrouptheme.tres" type="Theme" id=12]
+[ext_resource path="res://Roundo-Medium.otf" type="DynamicFontData" id=13]
+[ext_resource path="res://files/theme slavetab.tres" type="Theme" id=14]
+[ext_resource path="res://files/buttons/itemactive.png" type="Texture" id=15]
+[ext_resource path="res://files/buttons/itemnormal.png" type="Texture" id=16]
 
 [sub_resource type="StyleBoxTexture" id=1]
 
@@ -21,7 +23,7 @@ content_margin/left = -1.0
 content_margin/right = -1.0
 content_margin/top = -1.0
 content_margin/bottom = -1.0
-texture = ExtResource( 5 )
+texture = ExtResource( 3 )
 margin/left = 10.0
 margin/right = 10.0
 margin/top = 10.0
@@ -38,11 +40,11 @@ content_margin/left = -1.0
 content_margin/right = -1.0
 content_margin/top = -1.0
 content_margin/bottom = -1.0
-texture = ExtResource( 6 )
-margin/left = 8.0
-margin/right = 8.0
-margin/top = 8.0
-margin/bottom = 8.0
+texture = ExtResource( 5 )
+margin/left = 10.0
+margin/right = 10.0
+margin/top = 10.0
+margin/bottom = 10.0
 expand_margin/left = 0.0
 expand_margin/right = 0.0
 expand_margin/top = 0.0
@@ -55,11 +57,11 @@ content_margin/left = -1.0
 content_margin/right = -1.0
 content_margin/top = -1.0
 content_margin/bottom = -1.0
-texture = ExtResource( 7 )
-margin/left = 8.0
-margin/right = 8.0
-margin/top = 8.0
-margin/bottom = 8.0
+texture = ExtResource( 6 )
+margin/left = 5.0
+margin/right = 5.0
+margin/top = 5.0
+margin/bottom = 5.0
 expand_margin/left = 0.0
 expand_margin/right = 0.0
 expand_margin/top = 0.0
@@ -67,6 +69,23 @@ expand_margin/bottom = 0.0
 draw_center = true
 
 [sub_resource type="StyleBoxTexture" id=4]
+
+content_margin/left = -1.0
+content_margin/right = -1.0
+content_margin/top = -1.0
+content_margin/bottom = -1.0
+texture = ExtResource( 7 )
+margin/left = 5.0
+margin/right = 5.0
+margin/top = 5.0
+margin/bottom = 5.0
+expand_margin/left = 0.0
+expand_margin/right = 0.0
+expand_margin/top = 0.0
+expand_margin/bottom = 0.0
+draw_center = true
+
+[sub_resource type="StyleBoxTexture" id=5]
 
 content_margin/left = -1.0
 content_margin/right = -1.0
@@ -83,7 +102,7 @@ expand_margin/top = 0.0
 expand_margin/bottom = 0.0
 draw_center = true
 
-[sub_resource type="StyleBoxTexture" id=5]
+[sub_resource type="StyleBoxTexture" id=6]
 
 content_margin/left = -1.0
 content_margin/right = -1.0
@@ -100,7 +119,41 @@ expand_margin/top = 0.0
 expand_margin/bottom = 0.0
 draw_center = true
 
-[sub_resource type="Theme" id=6]
+[sub_resource type="StyleBoxTexture" id=7]
+
+content_margin/left = -1.0
+content_margin/right = -1.0
+content_margin/top = -1.0
+content_margin/bottom = -1.0
+texture = ExtResource( 10 )
+margin/left = 8.0
+margin/right = 8.0
+margin/top = 8.0
+margin/bottom = 8.0
+expand_margin/left = 0.0
+expand_margin/right = 0.0
+expand_margin/top = 0.0
+expand_margin/bottom = 0.0
+draw_center = true
+
+[sub_resource type="StyleBoxTexture" id=8]
+
+content_margin/left = -1.0
+content_margin/right = -1.0
+content_margin/top = -1.0
+content_margin/bottom = -1.0
+texture = ExtResource( 11 )
+margin/left = 8.0
+margin/right = 8.0
+margin/top = 8.0
+margin/bottom = 8.0
+expand_margin/left = 0.0
+expand_margin/right = 0.0
+expand_margin/top = 0.0
+expand_margin/bottom = 0.0
+draw_center = true
+
+[sub_resource type="Theme" id=9]
 
 Button/colors/font_color = Color( 0.878431, 0.878431, 0.878431, 1 )
 Button/colors/font_color_disabled = Color( 0.9, 0.9, 0.9, 0.2 )
@@ -108,21 +161,21 @@ Button/colors/font_color_hover = Color( 0.941176, 0.941176, 0.941176, 1 )
 Button/colors/font_color_pressed = Color( 1, 1, 1, 1 )
 Button/constants/hseparation = 2
 Button/fonts/font = null
-Button/styles/disabled = SubResource( 2 )
+Button/styles/disabled = SubResource( 5 )
 Button/styles/focus = null
-Button/styles/hover = SubResource( 3 )
-Button/styles/normal = SubResource( 4 )
-Button/styles/pressed = SubResource( 5 )
+Button/styles/hover = SubResource( 6 )
+Button/styles/normal = SubResource( 7 )
+Button/styles/pressed = SubResource( 8 )
 
-[sub_resource type="DynamicFont" id=7]
+[sub_resource type="DynamicFont" id=10]
 
 font/size = 20
 extra_spacing/top = 3
 font/use_mipmaps = false
 font/use_filter = true
-font/font = ExtResource( 11 )
+font/font = ExtResource( 13 )
 
-[sub_resource type="Animation" id=8]
+[sub_resource type="Animation" id=11]
 
 length = 0.3
 loop = false
@@ -199,7 +252,6 @@ __meta__ = {
 
 [node name="playergrouppanel" type="Panel" parent="."]
 
-editor/display_folded = true
 anchor/top = 1
 anchor/right = 1
 anchor/bottom = 1
@@ -218,10 +270,10 @@ focus/ignore_mouse = false
 focus/stop_mouse = false
 size_flags/horizontal = 2
 size_flags/vertical = 2
-margin/left = 6.0
-margin/top = 9.0
-margin/right = 841.0
-margin/bottom = 70.0
+margin/left = 8.0
+margin/top = 11.0
+margin/right = 843.0
+margin/bottom = 72.0
 alignment = 0
 
 [node name="Panel" type="Panel" parent="playergrouppanel/VBoxContainer"]
@@ -236,7 +288,7 @@ margin/left = 0.0
 margin/top = 0.0
 margin/right = 260.0
 margin/bottom = 61.0
-custom_styles/panel = ExtResource( 3 )
+custom_styles/panel = SubResource( 1 )
 
 [node name="name" type="Label" parent="playergrouppanel/VBoxContainer/Panel"]
 
@@ -276,12 +328,29 @@ focus/ignore_mouse = true
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 0
-margin/left = 136.0
-margin/top = 28.0
-margin/right = 194.0
-margin/bottom = 47.0
+margin/left = 137.0
+margin/top = 22.0
+margin/right = 195.0
+margin/bottom = 41.0
 custom_fonts/font = ExtResource( 4 )
 text = "Energy:"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="stress" type="Label" parent="playergrouppanel/VBoxContainer/Panel"]
+
+visibility/visible = false
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 137.0
+margin/top = 37.0
+margin/right = 195.0
+margin/bottom = 56.0
+custom_fonts/font = ExtResource( 4 )
+text = "Stress:"
 percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
@@ -359,7 +428,7 @@ margin/left = -4.0
 margin/top = 0.0
 margin/right = 299.0
 margin/bottom = -3.0
-custom_styles/panel = SubResource( 1 )
+custom_styles/panel = SubResource( 2 )
 
 [node name="outsidetextbox" type="RichTextLabel" parent="."]
 
@@ -380,7 +449,6 @@ visible_characters = -1
 
 [node name="exploreprogress" type="ProgressBar" parent="."]
 
-editor/display_folded = true
 anchor/left = 1
 anchor/right = 1
 focus/ignore_mouse = false
@@ -391,6 +459,8 @@ margin/left = 387.0
 margin/top = -21.0
 margin/right = 6.0
 margin/bottom = -3.0
+custom_styles/fg = SubResource( 3 )
+custom_styles/bg = SubResource( 4 )
 range/min = 0.0
 range/max = 100.0
 range/step = 1.0
@@ -410,7 +480,9 @@ margin/left = 3.0
 margin/top = 0.0
 margin/right = 380.0
 margin/bottom = 18.0
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
 align = 1
+valign = 1
 percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
@@ -422,7 +494,7 @@ focus/ignore_mouse = false
 focus/stop_mouse = false
 size_flags/horizontal = 2
 size_flags/vertical = 2
-theme/theme = SubResource( 6 )
+theme/theme = SubResource( 9 )
 margin/left = 11.0
 margin/top = 13.0
 margin/right = 283.0
@@ -508,7 +580,7 @@ focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
-theme/theme = ExtResource( 10 )
+theme/theme = ExtResource( 12 )
 margin/left = 0.0
 margin/top = 0.0
 margin/right = 265.0
@@ -728,7 +800,7 @@ focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
-theme/theme = ExtResource( 10 )
+theme/theme = ExtResource( 12 )
 margin/left = 0.0
 margin/top = 0.0
 margin/right = 280.0
@@ -895,7 +967,7 @@ focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
-theme/theme = ExtResource( 10 )
+theme/theme = ExtResource( 12 )
 margin/left = 0.0
 margin/top = 0.0
 margin/right = 275.0
@@ -1111,7 +1183,7 @@ focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
-theme/theme = ExtResource( 10 )
+theme/theme = ExtResource( 12 )
 margin/left = 0.0
 margin/top = 0.0
 margin/right = 280.0
@@ -1178,7 +1250,7 @@ focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
-theme/theme = ExtResource( 10 )
+theme/theme = ExtResource( 12 )
 margin/left = 0.0
 margin/top = 0.0
 margin/right = 200.0
@@ -1373,7 +1445,7 @@ margin/left = 363.5
 margin/top = 217.5
 margin/right = 221.5
 margin/bottom = 194.5
-custom_fonts/font = SubResource( 7 )
+custom_fonts/font = SubResource( 10 )
 text = "Available spells"
 percent_visible = 1.0
 lines_skipped = 0
@@ -1417,7 +1489,7 @@ focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
-theme/theme = ExtResource( 10 )
+theme/theme = ExtResource( 12 )
 margin/left = 0.0
 margin/top = 0.0
 margin/right = 200.0
@@ -1943,7 +2015,7 @@ focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
-theme/theme = ExtResource( 12 )
+theme/theme = ExtResource( 14 )
 margin/left = 37.0
 margin/top = 63.0
 margin/right = 260.0
@@ -2086,8 +2158,8 @@ margin/bottom = 50.0
 toggle_mode = true
 enabled_focus_mode = 2
 shortcut = null
-textures/pressed = ExtResource( 13 )
-textures/hover = ExtResource( 14 )
+textures/pressed = ExtResource( 15 )
+textures/hover = ExtResource( 16 )
 params/resize_mode = 0
 params/stretch_mode = 0
 
@@ -2309,7 +2381,7 @@ flat = false
 playback/process_mode = 1
 playback/default_blend_time = 0.0
 root/root = NodePath("..")
-anims/spritemovefairy = SubResource( 8 )
+anims/spritemovefairy = SubResource( 11 )
 playback/active = true
 playback/speed = 1.0
 blend_times = [  ]

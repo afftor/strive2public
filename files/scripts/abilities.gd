@@ -188,8 +188,27 @@ price = 150,
 costenergy = 0,
 costmana = 10,
 costother = '',
-attributes = [],
+attributes = ['debuff'],
 reqs = {'level.value' : 5, 'stats.maf_cur' : 2}
+},
+acidspit = {
+name = 'Acid Spit',
+code = 'acidspit',
+learnable = true,
+description = "Deals damage to single target enemy and recudes it's armor. Effect grows with Magic Affinity. ",
+usetext = '$name [color=aqua]Spits Acid[/color] at $targetname. ',
+target = 'enemy',
+effect = 'acidspiteffect',
+can_miss = true,
+power = 5,
+cooldown = 4,
+type = 'spell',
+price = 200,
+costenergy = 0,
+costmana = 5,
+costother = '',
+attributes = ['damage','debuff'],
+reqs = {'level.value' : 6, 'stats.maf_cur' : 4}
 },
 heavystike = {
 name = 'Heavy Strike',
@@ -274,6 +293,27 @@ costother = '',
 attributes = ['buff', 'onlyself'],
 reqs = {}
 },
+aoeattack = {
+name = 'Slam',
+code = 'aoeattack',
+iconnorm = load("res://files/buttons/abils/Attack.png"),
+iconpressed = load("res://files/buttons/abils/Attack2.png"),
+learnable = false,
+description = 'Attempts to attack chosen enemy.',
+usetext = '$name performs [color=aqua]Slam attack[/color]. ',
+target = 'enemy',
+effect = null,
+can_miss = false,
+power = 0.8,
+cooldown = 5,
+type = 'physical',
+price = 0,
+costenergy = 0,
+costmana = 0,
+costother = '',
+attributes = ['damage','allparty'],
+reqs = {level = 0}
+},
 }
 
 var effects = {
@@ -316,7 +356,14 @@ name = "Shackled",
 code = 'shackleeffect',
 type = 'debuff',
 stats = [],
-}
+},
+acidspiteffect = {
+duration = 5,
+name = "Acid",
+code = 'acidspiteffect',
+type = 'debuff',
+stats = [['armor', '-(3+,caster.magic,)']],
+},
 }
 func restorehealth(caster, target):
 	var text = ''

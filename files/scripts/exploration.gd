@@ -20,6 +20,7 @@ var zones = {
 
 forest = {
 background = 'crossroads',
+reqs = "true",
 combat = true,
 code = 'forest',
 name = 'Ancient Forest',
@@ -28,11 +29,13 @@ enemies = [['thugseasy',10],['banditseasy', 20], ['peasant', 25],['solobear', 40
 encounters = [['dolinforest','globals.state.sidequests.dolin == 0 || globals.state.sidequests.dolin == 5',10]],
 length = 5,
 exits = ['shaliq', 'wimbornoutskirts'],
+tags = [],
 races = [['Elf', 20], ['Beastkin Wolf',25],['Halfkin Bunny',30],['Beastkin Bunny',35],['Halfkin Wolf',40],['Human', 100]]
 },
 
 elvenforest = {
 background = 'forest',
+reqs = "true",
 combat = true,
 code = 'elvenforest',
 name = 'Deep Elven Grove',
@@ -40,38 +43,132 @@ description = "This portion of the forest is located dangerously close to eleven
 enemies = [['fairy',3],['thugseasy',10],['solobear', 15], ['peasantgroup', 20], ['peasant', 25],['elfguards',35],['banditseasy', 50],['plantseasy',65],['wolveseasy', 100]],
 encounters = [],
 length = 5,
-exits = ['wimbornoutskirts'],
+exits = ['wimbornoutskirts','amberguard'],
+tags = [],
 races = [['Dark Elf', 20],['Drow', 25],['Elf', 100]]
 },
 
+
+amberguardforest = {
+background = 'amberroad',
+reqs = "true",
+combat = true,
+code = 'amberguardforest',
+name = 'Amber Road',
+description = "Amber Road is a long way through seeming glade and various small settlements and hills. ",
+enemies = [['solobear', 15], ['wolveshard', 45], ['direwolveseasy', 75]],
+encounters = [],
+length = 4,
+exits = ['amberguard','witchhut','undercityentrance'],
+tags = [],
+races = [["Elf", 100]]
+},
+
+witchhut = {
+background = 'amberroad',
+reqs = 'globals.state.mainquest >= 21',
+combat = false,
+code = 'witchhut',
+name = 'Lone Hut',
+description = "You come across a lone wooden hut hidden in the thicket. ",
+enemies = [],
+encounters = [],
+length = 1,
+exits = ['witchhut'],
+tags = [],
+races = []
+},
+
+undercityentrance = {
+background = 'mountains',
+reqs = 'globals.state.mainquest >= 18',
+combat = false,
+code = 'undercityentrance',
+name = "Cliff Entrance",
+description = "The entrance to the old tunnels is tucked away in a maze of cliff walls.If not for numerous marks and signs, you would have had a hard time figuring out the correct passage is. A large boulder blocks the entrance way and has been sealed in place with magic. The ritual used to seal the tunnel is beyond your ability to break and without a large team of miners to try break a way in around through the extremely hard rock, you’ll need to search for another way in.",
+enemies = [],
+encounters = [],
+length = 1,
+exits = ['undercityentrance'],
+tags = [],
+races = []
+},
+
+undercitytunnels = {
+background = 'tunnels',
+reqs = 'globals.state.mainquest >= 18',
+combat = true,
+code = 'undercitytunnels',
+name = "Underground Tunnels",
+description = "You move through the long, dark caves with torches ready, catiously watching your steps. There's no telling which passage will lead you where and what you will find. ",
+enemies = [['solospider', 35], ['oozesgroup', 50], ['troglodytesmall', 75], ['mutant', 100]],
+encounters = [],
+length = 8,
+exits = ['undercityentrance', 'undercityruins'],
+tags = ['noreturn'],
+races = [],
+},
+undercityruins = {
+background = 'undercity',
+reqs = 'true',
+combat = true,
+code = 'undercityruins',
+name = "Underground Ruins",
+description = "Long pathways, which once were streets, lay around with ruins left from buildings on the sides. Depsite your knowledge, you can't realistically measure their age, it might be 50 or 500 years old. Netherless, air is dump and you can expect dangerous creatures lurking around this place. ",
+enemies = [['spidergroup',25],['gembeetle', 30], ['troglodytelarge', 50], ['troglodytesmall', 75], ['mutant', 100]],
+encounters = [],
+length = 8,
+exits = ['undercitytunnels','undercityhall'],
+tags = ['noreturn'],
+races = [],
+},
+undercityhall = {
+background = 'undercity',
+reqs = 'true',
+combat = false,
+code = 'undercityhall',
+name = "Underground Hall",
+description = "You stay at the huge, nearly intact building. Its' state seems to be a result of magically enhanced walls, traces of which you can still feel. Searching it might provide you with great results, but also attract something very dangerous. ",
+enemies = [],
+encounters = [],
+length = 1,
+exits = ['undercityhall'],
+tags = ['noreturn'],
+races = []
+},
 grove = {
 background = 'grove',
+reqs = "true",
 combat = true,
 code = 'grove',
 name = 'Far Eerie Woods',
 description = "This portion of the forest is deeply shadowed, and strange sounds drift in and out of hearing. Something about the atmosphere keeps the normal forest creatures silent, lending an eerie, mystic feeling to the grove you stand within.",
 enemies = [['dryad',10], ['solobear', 15], ['fairy', 30],['wolveshard', 45],['plantseasy',80], ['wolveseasy', 100]],
 encounters = [['dolingrove','globals.state.sidequests.dolin == 12',25],['snailevent','globals.state.farm >= 4 && globals.state.snails < 10',10]],
-length = 5,
+length = 7,
 exits = ['wimbornoutskirts'],
+tags = [],
 races = [['Fairy', 60],["Dryad", 100]]
 },
 
 marsh = {
 background = 'marsh',
+reqs = "true",
 combat = true,
 code = 'marsh',
 name = 'Marsh',
 description = "Dank bog lies at the border of the forest and swamps beyond. Noxious smells and a sinister aura prevail throughout. The landscape itself is hostile, with pitch-black pools of water mixed among the solid ground and you doubt that the creatures that live here are any more pleasant than the land they live in.",
 enemies = [['banditcamp',10],['monstergirl',20], ['oozesgroup',35], ['solospider',85], ['solobear', 100]],
 encounters = [],
-length = 5,
+length = 6,
 exits = ['frostfordoutskirts'],
+tags = [],
 races = [['Arachna', 15],['Lamia', 40],['Slime', 55],['Demon', 100]]
 },
 
 mountains = {
 background = 'mountains',
+reqs = "true",
 combat = true,
 code = 'mountains',
 name = 'Mountains',
@@ -80,11 +177,13 @@ enemies = [['slaversmedium',5],['harpy',15],['banditsmedium', 20],['travelersgro
 encounters = [],
 length = 6,
 exits = ['gornoutskirts'],
+tags = [],
 races = [['Dragonkin',3],['Seraph',8],['Gnome', 20],['Centaur',30],['Goblin', 70],['Orc',100]]
 },
 
 sea = {
 background = 'sea',
+reqs = "true",
 combat = true,
 code = 'sea',
 name = 'Sea',
@@ -93,11 +192,13 @@ enemies = [['banditcamp',10],['monstergirl', 35],['travelersgroup',50],['oozesgr
 encounters = [],
 length = 5,
 exits = ['gornoutskirts'],
+tags = [],
 races = [['Scylla', 40],['Lamia', 70],['Nereid', 100]]
 },
 
 shaliq = {
 background = 'shaliq',
+reqs = "true",
 combat = false,
 code = 'shaliq',
 name = 'Shaliq Village',
@@ -105,11 +206,13 @@ description = "This small, rural village looks calm and peaceful. It seems many 
 enemies = [],
 encounters = [],
 length = 0,
-exits = ['shaliq']
+exits = ['shaliq'],
+tags = [],
 },
 
 wimbornoutskirts = {
 background = 'meadows',
+reqs = "true",
 combat = false,
 code = 'wimbornoutskirts',
 name = 'Wimborn Outskirts',
@@ -117,11 +220,13 @@ description = "You walk out of Wimborn and get far away from its walls until roa
 enemies = [],
 encounters = [],
 length = 0,
-exits = ['wimbornoutskirts']
+exits = ['wimbornoutskirts'],
+tags = [],
 },
 
 wimbornoutskirtsexplore = {
 background = 'meadows',
+reqs = "true",
 combat = true,
 code = 'wimbornoutskirtsexplore',
 name = 'Wimborn Outskirts',
@@ -130,10 +235,12 @@ enemies = [['banditsmedium',10],['slaverseasy',15],['peasant',20],['banditseasy'
 encounters = [],
 length = 5,
 exits = ['wimbornoutskirts'],
+tags = [],
 races = [['Beastkin Cat', 5], ['Halfkin Cat', 10],['Beastkin Tanuki', 12], ['Halfkin Tanuki', 15],['Elf', 19],['Taurus',30],['Human', 100]]
 },
 wimborn = {
 background = 'wimborn',
+reqs = "true",
 combat = false,
 code = 'wimborn',
 name = 'Wimborn',
@@ -141,10 +248,12 @@ description = "Though the weather is commonly hot, the streets are rich with man
 enemies = [],
 encounters = [],
 length = 0,
-exits = ['wimborn']
+exits = ['wimborn'],
+tags = [],
 },
 gorn = {
 background = 'gorn',
+reqs = "true",
 combat = false,
 code = 'gorn',
 name = 'Gorn',
@@ -152,11 +261,13 @@ description = "Though the weather is commonly hot, the streets are rich with man
 enemies = [],
 encounters = [],
 length = 0,
-exits = ['gorn']
+exits = ['gorn'],
+tags = [],
 },
 
 gornalchemist = {
 background = 'gorn',
+reqs = "true",
 combat = false,
 code = 'gornalchemist',
 name = 'Alchemical Shop',
@@ -164,11 +275,13 @@ description = "",
 enemies = [],
 encounters = [],
 length = 0,
-exits = ['gornalchemist']
+exits = ['gornalchemist'],
+tags = [],
 },
 
 gornoutskirts = {
 background = 'highlands',
+reqs = "true",
 combat = false,
 code = 'gornoutskirts',
 name = 'Gorn Outskirts',
@@ -176,11 +289,13 @@ description = "You walk out of Gorn and get far away from its walls until road b
 enemies = [],
 encounters = [],
 length = 0,
-exits = ['gornoutskirts']
+exits = ['gornoutskirts'],
+tags = [],
 },
 
 gornoutskirtsexplore = {
 background = 'highlands',
+reqs = "true",
 combat = true,
 code = 'gornoutskirtsexplore',
 name = 'Gorn Outskirts',
@@ -189,11 +304,13 @@ enemies = [['slaverseasy',10],['peasant',20],['banditseasy',60],['thugseasy',75]
 encounters = [],
 length = 5,
 exits = ['gornoutskirts'],
+tags = [],
 races = [['Centaur',5],['Dark Elf', 15],['Goblin', 40],['Orc', 100]]
 },
 
 frostfordoutskirts = {
 background = 'borealforest',
+reqs = "true",
 combat = false,
 code = 'frostfordoutskirts',
 name = 'Frostford Outskirts',
@@ -206,6 +323,7 @@ exits = ['frostfordoutskirts']
 
 frostfordoutskirtsexplore = {
 background = 'borealforest',
+reqs = "true",
 combat = true,
 code = 'frostfordoutskirtsexplore',
 name = 'Frostford Outskirts',
@@ -214,11 +332,13 @@ enemies = [['banditsmedium',10],['travelersgroup',25],['peasant',60],['thugseasy
 encounters = [],
 length = 5,
 exits = ['frostfordoutskirts'],
+tags = [],
 races = [['Beastkin Wolf', 40],['Halfkin Fox', 45],['Beastkin Fox', 50],['Halfkin Cat', 55],['Beastkin Cat',65],['Halfkin Wolf', 75],['Beastkin Wolf', 85],['Human', 100]]
 },
 
 frostford = {
 background = 'frostford',
+reqs = "true",
 combat = false,
 code = 'frostford',
 name = 'Frostford',
@@ -226,8 +346,24 @@ description =  "Despite this region being frequently covered in snow, it's not t
 enemies = [],
 encounters = [],
 length = 0,
-exits = ['frostford']
-}
+exits = ['frostford'],
+tags = [],
+},
+amberguard = {
+background = 'amberguard',
+reqs = "globals.state.mainquest >= 17",
+combat = false,
+code = 'amberguard',
+name = 'Amberguard',
+description = "The journey to Amberguard is rather uneventful. A large wall surrounds the town with a fortified gate controlling entrance into the inner city. Passing through the gates you are coldly greeted with hostile stares, reminding you while you may be permitted to enter the city you are not welcome here, and help may be difficult to find. \n\nYou make your way through the town. Large marble buildings of elvish design line the streets and provide shelter to the local residents. Despite their lavish architecture they look dilapidated and unkempt. Sections of the city seem almost deserted. While the streets are far from crowded by  the elves that live here, you are often rudely jostled and bumped. Other elves simply glare at you or cautiously give you lots of space.\n\nThe unwelcoming attitude explains why so few outsiders especially those of other races are to be found within the city.",
+enemies = [],
+encounters = [],
+length = 1,
+exits = ['amberguard'],
+tags = [],
+races = [],
+},
+
 }
 
 var buttoncontainer
@@ -264,7 +400,7 @@ func zoneenter(zone):
 	main.checkplayergroup()
 	outside.playergrouppanel()
 	outside.get_node('exploreprogress/locationname').set_text(zone.name)
-	globals.get_tree().get_current_scene().get_node("outside/exploreprogress").set_value((progress/max(zone.length,1))*100)
+	globals.get_tree().get_current_scene().get_node("outside/exploreprogress").set_val((progress/max(zone.length,1))*100)
 	currentzone = zone
 	outside.clearbuttons()
 	outside.maintext.set_bbcode('[center]'+ zone.name + '[/center]\n\n' + zone.description)
@@ -277,13 +413,15 @@ func zoneenter(zone):
 	if zone.combat == true && progress >= zone.length:
 		for i in zone.exits:
 			var temp = self.zones[i]
-			array.append({name = 'Move to ' + temp.name, function = 'zoneenter', args = temp.code})
+			if globals.evaluate(temp.reqs) == true:
+				array.append({name = 'Move to ' + temp.name, function = 'zoneenter', args = temp.code})
 		progress = 0
 		array.insert(0,{name = 'Explore this area again', function = 'zoneenter', args = currentzone.code})
 		outside.buildbuttons(array, self)
 	else:
 		array.append({name = "Proceed through area", function = 'enemyencounter'})
-	array.append({name = "Return to Mansion", function = "mansionreturn"})
+		if globals.developmode == true:
+			array.append({name = "Skip", function = 'areaskip'})
 	if globals.state.sidequests.cali == 19 && zone.code == 'forest':
 		array.append({name = "Look for bandits' camp", function = 'event',args = 'calibanditcamp'})
 	elif (globals.state.sidequests.cali == 23 || globals.state.sidequests.cali == 24) && zone.code == 'wimbornoutskirtsexplore':
@@ -306,10 +444,14 @@ func zoneenter(zone):
 			tempdict.disabled = true
 			tempdict.tooltip = 'not enough mana'
 		array.append(tempdict)
-	for i in globals.state.portals:
-		if i.code == zone.code && i.enabled == false:
-			i.enabled = true
-			outside.maintext.set_bbcode(outside.maintext.get_bbcode() + '\n\n[color=green]New portal unlocked![/color]')
+	if globals.spelldict.invigorate.learned == true && globals.state.playergroup.size() >= 1:
+		var tempdict = {name = "Cast Invigorate", function = 'castinvig'}
+		if globals.resources.mana < 5:
+			tempdict.disabled = true
+			tempdict.tooltip = 'not enough mana'
+		array.append(tempdict)
+	if zone.tags.find('noreturn') < 0 || progress == 0:
+		array.append({name = "Return to Mansion", function = "mansionreturn"})
 	outside.buildbuttons(array, self)
 
 func healeveryone():
@@ -325,8 +467,24 @@ func healeveryone():
 			manaused += 5
 	manaused = min(manaused, globals.resources.mana)
 	globals.resources.mana -= manaused
-	main.popup("You've patched up everyone by using " + str(manaused) +  " mana. ")
+	if manaused > 0:
+		main.popup("You've patched up everyone by using " + str(manaused) +  " mana. ")
+	else:
+		main.popup("Nobody has injuries in your party. ")
 	outside.playergrouppanel()
+
+func castinvig():
+	main.selectslavelist(false, 'castinvigtarget', self, 'true', false, true)
+
+func castinvigtarget(slave):
+	get_tree().get_current_scene().get_node('spellnode').slave = slave
+	get_tree().get_current_scene().get_node('spellnode').invigorateeffect()
+	zoneenter(currentzone.code)
+
+func areaskip():
+	progress = currentzone.length
+	zoneenter(currentzone.code)
+	
 
 func enemyencounter():
 	var enc
@@ -511,7 +669,8 @@ func encounterbuttons():
 		array.append({name = "Leave", function = "enemyleave"})
 	else:
 		array.append({name = "Fight",function = "enemyfight"})
-		array.append({name = "Escape", function = "mansionreturn"})
+		if currentzone.tags.find('noreturn') < 0:
+			array.append({name = "Escape", function = "mansionreturn"})
 	outside.buildbuttons(array, self)
 
 func slavers():
@@ -624,11 +783,12 @@ func mindreadenemy():
 	encounterbuttons()
 
 func enemyleave():
-	progress += 1
+	progress += 1.0
 	var text = ''
+	globals.player.energy = -max(5-floor((globals.player.sagi+globals.player.send)/2),1)
 	for i in globals.state.playergroup:
 		var slave = globals.state.findslave(i)
-		slave.energy = -5
+		slave.energy = -max(5-floor((slave.sagi+slave.send)/2),1)
 		if slave.energy <= 10:
 			globals.state.playergroup.erase(slave.id)
 			text += slave.name + " is too exhausted to continue and returns back to mansion. "
@@ -640,6 +800,7 @@ func enemyfight():
 	outside.maintext.set_bbcode('')
 	outside.clearbuttons()
 	main.get_node("combat").currentenemies = enemygroup.units
+	main.get_node('combat').area = currentzone
 	main.get_node("combat").start_battle()
 
 var capturedtojail = 0
@@ -992,8 +1153,167 @@ func gorn():
 	array.append({name = "Return to Mansion", function = 'mansionreturn'})
 	outside.buildbuttons(array,self)
 
+func amberguard():
+	var array = []
+	outside.location = 'amberguard'
+	main.music_set('gorn')
+	if globals.state.mainquest == 17:
+		globals.state.mainquest = 18
+	elif globals.state.mainquest == 19:
+		array.append({name = "Search for clues", function = "amberguardsearch"})
+	elif globals.state.mainquest == 20:
+		array.append({name = 'Find stranger', function = 'amberguardsearch', args = 2})
+	array.append({name = "Check local market", function = 'amberguardmarket'})
+	array.append({name = "Return to Elven Grove", function = 'zoneenter', args = 'elvenforest'})
+	array.append({name = "Move to the Amber Road", function = 'zoneenter', args = 'amberguardforest'})
+	outside.buildbuttons(array,self)
+
+func amberguardsearch(stage = 1):
+	var text
+	var buttons = []
+	globals.state.mainquest = 20
+	if stage == 1:
+		text = globals.questtext.MainQuestAmberguardSearch
+	elif stage == 2:
+		text = globals.questtext.MainQuestAmberguardReturn
+	if globals.resources.gold >= 1000:
+		buttons.append({text = 'Pay 1000 gold',function = 'amberguardpurchase',arguments = 1})
+	else:
+		buttons.append({text = 'Pay 1000 gold',function = 'amberguardpurchase',arguments = 1, disabled = true})
+	buttons.append({text = 'Leave',  function = 'amberguardpurchase', arguments = 2})
+	main.dialogue(false,self,text,buttons)
+	amberguard()
+
+func amberguardpurchase(stage):
+	var text
+	if stage == 1:
+		globals.state.mainquest = 21
+		globals.resources.gold -= 1000
+		text = globals.questtext.MainQuestAmberguardPay
+	elif stage == 2:
+		text = "You return to the main street."
+	amberguard()
+	main.dialogue(true, self, text, null)
+
+func witchhut():
+	var array = []
+	if globals.state.mainquest == 21:
+		globals.state.mainquest = 22
+		outside.maintext.set_bbcode(globals.questtext.MainQuestAmberguardWitch)
+		array.append({name = "Go inside", function = 'shuriyavisit', args = 1})
+	else:
+		array.append({name = "Go inside", function = 'shuriyavisit', args = 2})
+	array.append({name = "Return to Amber Road", function = 'zoneenter', args = 'amberguardforest'})
+	outside.buildbuttons(array,self)
+
+func shuriyavisit(stage):
+	var text
+	var buttons = []
+	var state = true
+	if stage == 1:
+		text = globals.questtext.AmberguardShuriyaVisit
+	elif stage == 2:
+		text = "Shuriya greets you with frown on her face. \n\n[color=yellow]— Oh, it's you again? What do you need?[/color]"
+	elif stage == 3:
+		text = globals.questtext.MainQuestAmberguardTunnelsAsk
+	elif stage == 4:
+		text = globals.questtext.MainQuestAmberguardTunnelEnterAsk
+		globals.state.mainquest = 23
+	buttons.append({text = 'Ask about the tunnels', function = 'shuriyavisit', arguments = 3})
+	if globals.state.mainquest == 22:
+		buttons.append({text = 'Ask about entrance', function = 'shuriyavisit', arguments = 4})
+	if globals.state.mainquest == 23:
+		buttons.append({text = 'Deliver slaves', function = 'shuriyaslaves', arguments = true})
+	zoneenter(currentzone.code)
+	main.dialogue(state, self, text, buttons)
+
+var slave1 = null
+var slave2 = null
+
+func shuriyaslaves(first = true):
+	var state = true
+	var text = '[color=yellow]— Well, who do you have?[/color]'
+	var buttons = []
+	var cancontinue = false
+	if first == true:
+		slave1 = null
+		slave2 = null
+	else:
+		if slave1 != null && slave2 != null:
+			cancontinue = true
+	
+	if slave1 != null:
+		text += slave1.dictionary("\n$name will be given away as an Elf.")
+	if slave2 != null:
+		text += slave2.dictionary("\n$name will be given away as a Drow.")
+	
+	if cancontinue == true:
+		buttons.append({text = "Confirm", function = 'shuriyaslavesgive', arguments = null})
+	else:
+		if slave1 == null:
+			buttons.append({text = 'Select an Elf', function = 'shuriyaslaveselect', arguments = 1})
+		if slave2 == null:
+			buttons.append({text = 'Select a Drow', function = 'shuriyaslaveselect', arguments = 2})
+	main.dialogue(state, self, text, buttons)
+
+func shuriyaslaveselect(stage):
+	if stage == 1:
+		main.selectslavelist(true, 'shuriyaelfselect', self, 'slave.race == "Elf"')
+	else:
+		main.selectslavelist(true, 'shuriyadrowselect', self, 'slave.race == "Drow"')
+
+func shuriyaslavesgive(none):
+	globals.state.mainquest = 24
+	globals.slaves.erase(slave1)
+	globals.slaves.erase(slave2)
+	var text = globals.questtext.MainQuestAmberguardSlaveDeliver
+	main.popup(text)
+	main.close_dialogue()
+
+func shuriyaelfselect(slave):
+	slave1 = slave
+	shuriyaslaves(false)
+
+func shuriyadrowselect(slave):
+	slave2 = slave
+	shuriyaslaves(false)
+
+
+func undercityentrance():
+	var array = []
+	if globals.state.mainquest == 18:
+		globals.state.mainquest = 19
+	if globals.state.mainquest >= 24:
+		array.append({name = 'Go through hidden passage', function = 'zoneenter', args = 'undercitytunnels'})
+	array.append({name = "Return to Amber Road", function = 'zoneenter', args = 'amberguardforest'})
+	outside.buildbuttons(array,self)
+
+func undercityhall():
+	var array = []
+	if globals.state.mainquest == 24:
+		array.append({name = "Search for documents", function = 'undercityboss'})
+	else:
+		array.append({name = "Search for valuables", function = 'undercityboss'})
+	outside.buildbuttons(array,self)
+
+func undercityboss():
+	main.get_node("combat").nocaptures = true
+	if globals.state.mainquest == 24:
+		buildenemies("bossgolem")
+		launchonwin = 'undercitybosswin'
+		enemyfight()
+	else:
+		buildenemies("bosswyvern")
+		launchonwin = 'undercitybosswin'
+		enemyfight()
+
+
+
 func gornmarket():
 	outside.shopinitiate('gornmarket')
+
+func amberguardmarket():
+	outside.shopinitiate('amberguardmarket')
 
 func gornpalace():
 	globals.events.gornpalace()

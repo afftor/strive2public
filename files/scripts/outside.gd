@@ -70,6 +70,8 @@ func playergrouppanel():
 		get_node("playergrouppanel/VBoxContainer").add_child(charpanel)
 		charpanel.set_hidden(false)
 		charpanel.get_node("name").set_text(slave.name_short())
+		charpanel.get_node("stress").set_hidden(false)
+		charpanel.get_node("stress").set_text("SR:" + str(round(slave.stress)))
 		charpanel.get_node("health").set_text('HP:' +str(round(slave.health)) + '/' + str(slave.stats.health_max))
 		charpanel.get_node("energy").set_text('EN:'+str(round(slave.energy)) + '/' + str(slave.stats.energy_max))
 
@@ -511,7 +513,7 @@ func slaveforquestselected(slave):
 				ref = ref[i]
 		else:
 			ref = slave[i[0]]
-		if i[0] == 'hairlengtharray':
+		if i[0] == 'hairlength':
 			ref = globals.hairlengtharray.find(slave.hairlength)
 		if i[0] == 'tits.size':
 			ref = globals.sizearray.find(slave.tits.size)
@@ -550,7 +552,7 @@ sex = 'Sex',obed = 'Obedience', cour = 'Courage',conf = 'Confidence',wit = 'Wit'
 'face.beauty':'Beauty',lewd = 'Lewdness', dom = 'Role Preference', 
 'sexuals.unlocks' : "Unlocked Sex Categories",
 'sstr' : 'Strength', 'sagi' : 'Agility', 'smaf' : 'Magic Affinity', 'send' : 'Endurance',
-loyal = 'Loyalty', race = 'Race', age = 'Age', hairlengtharray = 'Hair Length', origins = 'Origins',
+loyal = 'Loyalty', race = 'Race', age = 'Age', hairlength = 'Hair Length', origins = 'Origins',
 bodyshape = 'Type', haircolor = 'Hair Color', 'tits.size' : 'Breasts Size',
 }
 
@@ -570,7 +572,7 @@ func slavequesttext(quest):
 			text2 = text2 + repeatablesdict[i[0]] + ' — '+ globals.player.skill_level(i[2]) + operators[i[1]]
 		elif i[0] in ['sex','age','bodyshape','haircolor','race']:
 			text2 = text2 + repeatablesdict[i[0]] + ' — '+ str(i[2]) + ';\n'
-		elif i[0] == 'hairlengtharray':
+		elif i[0] == 'hairlength':
 			text2 = text2 + 'Hair length — ' + str(globals.hairlengtharray[i[2]]) + ';\n'
 		elif i[0] == 'tits.size':
 			text2 = text2 + 'Breast size — ' + str(globals.sizearray[i[2]]) + operators[i[1]]
@@ -869,6 +871,7 @@ func tishaquest():
 func mageorderquest1(slave = null):
 	var buttons = []
 	var text = ''
+	var state = true
 	var sprites = null
 	questgiveawayslave = slave
 	if globals.state.mainquest == 0:
@@ -959,16 +962,26 @@ func mageorderquest1(slave = null):
 		sprites = [['melissafriendly','pos1']]
 		text = questtext.MainQuestGornStart
 		globals.state.mainquest = 12
-	elif globals.state.mainquest in [12,13,14,15]:
+	elif globals.state.mainquest in [12,13,14,15,17]:
 		text = "You decide it's unwise to return to Melissa until you finish your business in Gorn."
 	elif globals.state.mainquest == 16:
 		sprites = [['melissafriendly','pos1','opac']]
 		text = questtext.MainQuestGornMelissaReturn
+		state = false
+		buttons.append(['Close', "orderhade"])
 		globals.state.mainquest = 17
-	elif globals.state.mainquest == 17:
-		text = "You have currently completed whole main quest available at this stage. "
-	main.dialogue(true, self, text, buttons, sprites)
+	elif globals.state.mainquest == 25:
+		globals.state.mainquets = 26
+		sprites = [['melissafriendly','pos1','opac']]
+		text = questtext.MainQuestUndercityReturn
+	main.dialogue(state, self, text, buttons, sprites)
 	mageorder()
+
+func orderhade():
+	var text = globals.questtext.MainQuestGornMelissaAfter
+	var buttons = []
+	var sprites = null
+	main.dialogue(true, self, text, buttons, sprites)
 
 func selectslaveforquest(function):
 	main.selectslavelist(true, function, self)
@@ -1280,6 +1293,7 @@ shaliqshop = {code = 'shaliqshop', name = "Village's Trader", items = ['hairdye'
 gornmarket = {code = 'gornmarket', name = "Gorn's Market", items = ['food', 'supply','magicessenceing',"armorleather",'armorchain','weaponclaymore','clothbedlah','accslavecollar','acchandcuffs'], selling = true},
 frostfordmarket = {code = 'frostfordmarket', name = "Frostford's Market", items = ['supply','basicsolutioning','bestialessenceing','clothpet', 'weaponsword','accgoldring'], selling = true},
 aydashop = {code = 'aydashop', name = "Gorn's Alchemist", items = ['regressionpot', 'beautypot', 'hairdye', 'basicsolutioning','bestialessenceing','taintedessenceing','fluidsubstanceing'], selling = false},
+amberguardmarket = {code = 'amberguardmarket', name = "Amberguard's Market", items = ['beautypot','bestialessenceing','magicessenceing','fluidsubstanceing'], selling = true},
 }
 var currentshop
 var selecteditem
@@ -1757,7 +1771,7 @@ func emily(state = 1):
 		emily.tags.append('nosex')
 		emily.relatives.father = -1
 		emily.relatives.mother = 2
-		emily.imageportait = "res://files/images/emilyportrait.png"
+		emily.imageportait = "res://files/images/emily/emilyportrait.png"
 		emily.obed += 80
 		emily.skin = 'pale'
 		emily.cleartraits()
