@@ -971,7 +971,7 @@ func mageorderquest1(slave = null):
 		buttons.append(['Close', "orderhade"])
 		globals.state.mainquest = 17
 	elif globals.state.mainquest == 25:
-		globals.state.mainquets = 26
+		globals.state.mainquest = 26
 		sprites = [['melissafriendly','pos1','opac']]
 		text = questtext.MainQuestUndercityReturn
 	main.dialogue(state, self, text, buttons, sprites)

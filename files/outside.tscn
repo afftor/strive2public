@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=1]
+[gd_scene load_steps=29 format=1]
 
 [ext_resource path="res://files/theme.tres" type="Theme" id=1]
 [ext_resource path="res://files/scripts/outside.gd" type="Script" id=2]
@@ -16,6 +16,7 @@
 [ext_resource path="res://files/theme slavetab.tres" type="Theme" id=14]
 [ext_resource path="res://files/buttons/itemactive.png" type="Texture" id=15]
 [ext_resource path="res://files/buttons/itemnormal.png" type="Texture" id=16]
+[ext_resource path="res://files/images/sebastian.png" type="Texture" id=17]
 
 [sub_resource type="StyleBoxTexture" id=1]
 
@@ -252,6 +253,7 @@ __meta__ = {
 
 [node name="playergrouppanel" type="Panel" parent="."]
 
+editor/display_folded = true
 anchor/top = 1
 anchor/right = 1
 anchor/bottom = 1
@@ -266,6 +268,7 @@ margin/bottom = -84.0
 
 [node name="VBoxContainer" type="HBoxContainer" parent="playergrouppanel"]
 
+editor/display_folded = true
 focus/ignore_mouse = false
 focus/stop_mouse = false
 size_flags/horizontal = 2
@@ -449,6 +452,7 @@ visible_characters = -1
 
 [node name="exploreprogress" type="ProgressBar" parent="."]
 
+editor/display_folded = true
 anchor/left = 1
 anchor/right = 1
 focus/ignore_mouse = false
@@ -522,6 +526,7 @@ align = 0
 
 [node name="slavebuypanel" type="Control" parent="."]
 
+editor/display_folded = true
 visibility/visible = false
 anchor/right = 1
 anchor/bottom = 1
@@ -1997,6 +2002,7 @@ flat = false
 
 [node name="shoppanel" type="Control" parent="."]
 
+editor/display_folded = true
 visibility/visible = false
 anchor/right = 1
 anchor/bottom = 1
@@ -2297,7 +2303,6 @@ suffix = ""
 
 [node name="sebastiannode" type="Control" parent="."]
 
-editor/display_folded = true
 visibility/visible = false
 anchor/right = 1
 anchor/bottom = 1
@@ -2375,6 +2380,20 @@ enabled_focus_mode = 2
 shortcut = null
 text = "Cancel"
 flat = false
+
+[node name="TextureFrame" type="TextureFrame" parent="sebastiannode"]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 745.0
+margin/top = 13.0
+margin/right = 1096.0
+margin/bottom = 774.0
+texture = ExtResource( 17 )
+expand = true
+stretch_mode = 7
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 

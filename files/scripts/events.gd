@@ -243,6 +243,9 @@ func undercitybosswin():
 		globals.state.mainquest = 25
 	else:
 		pass
+	if globals.state.lorefound.find('amberguardlog3') < 0:
+		globals.state.lorefound.append('amberguardlog3')
+		text += "[color=yellow]\n\nYou've found some old writings in the ruins. Does not look like what you came for, but you can read them later.[/color]"
 	globals.get_tree().get_current_scene().get_node("explorationnode").zoneenter('undercityruins')
 	text += "\n[color=green]After searching through the building ruins you managed to find 1 [color=aqua]" + reward.name + "[/color]. [/color]"
 	globals.get_tree().get_current_scene().popup(text)

@@ -238,7 +238,7 @@ func _on_new_slave_button_pressed():
 	globals.state.sidequests.brothel = 2
 	globals.state.sidequests.emily = 0
 	globals.state.rank = 3
-	globals.state.mainquest = 24
+	globals.state.mainquest = 25
 	globals.state.farm = 4
 	globals.state.laboratory = 1
 	globals.state.alchemy = 2
@@ -393,7 +393,7 @@ func _on_end_pressed():
 	_on_mansion_pressed()
 	for i in range(globals.slaves.size()):
 		if globals.slaves[i].away.duration == 0:
-			if globals.slaves[i].work == 'chef':
+			if globals.slaves[i].work == 'cooking':
 				chef = globals.slaves[i]
 			elif globals.slaves[i].work == 'jailer':
 				jailer = globals.slaves[i]
@@ -438,7 +438,7 @@ func _on_end_pressed():
 		text = ''
 		if slave.away.duration == 0:
 			if slave.sleep != 'jail' && slave.sleep != 'farm':
-				if slave.work in ['rest','forage','hunt','chef','library','nurse','maid','storewimborn','artistwimborn','assistwimborn','whorewimborn','escortwimborn','fucktoywimborn', 'lumberer', 'ffprostitution','guardian', 'research', 'slavecatcher']:
+				if slave.work in ['rest','forage','hunt','cooking','library','nurse','maid','storewimborn','artistwimborn','assistwimborn','whorewimborn','escortwimborn','fucktoywimborn', 'lumberer', 'ffprostitution','guardian', 'research', 'slavecatcher']:
 					#print(slave.work)
 					if slave.work != 'rest' && slave.energy < 30:
 						text = "$name had no energy to fulfill $his duty and had to take a rest. \n"
@@ -1144,7 +1144,7 @@ func nurse(slave):
 	var dict = {text = text}
 	return dict
 
-func chef(slave):
+func cooking(slave):
 	var text = ''
 	var gold = 0
 	var food = 0
