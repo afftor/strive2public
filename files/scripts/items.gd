@@ -943,6 +943,8 @@ func deterrenteffect():
 		return('After ingesting the potion, $name starting to acting overall way more dull than before. ')
 	else:
 		return("Apparently, $name wasn't greatly affected by the potion as previous effect didn't wore off.")
+	if slave.traits.has("Sex-crazed"):
+		slave.trait_remove('Sex-crazed')
 
 func beautyeffect():
 	var text = ''
@@ -955,6 +957,8 @@ func beautyeffect():
 		temp = 2
 	elif slave.face.beauty >= 60:
 		temp = 0.5
+	if slave.traits.has("Scarred"):
+		slave.trait_remove('Scarred')
 	slave.face.beauty = min(slave.face.beauty + rand_range(4,8)*temp,100)
 	return text
 

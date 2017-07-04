@@ -229,7 +229,7 @@ func dreameffect():
 	var spell = globals.spelldict.dream
 	globals.resources.mana -= spell.manacost
 	slave.away.duration = 1
-	slave.work = 'rest'
+	slave.energy = slave.stats.energy_max
 	text = 'You cast sleep on $name, putting $him into deep rest until the next day. '
 	main.popup(slave.dictionary(text))
 	main.rebuild_slave_list()

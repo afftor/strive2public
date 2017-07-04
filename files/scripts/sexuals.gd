@@ -492,7 +492,10 @@ func sexinitiate(secondtime = false):
 					if slave.sexuals.unlocks.has('anal') == false:
 						hole = 'pussy'
 					else:
-						hole = holedict[int(round(rand_range(1,2)))]
+						if slave.pussy.virgin == true && tempaction.tags.find("penetration"):
+							hole = 'ass'
+						else:
+							hole = holedict[int(round(rand_range(1,2)))]
 				
 			text += "\n\n[color=#ee2269]" + moresexline(tempaction.name) + "[/color]"
 			text = text.replace("$hole", hole)
@@ -677,18 +680,21 @@ func checktext(action, cons):
 func getessencesfromsex(slave, mana):
 	var text = ''
 	if mana*3 + slave.stats.maf_cur*20 > rand_range(0,100):
-		if slave.race == 'Demon' || slave.race == 'Arachna' || slave.race == 'Lamia':
+		if slave.race in ['Demon', 'Arachna', 'Lamia']:
 			text = text + '\n\nYou have acquired [color=yellow]Tainted Essence[/color].'
 			globals.itemdict.taintedessenceing.amount += 1
-		elif slave.race == 'Fairy' || slave.race == 'Drow' || slave.race == 'Dragonkin':
+		elif slave.race in ['Fairy', 'Drow', 'Dragonkin']:
 			text = text + '\n\nYou have acquired [color=yellow]Magic Essence[/color].'
 			globals.itemdict.magicessenceing.amount += 1
 		elif slave.race == 'Dryad':
 			text = text + '\n\nYou have acquired [color=yellow]Nature Essence[/color].'
 			globals.itemdict.natureessenceing.amount += 1
-		elif slave.race == 'Harpy' || slave.race == 'Centaur' || slave.race.find('Beastkin') >= 0 || slave.race.find('Halfkin') >= 0:
+		elif  slave.race in ['Hapry', 'Centaur'] || slave.race.find('Beastkin') >= 0 || slave.race.find('Halfkin') >= 0:
 			text = text + '\n\nYou have acquired [color=yellow]Bestial Essence[/color].'
 			globals.itemdict.bestialessenceing.amount += 1
+		elif slave.race in ['Slime','Nereid', "Scylla"]:
+			text += '\n\nYou have acquired [color=yellow]Fluid Substance[/color].'
+			globals.itemdict.fluidsubstanceing.amount += 1
 	return text
 
 
@@ -893,18 +899,22 @@ func _on_announcerape_pressed():
 	if slave.tags.find("nosex") >= 0:
 		slaverapeconfirm()
 		return
-	var text = "You announce $name, that you will be using $him however you please not only in daily life, but also in bed with or without $his cooperation. $He's seemingly shocked with your words. "
+	var text = "You announce $name, that you will be using $him however you please not only in daily life, but also in bed with or without $his cooperation. "
 	slave.sexuals.unlocked = true
-	slave.loyal -= 30
-	slave.obed += -65
-	slave.stress += 50
-	slave.sexuals.affection = max(slave.sexuals.affection-40,0)
-	if slave.cour >= 50:
-		var temp = (slave.cour - 50)*1.5 + 25
-		if temp >= rand_range(1,100):
-			slave.add_effect(globals.effectdict.captured)
-			slave.effects.captured.duration = slave.cour/10+2
-			text += "\n\n[color=red]$name seems to detest you now and $he appears to be rebellious. [/color]"
+	if !slave.traits.has("Sex-crazed") && !slave.traits.has("Submissive"):
+		text += "$He's seemingly shocked with your words. "
+		slave.loyal -= 30
+		slave.obed += -65
+		slave.stress += 50
+		slave.sexuals.affection = max(slave.sexuals.affection-40,0)
+		if slave.cour >= 50:
+			var temp = (slave.cour - 50)*1.5 + 25
+			if temp >= rand_range(1,100):
+				slave.add_effect(globals.effectdict.captured)
+				slave.effects.captured.duration = slave.cour/10+2
+				text += "\n\n[color=red]$name seems to detest you now and $he appears to be rebellious. [/color]"
+	else:
+		text += "Despite somewhat troubled look, it does not seem to bother $him too much. "
 	get_tree().get_current_scene().popup(slave.dictionary(text))
 	_on_sexual_visibility_changed()
 	get_tree().get_current_scene().rebuild_slave_list()

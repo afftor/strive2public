@@ -472,6 +472,8 @@ class slave:
 	func trait_remove(trait):
 		var text = ''
 		trait = globals.origins.trait(trait)
+		if !traits.has(trait.name):
+			return
 		traits.erase(trait.name)
 		if trait['effect'].empty() != true:
 			add_effect(trait['effect'], true)

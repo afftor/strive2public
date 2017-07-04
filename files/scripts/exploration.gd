@@ -1668,6 +1668,6 @@ func encounterdictionary(text):
 		string = string.replace('$capturednumber', temp)
 	if enemygroup.units.size() <= 1 &&  enemygroup.units[0].capture != null:
 		string = enemygroup.units[0].capture.dictionary(string)
-	string = string.replace('$scoutname', scout.name)
+	string = string.replace('$scoutname', scout.dictionary('$name'))
 	return string
 

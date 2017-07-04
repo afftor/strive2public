@@ -246,7 +246,7 @@ func actionbuttons(button):
 		if slave.lust > 70 || (slave.lust > 30 && (slave.traits.has('Masochist') == true||slave.dom <= 20)): 
 			text = text + "\nDuring the procedure $name twitches and climaxes unable to hold back $his excitement."
 			slave.lust = -rand_range(8,15)
-			if rand_range(1,10) > 7:
+			if rand_range(1,10) > 7 || slave.effects.has('entranced') == true:
 				slave.add_trait(globals.origins.trait('Masochist'))
 		if slave.traits.has('Masochist'):
 			slave.sexuals.affection += round(rand_range(1,3))

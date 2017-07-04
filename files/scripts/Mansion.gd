@@ -193,6 +193,7 @@ func _on_new_slave_button_pressed():
 	slave.obed += 200
 	slave.loyal += 100
 	slave.sexuals.affection = 50
+	slave.spec = 'tamer'
 	slave.sexuals.unlocked = true
 	for i in get_node("MainScreen/slave_tab/sexual").sexbuttons:
 		slave.sexuals.actions[i] = 0
@@ -238,7 +239,7 @@ func _on_new_slave_button_pressed():
 	globals.state.sidequests.brothel = 2
 	globals.state.sidequests.emily = 0
 	globals.state.rank = 3
-	globals.state.mainquest = 25
+	globals.state.mainquest = 5
 	globals.state.farm = 4
 	globals.state.laboratory = 1
 	globals.state.alchemy = 2
@@ -735,7 +736,7 @@ func _on_end_pressed():
 				elif slave.level.value >= 35 && int(slave.level.value)%5 == 0.0:
 					slave.level.skillpoints += 1
 					text0.set_bbcode(text0.get_bbcode() + slave.dictionary("[color=green]$name has earned a skillpoint.[/color] \n"))
-			if slave.attention < 150:
+			if slave.attention < 150 && slave.sleep != 'your':
 				slave.attention += rand_range(5,7)
 			if slave.preg.duration > 0:
 				slave.preg.duration += 1
@@ -1554,6 +1555,7 @@ emily2worried = load("res://files/images/emily/emily2worried.png"),
 calineutral = load("res://files/images/calineutral.png"),
 calihappy = load("res://files/images/calihappy.png"),
 caliangry = load("res://files/images/caliangry.png"),
+sebastian = load("res://files/images/sebastian.png"),
 }
 
 func dialogue(showclose, destination, dialogtext, dialogbuttons = null, sprites = null): #for arrays: 0 - boolean to show close button or not. 1 - node to return connection back. 2 - text to show 3+ - arrays of buttons and functions in those
@@ -2358,7 +2360,11 @@ func impregnation(mother, father = null, anyfather = false):
 	else: 
 		age = 'teen'
 	if (mother.race.find('Beastkin') >= 0 && father.race.find('Beastkin') < 0)|| (father.race.find('Beastkin') >= 0 && mother.race.find('Beastkin') < 0):
-		babyrace = mother.race.replace('Beastkin', 'Halfkin')
+		if father.race.find('Beastkin') >= 0 && mother.race in ['Human','Elf','Dark Elf','Drow','Demon','Seraph']:
+			babyrace = father.race.replace('Beastkin', 'Halfkin')
+		else:
+			babyrace = mother.race.replace('Beastkin', 'Halfkin')
+		
 	var baby = globals.slavegen.newslave(babyrace, age, 'random', mother.origins)
 	baby.surname = mother.surname
 	var array = ['skin','tail','ears','wings','horns','arms','legs','bodyshape','haircolor','eyecolor','eyeshape','eyesclera']
