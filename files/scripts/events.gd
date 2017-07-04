@@ -912,7 +912,7 @@ func emilymansion(stage = 0):
 		text = textnode.EmilyMansion
 		sprite = [['emilyhappy','pos1','opac']]
 		state = false
-		if globals.itemdict.aphrodisiac.amount > 1:
+		if globals.itemdict.aphrodisiac.amount > 0:
 			buttons.append({text = 'Spike her with aphrodisiac',function = 'emilymansion',arguments = 1})
 		else:
 			buttons.append({text = 'Spike her with aphrodisiac',function = 'emilymansion',arguments = 1, disabled = true})
@@ -987,7 +987,10 @@ func tishaappearance():
 		text += textnode.TishaEmilyUnloyal
 		emilystate = 'unloyal'
 		buttons.append(['Let them leave', 'tishadecision', 6])
-		buttons.append(['Help them with gold and provision', 'tishadecision', 7])
+		if globals.resources.gold >= 50 && globals.resources.food >= 50:
+			buttons.append(['Help them with gold and provision', 'tishadecision', 7])		
+		else:
+			buttons.append({text = 'Help them with gold and provisions',function = 'tishadecision',arguments = 7, disabled = true})
 		buttons.append(['Ask for compensation', 'tishadecision', 8])
 	globals.get_tree().get_current_scene().dialogue(false,self,text,buttons,sprite)
 
@@ -1004,7 +1007,10 @@ func tishadecision(number):
 	if number == 1:
 		text = textnode.TishaEmilyLeave
 		buttons.append(['Let them leave', 'tishadecision', 6])
-		buttons.append(['Help them with gold and provision', 'tishadecision', 7])
+		if globals.resources.gold >= 50 && globals.resources.food >= 50:
+			buttons.append(['Help them with gold and provision', 'tishadecision', 7])		
+		else:
+			buttons.append({text = 'Help them with gold and provisions',function = 'tishadecision',arguments = 7, disabled = true})
 		globals.get_tree().get_current_scene().dialogue(false,self,text,buttons)
 	elif number == 2:
 		text = textnode.TishaEmilyStay
@@ -1251,7 +1257,10 @@ func tishagornguild(stage = 0):
 			globals.state.sidequests.emily = 15
 		else:
 			text = textnode.TishaGornGuildRevisit
-		buttons.append(['Pay', 'tishagornguild', 1])
+		if globals.resources.gold >= 500:
+			buttons.append(['Pay', 'tishagornguild', 1])
+		else:
+			buttons.append({text = 'Pay',function = 'tishagornguild',arguments = 1, disabled = true})
 		buttons.append(['Leave', 'tishagornguild', 2])
 	elif stage == 1:
 		text = textnode.TishaGornPay
