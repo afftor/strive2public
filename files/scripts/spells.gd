@@ -139,6 +139,30 @@ shackle = {
 	combat = true,
 	learned = false,
 	},
+acidspit = {
+	code = 'acidspit',
+	name = 'Acid Spit',
+	description = "Turns your saliva into highly potent corrosive substance for a short time. \nDeals damage to single target enemy and recudes it's armor. ",
+	effect = '',
+	manacost = 5,
+	req = 2,
+	price = 400,
+	personal = false,
+	combat = true,
+	learned = false,
+	},
+invigorate = {
+	code = 'invigorate',
+	name = 'Invigorate',
+	description = "Restores caster's and target's energy by using mana and target body's potential. Builds up target's stress. Can be used in wild. ",
+	effect = 'invigorateeffect',
+	manacost = 5,
+	req = 2,
+	price = 300,
+	personal = true,
+	combat = false,
+	learned = false,
+	},
 summontentacle = {
 	code = 'summontentacle',
 	name = 'Summon Tentacle',
@@ -211,7 +235,14 @@ func dreameffect():
 	main.rebuild_slave_list()
 
 
-
+func invigorateeffect():
+	var text = ''
+	var spell = globals.spelldict.invigorate
+	globals.resources.mana -= spell.manacost
+	slave.energy = slave.stats.energy_max/2
+	slave.stress += rand_range(20,30)
+	globals.player.energy = 50
+	main.popup(slave.dictionary("You cast Invigorate on $name. Your and $his energy is partly restored. $His stress has increased. "))
 
 func entrancementeffect():
 	var text = ''

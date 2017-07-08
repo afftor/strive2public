@@ -333,6 +333,10 @@ func _on_abilcancel_pressed():
 
 func _on_abilityconfirm_pressed():
 	var abil = get_node("trainingabilspanel/abilityconfirm").get_meta('abil')
+	if abil == null:
+		return
+	elif slave.ability.find(abil.code) >= 0:
+		return
 	slave.ability.append(abil.code)
 	globals.resources.gold -= abil.price
 	slave.level.skillpoints -= 1

@@ -231,7 +231,24 @@ func gornaydaivran(stage = 0):
 	#globals.get_tree().get_current_scene().dialogue(state, self, text, buttons, sprite)
 
 
-
+func undercitybosswin():
+	var reward
+	var text = ''
+	var rewarddict = ['armorplate']
+	reward = rewarddict[rand_range(0,rewarddict.size())]
+	reward = globals.get_tree().get_current_scene().get_node("itemnode").createunstackable(reward)
+	globals.state.unstackables[str(reward.id)] = reward
+	if globals.state.mainquest == 24:
+		text += "After defeating the awoken golem, you spend some time searching around, until one of the piles reveals an ancient looking documents. Being unable to read them due to magical protection and unknown language, you decide to bring it back to Melissa.\n\n[color=yellow]There might be some additional treasures, but you'd have to come for them next time. [/color] "
+		globals.state.mainquest = 25
+	else:
+		pass
+	if globals.state.lorefound.find('amberguardlog3') < 0:
+		globals.state.lorefound.append('amberguardlog3')
+		text += "[color=yellow]\n\nYou've found some old writings in the ruins. Does not look like what you came for, but you can read them later.[/color]"
+	globals.get_tree().get_current_scene().get_node("explorationnode").zoneenter('undercityruins')
+	text += "\n[color=green]After searching through the building ruins you managed to find 1 [color=aqua]" + reward.name + "[/color]. [/color]"
+	globals.get_tree().get_current_scene().popup(text)
 
 
 
@@ -895,7 +912,7 @@ func emilymansion(stage = 0):
 		text = textnode.EmilyMansion
 		sprite = [['emilyhappy','pos1','opac']]
 		state = false
-		if globals.itemdict.aphrodisiac.amount > 1:
+		if globals.itemdict.aphrodisiac.amount > 0:
 			buttons.append({text = 'Spike her with aphrodisiac',function = 'emilymansion',arguments = 1})
 		else:
 			buttons.append({text = 'Spike her with aphrodisiac',function = 'emilymansion',arguments = 1, disabled = true})
@@ -970,7 +987,10 @@ func tishaappearance():
 		text += textnode.TishaEmilyUnloyal
 		emilystate = 'unloyal'
 		buttons.append(['Let them leave', 'tishadecision', 6])
-		buttons.append(['Help them with gold and provision', 'tishadecision', 7])
+		if globals.resources.gold >= 50 && globals.resources.food >= 50:
+			buttons.append(['Help them with gold and provision', 'tishadecision', 7])		
+		else:
+			buttons.append({text = 'Help them with gold and provisions',function = 'tishadecision',arguments = 7, disabled = true})
 		buttons.append(['Ask for compensation', 'tishadecision', 8])
 	globals.get_tree().get_current_scene().dialogue(false,self,text,buttons,sprite)
 
@@ -987,7 +1007,10 @@ func tishadecision(number):
 	if number == 1:
 		text = textnode.TishaEmilyLeave
 		buttons.append(['Let them leave', 'tishadecision', 6])
-		buttons.append(['Help them with gold and provision', 'tishadecision', 7])
+		if globals.resources.gold >= 50 && globals.resources.food >= 50:
+			buttons.append(['Help them with gold and provision', 'tishadecision', 7])		
+		else:
+			buttons.append({text = 'Help them with gold and provisions',function = 'tishadecision',arguments = 7, disabled = true})
 		globals.get_tree().get_current_scene().dialogue(false,self,text,buttons)
 	elif number == 2:
 		text = textnode.TishaEmilyStay
@@ -1234,7 +1257,10 @@ func tishagornguild(stage = 0):
 			globals.state.sidequests.emily = 15
 		else:
 			text = textnode.TishaGornGuildRevisit
-		buttons.append(['Pay', 'tishagornguild', 1])
+		if globals.resources.gold >= 500:
+			buttons.append(['Pay', 'tishagornguild', 1])
+		else:
+			buttons.append({text = 'Pay',function = 'tishagornguild',arguments = 1, disabled = true})
 		buttons.append(['Leave', 'tishagornguild', 2])
 	elif stage == 1:
 		text = textnode.TishaGornPay

@@ -64,6 +64,7 @@ func _ready():
 	get_node("music").set_meta('currentsong', 'none')
 	set_process(true)
 	if OS.get_executable_path() == 'C:\\Users\\1\\Desktop\\godot\\Godot_v2.1.3-stable_win64.exe':
+		globals.developmode = true
 		get_node("startcombat").set_hidden(false)
 		get_node("new slave button").set_hidden(false)
 	_on_mansion_pressed()
@@ -78,7 +79,9 @@ func _ready():
 		globals.player.relatives.father = 0
 		globals.player.relatives.mother = 0
 		globals.player.ability.append('escape')
+		globals.player.ability.append('acidspit')
 		globals.player.abilityactive.append('escape')
+		globals.player.abilityactive.append('acidspit')
 		globals.player.level.skillpoints = 5
 		globals.player.level.value = 10
 		globals.state.supporter = true
@@ -229,13 +232,13 @@ func _on_new_slave_button_pressed():
 	globals.resources.food += 1000
 	globals.resources.mana += 1000
 	globals.player.energy = 100
-	for i in ['clothmaid','underwearlacy','armorleather','weapondagger','clothbedlah','clothmiko','clothkimono','clothpet']:
+	for i in ['armorchain','weaponclaymore','clothpet']:
 		var tmpitem = get_node("itemnode").createunstackable(i)
 		globals.state.unstackables[str(tmpitem.id)] = tmpitem
 	globals.state.sidequests.brothel = 2
 	globals.state.sidequests.emily = 0
 	globals.state.rank = 3
-	globals.state.mainquest = 12
+	globals.state.mainquest = 25
 	globals.state.farm = 4
 	globals.state.laboratory = 1
 	globals.state.alchemy = 2
@@ -390,7 +393,7 @@ func _on_end_pressed():
 	_on_mansion_pressed()
 	for i in range(globals.slaves.size()):
 		if globals.slaves[i].away.duration == 0:
-			if globals.slaves[i].work == 'chef':
+			if globals.slaves[i].work == 'cooking':
 				chef = globals.slaves[i]
 			elif globals.slaves[i].work == 'jailer':
 				jailer = globals.slaves[i]
@@ -435,7 +438,7 @@ func _on_end_pressed():
 		text = ''
 		if slave.away.duration == 0:
 			if slave.sleep != 'jail' && slave.sleep != 'farm':
-				if slave.work in ['rest','forage','hunt','chef','library','nurse','maid','storewimborn','artistwimborn','assistwimborn','whorewimborn','escortwimborn','fucktoywimborn', 'lumberer', 'ffprostitution','guardian', 'research', 'slavecatcher']:
+				if slave.work in ['rest','forage','hunt','cooking','library','nurse','maid','storewimborn','artistwimborn','assistwimborn','whorewimborn','escortwimborn','fucktoywimborn', 'lumberer', 'ffprostitution','guardian', 'research', 'slavecatcher']:
 					#print(slave.work)
 					if slave.work != 'rest' && slave.energy < 30:
 						text = "$name had no energy to fulfill $his duty and had to take a rest. \n"
@@ -1141,7 +1144,7 @@ func nurse(slave):
 	var dict = {text = text}
 	return dict
 
-func chef(slave):
+func cooking(slave):
 	var text = ''
 	var gold = 0
 	var food = 0
@@ -1543,11 +1546,11 @@ fairy = load("res://files/images/fairy.png"),
 melissafriendly = load("res://files/images/melissafriendly.png"),
 melissaneutral = load("res://files/images/melissaneutral.png"),
 melissaworried = load("res://files/images/melissaworried.png"),
-emilyhappy = load("res://files/images/emilyhappy.png"),
-emilynormal = load("res://files/images/emilynormal.png"),
-emily2normal = load("res://files/images/emily2normal.png"),
-emily2happy = load("res://files/images/emily2happy.png"),
-emily2worried = load("res://files/images/emily2worried.png"),
+emilyhappy = load("res://files/images/emily/emilyhappy.png"),
+emilynormal = load("res://files/images/emily/emilynormal.png"),
+emily2normal = load("res://files/images/emily/emily2neutral.png"),
+emily2happy = load("res://files/images/emily/emily2happy.png"),
+emily2worried = load("res://files/images/emily/emily2worried.png"),
 calineutral = load("res://files/images/calineutral.png"),
 calihappy = load("res://files/images/calihappy.png"),
 caliangry = load("res://files/images/caliangry.png"),
@@ -2101,7 +2104,7 @@ func _on_brewcounter_value_changed( value ):
 		brewlistpressed(potselected)
 
 
-var loredict = globals.dictionary.getLore()
+var loredict = globals.dictionary.loredict
 
 func _on_library_pressed():
 	background_set('library')
@@ -2121,21 +2124,22 @@ func _on_library_pressed():
 			i.queue_free()
 	
 	var array = []
-	array.append([0, loredict['slavery']])
-	array.append([1, loredict['magesorder']])
-	if globals.state.library >= 1:
-		array.append([2,loredict['branding']])
-		array.append([3,loredict['worldhistory']])
-	if globals.state.library >= 2:
-		array.append([4,loredict['magic']])
-	
-	var dictionary= {0 : 'Slavery', 1 : "Mage's Order", 2 : "Branding", 3 :"World's History", 4:"Magic" }
-	for i in array:
+		
+#	array.append([0, loredict['slavery']])
+#	array.append([1, loredict['magesorder']])
+#	if globals.state.library >= 1:
+#		array.append([2,loredict['branding']])
+#		array.append([3,loredict['worldhistory']])
+#	if globals.state.library >= 2:
+#		array.append([4,loredict['magic']])
+	for i in loredict.values():
+		if globals.evaluate(i.reqs) == false:
+			continue
 		var newbutton = get_node("MainScreen/mansion/librarypanel/ScrollContainer/VBoxContainer/bookbutton").duplicate()
 		list.add_child(newbutton)
 		newbutton.set_hidden(false)
-		newbutton.set_text(dictionary[i[0]])
-		newbutton.connect('pressed',self,'lorebutton', [i[1]])
+		newbutton.set_text(i.name)
+		newbutton.connect('pressed',self,'lorebutton', [i.text])
 	
 	for slave in globals.slaves:
 		if slave.work == 'library':
@@ -2173,7 +2177,16 @@ var mainquestdict = {
 '14': "Wait for next day until returning to Garthor. ",
 '15': "Return to Garthor and decide what should be done with Ivran. ",
 '16': "Return back to Melissa for your next task. ",
-'17': "You have currently completed whole main quest available at this stage. ",
+'17': "Get to the Amberguard through the Deep Elven Grove. ",
+'18': "Get to the Tunnel Entrance which lays after the Amber Road. ",
+'19': "Search through Amberguard for a way to get into Tunnel Entrance. ",
+'20': "Purchase the information from stranger in Amberguard. ",
+'21': "Locate Witch's Hut at the Amber Road. ",
+'22': "Ask Shuriya in the Hut near Amber Road how to get into tunnels",
+'23': "Bring 2 slaves to the Shuriya: an elf and a drow. ",
+'24': "Search through Undercity ruins for any remaining documents. ",
+'25': "Return to Melissa with your findings. ",
+'26': "You have completed current available quest line!"
 }
 var dolinquestdict = {
 '8':"Dolin from Shaliq wants you to get 25 mana and visit her to trade it for a spell.",
@@ -3105,7 +3118,7 @@ func _on_endlog_pressed():
 var nodetocall
 var functiontocall
 
-func selectslavelist(prisoners = false, calledfunction = 'popup', targetnode = self, reqs = 'true', player = false):
+func selectslavelist(prisoners = false, calledfunction = 'popup', targetnode = self, reqs = 'true', player = false, onlyparty = false):
 	nodetocall = targetnode
 	functiontocall = calledfunction
 	for i in find_node("chooseslavelist").get_children():
@@ -3123,6 +3136,8 @@ func selectslavelist(prisoners = false, calledfunction = 'popup', targetnode = s
 		get_node("chooseslavepopup/Panel/ScrollContainer/chooseslavelist").add_child(button)
 	for slave in globals.slaves:
 		if slave.away.duration == 0:
+			if onlyparty == true && globals.state.playergroup.find(slave.id) < 0:
+				continue
 			globals.currentslave = slave
 			if prisoners == false || slave.sleep != 'jail' :
 				var button = load("res://files/ChoseSlaveButton.tscn").instance()
@@ -3159,8 +3174,15 @@ func _on_hideinvalidslaves_pressed():
 
 func _on_startcombat_pressed():
 	globals.state.playergroup.append(globals.slaves[0].id)
+	var array = []
+	array.append(globals.player)
+	for i in globals.state.playergroup:
+		array.append(globals.state.findslave(i))
+	for i in array:
+		for j in ['sstr','sagi','smaf','send','wit','cour','conf','charm','health']:
+			i[j] = 100
 	get_node("outside").gooutside()
-	get_node("explorationnode").zoneenter("forest")
+	get_node("explorationnode").zoneenter("undercityhall")
 	#get_node("combat").start_battle()
 
 func checkplayergroup():
@@ -3230,7 +3252,7 @@ func _on_popupclosebutton_pressed():
 
 
 func infotext(newtext):
-	if (enddayprocess == true && newtext.findn("trait") < 0) || newtext == '':
+	if (enddayprocess == true && newtext.findn("trait") < 0) || newtext == '' || get_node("combat").is_visible():
 		return
 	if get_node("infotext").get_children().size() >= 15:
 		get_node("infotext").get_child(get_node("infotext").get_children().size() - 14).queue_free()
@@ -3559,6 +3581,7 @@ func _on_combatgroup_pressed():
 func alisegreet():
 	get_node("tutorialnode").set_hidden(false)
 	get_node("tutorialnode").alisegreet()
+
 
 
 
