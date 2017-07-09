@@ -1045,7 +1045,7 @@ func _on_confirmwinning_pressed(secondary = false):
 				if slave.lust >= 50 && slave.dom >= 40:
 					slave.sexuals.affection += round(rand_range(2,4))
 					slave.dom = rand_range(6,12)
-					text += slave.dictionary('\n$name, overwhelemed by situation, joins you and pleasure $himself with one of the capturees. ')
+					text += slave.dictionary('\n$name, overwhelemed by situation, joins you and pleasures $himself with one of the captives. ')
 				else:
 					text += slave.dictionary("\n$name does not appear to be very interested in ongoing action and just waits patiently.")
 		for i in orgyarray:

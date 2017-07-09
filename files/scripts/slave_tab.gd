@@ -286,9 +286,9 @@ func regulationdescription():
 	if slave.brand == 'none':
 		text = text + '[color=red]Currently, $he is not branded. [/color]\n'
 	elif slave.brand == 'basic':
-		text = text + 'On $his neck you can recognize symbols of [color=green]brand[/color] you left on her.\n'
+		text = text + 'On $his neck you can recognize the magic [color=green]brand[/color] you left on $him.\n'
 	elif slave.brand == 'advanced':
-		text = text + 'On $his neck you can spot your [color=green]refined brand[/color].\n'
+		text = text + 'On $his neck you can spot the complex symbol of your [color=green]refined brand[/color].\n'
 	if slave.gear.costume != null && slave.gear.costume != 'clothcommon':
 		text += "$He wears [color=green]" + globals.state.unstackables[slave.gear.costume].name + '[/color]'
 		if slave.gear.armor != null:
@@ -620,7 +620,7 @@ code = 'fucktoywimborn',
 name = "W - Fucktoy",
 type = 'sexual',
 description = "$name will be used by the most deviant men in brothel. \n\n[color=yellow]Efficiency grows with Courage, Endurance, Beauty, and advanced sex actions. \n\nRequires unlocked advanced sex actions for sufficient performance. [/color]",
-workline = "$name will be earning money by providing her body for all sorts of deviant plays.",
+workline = "$name will be earning money by offering $his body for all sorts of deviant plays.",
 reqs = "true",
 unlockreqs = 'globals.state.sidequests.brothel >= 2',
 maxnumber = 0,
