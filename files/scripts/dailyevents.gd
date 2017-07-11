@@ -39,7 +39,7 @@ forestfind = {function = 'forestfind', reqs = "slave.work in ['forage','hunt']" 
 prositutebuyout = {function = 'prositutebuyout', reqs = "slave.work in ['prostitution','escort']" },
 abortion = {function = 'abortion', reqs = "slave.preg.duration >= 9 && slave.loyal < 40" },
 vacation = {function = 'vacation', reqs = "slave.work != 'rest'" },
-accident = {function = 'accident', reqs = "slave.stats.agi_cur < 3"},
+accident = {function = 'accident', reqs = "slave.sagi < 3"},
 strangerdisrespect = {function = 'strangerdisrespect', reqs = "slave.conf > 35"},
 escape = {function = 'escape', reqs = "slave.loyal < 15 && slave.obed < 60"},
 kidnap = {function = 'kidnap', reqs = "slave.work in ['escort','prostitution','fucktoy','store','entertainer','assistant']"},

@@ -1425,8 +1425,6 @@ flat = false
 
 [node name="inspect" type="Tabs" parent="."]
 
-editor/display_folded = true
-visibility/visible = false
 anchor/right = 1
 anchor/bottom = 1
 focus/ignore_mouse = false
@@ -1494,7 +1492,7 @@ focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 0
-margin/left = 3.0
+margin/left = 5.0
 margin/top = 252.0
 margin/right = 0.0
 margin/bottom = 134.0
@@ -4240,6 +4238,7 @@ max_lines_visible = -1
 
 [node name="sexual" type="Tabs" parent="."]
 
+visibility/visible = false
 anchor/right = 1
 anchor/bottom = 1
 focus/ignore_mouse = false

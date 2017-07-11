@@ -218,6 +218,7 @@ slave = [
 help = [
 {text = "Return", funct = "menu"},
 {text = "Gameplay", funct = "gamehelp"},
+{text = "I want to see the game's Wiki", funct = "gamewiki"},
 {text = "I want to report a bug...", funct = "bugreport"},
 {text = "I want to help this project...", funct = "projecthelp"},
 ],
@@ -351,7 +352,8 @@ func buildbody(node, sprite):
 	node.set_texture(pieces.body[body])
 	node.get_node('face').set_texture(pieces.face[face])
 
-
+func gamewiki():
+	OS.shell_open('http://strive4power.wikia.com/wiki/Strive4power_Wiki')
 
 func showchoice(arg):
 	lastline = true

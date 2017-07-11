@@ -662,16 +662,16 @@ func armor(value):
 	slave.stats.armor_cur += value
 
 func agi(value):
-	slave.stats.agi_cur += value
+	slave.stats.agi_mod += value
 
 func stren(value):
-	slave.stats.str_cur += value
+	slave.stats.str_mod += value
 
 func maf(value):
-	slave.stats.maf_cur += value
+	slave.stats.maf_mod += value
 
 func end(value):
-	slave.stats.end_cur += value
+	slave.stats.end_mod += value
 
 func beauty(value):
 	slave.face.beauty += value
@@ -901,7 +901,7 @@ func lactationpoteffect():
 		if slave == globals.player:
 			text = slave.dictionary("A few houors after drinking the Nursing Potion, your tits started secreting milk. ")
 		else:
-			text = slave.dictionary("A few hours after drinking the Nursing POtion, $name's tits started secreting milk. ")
+			text = slave.dictionary("A few hours after drinking the Nursing Potion, $name's tits started secreting milk. ")
 	else:
 		if slave == globals.player:
 			text = slave.dictionary('The Nursing Potion had no apparent effect on you, as you are already lactating. ')

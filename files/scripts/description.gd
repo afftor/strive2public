@@ -92,7 +92,7 @@ static func getBeauty(slave):
 	normal = '$He appears to be pretty [color=yellow]average[/color] looking. ',
 	cute = '$His looks are quite [color=yellow]cute[/color] and appealing. ',
 	pretty = '$He looks unusually [color=yellow]pretty[/color] and attracts some attention. ',
-	beautiful = '$He looks exceptionally [color=yellow]beautiful[/color], having no visible flaws it easily invoking envy. ', 
+	beautiful = '$He looks exceptionally [color=yellow]beautiful[/color], having no visible flaws and easily evoking envy. ', 
 	}
 	text = text + dict[calculate]
 	text += "(" + str(floor(appeal)) + ")"

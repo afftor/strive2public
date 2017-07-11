@@ -49,15 +49,19 @@ static func newslave(race, age, sex, origins = 'slave'):
 	slave.stats = {
 		str_cur = 0,
 		str_max = 0,
+		str_mod = 0,
 		str_base = 0,
 		agi_cur = 0, 
-		agi_max = 0, 
+		agi_max = 0,
+		agi_mod = 0,
 		agi_base = 0,
 		maf_cur = 0,
 		maf_max = 0,
+		maf_mod = 0,
 		maf_base = 0,
 		end_base = 0,
 		end_cur = 0,
+		end_mod = 0,
 		end_max = 0,
 		cour_cur = 0,
 		cour_max = 100,
@@ -186,12 +190,7 @@ static func get_caste(slave, caste):
 		slave.face.beauty = rand_range(5,40)
 		slave.stats.obed_mod = 25
 		if rand_range(0,10) > 6:
-			array = ['service','management','sexual']
 			spin = 1
-			if slave.sex == 'male':
-				array.append('combat')
-			else:
-				array.append('allure')
 	elif caste == 'poor':
 		slave.cour -= rand_range(5,15)
 		slave.conf -= rand_range(5,15)
@@ -200,24 +199,13 @@ static func get_caste(slave, caste):
 		slave.face.beauty = rand_range(10,50)
 		if rand_range(0,10) > 4:
 			spin = 2
-			array = ['service','body','survival']
-			if slave.sex == 'male':
-				array.append('combat')
-			else:
-				array.append('allure')
-				array.append('sexual')
 	elif caste == 'commoner':
 		slave.cour += rand_range(-5,15)
 		slave.conf += rand_range(-5,15)
 		slave.wit += rand_range(-5,15)
 		slave.charm += rand_range(-5,20)
 		slave.face.beauty = rand_range(25,65)
-		array = ['service','management','body','survival']
 		spin = 3
-		if slave.sex == 'male':
-			array.append('combat')
-		else:
-			array.append('allure')
 	elif caste == 'rich':
 		slave.cour += rand_range(5,20)
 		slave.conf += rand_range(5,25)
@@ -225,28 +213,20 @@ static func get_caste(slave, caste):
 		slave.charm += rand_range(-5,15)
 		slave.face.beauty = rand_range(35,75)
 		slave.stats.obed_mod = -20
-		array = ['service','magic','body', 'management']
 		spin = 4
-		if slave.sex == 'male':
-			array.append('combat')
-		else:
-			array.append('allure')
-	elif caste == 'royal':
+	elif caste == 'noble':
 		slave.cour += rand_range(10,30)
 		slave.conf += rand_range(10,30)
 		slave.wit += rand_range(10,30)
 		slave.charm += rand_range(10,30)
 		slave.face.beauty = rand_range(45,95)
 		slave.stats.obed_mod = -40
-		array = ['management','magic','body']
 		spin = 5
-		if slave.sex == 'male':
-			array.append('combat')
-		else:
-			array.append('allure')
 	while spin > 0:
 		array = ['sstr','sagi','smaf','send']
+		
 		if rand_range(0,100) < 85:
+			
 			slave[array[rand_range(0, array.size())]] += 1
 			spin -= 1
 	slave.add_trait(globals.origins.traits('any'))

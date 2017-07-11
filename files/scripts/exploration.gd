@@ -1150,6 +1150,7 @@ func gorn():
 	main.music_set('gorn')
 	var array = []
 	array.append({name = "Visit local Slave Guild", function = 'gornslaveguild'})
+	array.append({name = "Visit local bar", function = 'gornbar'})
 	if globals.state.mainquest in [12,13,14,15]:
 		array.append({name = "Visit Palace", function = 'gornpalace'})
 	if globals.state.sidequests.ivran in ['tobetaken','tobealtered','potionreceived'] || globals.state.mainquest >= 16:
@@ -1158,6 +1159,139 @@ func gorn():
 	array.append({name = "Outskirts", function = 'zoneenter', args = 'gornoutskirts'})
 	array.append({name = "Return to Mansion", function = 'mansionreturn'})
 	outside.buildbuttons(array,self)
+
+func gornbar():
+	var array = []
+	var text = globals.questtext.GornBar
+	
+	if globals.state.sidequests.yris == 0:
+		text += "As you move towards the bar your presence is noticed by a girl of beastkin origins. Drawing your attention she gives you an  undoubtedly interested look. "
+		array.append({name = "Approach the girl", function = "gornyris"}) 
+	elif globals.state.sidequests.yris < 6:
+		array.append({name = "Approach Yris", function = 'gornyris'}) 
+	array.append({name = "Leave",function = 'zoneenter', args = 'gorn'})
+	outside.maintext.set_bbcode(text)
+	outside.buildbuttons(array,self)
+
+func gornyris():
+	var state = false
+	var text
+	var buttons = []
+	if globals.state.sidequests.yris == 0:
+		text = globals.questtext.GornYrisMeet
+		if globals.resources.gold >= 200:
+			buttons.append({text = "Accept (200 Gold)", function = "gornyrisaccept", args = 1})
+		else:
+			buttons.append({text = "Accept (200 Gold)", function = "gornyrisaccept", args = 1, disabled = true})
+		globals.state.sidequests.yris = 1
+	elif globals.state.sidequests.yris == 1:
+		text = globals.questtext.GornYrisRepeatMeet
+		if globals.resources.gold >= 200:
+			buttons.append({text = "Accept (200 Gold)", function = "gornyrisaccept", args = 1})
+		else:
+			buttons.append({text = "Accept (200 Gold)", function = "gornyrisaccept", args = 1, disabled = true})
+	elif globals.state.sidequests.yris == 2:
+		text = globals.questtext.GornYrisAccepRepeat
+		if globals.resources.gold >= 200:
+			buttons.append({text = "Accept (200 Gold)", function = "gornyrisaccept", args = 2})
+			if globals.itemdict.deterrentpot.amount >= 1:
+				button.append({text = "Accept and use Deterrent potion (200 Gold)", args = 3})
+		else:
+			buttons.append({text = "Accept (200 Gold)", function = "gornyrisaccept", args = 2, disabled = true})
+	elif globals.state.sidequests.yris == 3:
+		text = globals.questtext.GornYrisOffer2
+		globals.state.sidequests.yris += 1
+	elif globals.state.sidequests.yris in [4,5]:
+		text = globals.questtext.GornYrisOffer2Repeat
+		if globals.resources.gold < 1000 || globals.itemdict.deterrentpot.amount < 1 || globals.state.sidequests.yris < 5:
+			text += "\n\n[color=yellow]You decide, that you should prepare before putting your money on the table.[/color] "
+			if globals.state.sidequests.yris < 5:
+				text += "\n\nPerhaps, somebody skilled in aclhemy might shine some light upon your previous finding. " 
+			buttons.append({text = "Accept (1000 Gold)", function = "gornyrisaccept", args = 4, disabled = true})
+		else:
+			buttons.append({text = "Accept (1000 Gold)", function = "gornyrisaccept", args = 4})
+	buttons.append({text = "Refuse", function = "gornyrisaccept", args = 0})
+	main.dialogue(state, self, text, buttons)
+
+func gornyrisaccept(stage):
+	var text = ''
+	var state = false
+	var buttons = []
+	if stage == 0:
+		text = globals.questtext.GornYrisRefuse
+		buttons.append({text = "Continue", function = 'zoneenter',args = 'gorn'})
+	elif stage == 1:
+		text = globals.questtext.GornYrisAccept1
+		globals.resources.gold -= 200
+		globals.resources.mana += 15
+		globals.state.sidequests.yris = 2
+		state = true
+	elif stage == 2:
+		text = globals.questtext.GornYrisAcceptRepeat
+		state = true
+		globals.resources.gold -= 200
+		globals.resources.mana += 15
+	elif stage == 3:
+		text = globals.questtext.GornYrisAccept2
+		globals.state.sidequests.yris += 1
+		state = true
+		globals.resources.mana += 25
+	elif stage == 4:
+		text = globals.questtext.GornYrisAccept3
+		buttons.append({text = "Reveal everything", function = 'gornyrisaccept', args = 5})
+		buttons.append({text = "Demand the gold", function = 'gornyrisaccept', args = 6})
+	elif stage == 5:
+		text = globals.questtext.GornYrisReveal
+		buttons.append({text = "Offer Yris to work for you", function = 'gornyrisaccept', args = 8})
+		buttons.append({text = "Demand the gold", function = 'gornyrisaccept', args = 7})
+	elif stage == 6:
+		text = globals.questtext.GornYrisTakeGold
+		globals.state.sidequests.yris = 100
+		globals.resources.gold += 1000
+		state = true
+	elif stage == 7:
+		text = globals.questtext.GornYrisTakeGold2
+		globals.state.sidequests.yris = 100
+		globals.resources.gold += 1000
+		state = true
+	elif stage == 8:
+		state = true
+		text = globals.questtext.GornYrisHire
+		globals.state.sidequests.yris += 1
+		var slave = globals.slavegen.newslave('Beastkin Cat', 'adult', 'female', 'commoner')
+		slave.name = 'Yris'
+		slave.unique = 'Yris'
+		slave.surname = ''
+		slave.tits.size = 'big'
+		slave.ass = 'average'
+		slave.face.beauty = 60
+		slave.hairlength = 'waist'
+		slave.height = 'average'
+		slave.haircolor = 'blond'
+		slave.eyecolor = 'green'
+		slave.skin = 'fair'
+		slave.furcolor = 'white'
+		slave.hairstyle = 'straight'
+		slave.pussy.virgin = false
+		slave.pussy.first = 'unknown'
+		slave.relatives.father = -1
+		slave.relatives.mother = -1
+		slave.sexuals.affection += 1
+		slave.charm = 71
+		slave.wit = 62
+		slave.cour = 33
+		slave.conf = 48
+		slave.sexuals.unlocked = true
+		slave.sexuals.unlocks.append("petting")
+		slave.sexuals.unlocks.append('oral')
+		slave.sexuals.unlocks.append('vaginal')
+		slave.cleartraits()
+		slave.sagi += 1
+		slave.send += 1
+		slave.loyal = 25
+		slave.obed += 90
+		globals.slaves = slave
+	main.dialogue(state, self, text, buttons)
 
 func amberguard():
 	var array = []
@@ -1183,10 +1317,10 @@ func amberguardsearch(stage = 1):
 	elif stage == 2:
 		text = globals.questtext.MainQuestAmberguardReturn
 	if globals.resources.gold >= 1000:
-		buttons.append({text = 'Pay 1000 gold',function = 'amberguardpurchase',arguments = 1})
+		buttons.append({text = 'Pay 1000 gold',function = 'amberguardpurchase',args = 1})
 	else:
-		buttons.append({text = 'Pay 1000 gold',function = 'amberguardpurchase',arguments = 1, disabled = true})
-	buttons.append({text = 'Leave',  function = 'amberguardpurchase', arguments = 2})
+		buttons.append({text = 'Pay 1000 gold',function = 'amberguardpurchase',args = 1, disabled = true})
+	buttons.append({text = 'Leave',  function = 'amberguardpurchase', args = 2})
 	main.dialogue(false,self,text,buttons)
 	amberguard()
 
@@ -1225,11 +1359,11 @@ func shuriyavisit(stage):
 	elif stage == 4:
 		text = globals.questtext.MainQuestAmberguardTunnelEnterAsk
 		globals.state.mainquest = 23
-	buttons.append({text = 'Ask about the tunnels', function = 'shuriyavisit', arguments = 3})
+	buttons.append({text = 'Ask about the tunnels', function = 'shuriyavisit', args = 3})
 	if globals.state.mainquest == 22:
-		buttons.append({text = 'Ask about entrance', function = 'shuriyavisit', arguments = 4})
+		buttons.append({text = 'Ask about entrance', function = 'shuriyavisit', args = 4})
 	if globals.state.mainquest == 23:
-		buttons.append({text = 'Deliver slaves', function = 'shuriyaslaves', arguments = true})
+		buttons.append({text = 'Deliver slaves', function = 'shuriyaslaves', args = true})
 	zoneenter(currentzone.code)
 	main.dialogue(state, self, text, buttons)
 
@@ -1254,12 +1388,12 @@ func shuriyaslaves(first = true):
 		text += slave2.dictionary("\n$name will be given away as a Drow.")
 	
 	if cancontinue == true:
-		buttons.append({text = "Confirm", function = 'shuriyaslavesgive', arguments = null})
+		buttons.append({text = "Confirm", function = 'shuriyaslavesgive', args = null})
 	else:
 		if slave1 == null:
-			buttons.append({text = 'Select an Elf', function = 'shuriyaslaveselect', arguments = 1})
+			buttons.append({text = 'Select an Elf', function = 'shuriyaslaveselect', args = 1})
 		if slave2 == null:
-			buttons.append({text = 'Select a Drow', function = 'shuriyaslaveselect', arguments = 2})
+			buttons.append({text = 'Select a Drow', function = 'shuriyaslaveselect', args = 2})
 	main.dialogue(state, self, text, buttons)
 
 func shuriyaslaveselect(stage):

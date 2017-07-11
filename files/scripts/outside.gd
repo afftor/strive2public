@@ -1739,7 +1739,7 @@ func emily(state = 1):
 	if state == 1:
 		text = questtext.EmilyMeet
 		if globals.resources.food < 10:
-			buttons.append({text = 'Give her food', function = 'emily', arguments = 2, disabled = true, tooltip = "not enough food"})
+			buttons.append({text = 'Give her food', function = 'emily', args = 2, disabled = true, tooltip = "not enough food"})
 		else:
 			buttons.append(['Give her food', 'emily', 2])
 		buttons.append(['Shoo her away', 'emily', 5])

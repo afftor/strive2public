@@ -192,15 +192,16 @@ func _on_new_slave_button_pressed():
 	var slave = globals.slavegen.newslave(testslaverace[rand_range(0,testslaverace.size())], testslaveage, testslavegender, testslaveorigin[rand_range(0,testslaveorigin.size())])
 	slave.obed += 200
 	slave.loyal += 100
-	slave.sexuals.affection = 50
+	slave.sexuals.affection = 200
 	slave.spec = 'tamer'
 	slave.sexuals.unlocked = true
-	for i in get_node("MainScreen/slave_tab/sexual").sexbuttons:
-		slave.sexuals.actions[i] = 0
+	#for i in get_node("MainScreen/slave_tab/sexual").sexbuttons:
+	#	slave.sexuals.actions[i] = 0
 	slave.lust = 100
 	slave.sstr = 5
 	slave.sagi = 5
-	slave.smaf = 10
+	slave.smaf = 5
+	slave.send = 10
 	slave.attention = 70
 	slave.level.value = 10
 	for i in ['conf','cour','charm','wit']:
@@ -233,11 +234,11 @@ func _on_new_slave_button_pressed():
 	globals.resources.food += 1000
 	globals.resources.mana += 1000
 	globals.player.energy = 100
-	for i in ['armorchain','weaponclaymore','clothpet']:
+	for i in ['armorchain','weaponclaymore','clothpet','clothninja']:
 		var tmpitem = get_node("itemnode").createunstackable(i)
 		globals.state.unstackables[str(tmpitem.id)] = tmpitem
 	globals.state.sidequests.brothel = 2
-	globals.state.sidequests.emily = 0
+	globals.state.sidequests.yris = 4
 	globals.state.rank = 3
 	globals.state.mainquest = 5
 	globals.state.farm = 4
@@ -414,7 +415,7 @@ func _on_end_pressed():
 	if globals.player.preg.duration >= 1:
 		globals.player.preg.duration += 1
 		if globals.player.preg.duration == 5:
-			text0.set_bbcode(text0.get_bbcode() + "[color=yellow]You feel morning sickness. It seems you are prengant. [/color]\n")
+			text0.set_bbcode(text0.get_bbcode() + "[color=yellow]You feel morning sickness. It seems you are pregnant. [/color]\n")
 	
 	for slave in globals.slaves:
 		if slave.away.duration == 0:
@@ -1604,7 +1605,7 @@ func dialoguebuttons(array, destination, counter):
 	newbutton.set_hidden(false)
 	if typeof(array) == TYPE_DICTIONARY:
 		newbutton.set_text(array.text)
-		newbutton.connect("pressed", destination, array.function, [array.arguments])
+		newbutton.connect("pressed", destination, array.function, [array.args])
 		if array.has('disabled'):
 			newbutton.set_disabled(true)
 		if array.has('tooltip'):
@@ -2545,7 +2546,7 @@ func _on_selfbutton_pressed():
 	4: "Adept",
 	5: "Master",
 	6: "Grand Archmage"}
-	text += 'Strength: ' + str(slave.stats.str_cur) + '/' + str(slave.stats.str_max) + '\n' + 'Agility: ' + str(slave.stats.agi_cur) + '/' + str(slave.stats.agi_max) + '\n' +  'Magic Affinity: ' + str(slave.stats.maf_cur) + '/' + str(slave.stats.maf_max) + '\n' + 'Endurance: ' + str(slave.stats.end_cur) + '/' + str(slave.stats.end_max) + '\n'
+	text += 'Strength: ' + str(slave.sstr) + '/' + str(slave.stats.str_max) + '\n' + 'Agility: ' + str(slave.sagi) + '/' + str(slave.stats.agi_max) + '\n' +  'Magic Affinity: ' + str(slave.smaf) + '/' + str(slave.stats.maf_max) + '\n' + 'Endurance: ' + str(slave.send) + '/' + str(slave.stats.end_max) + '\n'
 	text += 'Combat Abilities: '
 	for i in slave.ability:
 		var ability = globals.abilities.abilitydict[i]
@@ -2608,49 +2609,45 @@ func _on_selfstatupgrade_pressed():
 	get_node("MainScreen/mansion/selfinspect/selfstatpanel").set_hidden(false)
 
 func _on_strup_pressed():
-	if globals.player.level.skillpoints >= 1 && globals.player.stats.str_base < globals.player.stats.str_max:
+	if globals.player.level.skillpoints >= 1 && globals.player.stats.str_cur < globals.player.stats.str_max:
 		globals.player.level.skillpoints -= 1
-		globals.player.stats.str_base += 1
-		globals.player.stats.str_cur = globals.player.stats.str_base
+		globals.player.sstr += 1
 		_on_selfbutton_pressed()
 		popup('Your Strength has increased')
-	elif globals.player.stats.str_base >= globals.player.stats.str_max:
+	elif globals.player.stats.str_cur >= globals.player.stats.str_max:
 		popup("Currently your Strength can't be increased any further")
 	else:
 		popup("You don't have any skillpoints left")
 
 func _on_agiup_pressed():
-	if globals.player.level.skillpoints >= 1 && globals.player.stats.agi_base < globals.player.stats.agi_max:
+	if globals.player.level.skillpoints >= 1 && globals.player.stats.agi_cur < globals.player.stats.agi_max:
 		globals.player.level.skillpoints -= 1
-		globals.player.stats.agi_base += 1
-		globals.player.stats.agi_cur = globals.player.stats.agi_base
+		globals.player.sagi += 1
 		_on_selfbutton_pressed()
 		popup('Your Agility has increased')
-	elif globals.player.stats.agi_base >= globals.player.stats.agi_max:
+	elif globals.player.stats.agi_cur >= globals.player.stats.agi_max:
 		popup("Currently your Agility can't be increased any further")
 	else:
 		popup("You don't have any skillpoints left")
 
 func _on_mafup_pressed():
-	if globals.player.level.skillpoints >= 1 && globals.player.stats.maf_base < globals.player.stats.maf_max:
+	if globals.player.level.skillpoints >= 1 && globals.player.stats.maf_cur < globals.player.stats.maf_max:
 		globals.player.level.skillpoints -= 1
-		globals.player.stats.maf_base += 1
-		globals.player.stats.maf_cur = globals.player.stats.maf_base
+		globals.player.smaf += 1
 		_on_selfbutton_pressed()
 		popup('Your Magic Affinity has increased')
-	elif globals.player.stats.maf_base >= globals.player.stats.maf_max:
+	elif globals.player.stats.maf_cur >= globals.player.stats.maf_max:
 		popup("Currently your Magic Affinity can't be increased any further")
 	else:
 		popup("You don't have any skillpoints left")
 
 func _on_endup_pressed():
-	if globals.player.level.skillpoints >= 1 && globals.player.stats.end_base < globals.player.stats.end_max:
+	if globals.player.level.skillpoints >= 1 && globals.player.stats.end_cur < globals.player.stats.end_max:
 		globals.player.level.skillpoints -= 1
-		globals.player.stats.end_base += 1
-		globals.player.stats.end_cur = globals.player.stats.end_base
+		globals.player.send += 1
 		_on_selfbutton_pressed()
 		popup('Your Endurance has increased')
-	elif globals.player.stats.end_base >= globals.player.stats.end_max:
+	elif globals.player.stats.end_cur >= globals.player.stats.end_max:
 		popup("Currently your Endurance can't be increased any further")
 	else:
 		popup("You don't have any skillpoints left")
@@ -3320,18 +3317,66 @@ func slavelist():
 			i.set_hidden(true)
 			i.queue_free()
 	for slave in globals.slaves:
-		if slave.away.duration == 0:
+		if slave.away.duration == 0 && !slave.sleep in ['jail','farm']:
 			var newline = get_node("slavelist/ScrollContainer/VBoxContainer/line").duplicate()
 			newline.set_hidden(false)
-			newline.connect("pressed",self, 'openslave', [slave])
 			get_node("slavelist/ScrollContainer/VBoxContainer").add_child(newline)
-			newline.get_node("line/name/Label").set_text(slave.name_short())
-			newline.get_node("line/sex/Label").set_text(slave.sex)
-			newline.get_node("line/race/Label").set_text(slave.race)
-			newline.get_node("line/job/Label").set_text(slave.work)
-			newline.get_node("line/sleep/Label").set_text(slave.sleep)
-			newline.get_node("line/brand/Label").set_text(slave.brand)
-			
+			newline.get_node("line/name/choseslave").connect("pressed",self,'openslave',[slave])
+			newline.get_node("line/name/Label").set_bbcode("[u]" + slave.name_short())
+			newline.get_node("line/grade/Label").set_text(slave.origins.capitalize())
+			if slave.spec != null:
+				newline.get_node("line/spec/Label").set_text(slave.spec.capitalize())
+			else:
+				newline.get_node("line/spec/Label").set_text("None")
+			newline.get_node("line/phys/Label").set_text("S:" + str(slave.sstr) + " A:" + str(slave.sagi) + " M:" + str(slave.smaf) + " E:"+str(slave.send))
+			newline.get_node("line/mentals/Label").set_text("R:" + str(slave.cour) + " O:" + str(slave.conf) + " W:" + str(slave.wit) + " H:" + str(slave.charm) )
+			newline.get_node("line/mentals").set_custom_minimum_size(newline.get_node("line/mentals/Label").get_minimum_size() + Vector2(10,0))
+			newline.get_node("job").set_text(get_node("MainScreen/slave_tab").jobdict[slave.work].name)
+			newline.get_node("job").connect("pressed",self,'selectjob',[slave])
+			newline.get_node("sleep").set_text(globals.sleepdict[slave.sleep].name)
+			newline.get_node("sleep").set_meta("slave", slave)
+			newline.get_node("sleep").connect("pressed", self, 'sleeppressed', [newline.get_node("sleep")])
+			newline.get_node("sleep").connect("item_selected",self, 'sleepselect', [newline.get_node("sleep")])
+
+func sleeppressed(button):
+	var slave = button.get_meta('slave')
+	var beds = globals.count_sleepers()
+	button.clear()
+	button.add_item(globals.sleepdict['communal'].name)
+	if slave.sleep == 'communal':
+		button.set_item_disabled(button.get_item_count()-1, true)
+		button.select(button.get_item_count()-1)
+	button.add_item(globals.sleepdict['jail'].name)
+	if beds.jail >= globals.state.rooms.jail:
+		button.set_item_disabled(button.get_item_count()-1, true)
+	if slave.sleep == 'jail':
+		button.set_item_disabled(button.get_item_count()-1, true)
+		button.select(button.get_item_count()-1)
+	button.add_item(globals.sleepdict['personal'].name)
+	if beds.personal >= globals.state.rooms.personal:
+		button.set_item_disabled(button.get_item_count()-1, true)
+	if slave.sleep == 'personal':
+		button.set_item_disabled(button.get_item_count()-1, true)
+		button.select(button.get_item_count()-1)
+	button.add_item(globals.sleepdict['your'].name)
+	if beds.your_bed >= globals.state.rooms.bed:
+		button.set_item_disabled(button.get_item_count()-1, true)
+	if slave.sleep == 'your':
+		button.set_item_disabled(button.get_item_count()-1, true)
+		button.select(button.get_item_count()-1)
+
+var sleepdict = {0 : 'communal', 1 : 'jail', 2 : 'personal', 3 : 'your'}
+
+func sleepselect(item, button):
+	var slave = button.get_meta('slave')
+	slave.sleep = sleepdict[item]
+	rebuild_slave_list()
+
+
+
+func selectjob(slave):
+	get_node("MainScreen/slave_tab").slave = slave
+	get_node("MainScreen/slave_tab").joblist()
 
 func openslave(slave):
 	currentslave = globals.slaves.find(slave)
@@ -3339,6 +3384,13 @@ func openslave(slave):
 		get_node("MainScreen/slave_tab").set_hidden(true)
 	get_node("MainScreen/slave_tab").set_hidden(false)
 	get_node("slavelist").set_hidden(true)
+
+
+
+func _on_listclose_pressed():
+	get_node("slavelist").set_hidden(true)
+
+
 
 func _on_listbutton_pressed():
 	get_node("slavelist").set_hidden(!get_node("slavelist").is_hidden())
@@ -3587,6 +3639,7 @@ func _on_combatgroup_pressed():
 func alisegreet():
 	get_node("tutorialnode").set_hidden(false)
 	get_node("tutorialnode").alisegreet()
+
 
 
 

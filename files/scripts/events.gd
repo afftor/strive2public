@@ -147,20 +147,16 @@ func gornayda():
 		if globals.state.sidequests.ayda == 1:
 			buttons.append({name = 'Ask Ayda about herself', function = 'gornaydatalk', args = 1})
 		elif globals.state.sidequests.ayda == 2:
-			buttons.append({name = 'Ask Ayda about monster races',function = 'gornaydatalk', args =2})
-#		elif globals.state.sidequests.ayda >= 3:
-#			if globals.resources.gold >= 400:
-#				buttons.append({text = "Purchase Elixir of Regression - 400 gold", function = 'gornaydatalk', arguments = 3})
-#			else:
-#				buttons.append({text = "Purchase Elixir of Regression - 400 gold", function = 'gornaydatalk', arguments = 3, disabled = true, tooltip = "You don't have enough gold"})
+			buttons.append({name = 'Ask Ayda about monster races',function = 'gornaydatalk', args = 2})
+
 		elif globals.state.sidequests.ayda >= 3:
 			buttons.append({name = "See Ayda's assortments", function = 'aydashop'})
+	if globals.state.sidequests.yris == 4:
+		buttons.append({name = "Ask about the found ointment", function = "gornaydatalk", args = 3})
 	if state == true:
-		#buttons.append({name = "Continue", function = "gornayda"})
 		buttons.append({name = "Leave", function = 'leaveayda'})
 	outside.maintext.set_bbcode(globals.player.dictionary(text))
 	outside.buildbuttons(buttons, self)
-	#globals.get_tree().get_current_scene().dialogue(state, self, text, buttons, sprite)
 
 func leaveayda():
 	globals.get_tree().get_current_scene().get_node("explorationnode").zoneenter('gorn')
@@ -170,7 +166,6 @@ func aydashop():
 
 func gornaydatalk(stage = 0):
 	var text = ''
-	var state = true
 	var sprite
 	var buttons = []
 	
@@ -181,15 +176,14 @@ func gornaydatalk(stage = 0):
 		text = textnode.GornAydaTalkMonsters
 		globals.state.sidequests.ayda = 3
 	elif stage == 3:
-		text = "[color=green]You have purchased Regression Elixir from Ayda.[/color]"
-		globals.resources.gold -= 400
-		globals.itemdict.regressionpot.amount += 1
+		text = textnode.GornYrisAydaReport
+		globals.state.sidequests.yris += 1
 	
 	buttons.append({name = "Continue", function = "gornayda"})
 	
 	outside.maintext.set_bbcode(globals.player.dictionary(text))
 	outside.buildbuttons(buttons, self)
-	#globals.get_tree().get_current_scene().dialogue(state, self, text, buttons, sprite)
+
 
 func gornaydaselect(slave = null):
 	var text
@@ -913,11 +907,11 @@ func emilymansion(stage = 0):
 		sprite = [['emilyhappy','pos1','opac']]
 		state = false
 		if globals.itemdict.aphrodisiac.amount > 0:
-			buttons.append({text = 'Spike her with aphrodisiac',function = 'emilymansion',arguments = 1})
+			buttons.append({text = 'Spike her with aphrodisiac',function = 'emilymansion',args = 1})
 		else:
-			buttons.append({text = 'Spike her with aphrodisiac',function = 'emilymansion',arguments = 1, disabled = true})
-		buttons.append({text = 'Assault her after bath', function = 'emilymansion', arguments = 2})
-		buttons.append({text = "Just wait", function = "emilymansion", arguments = 3})
+			buttons.append({text = 'Spike her with aphrodisiac',function = 'emilymansion',args = 1, disabled = true})
+		buttons.append({text = 'Assault her after bath', function = 'emilymansion', args = 2})
+		buttons.append({text = "Just wait", function = "emilymansion", args = 3})
 	elif stage == 1:
 		globals.itemdict.aphrodisiac.amount -= 1
 		text = textnode.EmilyShowerSex
@@ -990,7 +984,7 @@ func tishaappearance():
 		if globals.resources.gold >= 50 && globals.resources.food >= 50:
 			buttons.append(['Help them with gold and provision', 'tishadecision', 7])		
 		else:
-			buttons.append({text = 'Help them with gold and provisions',function = 'tishadecision',arguments = 7, disabled = true})
+			buttons.append({text = 'Help them with gold and provisions',function = 'tishadecision',args = 7, disabled = true})
 		buttons.append(['Ask for compensation', 'tishadecision', 8])
 	globals.get_tree().get_current_scene().dialogue(false,self,text,buttons,sprite)
 
@@ -1010,7 +1004,7 @@ func tishadecision(number):
 		if globals.resources.gold >= 50 && globals.resources.food >= 50:
 			buttons.append(['Help them with gold and provision', 'tishadecision', 7])		
 		else:
-			buttons.append({text = 'Help them with gold and provisions',function = 'tishadecision',arguments = 7, disabled = true})
+			buttons.append({text = 'Help them with gold and provisions',function = 'tishadecision',args = 7, disabled = true})
 		globals.get_tree().get_current_scene().dialogue(false,self,text,buttons)
 	elif number == 2:
 		text = textnode.TishaEmilyStay
@@ -1260,7 +1254,7 @@ func tishagornguild(stage = 0):
 		if globals.resources.gold >= 500:
 			buttons.append(['Pay', 'tishagornguild', 1])
 		else:
-			buttons.append({text = 'Pay',function = 'tishagornguild',arguments = 1, disabled = true})
+			buttons.append({text = 'Pay',function = 'tishagornguild',args = 1, disabled = true})
 		buttons.append(['Leave', 'tishagornguild', 2])
 	elif stage == 1:
 		text = textnode.TishaGornPay
