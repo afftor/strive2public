@@ -119,7 +119,7 @@ VScrollBar/styles/grabber_hilite = SubResource( 3 )
 VScrollBar/styles/scroll = SubResource( 4 )
 VScrollBar/styles/scroll_focus = null
 
-[sub_resource type="StyleBoxTexture" id=11]
+[sub_resource type="StyleBoxTexture" id=6]
 
 content_margin/left = -1.0
 content_margin/right = -1.0
@@ -136,7 +136,7 @@ expand_margin/top = 5.0
 expand_margin/bottom = 5.0
 draw_center = true
 
-[sub_resource type="StyleBoxTexture" id=13]
+[sub_resource type="StyleBoxTexture" id=7]
 
 content_margin/left = -1.0
 content_margin/right = -1.0
@@ -152,7 +152,7 @@ expand_margin/top = 0.0
 expand_margin/bottom = 0.0
 draw_center = true
 
-[sub_resource type="StyleBoxTexture" id=10]
+[sub_resource type="StyleBoxTexture" id=8]
 
 content_margin/left = -1.0
 content_margin/right = -1.0
@@ -169,7 +169,7 @@ expand_margin/top = 5.0
 expand_margin/bottom = 5.0
 draw_center = true
 
-[sub_resource type="StyleBoxTexture" id=6]
+[sub_resource type="StyleBoxTexture" id=9]
 
 content_margin/left = -1.0
 content_margin/right = -1.0
@@ -186,7 +186,7 @@ expand_margin/top = 0.0
 expand_margin/bottom = 0.0
 draw_center = true
 
-[sub_resource type="StyleBoxTexture" id=7]
+[sub_resource type="StyleBoxTexture" id=10]
 
 content_margin/left = -1.0
 content_margin/right = -1.0
@@ -203,7 +203,7 @@ expand_margin/top = 0.0
 expand_margin/bottom = 0.0
 draw_center = true
 
-[sub_resource type="DynamicFont" id=8]
+[sub_resource type="DynamicFont" id=11]
 
 font/size = 30
 extra_spacing/top = 3
@@ -211,7 +211,7 @@ font/use_mipmaps = false
 font/use_filter = true
 font/font = ExtResource( 13 )
 
-[sub_resource type="DynamicFont" id=9]
+[sub_resource type="DynamicFont" id=12]
 
 font/size = 30
 extra_spacing/top = 3
@@ -380,10 +380,10 @@ margin/left = 0.0
 margin/top = 0.0
 margin/right = 200.0
 margin/bottom = 84.0
-custom_styles/hover = SubResource( 11 )
-custom_styles/pressed = SubResource( 11 )
-custom_styles/focus = SubResource( 13 )
-custom_styles/normal = SubResource( 10 )
+custom_styles/hover = SubResource( 6 )
+custom_styles/pressed = SubResource( 6 )
+custom_styles/focus = SubResource( 7 )
+custom_styles/normal = SubResource( 8 )
 toggle_mode = true
 enabled_focus_mode = 2
 shortcut = null
@@ -552,10 +552,10 @@ margin/left = 0.0
 margin/top = 0.0
 margin/right = 200.0
 margin/bottom = 50.0
-custom_styles/hover = SubResource( 11 )
-custom_styles/pressed = SubResource( 11 )
-custom_styles/focus = SubResource( 13 )
-custom_styles/normal = SubResource( 10 )
+custom_styles/hover = SubResource( 6 )
+custom_styles/pressed = SubResource( 6 )
+custom_styles/focus = SubResource( 7 )
+custom_styles/normal = SubResource( 8 )
 toggle_mode = false
 enabled_focus_mode = 0
 shortcut = null
@@ -571,8 +571,8 @@ margin/left = 69.0
 margin/top = 32.0
 margin/right = 188.0
 margin/bottom = 48.0
-custom_styles/fg = SubResource( 6 )
-custom_styles/bg = SubResource( 7 )
+custom_styles/fg = SubResource( 9 )
+custom_styles/bg = SubResource( 10 )
 range/min = 0.0
 range/max = 100.0
 range/step = 1.0
@@ -702,7 +702,7 @@ margin/left = 325.5
 margin/top = 98.0
 margin/right = -283.5
 margin/bottom = 7.0
-custom_fonts/font = SubResource( 8 )
+custom_fonts/font = SubResource( 11 )
 text = "Cant"
 align = 1
 percent_visible = 1.0
@@ -918,18 +918,16 @@ flat = false
 [node name="escapewarn" type="Panel" parent="."]
 
 visibility/visible = false
-anchor/left = 3
-anchor/top = 3
-anchor/right = 3
-anchor/bottom = 3
+anchor/right = 1
+anchor/bottom = 1
 focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
-margin/left = 180.5
-margin/top = 173.0
-margin/right = -234.5
-margin/bottom = -149.0
+margin/left = 361.0
+margin/top = 99.0
+margin/right = 307.0
+margin/bottom = 123.0
 
 [node name="Control" type="Control" parent="escapewarn"]
 
@@ -946,14 +944,16 @@ margin/bottom = -138.0
 
 [node name="escapedescript" type="RichTextLabel" parent="escapewarn"]
 
+anchor/right = 1
+anchor/bottom = 1
 focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
 margin/left = 28.0
 margin/top = 24.0
-margin/right = 387.0
-margin/bottom = 180.0
+margin/right = 28.0
+margin/bottom = 142.0
 custom_fonts/normal_font = ExtResource( 1 )
 bbcode/enabled = true
 bbcode/bbcode = "$Name tries to escape. Send someone to stop them? (cost 40 energy and will be unable to attack for 1 turn)"
@@ -961,14 +961,18 @@ visible_characters = -1
 
 [node name="escapeoption" type="OptionButton" parent="escapewarn"]
 
+anchor/left = 3
+anchor/top = 1
+anchor/right = 3
+anchor/bottom = 1
 focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
-margin/left = 114.0
-margin/top = 183.0
-margin/right = 311.0
-margin/bottom = 224.0
+margin/left = 93.5
+margin/top = 139.0
+margin/right = -103.5
+margin/bottom = 98.0
 custom_fonts/font = ExtResource( 1 )
 toggle_mode = false
 enabled_focus_mode = 2
@@ -981,14 +985,18 @@ items = [ "Let them escape", null, false, -1, null ]
 
 [node name="escapeconfirm" type="Button" parent="escapewarn"]
 
+anchor/left = 3
+anchor/top = 1
+anchor/right = 3
+anchor/bottom = 1
 focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
-margin/left = 144.0
-margin/top = 256.0
-margin/right = 277.0
-margin/bottom = 296.0
+margin/left = 63.5
+margin/top = 66.0
+margin/right = -69.5
+margin/bottom = 26.0
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
@@ -997,6 +1005,7 @@ flat = false
 
 [node name="win" type="Panel" parent="."]
 
+editor/display_folded = true
 visibility/visible = false
 visibility/self_opacity = 0.8
 anchor/left = 3
@@ -1074,7 +1083,7 @@ margin/left = 221.5
 margin/top = 118.0
 margin/right = -263.5
 margin/bottom = -61.0
-custom_fonts/normal_font = SubResource( 9 )
+custom_fonts/normal_font = SubResource( 12 )
 bbcode/enabled = true
 bbcode/bbcode = "[center]Choose target: [/center]
 [center][color=yellow]Ability: [/color][/center]"

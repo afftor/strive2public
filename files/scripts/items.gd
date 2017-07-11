@@ -662,16 +662,16 @@ func armor(value):
 	slave.stats.armor_cur += value
 
 func agi(value):
-	slave.stats.agi_cur += value
+	slave.stats.agi_mod += value
 
 func stren(value):
-	slave.stats.str_cur += value
+	slave.stats.str_mod += value
 
 func maf(value):
-	slave.stats.maf_cur += value
+	slave.stats.maf_mod += value
 
 func end(value):
-	slave.stats.end_cur += value
+	slave.stats.end_mod += value
 
 func beauty(value):
 	slave.face.beauty += value
@@ -901,7 +901,7 @@ func lactationpoteffect():
 		if slave == globals.player:
 			text = slave.dictionary("A few hours after drinking the Nursing Potion, your tits start secreting milk. ")
 		else:
-			text = slave.dictionary("A few hours after drinking the Nursing Potion, $name's tits start secreting milk. ")
+			text = slave.dictionary("A few hours after drinking the Nursing Potion, $name's tits started secreting milk. ")
 	else:
 		if slave == globals.player:
 			text = slave.dictionary('The Nursing Potion has no apparent effect on you, as you are already lactating. ')
@@ -943,6 +943,8 @@ func deterrenteffect():
 		return('After ingesting the potion, $name starts to act somewhat more dull then before. ')
 	else:
 		return("Apparently, $name isn't greatly affected by drinking the potion as the previous effect hasn't worn off yet.")
+	if slave.traits.has("Sex-crazed"):
+		slave.trait_remove('Sex-crazed')
 
 func beautyeffect():
 	var text = ''
@@ -955,6 +957,8 @@ func beautyeffect():
 		temp = 2
 	elif slave.face.beauty >= 60:
 		temp = 0.5
+	if slave.traits.has("Scarred"):
+		slave.trait_remove('Scarred')
 	slave.face.beauty = min(slave.face.beauty + rand_range(4,8)*temp,100)
 	return text
 

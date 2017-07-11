@@ -772,7 +772,7 @@ func blowjobsex(slave):
 	var text = ''
 	text += "You ask $name to give you a blowjob. After a moment of consideration, $he accepts.\n\nYou free your penis from your pants, as $he shimmies down your body $his face drawing level with your groin. Eagerly, $he takes your member into $his "+ globals.fastif(slave.bodyshape == 'bestial', "muzzle", "mouth") + " and begins to carefully suck on you while maintaining eye contact to measure your reaction.\n\n"
 	if rand_range(0,1) >= 0.5:
-		text += "As you get closer to climax, you order $him to swallow everything. Your semen gushes into $his mouth." +globals.fastif(slave.sexuals.actions.blowjob < 3, ", nearly making $him choke", "") + ".  $name shows you the creamy covering of $his tongue proudly before swallowing it down with a grin. After thanking $him, you leave $him to $his duties."
+		text += "As you get closer to climax, you order $him to swallow everything. Your semen gushes into $his mouth" +globals.fastif(slave.sexuals.actions.blowjob < 3, ", nearly making $him choke", "") + ".  $name shows you the creamy covering of $his tongue proudly before swallowing it down with a grin. After thanking $him, you leave $him to $his duties."
 	else:
 		text += "As you climax, you pull out of $his mouth and covering $his "+ globals.fastif(slave.face.beauty >= 70, "pretty", "") + " face and "+slave.haircolor + " hair with your seed."
 	return text

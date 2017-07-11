@@ -113,13 +113,13 @@ func start_battle():
 	combatant.name = slave.name_short()
 	combatant.health = slave.health
 	combatant.healthmax = slave.stats.health_max
-	combatant.speed = 10 + slave.stats.agi_cur*3
-	combatant.power = 3 + slave.stats.str_cur*2
+	combatant.speed = 10 + slave.sagi*3
+	combatant.power = 3 + slave.sstr*2
 	if slave.race == 'Seraph':
 		combatant.speed += 4
 	elif slave.race.find('Wolf') >= 0:
 		combatant.power += 2 
-	combatant.magic = slave.stats.maf_cur
+	combatant.magic = slave.smaf
 	combatant.energy = slave.stats.energy_cur
 	combatant.energymax = slave.stats.energy_max
 	combatant.armor = slave.stats.armor_cur
@@ -153,15 +153,15 @@ func start_battle():
 		combatant.name = slave.dictionary('$name')
 		combatant.health = slave.health
 		combatant.healthmax = slave.stats.health_max
-		combatant.speed = 6 + slave.stats.agi_cur*3
-		combatant.power = 3 + slave.stats.str_cur*2
+		combatant.speed = 6 + slave.sagi*3
+		combatant.power = 3 + slave.sstr*2
 		if slave.race == 'Seraph':
 			combatant.speed += 4
 		elif slave.race.find('Wolf') >= 0:
 			combatant.power += 2 
 		if slave.spec == 'assassin':
 			combatant.speed += 5
-		combatant.magic = slave.stats.maf_cur
+		combatant.magic = slave.smaf
 		combatant.energy = slave.stats.energy_cur
 		combatant.energymax = slave.stats.energy_max
 		combatant.armor = slave.stats.armor_cur
@@ -810,16 +810,16 @@ func resolution(text = ''):
 				get_tree().get_current_scene().get_node("gameover/Panel/text").set_bbcode("[center]You have died. \nGame over.[/center]")
 				return
 			else:
-				var slave
+				var slave = i.person
 				if globals.rules.permadeath == false:
-					slave = globals.slaves[globals.slaves.find(i.person)]
 					slave.stats.health_cur = 10
 					slave.away.duration = 3
 					slave.away.at = 'rest'
 					slave.work = 'rest'
 					globals.state.playergroup.erase(i.person.id)
 				else:
-					globals.slaves.remove(globals.slaves.find(slave))
+					globals.state.playergroup.erase(i.person.id)
+					globals.slaves.erase(slave)
 		else:
 			i.action = null
 			i.target = null

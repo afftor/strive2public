@@ -5,7 +5,7 @@ var itemdict = {}
 var spelldict = {}
 var effectdict = {}
 var guildslaves = {wimborn = [], gorn = [], frostford = []}
-var gameversion = 4430
+var gameversion = 4440
 var state = progress.new()
 var developmode = false
 
@@ -226,22 +226,32 @@ class resource:
 			globals.get_tree().get_current_scene().infotext(text)
 	
 	func mana_set(value):
-		mana = round(value)
+		value = round(value)
+		var difference = mana - value
+		var text = ""
+		mana = value
 		if mana < 0:
 			mana = 0
+		
 		if panel != null:
 			panel.get_node('mana').set_text(str(mana))
+		if globals.get_tree().get_current_scene().has_node("infotext"):
+			globals.get_tree().get_current_scene().infotext(text)
+		
+		if difference != 0:
+			if difference < 0:
+				text = "[color=green]Obtained " + str(abs(difference)) +  " mana[/color]"
+			else:
+				text = "[color=aqua]Used " + str(abs(difference)) +  " mana[/color]"
+		
+		if globals.get_tree().get_current_scene().has_node("infotext"):
+			globals.get_tree().get_current_scene().infotext(text)
+		
+		
 	
 	func energy_set(value):
 		if panel != null:
 			panel.get_node("energy").set_text(str(round(globals.player.energy)))
-
-#var wimborn = {'enabled': true, 'code':'wimborn', 'name':'Wimborn'}
-#var shaliq = {'enabled':false, 'code':'shaliq', 'name':'Shaliq Village'} 
-#var gorn = {'enabled':true, 'code':'gorn', 'name':'Gorn'} 
-#var frostford = {'enabled':true, 'code':'frostford', 'name':'Frostford'} 
-
-#var portalsarray = [wimborn, shaliq, gorn, frostford]
 
 class progress:
 	var tutorialcomplete = false
@@ -263,7 +273,7 @@ class progress:
 	var mainquest = 0
 	var rank = 0
 	var password = ''
-	var sidequests = {emily = 0, brothel = 0, cali = 0, dolin = 0, ayda = 0, ivran = ''}
+	var sidequests = {emily = 0, brothel = 0, cali = 0, dolin = 0, ayda = 0, ivran = '', yris = 0}
 	var repeatables = {wimbornslaveguild = [], frostfordslaveguild = [], gornslaveguild = []}
 	var babylist = []
 	var companion = -1
@@ -281,7 +291,7 @@ class progress:
 	var reputation = {wimborn = 0, frostford = 0, gorn = 0}
 	var dailyeventcountdown = 0
 	var dailyeventprevious = 0
-	var currentversion = 0442
+	var currentversion = 4440
 	var unstackables = {}
 	var supplykeep = 10
 	var tutorial = {basics = false, slave = false, alchemy = false, jail = false, lab = false, farm = false, outside = false, combat = false}
@@ -373,22 +383,26 @@ class slave:
 	var originstrue = ''
 	var memory = ''
 	var attention = 0
-	var sexuals = {actions = {}, unlocked = false, affection = 0, kinks = {}, unlocks = []}
+	var sexuals = {actions = {}, unlocked = false, affection = 0, kinks = {}, unlocks = [], lastaction = ''}
 	var kinks = []
 	var forcedsex = false
 	var metrics = {ownership = 0, jail = 0, mods = 0, brothel = 0, sex = 0, partners = [], randompartners = 0, item = 0, spell = 0, orgy = 0, threesome = 0, win = 0, capture = 0, goldearn = 0, foodearn = 0, manaearn = 0, birth = 0, preg = 0, vag = 0, anal = 0, oral = 0, roughsex = 0, roughsexlike = 0, orgasm = 0}
 	var stats = {
 		str_cur = 0,
 		str_max = 0,
-		str_base = 1,
-		agi_cur = 1, 
+		str_mod = 0,
+		str_base = 0,
+		agi_cur = 0, 
 		agi_max = 0, 
-		agi_base = 1,
+		agi_mod = 0,
+		agi_base = 0,
 		maf_cur = 0,
 		maf_max = 0,
+		maf_mod = 0,
 		maf_base = 0,
 		end_base = 0,
 		end_cur = 0,
+		end_mod = 0,
 		end_max = 0,
 		cour_max = 0,
 		cour_base = 0,
@@ -472,6 +486,8 @@ class slave:
 	func trait_remove(trait):
 		var text = ''
 		trait = globals.origins.trait(trait)
+		if !traits.has(trait.name):
+			return
 		traits.erase(trait.name)
 		if trait['effect'].empty() != true:
 			add_effect(trait['effect'], true)
@@ -484,8 +500,8 @@ class slave:
 		spec = null
 		for i in traits.values():
 			trait_remove(i.name)
-		for i in [stats.str_cur, stats.agi_cur, stats.maf_cur, stats.end_cur]:
-			i = 0
+		for i in ['str_base','agi_base', 'maf_base', 'end_base','str_cur','agi_cur', 'maf_cur', 'end_cur']:
+			stats[i] = 0
 	
 	func add_effect(effect, remove = false):
 		if effects.has(effect.code):
@@ -635,20 +651,16 @@ class slave:
 		stats.dom_cur = min(max(value, stats.dom_min), stats.dom_max)
 	
 	func str_set(value):
-		stats.str_base = min(stats.str_cur + value,stats.str_max)
-		stats.str_cur = stats.str_base
+		stats.str_cur = min(value, stats.str_max)
 	
 	func agi_set(value):
-		stats.agi_base = min(stats.agi_cur + value,stats.agi_max)
-		stats.agi_cur = stats.agi_base
+		stats.agi_cur = min(value, stats.agi_max)
 	
 	func maf_set(value):
-		stats.maf_base = min(stats.maf_cur + value,stats.maf_max)
-		stats.maf_cur = stats.maf_base
+		stats.maf_cur = min(value, stats.maf_max)
 	
 	func end_set(value):
-		stats.end_base = min(stats.end_cur + value,stats.end_max)
-		stats.end_cur = stats.end_base
+		stats.end_cur = min(value, stats.end_max)
 	
 	
 	func loyal_get():
@@ -664,16 +676,16 @@ class slave:
 		return stats.stress_cur
 	
 	func cour_get():
-		return stats.cour_base
+		return floor(stats.cour_base)
 	
 	func conf_get():
-		return stats.conf_base
+		return floor(stats.conf_base)
 	
 	func wit_get():
-		return stats.wit_base
+		return floor(stats.wit_base)
 	
 	func charm_get():
-		return stats.charm_base
+		return floor(stats.charm_base)
 	
 	func lust_get():
 		return stats.lust_cur
@@ -688,16 +700,16 @@ class slave:
 		return stats.energy_cur
 	
 	func str_get():
-		return stats.str_cur
+		return stats.str_cur + stats.str_mod
 	
 	func agi_get():
-		return stats.agi_cur
+		return stats.agi_cur + stats.agi_mod
 	
 	func maf_get():
-		return stats.maf_cur
+		return stats.maf_cur + stats.maf_mod
 	
 	func end_get():
-		return stats.end_cur
+		return stats.end_cur + stats.end_mod
 	
 	func health_icon():
 		var health
@@ -1031,6 +1043,7 @@ var penistypearray = ['human','canine','feline','equine']
 var alltails = ['cat','fox','wolf','bunny','bird','demon','dragon','scruffy','snake tail','racoon']
 var allwings = ['feathered_black', 'feathered_white', 'feathered_brown', 'leather_black','leather_red','insect']
 var allears = ['human','feathery','pointy','short_furry','long_pointy_furry','fins','long_round_furry', 'long_droopy_furry']
+var sleepdict = {communal = {name = 'Communal Room'}, jail = {name = "Jail"}, personal = {name = 'Personal Room'}, your = {name = "Your bed"}}
 
 #saveload system
 func save():
@@ -1130,10 +1143,16 @@ func repairsave():
 		globals.state.sidequests.ivran = ''
 	if globals.state.sidequests.has('ayda') == false:
 		globals.state.sidequests.ayda = 0
+	if globals.state.sidequests.has("yris") == false:
+		globals.state.sidequests.yris = 0
 	#repairing slaves
 	var tempslaves = []
 	tempslaves.append(player)
+	if state.sebastianslave != null:
+		tempslaves.append(state.sebastianslave)
 	for i in slaves:
+		tempslaves.append(i)
+	for i in state.babylist:
 		tempslaves.append(i)
 	for i in tempslaves:
 		if !i.sexuals.has('unlocks'):
@@ -1163,9 +1182,15 @@ func repairsave():
 		i.rules = {'silence':false, 'pet':false, 'contraception':false, 'aphrodisiac':false, 'masturbation':false, 'nudity':false, 'betterfood':false, 'personalbath':false,'cosmetics':false,'pocketmoney':false} 
 		if i.gear.has('clothes'):
 			i.gear = {costume = 'clothcommon', underwear = 'underwearplain', armor = null, weapon = null, accessory = null}
-	for i in state.babylist:
-		if i.gear.has('clothes'):
-			i.gear = {costume = 'clothcommon', underwear = 'underwearplain', armor = null, weapon = null, accessory = null}
+		if i.stats.has('str_mod') == false:
+			for k in ['str_mod','agi_mod','maf_mod','end_mod']:
+				i.stats[k] = 0
+#	for i in state.babylist:
+#		if i.gear.has('clothes'):
+#			i.gear = {costume = 'clothcommon', underwear = 'underwearplain', armor = null, weapon = null, accessory = null}
+#		if i.stats.has('str_mod') == false:
+#			for k in ['str_mod','agi_mod','maf_mod','end_mod']:
+#				i.stats[k] = 0
 	#repairing items
 	if globals.player.ability.find('escape') < 0:
 		globals.player.ability.append('escape')

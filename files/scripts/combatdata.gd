@@ -187,7 +187,7 @@ plant = {
 name = 'Plant',
 code = 'plant',
 faction = 'plant',
-icon = null,
+icon = load("res://files/images/enemies/plant.png"),
 special = null,
 capture = null,
 rewardpool = {natureessenceing = 35, supply = 25},

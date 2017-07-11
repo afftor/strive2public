@@ -77,7 +77,7 @@ func _on_slave_tab_visibility_changed():
 	else:
 		text += 'None.'
 	get_node("stats/abilinfo").set_bbcode(text)
-	get_node("stats/statslabel").set_bbcode('Strength: '+str(slave.stats.str_cur) + '/' + str(slave.stats.str_max) + '\nAgility: '+str(slave.stats.agi_cur) + '/' + str(slave.stats.agi_max) + '\nMagic: '+str(slave.stats.maf_cur) + '/' + str(slave.stats.maf_max) + '\nEndurance: '+str(slave.stats.end_cur) + '/' + str(slave.stats.end_max)  )
+	get_node("stats/statslabel").set_bbcode('Strength: '+str(slave.sstr) + '/' + str(slave.stats.str_max) + '\nAgility: '+str(slave.sagi) + '/' + str(slave.stats.agi_max) + '\nMagic: '+str(slave.smaf) + '/' + str(slave.stats.maf_max) + '\nEndurance: '+str(slave.send) + '/' + str(slave.stats.end_max)  )
 	find_node('courprog').set_value(slave.stats.cour_base)
 	find_node('courval').set_text(str(floor(slave.stats.cour_base))+'/'+str(min(slave.stats.cour_max, slave.originvalue[slave.origins])))
 	find_node('confprog').set_value(slave.stats.conf_base)
@@ -835,6 +835,8 @@ func choosejob(button):
 	slave.work = button.get_meta('job').code
 	_on_jobcancel_pressed()
 	_on_slave_tab_visibility_changed()
+	if get_tree().get_current_scene().get_node("slavelist").is_visible():
+		get_tree().get_current_scene().slavelist()
 
 func jobtooltipshow(button):
 	var job = button.get_meta('job')

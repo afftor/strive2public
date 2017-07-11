@@ -962,7 +962,7 @@ func mageorderquest1(slave = null):
 		sprites = [['melissafriendly','pos1']]
 		text = questtext.MainQuestGornStart
 		globals.state.mainquest = 12
-	elif globals.state.mainquest in [12,13,14,15,17]:
+	elif globals.state.mainquest in [12,13,14,15]:
 		text = "You decide it's unwise to return to Melissa until you finish your business in Gorn."
 	elif globals.state.mainquest == 16:
 		sprites = [['melissafriendly','pos1','opac']]
@@ -1204,6 +1204,7 @@ func _on_upgradelaboratory_pressed():
 #################### Markets
 #
 func market():
+	get_node("charactersprite").set_hidden(true)
 	main.background_set('market')
 	if OS.get_name() != "HTML5" && globals.rules.fadinganimation == true:
 		yield(main, 'animfinished')
@@ -1288,7 +1289,7 @@ func _on_carpenterleave_pressed():
 	market()
 
 var shops = {
-wimbornmarket = {code = 'wimbornmarket', name = "Wimborn's Market", items =  ['food','supply','basicsolutioning','hairdye' ,'beautypot', 'magicessenceing', 'natureessenceing','armorleather','armorchain','weapondagger','weaponsword','clothsundress','clothmaid','clothbutler','underwearlacy','underwearboxers'], selling = true},
+wimbornmarket = {code = 'wimbornmarket', name = "Wimborn's Market", items =  ['food','supply','basicsolutioning','hairdye', 'aphrodisiac' ,'beautypot', 'magicessenceing', 'natureessenceing','armorleather','armorchain','weapondagger','weaponsword','clothsundress','clothmaid','clothbutler','underwearlacy','underwearboxers'], selling = true},
 shaliqshop = {code = 'shaliqshop', name = "Village's Trader", items = ['hairdye','beautypot','armorleather','clothmiko','clothkimono','clothninja'], selling = true},
 gornmarket = {code = 'gornmarket', name = "Gorn's Market", items = ['food', 'supply','magicessenceing',"armorleather",'armorchain','weaponclaymore','clothbedlah','accslavecollar','acchandcuffs'], selling = true},
 frostfordmarket = {code = 'frostfordmarket', name = "Frostford's Market", items = ['supply','basicsolutioning','bestialessenceing','clothpet', 'weaponsword','accgoldring'], selling = true},
@@ -1601,6 +1602,9 @@ func calimake():
 	cali = calitemp
 
 func sebastian():
+	get_node("AnimationPlayer").play("show")
+	get_node("charactersprite").set_hidden(false)
+	setcharacter('sebastian')
 	var array = [{name = 'Return',function = 'market'}]
 	if globals.state.mainquest == 5:
 		globals.state.mainquest = 6
@@ -1735,7 +1739,7 @@ func emily(state = 1):
 	if state == 1:
 		text = questtext.EmilyMeet
 		if globals.resources.food < 10:
-			buttons.append({text = 'Give her food', function = 'emily', arguments = 2, disabled = true, tooltip = "not enough food"})
+			buttons.append({text = 'Give her food', function = 'emily', args = 2, disabled = true, tooltip = "not enough food"})
 		else:
 			buttons.append(['Give her food', 'emily', 2])
 		buttons.append(['Shoo her away', 'emily', 5])

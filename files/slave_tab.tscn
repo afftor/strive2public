@@ -340,6 +340,8 @@ __meta__ = {
 
 [node name="stats" type="Tabs" parent="."]
 
+editor/display_folded = true
+visibility/visible = false
 anchor/right = 1
 anchor/bottom = 1
 focus/ignore_mouse = false
@@ -1423,7 +1425,6 @@ flat = false
 
 [node name="inspect" type="Tabs" parent="."]
 
-visibility/visible = false
 anchor/right = 1
 anchor/bottom = 1
 focus/ignore_mouse = false
@@ -1491,7 +1492,7 @@ focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 0
-margin/left = 3.0
+margin/left = 5.0
 margin/top = 252.0
 margin/right = 0.0
 margin/bottom = 134.0
@@ -2150,8 +2151,8 @@ flat = false
 align = 0
 
 [node name="silence" type="CheckBox" parent="regulations/rules" groups=[
-"slaverules",
 "advrules",
+"slaverules",
 ]]
 
 anchor/left = 1
@@ -2176,8 +2177,8 @@ flat = false
 align = 0
 
 [node name="pet" type="CheckBox" parent="regulations/rules" groups=[
-"slaverules",
 "advrules",
+"slaverules",
 ]]
 
 anchor/left = 1
@@ -2204,8 +2205,8 @@ flat = false
 align = 0
 
 [node name="masturbation" type="CheckBox" parent="regulations/rules" groups=[
-"slaverules",
 "advrules",
+"slaverules",
 ]]
 
 anchor/left = 1
@@ -2231,8 +2232,8 @@ flat = false
 align = 0
 
 [node name="nudity" type="CheckBox" parent="regulations/rules" groups=[
-"slaverules",
 "advrules",
+"slaverules",
 ]]
 
 anchor/left = 1
@@ -3855,8 +3856,8 @@ If 'Public' is checked, other servants will also be watching and it will severe 
 visible_characters = -1
 
 [node name="tickling" type="Button" parent="actions/punishroom/Popup/Panel" groups=[
-"sexpunish",
 "actions",
+"sexpunish",
 ]]
 
 focus/ignore_mouse = false
@@ -3875,8 +3876,8 @@ text = "Tickling"
 flat = false
 
 [node name="spanking" type="Button" parent="actions/punishroom/Popup/Panel" groups=[
-"sexpunish",
 "actions",
+"sexpunish",
 ]]
 
 focus/ignore_mouse = false
@@ -3895,8 +3896,8 @@ text = "Spanking"
 flat = false
 
 [node name="whipping" type="Button" parent="actions/punishroom/Popup/Panel" groups=[
-"sexpunish",
 "actions",
+"sexpunish",
 ]]
 
 focus/ignore_mouse = false
@@ -3915,8 +3916,8 @@ text = "Whipping"
 flat = false
 
 [node name="hotwax" type="Button" parent="actions/punishroom/Popup/Panel" groups=[
-"sexpunish",
 "actions",
+"sexpunish",
 ]]
 
 focus/ignore_mouse = false
@@ -3935,8 +3936,8 @@ text = "Hot Wax"
 flat = false
 
 [node name="woodenhorse" type="Button" parent="actions/punishroom/Popup/Panel" groups=[
-"sexpunish",
 "actions",
+"sexpunish",
 ]]
 
 focus/ignore_mouse = false
@@ -4237,7 +4238,6 @@ max_lines_visible = -1
 
 [node name="sexual" type="Tabs" parent="."]
 
-editor/display_folded = true
 visibility/visible = false
 anchor/right = 1
 anchor/bottom = 1
@@ -4316,6 +4316,7 @@ margin/top = 73.0
 margin/right = 167.0
 margin/bottom = 92.0
 custom_fonts/font = ExtResource( 8 )
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
 text = "Free Affection:"
 percent_visible = 1.0
 lines_skipped = 0
@@ -4754,7 +4755,7 @@ size_flags/vertical = 2
 margin/left = 0.0
 margin/top = 0.0
 margin/right = 150.0
-margin/bottom = 30.0
+margin/bottom = 39.0
 toggle_mode = true
 enabled_focus_mode = 2
 shortcut = null
@@ -4769,9 +4770,11 @@ focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 0
 margin/left = 111.0
-margin/top = 8.0
+margin/top = 13.0
 margin/right = 143.0
-margin/bottom = 26.0
+margin/bottom = 31.0
+custom_colors/font_color = Color( 1, 0.965088, 0.441406, 1 )
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
 text = "10"
 align = 2
 percent_visible = 1.0

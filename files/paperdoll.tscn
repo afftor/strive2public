@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=1]
+[gd_scene load_steps=6 format=1]
 
 [ext_resource path="res://files/theme.tres" type="Theme" id=1]
 [ext_resource path="res://files/scripts/paperdoll.gd" type="Script" id=2]
-[ext_resource path="res://files/buttons/itemnormal.png" type="Texture" id=3]
-[ext_resource path="res://files/buttongrouptheme.tres" type="Theme" id=4]
+[ext_resource path="res://files/buttons/paperdollbody.png" type="Texture" id=3]
+[ext_resource path="res://files/buttons/itemnormal.png" type="Texture" id=4]
+[ext_resource path="res://files/buttongrouptheme.tres" type="Theme" id=5]
 
 [node name="paperdoll" type="Popup"]
 
@@ -32,6 +33,20 @@ margin/top = 0.0
 margin/right = 0.0
 margin/bottom = 0.0
 
+[node name="TextureFrame" type="TextureFrame" parent="."]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 17.0
+margin/top = 11.0
+margin/right = 346.0
+margin/bottom = 466.0
+texture = ExtResource( 3 )
+expand = true
+stretch_mode = 6
+
 [node name="name" type="Label" parent="."]
 
 focus/ignore_mouse = true
@@ -52,19 +67,18 @@ max_lines_visible = -1
 "paperdollbutton",
 ]]
 
-editor/display_folded = true
 focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
-margin/left = 206.0
-margin/top = 172.0
-margin/right = 278.0
-margin/bottom = 244.0
+margin/left = 146.0
+margin/top = 136.0
+margin/right = 218.0
+margin/bottom = 208.0
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
-textures/normal = ExtResource( 3 )
+textures/normal = ExtResource( 4 )
 params/resize_mode = 1
 params/stretch_mode = 6
 
@@ -78,6 +92,7 @@ margin/left = 0.0
 margin/top = 72.0
 margin/right = 71.0
 margin/bottom = 86.0
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
 text = "Costume"
 align = 1
 percent_visible = 1.0
@@ -125,14 +140,14 @@ focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
-margin/left = 206.0
-margin/top = 82.0
-margin/right = 278.0
-margin/bottom = 154.0
+margin/left = 226.0
+margin/top = 182.0
+margin/right = 298.0
+margin/bottom = 254.0
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
-textures/normal = ExtResource( 3 )
+textures/normal = ExtResource( 4 )
 params/resize_mode = 1
 params/stretch_mode = 6
 
@@ -145,7 +160,8 @@ size_flags/vertical = 0
 margin/left = 0.0
 margin/top = 72.0
 margin/right = 71.0
-margin/bottom = 86.0
+margin/bottom = 88.0
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
 text = "Armor"
 align = 1
 percent_visible = 1.0
@@ -189,19 +205,18 @@ stretch_mode = 6
 "paperdollbutton",
 ]]
 
-editor/display_folded = true
 focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
-margin/left = 206.0
-margin/top = 262.0
-margin/right = 278.0
-margin/bottom = 334.0
+margin/left = 146.0
+margin/top = 231.0
+margin/right = 218.0
+margin/bottom = 303.0
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
-textures/normal = ExtResource( 3 )
+textures/normal = ExtResource( 4 )
 params/resize_mode = 1
 params/stretch_mode = 6
 
@@ -215,6 +230,7 @@ margin/left = 0.0
 margin/top = 72.0
 margin/right = 71.0
 margin/bottom = 86.0
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
 text = "Underwear"
 align = 1
 percent_visible = 1.0
@@ -258,19 +274,18 @@ stretch_mode = 6
 "paperdollbutton",
 ]]
 
-editor/display_folded = true
 focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
-margin/left = 86.0
-margin/top = 132.0
-margin/right = 158.0
-margin/bottom = 204.0
+margin/left = 16.0
+margin/top = 152.0
+margin/right = 88.0
+margin/bottom = 224.0
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
-textures/normal = ExtResource( 3 )
+textures/normal = ExtResource( 4 )
 params/resize_mode = 1
 params/stretch_mode = 6
 
@@ -283,7 +298,8 @@ size_flags/vertical = 0
 margin/left = 0.0
 margin/top = 72.0
 margin/right = 71.0
-margin/bottom = 86.0
+margin/bottom = 88.0
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
 text = "Weapon"
 align = 1
 percent_visible = 1.0
@@ -331,14 +347,14 @@ focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
-margin/left = 86.0
-margin/top = 228.0
-margin/right = 158.0
-margin/bottom = 300.0
+margin/left = 226.0
+margin/top = 68.0
+margin/right = 298.0
+margin/bottom = 140.0
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
-textures/normal = ExtResource( 3 )
+textures/normal = ExtResource( 4 )
 params/resize_mode = 1
 params/stretch_mode = 6
 
@@ -351,7 +367,8 @@ size_flags/vertical = 0
 margin/left = 0.0
 margin/top = 72.0
 margin/right = 71.0
-margin/bottom = 86.0
+margin/bottom = 88.0
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
 text = "Accessory"
 align = 1
 percent_visible = 1.0
@@ -469,7 +486,7 @@ focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
-theme/theme = ExtResource( 4 )
+theme/theme = ExtResource( 5 )
 margin/left = 0.0
 margin/top = 0.0
 margin/right = 380.0
