@@ -3026,9 +3026,9 @@ func _on_farm_pressed(inputslave = null):
 func farminspect(slave):
 	get_node("MainScreen/mansion/farmpanel/slavefarminsepct").set_hidden(false)
 	if slave.work == 'cow':
-		get_node("MainScreen/mansion/farmpanel/slavefarminsepct/slaveassigntext").set_bbcode(slave.dictionary("You walk to the pen with $name. " +slave.race+ " $child is tightly kept here being milked out of $his mind all day long. $His eyes are devoid of sentience barely reacting at your approach."))
+		get_node("MainScreen/mansion/farmpanel/slavefarminsepct/slaveassigntext").set_bbcode(slave.dictionary("You walk to the pen with $name. The " +slave.race+ " $child is tightly kept here being milked out of $his mind all day long. $His eyes are devoid of sentience barely reacting at your approach."))
 	elif slave.work == 'hen':
-		get_node("MainScreen/mansion/farmpanel/slavefarminsepct/slaveassigntext").set_bbcode(slave.dictionary("You walk to the pen with $name. " +slave.race+ " $child is tightly kept here as a hatchery for giant snail, covering $his body. $His eyes are devoid of sentience barely reacting at your approach."))
+		get_node("MainScreen/mansion/farmpanel/slavefarminsepct/slaveassigntext").set_bbcode(slave.dictionary("You walk to the pen with $name. The " +slave.race+ " $child is tightly kept here as a hatchery for giant snail, with a sturdy leather harness covering $his body. $His eyes are devoid of sentience barely reacting at your approach. Crouching down next to $him, you can see the swollen curve of $his stomach, stuffed full of the creature's eggs. As you lay a hand on it, you can feel some movement inside - seems like something hatched quite recently and is making its way to be 'born' from $name's well-used hole."))
 	selectedfarmslave = slave
 	get_node("MainScreen/mansion/farmpanel/slavefarminsepct/releasefromfarm").set_meta('slave', slave)
 	get_node("MainScreen/mansion/farmpanel/slavefarminsepct/sellproduction").set_pressed(slave.farmoutcome)
