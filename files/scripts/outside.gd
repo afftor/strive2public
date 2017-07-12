@@ -142,7 +142,8 @@ func _input(event):
 			if event.is_action_pressed(str(key)) == true && get_node("outsidebuttoncontainer").get_children().size() >= key+1 && self.is_visible() == true && get_parent().get_node("dialogue").is_hidden() == true:
 				get_node("outsidebuttoncontainer").get_child(key).emit_signal("pressed")
 			elif event.is_action_pressed(str(key)) == true && get_parent().get_node("dialogue").is_hidden() == false && get_parent().get_node("dialogue/popupbuttoncenter/popupbuttons").get_children().size() >= key+1:
-				get_parent().get_node("dialogue/popupbuttoncenter/popupbuttons").get_child(key).emit_signal("pressed")
+				if get_parent().get_node("dialogue/popupbuttoncenter/popupbuttons").get_child(key).is_disabled() == false:
+					get_parent().get_node("dialogue/popupbuttoncenter/popupbuttons").get_child(key).emit_signal("pressed")
 
 func newslaveinguild(number, town = 'wimborn'):
 	while number > 0:
@@ -1204,27 +1205,26 @@ func _on_upgradelaboratory_pressed():
 #################### Markets
 #
 func market():
+	var array = [{name = 'Market stalls', function = 'shopinitiate', args = 'wimbornmarket'}, {name = 'Carpentry', function = 'carpentry'}, {name = 'Return', function = 'town'}]
 	get_node("charactersprite").set_hidden(true)
 	main.background_set('market')
 	if OS.get_name() != "HTML5" && globals.rules.fadinganimation == true:
 		yield(main, 'animfinished')
 	var text = "Densely populated area filled with stalls, small buildings and people allowing you to find anything for your daily life. "
 	if globals.state.rank >= 3 && globals.state.sidequests.cali == 0:
-		caliqueststart()
-		return
+		text +=  "\n\n[color=yellow]You spot some commotion ongoing near one of the stalls.[/color]"
+		array.insert(2, {name = 'Check the commotion', function = "caliqueststart"})
 	for slave in globals.slaves:
 		if slave.work == 'store':
 			text += slave.dictionary('\nYou can see $name helping around one of the shops.')
 		elif slave.work == 'entertainer':
 			text += slave.dictionary('\nYou spot $name giving minor performance at one of the corners. ')
 	maintext.set_bbcode(text)
-	var array = [{name = 'Market stalls', function = 'shopinitiate', args = 'wimbornmarket'}, {name = 'Carpentry', function = 'carpentry'}, {name = 'Return', function = 'town'}]
 	if globals.state.mainquest == 5:
 		array.insert(2, {name = 'Look for Sebastian', function = 'sebastian'})
 	elif globals.state.mainquest >= 7:
 		array.insert(2, {name = 'Visit Sebastian', function = 'sebastian'})
 	buildbuttons(array)
-
 
 func carpentry():
 	var sleepers = globals.count_sleepers()
@@ -1294,7 +1294,7 @@ shaliqshop = {code = 'shaliqshop', name = "Village's Trader", items = ['hairdye'
 gornmarket = {code = 'gornmarket', name = "Gorn's Market", items = ['food', 'supply','magicessenceing',"armorleather",'armorchain','weaponclaymore','clothbedlah','accslavecollar','acchandcuffs'], selling = true},
 frostfordmarket = {code = 'frostfordmarket', name = "Frostford's Market", items = ['supply','basicsolutioning','bestialessenceing','clothpet', 'weaponsword','accgoldring'], selling = true},
 aydashop = {code = 'aydashop', name = "Gorn's Alchemist", items = ['regressionpot', 'beautypot', 'hairdye', 'basicsolutioning','bestialessenceing','taintedessenceing','fluidsubstanceing'], selling = false},
-amberguardmarket = {code = 'amberguardmarket', name = "Amberguard's Market", items = ['beautypot','bestialessenceing','magicessenceing','fluidsubstanceing'], selling = true},
+amberguardmarket = {code = 'amberguardmarket', name = "Amberguard's Market", items = ['beautypot','bestialessenceing','magicessenceing','fluidsubstanceing','armorelvenchain'], selling = true},
 }
 var currentshop
 var selecteditem
@@ -1562,9 +1562,13 @@ func caliqueststart(value = ''):
 		main.get_node('dialogue').set_hidden(true)
 		return
 	if globals.state.sidequests.cali == 0:
-		sprites = [['calineutral', 'pos1','opac']]
+		sprites = [['caliangry', 'pos1','opac']]
+	elif globals.state.sidequests.cali == 1:
+		sprites = [['caliangry2', 'pos1']]
 	elif globals.state.sidequests.cali == 7:
 		sprites = [['calihappy', 'pos1']]
+	elif globals.state.sidequests.cali == 5:
+		sprites = [['calinangry2', 'pos1']]
 	else:
 		sprites = [['calineutral', 'pos1']]
 	main.dialogue(false, self, text, buttons, sprites)
@@ -1582,7 +1586,7 @@ func calimake():
 	calitemp.surname = 'Nuisal'
 	calitemp.tits.size = 'flat'
 	calitemp.ass = 'small'
-	calitemp.face.beauty = 36
+	calitemp.face.beauty = 55
 	calitemp.face.appeal = 20
 	calitemp.hairlength = 'shoulder'
 	calitemp.height = 'short'
@@ -1591,7 +1595,7 @@ func calimake():
 	calitemp.eyeshape = 'slit'
 	calitemp.hairstyle = 'straight'
 	calitemp.skin = 'fair'
-	calitemp.imageportait = 'res://files/images/caliportrait.png'
+	calitemp.imageportait = 'res://files/images/cali/caliportrait.png'
 	calitemp.pussy.virgin = true
 	calitemp.pussy.first = 'none'
 	calitemp.relatives.father = -1
@@ -1762,7 +1766,7 @@ func emily(state = 1):
 		emily.surname = 'Hale'
 		emily.tits.size = 'small'
 		emily.ass = 'small'
-		emily.face.beauty = 20
+		emily.face.beauty = 33
 		emily.face.appeal = 20
 		emily.hairlength = 'neck'
 		emily.height = 'average'

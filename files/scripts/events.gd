@@ -487,7 +487,7 @@ func calibar1(value):
 			buttons.append(['Return','calibar'])
 		else:
 			text = textnode.CaliBarPersuadeFail
-			sprite = [['caliangry','pos1']]
+			sprite = [['caliangry1','pos1']]
 			globals.state.sidequests.calibarsex = 'reject'
 			cali.loyal -= 10
 			cali.obed -= 15
@@ -695,7 +695,7 @@ func calislaver(choice):
 		text = textnode.CaliSlaversNoOffer
 		buttons.append(['Leave', 'calislaver',6])
 	elif choice == 3:
-		sprite = [['caliangry','pos1']]
+		sprite = [['caliangry1','pos1']]
 		text = textnode.CaliSlaverSell
 		for i in globals.slaves:
 			if i.unique == 'Cali':
@@ -777,7 +777,7 @@ func calireturnhome():
 	var sprite
 	if globals.state.sidequests.caliparentsdead == true:
 		text = globals.player.dictionaryplayer(textnode.CaliBadEnd)
-		sprite = [['caliangry','pos1','opac']]
+		sprite = [['caliangry1','pos1','opac']]
 		buttons.append(['Let her be','calireturnhome1',1])
 		buttons.append(['Comfort her','calireturnhome1',2])
 	else:

@@ -70,7 +70,7 @@ func _ready():
 	_on_mansion_pressed()
 	set_process_input(true)
 	rebuildrepeatablequests()
-	for i in globals.state.portals:
+	for i in globals.state.portals.values():
 		if i.code == globals.state.location:
 			i.enabled = false
 	globals.resources.panel = get_node("ResourcePanel")
@@ -210,7 +210,7 @@ func _on_new_slave_button_pressed():
 	slave.sexuals.unlocks.append('swing')
 	slave.level.skillpointsbought = 1
 	slave.ability.append('debilitate')
-	for i in globals.state.portals:
+	for i in globals.state.portals.values():
 		i.enabled = true
 	for i in slave.skills:
 		slave.skills[i].value = 100
@@ -238,9 +238,9 @@ func _on_new_slave_button_pressed():
 		var tmpitem = get_node("itemnode").createunstackable(i)
 		globals.state.unstackables[str(tmpitem.id)] = tmpitem
 	globals.state.sidequests.brothel = 2
-	globals.state.sidequests.yris = 4
+	globals.state.sidequests.yris = 0
 	globals.state.rank = 3
-	globals.state.mainquest = 5
+	globals.state.mainquest = 20
 	globals.state.farm = 4
 	globals.state.laboratory = 1
 	globals.state.alchemy = 2
@@ -1553,9 +1553,10 @@ emilynormal = load("res://files/images/emily/emilynormal.png"),
 emily2normal = load("res://files/images/emily/emily2neutral.png"),
 emily2happy = load("res://files/images/emily/emily2happy.png"),
 emily2worried = load("res://files/images/emily/emily2worried.png"),
-calineutral = load("res://files/images/calineutral.png"),
-calihappy = load("res://files/images/calihappy.png"),
-caliangry = load("res://files/images/caliangry.png"),
+calineutral = load("res://files/images/cali/calineutral.png"),
+calihappy = load("res://files/images/cali/calihappy.png"),
+caliangry = load("res://files/images/cali/caliangry.png"),
+caliangry2 = load("res://files/images/cali/caliangry2.png"),
 sebastian = load("res://files/images/sebastian.png"),
 }
 
@@ -1874,13 +1875,17 @@ func _on_mansion_pressed():
 			else:
 				globals.state.playergroup.erase(i)
 	textnode.set_bbcode(text)
+	var headgirl = false
 	for i in globals.slaves:
 		if i.work == 'headgirl':
+			headgirl = true
 			text = text + i.dictionary('$name is your headgirl.')
-	if globals.slaves.size() >= 8:
-		get_node("MainScreen/mansion/headgirl").set_disabled(false)
+	if (globals.slaves.size() >= 8 && headgirl == true) || globals.developmode == true:
+		get_node("MainScreen/mansion/headgirl").set_hidden(false)
+		get_node("MainScreen/mansion/slavelist").set_hidden(false)
 	else:
-		get_node("MainScreen/mansion/headgirl").set_disabled(true)
+		get_node("MainScreen/mansion/headgirl").set_hidden(true)
+		get_node("MainScreen/mansion/slavelist").set_hidden(true)
 	if globals.state.farm == 4:
 		get_node("buttonpanel/VBoxContainer/farm").set_disabled(false)
 	else:
@@ -2223,6 +2228,13 @@ var emilyquestdict = {
 '14':"Your investigation tells you Tisha might be at Gorn.",
 '15':"Get Tisha out of Gorn's slaver guild",
 }
+var yrisquestdict = {
+"1":"Accept Yris's challenge at Gorn's bar",
+"2":"Find a way to win Yris's challenge at Gorn's bar. Perhaps, some potion might provide an option",
+"3":"Talk to Yris at Gorn's Bar",
+"4":"Find a way to secure your bet with Yris. Perhaps, some alchemist might shine some light upon your findings. You'll also need 1000 gold and 1 Deterrent potion.",
+"5":"Beat Yris at her challenge at Gorn's Bar. You'll also need to bring 1000 gold and Deterrent potion. ",
+}
 var questtype = {slaverequest = 'Slave Request'}
 var selectedrepeatable
 
@@ -2246,6 +2258,8 @@ func _on_questnode_visibility_changed():
 		sidetext.set_bbcode(sidetext.get_bbcode() + "—"+ caliquestdict[str(globals.state.sidequests.cali)]+"\n\n")
 	if emilyquestdict.has(str(globals.state.sidequests.emily)):
 		sidetext.set_bbcode(sidetext.get_bbcode() + "—"+ emilyquestdict[str(globals.state.sidequests.emily)]+"\n\n")
+	if yrisquestdict.has(str(globals.state.sidequests.yris)):
+		sidetext.set_bbcode(sidetext.get_bbcode() + "—"+ yrisquestdict[str(globals.state.sidequests.yris)]+"\n\n")
 	#repeatables
 	for i in get_node("questnode/TabContainer/Repeatable Quests/ScrollContainer/VBoxContainer").get_children():
 		if i != get_node("questnode/TabContainer/Repeatable Quests/ScrollContainer/VBoxContainer/Button"):
@@ -2965,7 +2979,7 @@ func _on_portals_pressed():
 		if i != button:
 			i.set_hidden(true)
 			i.queue_free()
-	for i in globals.state.portals:
+	for i in globals.state.portals.values():
 		if i.enabled == true:
 			var newbutton = button.duplicate()
 			list.add_child(newbutton)
@@ -3311,18 +3325,23 @@ func _on_infotextpanel_mouse_exit():
 			i.set_opacity(1)
 			i.add_to_group("messages")
 
+func _on_slavelist_pressed():
+	get_node("slavelist").set_hidden(!get_node("slavelist").is_hidden())
+	slavelist()
+
+
 func slavelist():
 	for i in get_node("slavelist/ScrollContainer/VBoxContainer").get_children():
 		if i != get_node("slavelist/ScrollContainer/VBoxContainer/line"):
 			i.set_hidden(true)
 			i.queue_free()
 	for slave in globals.slaves:
-		if slave.away.duration == 0 && !slave.sleep in ['jail','farm']:
+		if slave.away.duration == 0 && !slave.sleep in ['farm']:
 			var newline = get_node("slavelist/ScrollContainer/VBoxContainer/line").duplicate()
 			newline.set_hidden(false)
 			get_node("slavelist/ScrollContainer/VBoxContainer").add_child(newline)
 			newline.get_node("line/name/choseslave").connect("pressed",self,'openslave',[slave])
-			newline.get_node("line/name/Label").set_bbcode("[u]" + slave.name_short())
+			newline.get_node("line/name/Label").set_text(slave.name_short())
 			newline.get_node("line/grade/Label").set_text(slave.origins.capitalize())
 			if slave.spec != null:
 				newline.get_node("line/spec/Label").set_text(slave.spec.capitalize())
@@ -3331,12 +3350,17 @@ func slavelist():
 			newline.get_node("line/phys/Label").set_text("S:" + str(slave.sstr) + " A:" + str(slave.sagi) + " M:" + str(slave.smaf) + " E:"+str(slave.send))
 			newline.get_node("line/mentals/Label").set_text("R:" + str(slave.cour) + " O:" + str(slave.conf) + " W:" + str(slave.wit) + " H:" + str(slave.charm) )
 			newline.get_node("line/mentals").set_custom_minimum_size(newline.get_node("line/mentals/Label").get_minimum_size() + Vector2(10,0))
+			newline.get_node("line/race/Label").set_text(slave.race_short())
+			newline.get_node("line/race/Label").set_tooltip(slave.race)
 			newline.get_node("job").set_text(get_node("MainScreen/slave_tab").jobdict[slave.work].name)
 			newline.get_node("job").connect("pressed",self,'selectjob',[slave])
+			if slave.sleep == 'jail':
+				newline.get_node("job").set_disabled(true)
 			newline.get_node("sleep").set_text(globals.sleepdict[slave.sleep].name)
 			newline.get_node("sleep").set_meta("slave", slave)
 			newline.get_node("sleep").connect("pressed", self, 'sleeppressed', [newline.get_node("sleep")])
 			newline.get_node("sleep").connect("item_selected",self, 'sleepselect', [newline.get_node("sleep")])
+
 
 func sleeppressed(button):
 	var slave = button.get_meta('slave')
@@ -3359,7 +3383,7 @@ func sleeppressed(button):
 		button.set_item_disabled(button.get_item_count()-1, true)
 		button.select(button.get_item_count()-1)
 	button.add_item(globals.sleepdict['your'].name)
-	if beds.your_bed >= globals.state.rooms.bed:
+	if beds.your_bed >= globals.state.rooms.bed || (slave.loyal + slave.obed < 130 || slave.tags.find('nosex') >= 0):
 		button.set_item_disabled(button.get_item_count()-1, true)
 	if slave.sleep == 'your':
 		button.set_item_disabled(button.get_item_count()-1, true)
@@ -3370,11 +3394,15 @@ var sleepdict = {0 : 'communal', 1 : 'jail', 2 : 'personal', 3 : 'your'}
 func sleepselect(item, button):
 	var slave = button.get_meta('slave')
 	slave.sleep = sleepdict[item]
+	if slave.sleep == 'jail':
+		slave.work = 'rest'
 	rebuild_slave_list()
+	slavelist()
 
 
 
 func selectjob(slave):
+	globals.currentslave = slave
 	get_node("MainScreen/slave_tab").slave = slave
 	get_node("MainScreen/slave_tab").joblist()
 
@@ -3390,11 +3418,6 @@ func openslave(slave):
 func _on_listclose_pressed():
 	get_node("slavelist").set_hidden(true)
 
-
-
-func _on_listbutton_pressed():
-	get_node("slavelist").set_hidden(!get_node("slavelist").is_hidden())
-	slavelist()
 
 
 
@@ -3639,6 +3662,7 @@ func _on_combatgroup_pressed():
 func alisegreet():
 	get_node("tutorialnode").set_hidden(false)
 	get_node("tutorialnode").alisegreet()
+
 
 
 

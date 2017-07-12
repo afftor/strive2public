@@ -169,6 +169,7 @@ func _on_startrandom_pressed():
 		globals.state.sidequests.brothel = 2
 		globals.state.farm = 4
 		globals.state.branding = 2
+		globals.state.portals.amberguard.enabled = true
 		globals.itemdict.youthingpot.unlocked = true
 		globals.itemdict.maturingpot.unlocked = true
 

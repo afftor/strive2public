@@ -278,7 +278,7 @@ class progress:
 	var babylist = []
 	var companion = -1
 	var headgirlbehavior = 'none'
-	var portals = [{'enabled' : true, 'code' : 'wimborn'}, {'enabled':true, 'code' : 'gorn'}, {'enabled':true, 'code' : 'frostford'}, {'enabled':false, 'code':'shaliq'}, {'enabled':false, 'code':'amberguard'}]
+	var portals = {wimborn = {'enabled' : true, 'code' : 'wimborn'}, gorn = {'enabled':true, 'code' : 'gorn'}, frostford = {'enabled':true, 'code' : 'frostford'}, shaliq = {'enabled':false, 'code':'shaliq'}, amberguard = {'enabled':false, 'code':'amberguard'}}
 	var sebastianorder = {race = 'none', taken = false, duration = 0}
 	var sebastianslave
 	var sandbox = false
@@ -757,6 +757,14 @@ class slave:
 		else:
 			return nickname
 	
+	func race_short():
+		if race.find("Beastkin") >= 0:
+			return race.replace("Beastkin ", 'B.')
+		elif race.find("Halfkin") >= 0:
+			return race.replace("Halfkin ", "H.")
+		else:
+			return race
+	
 	func dictionary(text):
 		var string = text
 		string = string.replace('$name', name_short())
@@ -1201,7 +1209,7 @@ func repairsave():
 		itemdict.aphroditebrew.unlocked = true
 	if state.currentversion <= 44:
 		showalisegreet = true
-	if state.currentversion < 4421:
+	if state.currentversion < 4440:
 		state.portals = progress.new().portals
 	state.currentversion = gameversion
 

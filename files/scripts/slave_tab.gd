@@ -1070,7 +1070,7 @@ func _on_removeportrait_pressed():
 func _on_reverseportrait_pressed():
 	if slave.unique != null:
 		if slave.unique == 'Cali':
-			slave.imageportait = 'res://files/images/caliportrait.png'
+			slave.imageportait = 'res://files/images/cali/caliportrait.png'
 		elif slave.unique == 'Emily':
 			slave.imageportait = "res://files/images/emily/emilyportrait.png"
 		get_node("inspect/portait/Panel").set_hidden(true)

@@ -1177,6 +1177,9 @@ func gornyris():
 	var state = false
 	var text
 	var buttons = []
+	if globals.player.penis.number < 1:
+		main.popup("This encounter requires your character to possess a penis. ")
+		return
 	if globals.state.sidequests.yris == 0:
 		text = globals.questtext.GornYrisMeet
 		if globals.resources.gold >= 200:
@@ -1191,11 +1194,11 @@ func gornyris():
 		else:
 			buttons.append({text = "Accept (200 Gold)", function = "gornyrisaccept", args = 1, disabled = true})
 	elif globals.state.sidequests.yris == 2:
-		text = globals.questtext.GornYrisAccepRepeat
+		text = globals.questtext.GornYrisRepeatMeet
 		if globals.resources.gold >= 200:
 			buttons.append({text = "Accept (200 Gold)", function = "gornyrisaccept", args = 2})
 			if globals.itemdict.deterrentpot.amount >= 1:
-				button.append({text = "Accept and use Deterrent potion (200 Gold)", args = 3})
+				buttons.append({text = "Accept and use Deterrent potion (200 Gold)", function = "gornyrisaccept", args = 3})
 		else:
 			buttons.append({text = "Accept (200 Gold)", function = "gornyrisaccept", args = 2, disabled = true})
 	elif globals.state.sidequests.yris == 3:
@@ -1211,7 +1214,12 @@ func gornyris():
 		else:
 			buttons.append({text = "Accept (1000 Gold)", function = "gornyrisaccept", args = 4})
 	buttons.append({text = "Refuse", function = "gornyrisaccept", args = 0})
+	gornbar()
 	main.dialogue(state, self, text, buttons)
+
+func gornyrisleave(args):
+	zoneenter('gorn')
+	main.close_dialogue()
 
 func gornyrisaccept(stage):
 	var text = ''
@@ -1219,7 +1227,7 @@ func gornyrisaccept(stage):
 	var buttons = []
 	if stage == 0:
 		text = globals.questtext.GornYrisRefuse
-		buttons.append({text = "Continue", function = 'zoneenter',args = 'gorn'})
+		buttons.append({text = "Continue", function = 'gornyrisleave', args = null})
 	elif stage == 1:
 		text = globals.questtext.GornYrisAccept1
 		globals.resources.gold -= 200
@@ -1234,9 +1242,11 @@ func gornyrisaccept(stage):
 	elif stage == 3:
 		text = globals.questtext.GornYrisAccept2
 		globals.state.sidequests.yris += 1
+		globals.itemdict.deterrentpot.amount -= 1
 		state = true
 		globals.resources.mana += 25
 	elif stage == 4:
+		globals.itemdict.deterrentpot.amount -= 1
 		text = globals.questtext.GornYrisAccept3
 		buttons.append({text = "Reveal everything", function = 'gornyrisaccept', args = 5})
 		buttons.append({text = "Demand the gold", function = 'gornyrisaccept', args = 6})
@@ -1248,10 +1258,12 @@ func gornyrisaccept(stage):
 		text = globals.questtext.GornYrisTakeGold
 		globals.state.sidequests.yris = 100
 		globals.resources.gold += 1000
+		text += "\n\nIn the end you get the gold you asked for, but never seen Yris again. "
 		state = true
 	elif stage == 7:
 		text = globals.questtext.GornYrisTakeGold2
 		globals.state.sidequests.yris = 100
+		text += "\n\nIn the end you get the gold you asked for, but never seen Yris again. "
 		globals.resources.gold += 1000
 		state = true
 	elif stage == 8:
@@ -1264,7 +1276,7 @@ func gornyrisaccept(stage):
 		slave.surname = ''
 		slave.tits.size = 'big'
 		slave.ass = 'average'
-		slave.face.beauty = 60
+		slave.face.beauty = 65
 		slave.hairlength = 'waist'
 		slave.height = 'average'
 		slave.haircolor = 'blond'
@@ -1285,18 +1297,23 @@ func gornyrisaccept(stage):
 		slave.sexuals.unlocks.append("petting")
 		slave.sexuals.unlocks.append('oral')
 		slave.sexuals.unlocks.append('vaginal')
+		slave.unlocksexuals()
 		slave.cleartraits()
 		slave.sagi += 1
 		slave.send += 1
 		slave.loyal = 25
 		slave.obed += 90
 		globals.slaves = slave
+	gornbar()
 	main.dialogue(state, self, text, buttons)
 
 func amberguard():
 	var array = []
 	outside.location = 'amberguard'
 	main.music_set('gorn')
+	if globals.state.portals.amberguard.enabled == false:
+		globals.state.portals.amberguard.enabled = true
+		outside.maintext.set_bbcode(outside.maintext.get_bbcode() + "\n\n[color=yellow]You have unlocked new portal![/color]")
 	if globals.state.mainquest == 17:
 		globals.state.mainquest = 18
 	elif globals.state.mainquest == 19:
