@@ -331,9 +331,23 @@ description = "You make your way through semi-utilized forest paths paying atten
 enemies = [['banditsmedium',10],['travelersgroup',25],['peasant',60],['thugseasy',75],['solobear', 100]],
 encounters = [],
 length = 5,
-exits = ['frostfordoutskirts'],
+exits = ['frostfordoutskirts','frostfordclearing'],
 tags = [],
 races = [['Beastkin Wolf', 40],['Halfkin Fox', 45],['Beastkin Fox', 50],['Halfkin Cat', 55],['Beastkin Cat',65],['Halfkin Wolf', 75],['Beastkin Wolf', 85],['Human', 100]]
+},
+
+frostfordclearing = {
+background = 'borealforest',
+reqs = "globals.state.mainquest in [28,28.1,30, 32]",
+combat = false,
+code = 'frostfordclearing',
+name = 'Clearing',
+description =  "",
+enemies = [],
+encounters = [],
+length = 0,
+exits = ['frostfordclearing'],
+tags = [],
 },
 
 frostford = {
@@ -438,6 +452,11 @@ func zoneenter(zone):
 	if zone.code == 'undercityruins' && progress >= 5 && globals.state.lorefound.find('amberguardlog2') < 0:
 		globals.state.lorefound.append('amberguardlog2')
 		outside.maintext.set_bbcode(outside.maintext.get_bbcode() + "[color=yellow]\n\nYou've found some old writings in the ruins. Does not look like what you came for, but you can read them later.[/color]")
+	if zone.code == 'frostfordoutskirtsexplore' && globals.state.mainquest in [27,30,32] && progress >= 5:
+		array.append({name = "Explore hunting grounds to South-East", function = 'event', args = 'frostforddryad'})
+	if zone.code == 'frostfordoutskirtsexplore' && globals.state.sidequests.zoe == 1 && progress >= 3:
+		globals.state.sidequests.zoe = 2
+		main.dialogue(true, self, globals.questtext.MainQuestFrostfordBeforeForestZoe, [], null)
 	var hasinjuries = false
 	for i in globals.state.playergroup:
 		var slave = globals.state.findslave(i)
@@ -459,6 +478,9 @@ func zoneenter(zone):
 	if zone.tags.find('noreturn') < 0 || progress == 0:
 		array.append({name = "Return to Mansion", function = "mansionreturn"})
 	outside.buildbuttons(array, self)
+
+func frostfordclearing():
+	event('frostforddryad')
 
 func healeveryone():
 	var slave
@@ -1483,11 +1505,36 @@ func frostford():
 	outside.location = 'frostford'
 	main.music_set('gorn')
 	var array = []
+	if globals.state.mainquest in [28, 29, 30, 31, 33, 34, 35]:
+		array.append({name = "Visit City Hall", function = "frostfordcityhall"})
+	if globals.state.reputation.frostford >= 20 && globals.state.mainquest == 30 && globals.state.sidequests.zoe == 0:
+		var text = globals.questtext.MainQuestFrostfordCityhallZoe
+		var buttons = []
+		var sprite = []
+		buttons.append({text = 'Accept', function = "frostfordzoe", args = 1})
+		buttons.append({text = 'Refuse', function = "frostfordzoe", args = 2})
+		main.dialogue(false, self, text, buttons, sprite)
 	array.append({name = "Visit local Slave Guild", function = 'frostfordslaveguild'})
 	array.append({name = "Frostford's Market", function = 'frostfordmarket'})
 	array.append({name = "Outskirts", function = 'zoneenter', args = 'frostfordoutskirts'})
 	array.append({name = "Return to Mansion", function = 'mansionreturn'})
 	outside.buildbuttons(array,self)
+
+func frostfordzoe(stage):
+	var text
+	var buttons = []
+	var sprite = []
+	if stage == 1:
+		text = globals.questtext.MainQuestFrostfordCityhallZoeAccept
+		globals.state.sidequests.zoe = 1
+	elif stage == 2:
+		text = globals.questtext.MainQuestFrostfordCityhallZoeRefuse
+		globals.state.sidequests.zoe = 100
+	
+	main.dialogue(true, self, text, buttons, sprite)
+
+func frostfordcityhall():
+	globals.events.frostfordcityhall()
 
 func frostfordmarket():
 	outside.shopinitiate('frostfordmarket')

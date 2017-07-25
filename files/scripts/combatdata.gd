@@ -124,7 +124,12 @@ description = "You meet a group of $unitnumber travellers moving by the road. Th
 ivranquestenemy = {units = [['ivran',1,1],['elfguard',4,4]], awareness = 0, captured = null, special = null,
 description = "You meet a group of $unitnumber travellers moving by the road. They seems to be unaware of your presence yet. ",
 },
-
+frostforddryadquest = {units = [['direwolf',6,6],['plant',4,4]], awareness = 0, captured = null, special = null,
+description = "You meet a group of $unitnumber travellers moving by the road. They seems to be unaware of your presence yet. ",
+},
+frostfordzoequest = {units = [['marauder',9,9]], awareness = 0, captured = null, special = null,
+description = "You meet a group of $unitnumber travellers moving by the road. They seems to be unaware of your presence yet. ",
+},
 }
 
 var capturespool = {
@@ -391,6 +396,24 @@ rewardpool = {gold = 100},
 rewardgold = [30,50],
 rewardexp = 50,
 stats = {health = 90, power = 6, speed = 18, energy = 80, armor = 4, magic = 0, abilities = ['attack']},
+skills = [],
+},
+marauder = {
+name = 'Marauder',
+code = 'marauder',
+faction = 'bandit',
+icon = load("res://files/images/enemies/banditleaderm.png"),
+iconalt = load("res://files/images/enemies/banditleaderf.png"),
+special = '',
+capture = true,
+capturerace = ['bandits'],
+captureoriginspool = [['slave',20],['commoner',55],['poor', 100]],
+captureagepool = [['teen',30], ['adult', 100]],
+capturesex = ['any'],
+rewardpool = {gold = 100},
+rewardgold = [30,50],
+rewardexp = 50,
+stats = {health = 100, power = 12, speed = 18, energy = 80, armor = 4, magic = 0, abilities = ['attack']},
 skills = [],
 },
 traveller = {

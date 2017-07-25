@@ -788,6 +788,12 @@ func joblist():
 	for i in array:
 		if globals.evaluate(i.unlockreqs) == true:
 			var newbutton = get_node("regulations/joblist/normaljobs/VBoxContainer/Button").duplicate()
+			var locked
+			for k in globals.state.portals.values():
+				if i.tags.find(k.code) >= 0 && k.enabled == false && globals.state.location != k.code:
+					locked = true
+			if locked == true:
+				continue
 			newbutton.set_hidden(false)
 			newbutton.set_text(i.name)
 			dict[i.type].add_child(newbutton)
@@ -806,7 +812,6 @@ func joblist():
 				elif slave.traits.has("Monogamous") || slave.traits.has("Prude"):
 					newbutton.set_disabled(true)
 					newbutton.set_tooltip(slave.dictionary("$name refuses to whore $himself."))
-
 			if i.tags.find('social') >= 0:
 				if slave.traits.has('Uncivilized') || slave.traits.has('Regressed'):
 					newbutton.set_disabled(true)
@@ -816,7 +821,6 @@ func joblist():
 					newbutton.set_disabled(true)
 					newbutton.set_tooltip(slave.dictionary("$name is not suited for leading roles. "))
 					
-		
 		
 			if i.maxnumber >= 1:
 				var counter = 0

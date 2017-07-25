@@ -341,6 +341,7 @@ __meta__ = {
 [node name="stats" type="Tabs" parent="."]
 
 editor/display_folded = true
+visibility/visible = false
 anchor/right = 1
 anchor/bottom = 1
 focus/ignore_mouse = false
@@ -1424,6 +1425,7 @@ flat = false
 
 [node name="inspect" type="Tabs" parent="."]
 
+editor/display_folded = true
 visibility/visible = false
 anchor/right = 1
 anchor/bottom = 1
@@ -1979,8 +1981,6 @@ autoplay = ""
 
 [node name="regulations" type="Tabs" parent="."]
 
-editor/display_folded = true
-visibility/visible = false
 anchor/right = 1
 anchor/bottom = 1
 focus/ignore_mouse = false
@@ -2606,11 +2606,12 @@ anchor/left = 1
 anchor/top = 1
 anchor/right = 1
 anchor/bottom = 1
+hint/tooltip = "Add custom text to the slave's description"
 focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
-margin/left = 426.0
+margin/left = 401.0
 margin/top = 50.0
 margin/right = 249.0
 margin/bottom = 14.0
@@ -2618,7 +2619,7 @@ custom_fonts/font = ExtResource( 8 )
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
-text = "Set Custom Description"
+text = "Custom Description"
 flat = false
 
 [node name="brandbutton" type="Button" parent="regulations/clothes&relatives&customs"]
@@ -3856,8 +3857,8 @@ If 'Public' is checked, other servants will also be watching and it will severe 
 visible_characters = -1
 
 [node name="tickling" type="Button" parent="actions/punishroom/Popup/Panel" groups=[
-"actions",
 "sexpunish",
+"actions",
 ]]
 
 focus/ignore_mouse = false
@@ -3876,8 +3877,8 @@ text = "Tickling"
 flat = false
 
 [node name="spanking" type="Button" parent="actions/punishroom/Popup/Panel" groups=[
-"actions",
 "sexpunish",
+"actions",
 ]]
 
 focus/ignore_mouse = false
@@ -3896,8 +3897,8 @@ text = "Spanking"
 flat = false
 
 [node name="whipping" type="Button" parent="actions/punishroom/Popup/Panel" groups=[
-"actions",
 "sexpunish",
+"actions",
 ]]
 
 focus/ignore_mouse = false
@@ -3916,8 +3917,8 @@ text = "Whipping"
 flat = false
 
 [node name="hotwax" type="Button" parent="actions/punishroom/Popup/Panel" groups=[
-"actions",
 "sexpunish",
+"actions",
 ]]
 
 focus/ignore_mouse = false
@@ -3936,8 +3937,8 @@ text = "Hot Wax"
 flat = false
 
 [node name="woodenhorse" type="Button" parent="actions/punishroom/Popup/Panel" groups=[
-"actions",
 "sexpunish",
+"actions",
 ]]
 
 focus/ignore_mouse = false

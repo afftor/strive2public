@@ -43,6 +43,7 @@ tabs_visible = true
 [node name="Settings" type="Tabs" parent="TabContainer"]
 
 editor/display_folded = true
+visibility/visible = false
 anchor/right = 1
 anchor/bottom = 1
 focus/ignore_mouse = false
@@ -470,8 +471,6 @@ max_lines_visible = -1
 
 [node name="Supporter section" type="Tabs" parent="TabContainer"]
 
-editor/display_folded = true
-visibility/visible = false
 anchor/right = 1
 anchor/bottom = 1
 focus/ignore_mouse = false
@@ -564,7 +563,6 @@ flat = false
 
 [node name="cheatpanel" type="Panel" parent="TabContainer/Supporter section"]
 
-visibility/visible = false
 anchor/left = 3
 anchor/top = 3
 anchor/right = 3
@@ -781,11 +779,27 @@ size_flags/vertical = 2
 margin/left = 348.0
 margin/top = 299.0
 margin/right = 471.0
-margin/bottom = 331.0
+margin/bottom = 335.0
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
 text = "Add Skillpoint"
+flat = false
+
+[node name="addlevel" type="Button" parent="TabContainer/Supporter section/cheatpanel"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 348.0
+margin/top = 349.0
+margin/right = 471.0
+margin/bottom = 385.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Add Level"
 flat = false
 
 [node name="levelup" type="Button" parent="TabContainer/Supporter section/cheatpanel"]
@@ -874,6 +888,8 @@ flat = false
 
 [node name="screenpopup" type="Popup" parent="."]
 
+editor/display_folded = true
+visibility/visible = false
 anchor/left = 3
 anchor/top = 3
 anchor/right = 3
@@ -1018,6 +1034,8 @@ flat = false
 [connection signal="pressed" from="TabContainer/Supporter section/cheatpanel/nostress" to="." method="_on_nostress_pressed"]
 
 [connection signal="pressed" from="TabContainer/Supporter section/cheatpanel/addskillpoints" to="." method="_on_addskillpoints_pressed"]
+
+[connection signal="pressed" from="TabContainer/Supporter section/cheatpanel/addlevel" to="." method="_on_addlevel_pressed"]
 
 [connection signal="pressed" from="TabContainer/Supporter section/cheatpanel/levelup" to="." method="_on_levelup_pressed"]
 

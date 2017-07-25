@@ -694,7 +694,7 @@ func pussyrape(slave):
 		text += "$name makes a show of struggling "
 	else:
 		text += "$name struggles "
-	text += "as you roughly toss $him onto the bed. "
+	text += "as you forcefully toss $him onto the bed. "
 	if slave.bodyshape in ['humanoid', 'bestial']:
 		if slave.tail != "none":
 			text += "Forcing $his legs apart you roughly push $his " + slave.tail + " tail out of the way exposing $his pussy to you. "
@@ -702,7 +702,7 @@ func pussyrape(slave):
 			text += "Forcing $his legs apart you open $his pussy to you. "
 	else:
 		text += "Grabbing $him by $his " + slave.legs + "legs you reveal $his pussy. "
-	text += "Pressing your " + globals.player.dictionaryplayer("$penis") + " against $his pussy $he begs you not to do it. With a single thrust you slam your " +  globals.player.dictionaryplayer("$penis") + " all the way into $his pussy. $He " + globals.fastif(slave.pussy.virgin == true, "screams in pain as your " + globals.player.dictionaryplayer("$penis") + " tears through $his virginity.", "yells out in protest at your sudden assault.") + "\n\n Wraping your arms about $him you hold $him in position as you thrust your " +  globals.player.dictionaryplayer("$penis") + " in and out of $his pussy with hard violent strokes. $He squirms trying to break free and get away but you hold on tightly. Tears start falling down $his cheeks and $he begs you to stop. $His desperation brings you closer to climax."
+	text += "Pressing your " + globals.player.dictionaryplayer("$penis") + " against $his groin $he begs you not to do it. With a single thrust you slam your " +  globals.player.dictionaryplayer("$penis") + " all the way into $his slit. $He " + globals.fastif(slave.pussy.virgin == true, "screams in pain as your " + globals.player.dictionaryplayer("$penis") + " tears through $his virginity.", "yells out in protest at your sudden assault.") + "\n\n Wraping your arms about $him you hold $him in position as you thrust your " +  globals.player.dictionaryplayer("$penis") + " in and out of $his pussy with hard violent strokes. $He squirms trying to break free and get away but you hold on tightly. Tears start falling down $his cheeks and $he begs you to stop. $His desperation brings you closer to climax."
 	return text
 	
 func analsex(slave):

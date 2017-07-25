@@ -9,6 +9,7 @@ var testslaveorigin = ['slave','poor','commoner','rich','noble']
 var currentslave = 0 setget currentslave_set
 var selectedslave = -1
 var texture = null
+var gameloaded = false
 
 signal animfinished
 
@@ -46,7 +47,7 @@ func _input(event):
 		laboratory()
 	elif event.is_action_pressed("Z") && get_node("buttonpanel").is_visible() && !get_node("buttonpanel/VBoxContainer/farm").is_disabled():
 		farm()
-	elif event.is_action_pressed("X") && get_node("buttonpanel").is_visible():
+	elif event.is_action_pressed("X") && get_node("buttonpanel").is_visible() && !get_node("buttonpanel/VBoxContainer/portals").is_disabled():
 		portals()
 	elif event.is_action_pressed("C") && get_node("buttonpanel").is_visible():
 		leave()
@@ -67,14 +68,13 @@ func _ready():
 		globals.developmode = true
 		get_node("startcombat").set_hidden(false)
 		get_node("new slave button").set_hidden(false)
+		get_node("debug").set_hidden(false)
 	_on_mansion_pressed()
 	set_process_input(true)
 	rebuildrepeatablequests()
-	for i in globals.state.portals.values():
-		if i.code == globals.state.location:
-			i.enabled = false
 	globals.resources.panel = get_node("ResourcePanel")
 	if globals.player.name == null:
+		#_on_leavenode_mouse_enter()
 		globals.player = globals.slavegen.newslave('Human', 'teen', 'male')
 		globals.player.relatives.father = 0
 		globals.player.relatives.mother = 0
@@ -111,6 +111,9 @@ func _ready():
 	
 	if globals.showalisegreet == true:
 		alisegreet()
+	if globals.rules.gameloaded == false:
+		_on_buttonpanel_mouse_enter()
+		get_node("buttonpanel/leavenode").set_hidden(true)
 	#OS.set_window_fullscreen(true)
 
 func mansion():
@@ -234,13 +237,14 @@ func _on_new_slave_button_pressed():
 	globals.resources.food += 1000
 	globals.resources.mana += 1000
 	globals.player.energy = 100
+	globals.state.reputation.frostford = 30
 	for i in ['armorchain','weaponclaymore','clothpet','clothninja']:
 		var tmpitem = get_node("itemnode").createunstackable(i)
 		globals.state.unstackables[str(tmpitem.id)] = tmpitem
 	globals.state.sidequests.brothel = 2
-	globals.state.sidequests.yris = 0
+	globals.state.sidequests.emily = 16
 	globals.state.rank = 3
-	globals.state.mainquest = 20
+	globals.state.mainquest = 30
 	globals.state.farm = 4
 	globals.state.laboratory = 1
 	globals.state.alchemy = 2
@@ -751,7 +755,6 @@ func _on_end_pressed():
 						slave.tits.lactation = true
 						if headgirl != null:
 							if slave.preg.duration == 6:
-								slave.metrics.preg += 1
 								text0.set_bbcode(text0.get_bbcode() + headgirl.dictionary('[color=yellow]$name reports, that ') + slave.dictionary('$name appears to be pregnant. [/color]\n'))
 							elif slave.preg.duration == 12:
 								text0.set_bbcode(text0.get_bbcode() + headgirl.dictionary('[color=yellow]$name reports, that ') + slave.dictionary('$name will likely give birth soon. [/color]\n'))
@@ -760,7 +763,6 @@ func _on_end_pressed():
 						slave.tits.lactation = true
 						if headgirl != null:
 							if slave.preg.duration == 11:
-								slave.metrics.preg += 1
 								text0.set_bbcode(text0.get_bbcode() + headgirl.dictionary('[color=yellow]$name reports, that ') + slave.dictionary('$name appears to be pregnant. [/color]\n'))
 							elif slave.preg.duration == 23:
 								text0.set_bbcode(text0.get_bbcode() + headgirl.dictionary('[color=yellow]$name reports, that ') + slave.dictionary('$name will likely give birth soon. [/color]\n'))
@@ -1840,9 +1842,14 @@ func _on_mansion_pressed():
 	get_node("charlistcontrol").set_hidden(false)
 	get_node("MainScreen").set_hidden(false)
 	get_node("Navigation").set_hidden(false)
-	#get_node("Navigation/portals").set_hidden(false)
-	#get_node("Navigation/leave").set_hidden(false)
-	#get_node("Navigation/mansion").set_hidden(false)
+	var portals = false
+	for i in globals.state.portals.values():
+		if i.enabled == true:
+			portals = true
+	if portals == true:
+		get_node("buttonpanel/VBoxContainer/portals").set_disabled(false)
+	else:
+		get_node("buttonpanel/VBoxContainer/portals").set_disabled(true)
 	textnode.set_hidden(false)
 	var sleepers = globals.count_sleepers()
 	text = 'You are at your mansion, which is located near [color=aqua]'+ globals.state.location.capitalize()+'[/color].\n\n' 
@@ -2194,7 +2201,18 @@ var mainquestdict = {
 '23': "Bring 2 slaves to the Shuriya: an elf and a drow. ",
 '24': "Search through Undercity ruins for any remaining documents. ",
 '25': "Return to Melissa with your findings. ",
-'26': "You have completed current available quest line!"
+'26': "Visit Melissa for your next assignement. ",
+'27': "Visit Capital. ",
+'28': "Visit Frostford's City Hall. ",
+'28.1': "Investigate suspicious hunting grounds at Frostford's outskirts. ",
+'29': "Report back to Theron about your findings. ",
+'30': "Decide on the solution for Frostford's issue. ",
+'31': "Let Theron know about Zoe's decision.",
+'32': "Bring Zoe 500 units of food, 15 Nature Essences and 5 Fluid Substances.",
+'33': "Return to Theron.",
+'34': "Return to Theron.",
+'35':"Return to Theron.",
+'36': "You have finished currently available quest line. ",
 }
 var dolinquestdict = {
 '8':"Dolin from Shaliq wants you to get 25 mana and visit her to trade it for a spell.",
@@ -3199,7 +3217,7 @@ func _on_startcombat_pressed():
 		for j in ['sstr','sagi','smaf','send','wit','cour','conf','charm','health']:
 			i[j] = 100
 	get_node("outside").gooutside()
-	get_node("explorationnode").zoneenter("undercityhall")
+	get_node("explorationnode").zoneenter("frostfordoutskirts")
 	#get_node("combat").start_battle()
 
 func checkplayergroup():
@@ -3633,17 +3651,13 @@ func _on_wiki_pressed():
 	OS.shell_open('http://strive4power.wikia.com/wiki/Strive4power_Wiki')
 
 
-var panelshown = true
+var panelshown = false
 
 func _on_buttonpanel_mouse_enter():
 	get_node("buttonpanel/leavenode").set_hidden(false)
 	if panelshown == false:
 		get_node("AnimationPlayer").play("panelshow")
 		panelshown = true
-
-
-
-
 
 func _on_leavenode_mouse_enter():
 	if panelshown == true:

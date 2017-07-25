@@ -144,6 +144,9 @@ func _input(event):
 			elif event.is_action_pressed(str(key)) == true && get_parent().get_node("dialogue").is_hidden() == false && get_parent().get_node("dialogue/popupbuttoncenter/popupbuttons").get_children().size() >= key+1:
 				if get_parent().get_node("dialogue/popupbuttoncenter/popupbuttons").get_child(key).is_disabled() == false:
 					get_parent().get_node("dialogue/popupbuttoncenter/popupbuttons").get_child(key).emit_signal("pressed")
+			elif event.is_action_pressed(str(key)) == true && get_parent().get_node("tutorialnode/response").is_hidden() == false && get_parent().get_node("tutorialnode/response/ScrollContainer/VBoxContainer").get_children().size() >= key+1:
+				if get_parent().get_node("tutorialnode/response/ScrollContainer/VBoxContainer").get_child(key).is_disabled() == false:
+					get_parent().get_node("tutorialnode/response/ScrollContainer/VBoxContainer").get_child(key).emit_signal("pressed")
 
 func newslaveinguild(number, town = 'wimborn'):
 	while number > 0:
@@ -857,17 +860,23 @@ func mageorder():
 	
 	if globals.state.sidequests.emily == 12:
 		array.append({name = "Visit Tisha's workplace", function = "tishaquest"})
+	if globals.state.mainquest == 27:
+		array.append({name = "Teleport to Capital", function = 'capitalteleport'})
 	
 	array.append({name = 'Return to city',function = 'town'})
 	buildbuttons(array)
 
-func tishaquest():
-	if globals.state.sidequests.emily == 12:
-		globals.events.tishadorms()
-	elif globals.state.sidequests.emily == 13:
-		globals.events.tishabackstreets()
-	elif globals.state.sidequests.emily in [14,15]:
-		globals.events.tishagornguild()
+func capitalteleport():
+	var buttons = []
+	var text = ''
+	var state = true
+	var sprites = null
+	if globals.state.mainquest == 27:
+		text = questtext.MainQuestFrostfordMainOrder
+		globals.state.mainquest = 28
+	
+	main.dialogue(state, self, text, buttons, sprites)
+	mageorder()
 
 func mageorderquest1(slave = null):
 	var buttons = []
@@ -975,6 +984,15 @@ func mageorderquest1(slave = null):
 		globals.state.mainquest = 26
 		sprites = [['melissafriendly','pos1','opac']]
 		text = questtext.MainQuestUndercityReturn
+	elif globals.state.mainquest == 26:
+		globals.state.mainquest = 27
+		sprites = [['melissafriendly','pos1','opac']]
+		text = questtext.MainQuestFrostfordMelissa
+	elif globals.state.mainquest >= 27 && globals.state.mainquest <= 35:
+		text = "You decide there's nothing you can gain from visiting Melissa right now. "
+	elif globals.state.mainquest >= 36:
+		text = "[color=yellow]— Wow, that's quite an accomplishment, making it this far. I'm sorry, but this story is not finished yet and you will have to wait for some time. Thank you for staying with us and see you next time, $name.[/color]"
+		sprites = [['melissafriendly','pos1','opac']]
 	main.dialogue(state, self, text, buttons, sprites)
 	mageorder()
 
@@ -1202,6 +1220,15 @@ func _on_upgradelaboratory_pressed():
 		globals.resources.gold -= 3000
 		main.popup('You have purchased advanced equipment for your laboratory. ')
 	_on_mageorderservices_visibility_changed()
+
+func tishaquest():
+	if globals.state.sidequests.emily == 12:
+		globals.events.tishadorms()
+	elif globals.state.sidequests.emily == 13:
+		globals.events.tishabackstreets()
+	elif globals.state.sidequests.emily in [14,15]:
+		globals.events.tishagornguild()
+
 #################### Markets
 #
 func market():
@@ -1289,12 +1316,12 @@ func _on_carpenterleave_pressed():
 	market()
 
 var shops = {
-wimbornmarket = {code = 'wimbornmarket', name = "Wimborn's Market", items =  ['food','supply','basicsolutioning','hairdye', 'aphrodisiac' ,'beautypot', 'magicessenceing', 'natureessenceing','armorleather','armorchain','weapondagger','weaponsword','clothsundress','clothmaid','clothbutler','underwearlacy','underwearboxers'], selling = true},
+wimbornmarket = {code = 'wimbornmarket', name = "Wimborn's Market", items =  ['food','supply','teleportgorn','teleportfrostford','basicsolutioning','hairdye', 'aphrodisiac' ,'beautypot', 'magicessenceing', 'natureessenceing','armorleather','armorchain','weapondagger','weaponsword','clothsundress','clothmaid','clothbutler','underwearlacy','underwearboxers'], selling = true},
 shaliqshop = {code = 'shaliqshop', name = "Village's Trader", items = ['hairdye','beautypot','armorleather','clothmiko','clothkimono','clothninja'], selling = true},
-gornmarket = {code = 'gornmarket', name = "Gorn's Market", items = ['food', 'supply','magicessenceing',"armorleather",'armorchain','weaponclaymore','clothbedlah','accslavecollar','acchandcuffs'], selling = true},
-frostfordmarket = {code = 'frostfordmarket', name = "Frostford's Market", items = ['supply','basicsolutioning','bestialessenceing','clothpet', 'weaponsword','accgoldring'], selling = true},
+gornmarket = {code = 'gornmarket', name = "Gorn's Market", items = ['food', 'supply','teleportwimborn','teleportfrostford','magicessenceing',"armorleather",'armorchain','weaponclaymore','clothbedlah','accslavecollar','acchandcuffs'], selling = true},
+frostfordmarket = {code = 'frostfordmarket', name = "Frostford's Market", items = ['supply','teleportwimborn','teleportgorn', 'basicsolutioning','bestialessenceing','clothpet', 'weaponsword','accgoldring'], selling = true},
 aydashop = {code = 'aydashop', name = "Gorn's Alchemist", items = ['regressionpot', 'beautypot', 'hairdye', 'basicsolutioning','bestialessenceing','taintedessenceing','fluidsubstanceing'], selling = false},
-amberguardmarket = {code = 'amberguardmarket', name = "Amberguard's Market", items = ['beautypot','bestialessenceing','magicessenceing','fluidsubstanceing','armorelvenchain'], selling = true},
+amberguardmarket = {code = 'amberguardmarket', name = "Amberguard's Market", items = ['teleportamberguard','beautypot','bestialessenceing','magicessenceing','fluidsubstanceing','armorelvenchain'], selling = true},
 }
 var currentshop
 var selecteditem
@@ -1336,6 +1363,10 @@ func shopbuy():
 	
 	for i in currentshop.items:
 		item = globals.itemdict[i]
+		if item.code.find('teleport') >= 0:
+			var temp = item.code.replace('teleport', '')
+			if temp == globals.state.location || globals.state.portals[temp].enabled == true:
+				continue
 		newbutton = itembutton.duplicate()
 		newbutton.set_hidden(false)
 		newbutton.get_node("price").set_text(str(item.cost))
@@ -1429,6 +1460,11 @@ func selectshopitem(tempitem, unstuck = null):
 	if item.type != 'dummy' && item.type != 'gear':
 		text += "\nIn Possession: " + str(item.amount)
 	text += "\n\n" + item.description
+	if item.code.find('teleport') >= 0:
+		get_node("shoppanel/itempanel/buysellbutton/SpinBox").set_hidden(true)
+		get_node("shoppanel/itempanel/buysellbutton/SpinBox").set_val(1)
+	else:
+		get_node("shoppanel/itempanel/buysellbutton/SpinBox").set_hidden(false)
 	if item.type == 'gear':
 		if item.icon != null:
 			get_node("shoppanel/itempanel/iconbig").set_hidden(false)
@@ -1442,6 +1478,9 @@ func selectshopitem(tempitem, unstuck = null):
 			text += "\n\n[color=green]Effects: [/color]"
 			for i in item.effect:
 				text += '\n' + i.descript
+	if item.code in ["supply",'teleportwimborn','teleportgorn','teleportfrostford','teleportamberguard']:
+		get_node("shoppanel/itempanel/iconbig").set_hidden(false)
+		get_node("shoppanel/itempanel/iconbig").set_texture(item.icon)
 	get_node("shoppanel/itempanel/itemdescript").set_bbcode(text)
 	get_node("shoppanel/itempanel/buysellbutton").set_hidden(false)
 	if mode == 'buy' && item.cost > globals.resources.gold:
@@ -1471,6 +1510,11 @@ func _on_buysellbutton_pressed():
 				get_parent().infotext("[color=green]Obtained: " + item.name + "[/color]")
 		if item.code in ['food']:
 			get_parent().get_node("itemnode").call(item.effect)
+		elif item.code.find('teleport') >= 0:
+			get_parent().get_node("itemnode").call(item.effect, item)
+			selecteditem = null
+			shopbuy()
+			return
 		else:
 			globals.resources.gold -= item.cost*amount
 		selectshopitem(selecteditem)

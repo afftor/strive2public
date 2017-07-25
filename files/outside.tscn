@@ -225,7 +225,7 @@ tracks/1/keys = {
 "times": FloatArray( 0, 0.3 ),
 "transitions": FloatArray( 1, 1 ),
 "update": 0,
-"values": [ -527.5, -96.5 ]
+"values": [ -527.5, -63.5 ]
 }
 tracks/2/type = "value"
 tracks/2/path = NodePath("charactersprite:margin/top")
@@ -235,7 +235,7 @@ tracks/2/keys = {
 "times": FloatArray( 0, 0.3 ),
 "transitions": FloatArray( 1, 1 ),
 "update": 0,
-"values": [ 150.0, -12.0 ]
+"values": [ 150.0, -45.0 ]
 }
 tracks/3/type = "value"
 tracks/3/path = NodePath("charactersprite:margin/right")
@@ -245,7 +245,7 @@ tracks/3/keys = {
 "times": FloatArray( 0, 0.3 ),
 "transitions": FloatArray( 1, 1 ),
 "update": 0,
-"values": [ -540.0, -109.0 ]
+"values": [ -540.0, -121.0 ]
 }
 tracks/4/type = "value"
 tracks/4/path = NodePath("charactersprite:margin/bottom")
@@ -255,7 +255,7 @@ tracks/4/keys = {
 "times": FloatArray( 0, 0.3 ),
 "transitions": FloatArray( 1, 1 ),
 "update": 0,
-"values": [ -246.0, -84.0 ]
+"values": [ -246.0, -114.0 ]
 }
 
 [node name="outside" type="Panel"]
@@ -279,7 +279,6 @@ __meta__ = {
 
 [node name="playergrouppanel" type="Panel" parent="."]
 
-editor/display_folded = true
 anchor/top = 1
 anchor/right = 1
 anchor/bottom = 1
@@ -406,10 +405,10 @@ focus/ignore_mouse = true
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
-margin/left = -96.5
-margin/top = -12.0
-margin/right = -109.0
-margin/bottom = -84.0
+margin/left = -63.5
+margin/top = -45.0
+margin/right = -121.0
+margin/bottom = -114.0
 expand = true
 stretch_mode = 6
 

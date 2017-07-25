@@ -135,6 +135,7 @@ func _on_cheatpanel_visibility_changed(slave = null):
 		get_node("TabContainer/Supporter section/cheatpanel/maxlewd").set_disabled(true)
 		get_node("TabContainer/Supporter section/cheatpanel/nostress").set_disabled(true)
 		get_node("TabContainer/Supporter section/cheatpanel/addskillpoints").set_disabled(true)
+		get_node("TabContainer/Supporter section/cheatpanel/addlevel").set_disabled(true)
 	else:
 		get_node("TabContainer/Supporter section/cheatpanel/selectedslavelabel").set_text('Selected slave - '+slave.name + '\nObedience - '+str(slave.obed)+'\nLust - '+str(slave.lust)+'\nLoyalty - '+str(slave.loyal) + '\nAffection - '+str(slave.sexuals.affection)+'\nStress - '+str(slave.stress) + '\nSkillpoints - ' + str(slave.level.skillpoints) )
 		selectedslave = slave
@@ -144,6 +145,7 @@ func _on_cheatpanel_visibility_changed(slave = null):
 		get_node("TabContainer/Supporter section/cheatpanel/maxlewd").set_disabled(false)
 		get_node("TabContainer/Supporter section/cheatpanel/nostress").set_disabled(false)
 		get_node("TabContainer/Supporter section/cheatpanel/addskillpoints").set_disabled(false)
+		get_node("TabContainer/Supporter section/cheatpanel/addlevel").set_disabled(false)
 
 func _on_selectslave_pressed():
 	if get_tree().get_current_scene().find_node('mansion'):
@@ -204,6 +206,10 @@ func _on_nostress_pressed():
 func _on_addskillpoints_pressed():
 	selectedslave.level.skillpoints += 1
 	_on_cheatpanel_visibility_changed(selectedslave)
+
+
+func _on_addlevel_pressed():
+	selectedslave.level.value += 1
 
 
 func _on_levelup_pressed():
@@ -284,3 +290,4 @@ func _on_cancel_pressed():
 	OS.set_window_fullscreen(!get_node("TabContainer/Settings/fullscreen").is_pressed())
 	get_node("TabContainer/Settings/fullscreen").set_pressed(globals.rules.fullscreen)
 	get_node("screenpopup").set_hidden(true)
+

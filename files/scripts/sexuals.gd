@@ -293,6 +293,10 @@ func sexinitiate(secondtime = false):
 	slave.metrics.sex += 1
 	partner.metrics.sex += 1
 	
+	if globals.state.sidequests.emily == 16 && slave.unique in ['Emily','Tisha'] && partner.unique in ['Emily','Tisha']:
+		emilytishascene()
+		return
+	
 	if partner.metrics.partners.find(slave.id) < 0:
 		partner.metrics.partners.append(slave.id)
 	if slave.metrics.partners.find(partner.id) < 0:
@@ -621,6 +625,9 @@ func _on_confirm_pressed():
 	var mana = 0
 	var array = []
 	var drows = 0
+	if globals.state.sidequests.emily == 16 && (action == 'threesome' && slave.unique in ['Emily','Tisha'] && threesomepartner.unique in ['Emily','Tisha']):
+		emilytishascene()
+		return
 	if action == 'threesome':
 		array = [slave, threesomepartner]
 		globals.player.energy = -30
@@ -680,6 +687,10 @@ func _on_confirm_pressed():
 	globals.state.groupsex = false
 	get_node("group/grouppopup").set_hidden(true)
 	get_tree().get_current_scene().popup(text)
+
+func emilytishascene():
+	globals.state.sidequests.emily = 17
+	globals.events.emilytishasex()
 
 func _on_partner2_pressed():
 	globals.partner = slave

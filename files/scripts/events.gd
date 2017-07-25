@@ -244,7 +244,255 @@ func undercitybosswin():
 	text += "\n[color=green]After searching through the building ruins you managed to find 1 [color=aqua]" + reward.name + "[/color]. [/color]"
 	globals.get_tree().get_current_scene().popup(text)
 
+func frostfordcityhall(stage = 0):
+	var text 
+	var state = true
+	var sprite
+	var buttons = []
+	if globals.state.sidequests.has('zoe') == false:
+		globals.state.sidequests.zoe = 0
+	if stage == 0:
+		if globals.state.mainquest == 28:
+			text = textnode.MainQuestFrostfordCityhall
+			globals.state.mainquest = 28.1
+		elif globals.state.mainquest == 29:
+			text = textnode.MainQuestFrostfordCityhallReturn
+			globals.state.mainquest = 30
+			if globals.state.reputation.frostford >= 20:
+				state = false
+				buttons.append({text = "Continue", function = "frostfordcityhall", args = 1})
+		elif globals.state.mainquest == 30:
+			text = textnode.MainQuestFrostfordCityhallReturn2
+			state = false
+			buttons.append({text = "Fire Theron", function = 'frostfordcityhall', args = 5})
+			buttons.append({text = "Leave", function = 'frostfordcityhall', args = 4})
+		elif globals.state.mainquest == 31:
+			text = textnode.MainQuestFrostfordTheronZoeReturn
+			globals.state.mainquest = 32
+		elif globals.state.mainquest == 33:
+			text = textnode.MainQuestFrostfordZoeAliveReturn
+			state = false
+			buttons.append({text = "Accept", function = "frostfordcityhall", args = 7})
+			buttons.append({text = "Refuse", function = "frostfordcityhall", args = 8})
+			globals.state.decisions.append("zoesaved")
+			globals.state.mainquest = 36
+			if globals.state.decisions.find('zoeselfsacrifice') >= 0:
+				text += "[color=aqua]When you offered your life for me... that was very unexpected, and I wish I could pay you back some day."
+		elif globals.state.mainquest == 34:
+			text = textnode.MainQuestFrostfordZoeDeadReturn
+			globals.state.decisions.append("zoedied")
+			globals.state.mainquest = 36
+		elif globals.state.mainquest == 35:
+			text = textnode.MainQuestFrostfordForestWinReturn
+			globals.state.decisions.append("dryaddefeated")
+			globals.state.mainquest = 36
+	elif stage == 1:
+		text = textnode.MainQuestFrostfordCityhallZoe
+		state = false
+		buttons.append({text = 'Accept', function = "frostfordcityhall", args = 2})
+		buttons.append({text = 'Refuse', function = "frostfordcityhall", args = 3})
+	elif stage == 2:
+		text = textnode.MainQuestFrostfordCityhallZoeAccept
+		globals.state.sidequests.zoe = 1
+	elif stage == 3:
+		text = textnode.MainQuestFrostfordCityhallZoeRefuse
+		globals.state.sidequests.zoe = 100
+	elif stage == 4:
+		globals.get_tree().get_current_scene().close_dialogue()
+		return
+	elif stage == 5:
+		text = textnode.MainQuestFrostfordCityhallFireTheron
+		state = false
+		buttons.append({text = "Continue", function = "frostfordcityhall", args = 6})
+	elif stage == 6:
+		text = textnode.MainQuestFrostfordCityhallFireTheron2
+		state = true
+		globals.state.decisions.append("theronfired")
+		globals.resources.day += 1
+		globals.state.mainquest = 36
+	elif stage == 7:
+		text = textnode.MainQuestFrostfordZoeJoin
+		var slave = zoemake()
+		globals.slaves = slave
+	elif stage == 8:
+		text = textnode.MainQuestFrostfordZoeLeave
+	globals.get_tree().get_current_scene().get_node("explorationnode").zoneenter('frostford')
+	globals.get_tree().get_current_scene().dialogue(state, self, text, buttons, sprite)
 
+func frostforddryad():
+	var text 
+	var sprite
+	var state = true
+	var buttons = []
+	if globals.state.mainquest == 28.1:
+		text = textnode.MainQuestFrostfordForest
+		globals.state.mainquest = 29
+	elif globals.state.mainquest == 30:
+		if globals.state.sidequests.zoe < 1 || globals.state.sidequests.zoe == 100:
+			text = textnode.MainQuestFrostfordForestReturn
+			state = true
+			buttons.append({text = "Fight", function = 'dryadfight', args = 0})
+		else:
+			text = textnode.MainQuestFrostfordForestReturnWithZoe
+			state = false
+			buttons.append({text = 'Continue', function = "frostforddryadzoe", args = 0})
+	elif globals.state.mainquest == 32:
+		if globals.itemdict.natureessenceing.amount >= 15 && globals.itemdict.fluidsubstanceing.amount >= 5 && globals.resources.food >= 500:
+			globals.itemdict.natureessenceing.amount -= 15
+			globals.itemdict.fluidsubstanceing.amount -= 5
+			globals.resources.food -= 500
+			text = textnode.MainQuestFrostfordForestReturnZoe
+			buttons.append({text = "Fight", function = 'dryadfight', args = 2})
+			state = false
+		else:
+			text = "You don't have everything Zoe asked you to bring. "
+	globals.get_tree().get_current_scene().get_node("explorationnode").zoneenter('frostfordoutskirts')
+	globals.get_tree().get_current_scene().dialogue(state, self, text, buttons, sprite)
+
+func frostforddryadzoe(stage = 0):
+	var text 
+	var sprite
+	var state = true
+	var buttons = []
+	if stage == 0:
+		text = textnode.MainQuestFrostfordForestReturnWithZoe2
+		globals.state.mainquest = 31
+	globals.get_tree().get_current_scene().dialogue(state, self, text, buttons, sprite)
+
+func dryadfight(stage = 0):
+	var text 
+	var sprite
+	var buttons = []
+	if stage == 0:
+		text = textnode.MainQuestFrostfordForestFight
+		buttons.append({text = "Continue", function = 'dryadfight', args = 1})
+		globals.get_tree().get_current_scene().dialogue(false, self, text, buttons, sprite)
+	elif stage == 1:
+		globals.get_tree().get_current_scene().close_dialogue()
+		globals.get_tree().get_current_scene().get_node("explorationnode").buildenemies("frostforddryadquest")
+		globals.get_tree().get_current_scene().get_node("explorationnode").launchonwin = 'dryadfightwin'
+		globals.get_tree().get_current_scene().get_node("combat").nocaptures = true
+		globals.get_tree().get_current_scene().get_node("explorationnode").enemyfight()
+	elif stage == 2:
+		globals.get_tree().get_current_scene().close_dialogue()
+		globals.get_tree().get_current_scene().get_node("explorationnode").buildenemies("frostfordzoequest")
+		globals.get_tree().get_current_scene().get_node("explorationnode").launchonwin = 'zoefightwin'
+		globals.get_tree().get_current_scene().get_node("combat").nocaptures = true
+		globals.get_tree().get_current_scene().get_node("explorationnode").enemyfight()
+		
+
+func dryadfightwin():
+	var text  = ''
+	var sprite
+	var buttons = []
+	text = textnode.MainQuestFrostfordForestWin
+	globals.state.mainquest = 35
+	print(globals.state.mainquest)
+	globals.get_tree().get_current_scene().get_node("explorationnode").zoneenter('frostfordoutskirts')
+	globals.get_tree().get_current_scene().dialogue(true, self, text, buttons, sprite)
+
+func zoefightwin(stage = 0):
+	var state = false
+	var text  = ''
+	var sprite
+	var buttons = []
+	text = textnode.MainQuestFrostfordForestReturnZoeWin
+	globals.get_tree().get_current_scene().get_node("explorationnode").zoneenter('frostfordoutskirts')
+	buttons.append({text = "Select party member", function = 'zoechooseslave', args = null})
+	buttons.append({text = "Refuse", function = "zoerefusehelp", args = 0})
+	globals.get_tree().get_current_scene().dialogue(state, self, text, buttons, sprite)
+
+func zoechooseslave(slave = null):
+	var state = false
+	var text  = ''
+	var sprite
+	var buttons = []
+	text = textnode.MainQuestFrostfordForestReturnZoeWin
+	if slave == null:
+		globals.get_tree().get_current_scene().selectslavelist(false, 'zoechooseslave', self, 'true', true, true)
+	else:
+		if slave == globals.player:
+			buttons.append({text = "Sacrifice self", function = 'zoesacrifice', args = slave})
+		else:
+			buttons.append({text = "Sacrifice " + slave.name_short(), function = 'zoesacrifice', args = slave})
+	buttons.append({text = "Select party member", function = 'zoechooseslave', args = null})
+	buttons.append({text = "Refuse", function = "zoerefusehelp", args = 0})
+	globals.get_tree().get_current_scene().dialogue(state, self, text, buttons, sprite)
+
+func zoerefusehelp(stage = 0):
+	var state = true
+	var text = textnode.MainQuestFrostfordZoeDie
+	var sprite
+	var buttons = []
+	text += "\n\n" + textnode.MainQuestFrostfordZoeHostage
+	
+	globals.state.mainquest = 34
+	globals.get_tree().get_current_scene().dialogue(state, self, text, buttons, sprite)
+
+func zoesacrifice(slave):
+	var state = true
+	var text  = ''
+	var sprite
+	var buttons = []
+	var condition
+	var zoealive = false
+	if slave == globals.player:
+		condition = 'self'
+		globals.state.decisions.append('zoeselfsacrifice')
+		zoealive = true
+	else:
+		if slave.send + slave.smaf < 6:
+			condition = 'bad'
+		elif slave.send + slave.smaf < 8:
+			condition = 'medium'
+		else:
+			condition = 'strong' 
+	if condition == 'self':
+		text = textnode.MainQuestFrostfordZoeSelf
+	elif condition == 'bad':
+		text = textnode.MainQuestFrostfordZoeWeak
+	elif condition == 'medium':
+		text = textnode.MainQuestFrostfordZoeMed
+		zoealive = true
+	elif condition == 'strong':
+		text = textnode.MainQuestFrostfordZoeStrong
+		zoealive = true
+	
+	if zoealive == true:
+		globals.state.mainquest = 33
+		text += textnode.MainQuestFrostfordZoeAlive
+	else:
+		globals.state.mainquest = 34
+	
+	text = slave.dictionary(text) + "\n\n" + textnode.MainQuestFrostfordZoeHostage
+	globals.get_tree().get_current_scene().dialogue(state, self, text, buttons, sprite)
+
+
+func zoemake():
+	var slave = globals.slavegen.newslave('Beastkin Wolf', 'teen', 'female', 'noble')
+	slave.name = 'Zoe'
+	slave.surname = ''
+	slave.face.beauty = 45
+	slave.haircolor = 'brown'
+	slave.hairlength = 'shoulder'
+	slave.hairstyle = 'straight'
+	slave.tits.size = 'average'
+	slave.ass = 'average'
+	slave.skin = 'fair'
+	slave.eyecolor = 'red'
+	slave.pussy.virgin = true
+	slave.pussy.first = 'none'
+	slave.stats.cour_base = 45
+	slave.stats.conf_base = 55
+	slave.stats.wit_base = 87
+	slave.stats.charm_base = 66
+	slave.height = 'average'
+	slave.furcolor = 'gray'
+	slave.obed = 90
+	slave.loyal = 25
+	slave.cleartraits()
+	slave.smaf += 1
+	return slave
 
 #Sidequests
 
@@ -338,7 +586,6 @@ func caliproposal(stage = 0):
 	var buttons = null
 	var cali
 	var state = true
-	print(true)
 	for i in globals.slaves:
 		if i.unique == 'Cali':
 			cali = i
@@ -1338,3 +1585,27 @@ func tishapay():
 	globals.resources.gold += 500
 	globals.get_tree().get_current_scene().popup(text)
 
+func emilytishasex(stage = 0):
+	var text
+	var state
+	var buttons = []
+	var emily
+	var tisha
+	if stage == 0:
+		for i in globals.slaves:
+			if i.unique == 'Emily':
+				emily = i
+			elif i.unique == 'Tisha':
+				tisha = i
+		emily.metrics.sex += 1
+		tisha.metrics.sex += 1
+		emily.metrics.partners.append(tisha.id)
+		tisha.metrics.partners.append(emily.id)
+		text = globals.questtext.TishaEmilySex
+		state = false
+		buttons.append(['Continue', "emilytishasex",1])
+		globals.resources.mana += 25
+	elif stage == 1:
+		text = globals.questtext.TishaEmilySex2
+		state = true
+	globals.get_tree().get_current_scene().dialogue(state,self,text,buttons)

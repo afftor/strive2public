@@ -5,7 +5,7 @@ var itemdict = {}
 var spelldict = {}
 var effectdict = {}
 var guildslaves = {wimborn = [], gorn = [], frostford = []}
-var gameversion = 4440
+var gameversion = 4450
 var state = progress.new()
 var developmode = false
 
@@ -159,6 +159,7 @@ oldresize = false,
 fadinganimation = true,
 permadeath = false,
 autoattack = true,
+gameloaded = false,
 }
 
 class resource:
@@ -273,12 +274,12 @@ class progress:
 	var mainquest = 0
 	var rank = 0
 	var password = ''
-	var sidequests = {emily = 0, brothel = 0, cali = 0, dolin = 0, ayda = 0, ivran = '', yris = 0}
+	var sidequests = {emily = 0, brothel = 0, cali = 0, dolin = 0, ayda = 0, ivran = '', yris = 0, zoe = 0}
 	var repeatables = {wimbornslaveguild = [], frostfordslaveguild = [], gornslaveguild = []}
 	var babylist = []
 	var companion = -1
 	var headgirlbehavior = 'none'
-	var portals = {wimborn = {'enabled' : true, 'code' : 'wimborn'}, gorn = {'enabled':true, 'code' : 'gorn'}, frostford = {'enabled':true, 'code' : 'frostford'}, shaliq = {'enabled':false, 'code':'shaliq'}, amberguard = {'enabled':false, 'code':'amberguard'}}
+	var portals = {wimborn = {'enabled' : false, 'code' : 'wimborn'}, gorn = {'enabled':false, 'code' : 'gorn'}, frostford = {'enabled':false, 'code' : 'frostford'}, shaliq = {'enabled':false, 'code':'shaliq'}, amberguard = {'enabled':false, 'code':'amberguard'}}
 	var sebastianorder = {race = 'none', taken = false, duration = 0}
 	var sebastianslave
 	var sandbox = false
@@ -291,12 +292,13 @@ class progress:
 	var reputation = {wimborn = 0, frostford = 0, gorn = 0}
 	var dailyeventcountdown = 0
 	var dailyeventprevious = 0
-	var currentversion = 4440
+	var currentversion = 4450
 	var unstackables = {}
 	var supplykeep = 10
 	var tutorial = {basics = false, slave = false, alchemy = false, jail = false, lab = false, farm = false, outside = false, combat = false}
 	var itemcounter = 0
 	var alisecloth = 'normal'
+	var decisions = []
 	var lorefound = []
 	
 	func cond_set(value):
@@ -788,6 +790,7 @@ class slave:
 	
 	func dictionaryplayer(text):
 		var string = text
+		string = string.replace('[Playername]', globals.player.name_short())
 		string = string.replace('$name', name_short())
 		string = string.replace('$penis', globals.fastif(penis.size == 'none', 'strapon', '$his cock'))
 		string = string.replace('$child', globals.fastif(sex == 'male', 'boy', 'girl'))
@@ -1114,6 +1117,7 @@ func load_game(filename):
 		spelldict[i].learned = true
 	state.spelllist = {}
 	if globals.state.sebastianorder.taken == true:
+		state.sebastianslave = slave.new()
 		state.sebastianslave = dict2inst(currentline.sebastianslave)
 	state.babylist.clear()
 	for i in currentline.slaves:
@@ -1131,7 +1135,7 @@ func load_game(filename):
 		state.customcursor = "res://files/buttons/kursor1.png"
 	
 	
-	
+	rules.gameloaded =true
 	if state.currentversion != gameversion:
 		print("Using old save, attempting repair")
 		repairsave()
@@ -1156,7 +1160,7 @@ func repairsave():
 	#repairing slaves
 	var tempslaves = []
 	tempslaves.append(player)
-	if state.sebastianslave != null:
+	if state.sebastianslave != null && globals.state.sebastianorder.taken:
 		tempslaves.append(state.sebastianslave)
 	for i in slaves:
 		tempslaves.append(i)
@@ -1209,8 +1213,12 @@ func repairsave():
 		itemdict.aphroditebrew.unlocked = true
 	if state.currentversion <= 44:
 		showalisegreet = true
-	if state.currentversion < 4440:
+	if state.currentversion < 4450:
 		state.portals = progress.new().portals
+		state.portals.wimborn.enabled = true
+		state.portals.frostford.enabled = true
+		state.portals.gorn.enabled = true
+		state.portals[state.location].enabled = false
 	state.currentversion = gameversion
 
 var showalisegreet = false

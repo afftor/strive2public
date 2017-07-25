@@ -161,6 +161,9 @@ func _on_startrandom_pressed():
 		globals.resources.food = 200
 		globals.resources.mana = 10
 	else:
+		for i in globals.state.portals.values():
+			if i.code != currentloc:
+				i.enabled = true
 		globals.resources.gold = 2500
 		globals.resources.food = 500
 		globals.resources.mana = 100
@@ -173,14 +176,6 @@ func _on_startrandom_pressed():
 		globals.itemdict.youthingpot.unlocked = true
 		globals.itemdict.maturingpot.unlocked = true
 
-
-func _on_PCFinish_pressed():
-	globals.player = get_node("TextureFrame/NewGamePanel").slavetemp
-	get_node("TextureFrame/NewGamePanel").set_hidden(true)
-	get_node("TextureFrame/NewSlavePanel").set_hidden(false)
-
-func _on_continue_pressed():
-	get_tree().change_scene("res://files/Mansion.scn")
 
 func _on_cancelsaveload_pressed():
 	get_node("TextureFrame/SavePanel").set_hidden(true)
@@ -888,6 +883,9 @@ func _on_slaveconfirm_pressed():
 		globals.resources.food += 200
 		globals.resources.mana += 10
 	else:
+		for i in globals.state.portals.values():
+			if i.code != currentloc:
+				i.enabled = true
 		globals.resources.gold += 5000
 		globals.resources.food += 500
 		globals.resources.mana += 100
@@ -926,10 +924,6 @@ mage = {code = 'mage', name = "Researcher", descript = "Despite being born in a 
 
 
 
-
-
-func startgame():
-	get_tree().change_scene("res://files/Mansion.scn")
 
 
 
