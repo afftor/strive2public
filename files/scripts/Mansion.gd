@@ -555,7 +555,7 @@ func _on_end_pressed():
 				text2.set_bbcode(text2.get_bbcode() + slave.dictionary('$name sleeps in a private room, which helps $him heal faster and provides some stress relief.\n'))
 				if slave.lust >= 50 && slave.rules.masturbation == false && slave.tags.find('nosex') < 0:
 					slave.lust = rand_range(-10,-15)
-					text2.set_bbcode(text2.get_bbcode() + slave.dictionary('In an attempt to calm $his lust, $he spent some time masturbating profusely given $her private conditions.\n'))
+					text2.set_bbcode(text2.get_bbcode() + slave.dictionary('In an attempt to calm $his lust, $he spent some time busying $himself in feverish masturbation, making use of $his private room.\n'))
 			elif slave.sleep == 'your':
 				slave.loyal += rand_range(1,4)
 				slave.energy = rand_range(25,45)+ slave.stats.end_cur*6

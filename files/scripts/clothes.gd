@@ -36,7 +36,7 @@ static func costumelist():
 	id = 5,
 	code = 'pet',
 	name = 'Pet Suit', 
-	tooltip = "Specially designed pieces  which represent a domestic animal, and force the wearer to walk on all fours. For obvious reasons, this should generally not be worn outside.",
+	tooltip = "Specially designed pieces which represent a domestic animal, and force the wearer to walk on all fours. For obvious reasons, this should generally not be worn outside.",
 	effect = ''
 	},
 	ninja = {
