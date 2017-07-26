@@ -563,6 +563,8 @@ flat = false
 
 [node name="cheatpanel" type="Panel" parent="TabContainer/Supporter section"]
 
+editor/display_folded = true
+visibility/visible = false
 anchor/left = 3
 anchor/top = 3
 anchor/right = 3

@@ -289,7 +289,7 @@ class progress:
 	var timedevents = {}
 	var customcursor = "res://files/buttons/kursor1.png"
 	var upcomingevents = []
-	var reputation = {wimborn = 0, frostford = 0, gorn = 0}
+	var reputation = {wimborn = 0, frostford = 0, gorn = 0} setget reputation_set
 	var dailyeventcountdown = 0
 	var dailyeventprevious = 0
 	var currentversion = 4450
@@ -300,6 +300,21 @@ class progress:
 	var alisecloth = 'normal'
 	var decisions = []
 	var lorefound = []
+	
+	var ghostrep = {wimborn = 0, frostford = 0, gorn = 0}
+	
+	func reputation_set(value):
+		var text = ''
+		for i in value:
+			if ghostrep[i] != value[i]:
+				if ghostrep[i] > value[i]:
+					text += "[color=red]Reputation with " + i.capitalize() + " has worsened![/color]"
+				else:
+					text += "[color=green]Reputation with " + i.capitalize() + " has increased![/color]"
+				ghostrep[i] = value[i]
+		if globals.get_tree().get_current_scene().has_node("infotext"):
+			globals.get_tree().get_current_scene().infotext(text)
+
 	
 	func cond_set(value):
 		condition += value*conditionmod

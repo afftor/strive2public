@@ -678,7 +678,7 @@ weaponclaymore = {
 accgoldring = {
 	code = 'accgoldring',
 	name = 'A Golden Ring',
-	icon = null,
+	icon = load("res://files/images/items/goldring.png"),
 	description = "This finely crafted gold ring comprises of two intertwined bands.\n[color=green]Increases slave's luxury[/color]",
 	effect = [],
 	recipe = '',

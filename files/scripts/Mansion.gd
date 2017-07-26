@@ -3287,7 +3287,7 @@ func _on_popupclosebutton_pressed():
 
 
 func infotext(newtext):
-	if (enddayprocess == true && newtext.findn("trait") < 0) || newtext == '' || get_node("combat").is_visible():
+	if (enddayprocess == true && newtext.findn("trait") < 0) || newtext == '' || (get_node("combat").is_visible() && get_node("combat/win").is_hidden()):
 		return
 	if get_node("infotext").get_children().size() >= 15:
 		get_node("infotext").get_child(get_node("infotext").get_children().size() - 14).queue_free()

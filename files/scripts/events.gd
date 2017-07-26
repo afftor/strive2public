@@ -263,6 +263,8 @@ func frostfordcityhall(stage = 0):
 				buttons.append({text = "Continue", function = "frostfordcityhall", args = 1})
 		elif globals.state.mainquest == 30:
 			text = textnode.MainQuestFrostfordCityhallReturn2
+			if globals.state.sidequests.zoe == 0:
+				text += "\n\n[color=yellow]You might discover new way to solve this if your Frostford reputation will get better.[/color]"
 			state = false
 			buttons.append({text = "Fire Theron", function = 'frostfordcityhall', args = 5})
 			buttons.append({text = "Leave", function = 'frostfordcityhall', args = 4})
@@ -330,6 +332,8 @@ func frostforddryad():
 	elif globals.state.mainquest == 30:
 		if globals.state.sidequests.zoe < 1 || globals.state.sidequests.zoe == 100:
 			text = textnode.MainQuestFrostfordForestReturn
+			if globals.state.sidequests.zoe == 0:
+				text += "\n\n[color=yellow]You might discover new way to solve this if your Frostford reputation will get better.[/color]"
 			state = true
 			buttons.append({text = "Fight", function = 'dryadfight', args = 0})
 		else:
