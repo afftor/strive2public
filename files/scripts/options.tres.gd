@@ -23,6 +23,7 @@ func _ready():
 	get_node("TabContainer/Game/receive").set_pressed(globals.rules.receiving)
 	get_node("TabContainer/Settings/fading").set_pressed(globals.rules.fadinganimation)
 	get_node("TabContainer/Game/permadeath").set_pressed(globals.rules.permadeath)
+	get_node("TabContainer/Game/aliseoption").select(globals.rules.enddayalise)
 	if globals.rules.children == true:
 		get_node("TabContainer/Game/noadults").set_hidden(false)
 		get_node("TabContainer/Game/noadults").set_pressed(globals.rules.noadults)
@@ -290,4 +291,9 @@ func _on_cancel_pressed():
 	OS.set_window_fullscreen(!get_node("TabContainer/Settings/fullscreen").is_pressed())
 	get_node("TabContainer/Settings/fullscreen").set_pressed(globals.rules.fullscreen)
 	get_node("screenpopup").set_hidden(true)
+
+
+
+func _on_aliseoption_item_selected( ID ):
+	globals.rules.enddayalise = ID
 

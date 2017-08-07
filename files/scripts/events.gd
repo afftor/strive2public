@@ -274,8 +274,8 @@ func frostfordcityhall(stage = 0):
 		elif globals.state.mainquest == 33:
 			text = textnode.MainQuestFrostfordZoeAliveReturn
 			state = false
-			buttons.append({text = "Accept", function = "frostfordcityhall", args = 7})
-			buttons.append({text = "Refuse", function = "frostfordcityhall", args = 8})
+			buttons.append({text = "Invite Zoe to join you", function = "frostfordcityhall", args = 7})
+			buttons.append({text = "Say her goodbye", function = "frostfordcityhall", args = 8})
 			globals.state.decisions.append("zoesaved")
 			globals.state.mainquest = 36
 			if globals.state.decisions.find('zoeselfsacrifice') >= 0:
@@ -494,6 +494,7 @@ func zoemake():
 	slave.furcolor = 'gray'
 	slave.obed = 90
 	slave.loyal = 25
+	slave.sexuals.unlocks = []
 	slave.cleartraits()
 	slave.smaf += 1
 	return slave
@@ -1216,15 +1217,17 @@ func tishaappearance():
 	if emily == null:
 		return
 	var text = textnode.TishaEncounter
-	sprite = [['emily2normal','pos2','opac2']]
+	sprite = [['emily2normal','pos2','opac2'],['tishaangry','pos1','opac']]
 	if emily.loyal >= 25:
 		text += textnode.TishaEmilyLoyal
+		sprite = [['emily2happy','pos2','opac2'],['tishashocked','pos1','opac']]
 		emilystate = 'loyal'
 		buttons.append(['Make Emily leave', 'tishadecision', 1])
 		buttons.append(['Make Emily stay', 'tishadecision', 2])
 	elif emily.brand != 'none':
 		emilystate = 'brand'
 		text += textnode.TishaEmilyBranded
+		[['emily2normal','pos2','opac2'],['tishaangry','pos1','opac']]
 		buttons.append(['Release Emily', 'tishadecision', 3])
 		buttons.append(['Keep Emily', 'tishadecision', 4])
 		buttons.append(['Offer Tisha to take her place', 'tishadecision', 5])
@@ -1243,6 +1246,9 @@ func tishadecision(number):
 	var emily
 	var tisha
 	var buttons = []
+	var state = true
+	var sprite = []
+	sprite = [['emily2normal','pos2'],['tishaangry','pos1']]
 	for i in globals.slaves:
 		if i.unique == 'Emily':
 			emily = i
@@ -1256,24 +1262,23 @@ func tishadecision(number):
 			buttons.append(['Help them with gold and provision', 'tishadecision', 7])		
 		else:
 			buttons.append({text = 'Help them with gold and provisions',function = 'tishadecision',args = 7, disabled = true})
-		globals.get_tree().get_current_scene().dialogue(false,self,text,buttons)
+			state = false
 	elif number == 2:
+		sprite = [['emily2normal','pos2'],['tishashocked','pos1']]
 		text = textnode.TishaEmilyStay
-		globals.get_tree().get_current_scene().dialogue(true,self,text,buttons)
 	elif number == 3:
 		globals.slaves.erase(emily)
 		text = textnode.TishaEmilyLeaveFree
-		globals.get_tree().get_current_scene().dialogue(true,self,text,buttons)
 	elif number == 4:
 		text = "You send Tisha off as you hold all the rights over Emily now. Having no choice, she curses you and leaves. "
-		globals.get_tree().get_current_scene().dialogue(true,self,text,buttons)
 	elif number == 5:
 		text = textnode.TishaEmilyBrandCompensation
+		sprite = [['tishanormal','pos1']]
 		buttons.append(['Go with your word and release Emily', 'tishadecision', 10])
 		buttons.append(['Keep Emily anyway', 'tishadecision', 9])
 		text += "\n\n[color=green]You've earned 15 mana.\n\nTisha now belongs to you. [/color]"
 		globals.resources.mana += 15
-		globals.get_tree().get_current_scene().dialogue(false,self,text,buttons)
+		state = false
 		var slave = maketisha()
 		globals.slaves = slave
 	elif number == 6:
@@ -1286,9 +1291,9 @@ func tishadecision(number):
 			globals.state.sidequests.emily = 10
 		else:
 			globals.slaves.erase(emily)
-		globals.get_tree().get_current_scene().dialogue(true,self,text,buttons)
 	elif number == 7:
 		text = textnode.TishaEmilyLeaveHelp
+		sprite = [['emily2normal','pos2'],['tishaneutral','pos1']]
 		emily.away.at = 'hidden'
 		emily.away.duration = -1
 		emily.loyal += 15
@@ -1297,15 +1302,15 @@ func tishadecision(number):
 		globals.resources.gold -= 50
 		globals.state.reputation.wimborn += 5
 		globals.state.sidequests.emily = 11
-		globals.get_tree().get_current_scene().dialogue(true,self,text,buttons)
 	elif number == 8:
+		sprite = [['tishaangry','pos1']]
 		text = textnode.TishaEmilyCompensation
 		text += "\n\n[color=green]You've earned 15 mana. [/color]"
 		globals.slaves.erase(emily)
 		globals.resources.mana += 15
-		globals.get_tree().get_current_scene().dialogue(true,self,text,buttons)
 	elif number == 9:
 		text = textnode.TishaEmilyKeepEmily
+		sprite = [['tishashocked','pos1']]
 		emily.loyal += -100
 		emily.obed += -50
 		tisha.obed += -75
@@ -1314,13 +1319,14 @@ func tishadecision(number):
 		globals.state.reputation.wimborn -= 20
 		emily.add_effect(effect)
 		tisha.add_effect(effect)
-		globals.get_tree().get_current_scene().dialogue(true,self,text,buttons)
 	elif number == 10:
 		text = textnode.TishaEmilyReleaseEmily
+		sprite = [['emily2normal','pos2'],['tishaneutral','pos1']]
 		globals.state.reputation.wimborn -= 10
 		tisha.obed += 50
 		globals.slaves.erase(emily)
-		globals.get_tree().get_current_scene().dialogue(true,self,text,buttons)
+	globals.get_tree().get_current_scene().dialogue(state,self,text,buttons,sprite)
+
 
 func maketisha():
 	var slave = globals.slavegen.newslave('Human', 'teen', 'female', 'commoner')
@@ -1344,6 +1350,7 @@ func maketisha():
 	slave.height = 'average'
 	slave.relatives.father = -1
 	slave.relatives.mother = 2
+	slave.imageportait = "res://files/images/tisha/tishaportrait.png"
 	slave.cleartraits()
 	return slave
 
@@ -1495,8 +1502,10 @@ func tishagornguild(stage = 0):
 	var buttons = []
 	var text = ""
 	var state = false
+	var sprite 
 
 	if stage == 0:
+		sprite = [['tishaangry', 'pos1', 'opac']]
 		if globals.state.sidequests.emily == 14:
 			text = textnode.TishaGornGuild
 			globals.state.sidequests.emily = 15
@@ -1509,6 +1518,7 @@ func tishagornguild(stage = 0):
 		buttons.append(['Leave', 'tishagornguild', 2])
 	elif stage == 1:
 		text = textnode.TishaGornPay
+		sprite = [['tishaneutral', 'pos1']]
 		globals.resources.gold -= 500
 		buttons.append(['Brand', 'tishagornguild', 3])
 		buttons.append(['Refuse', 'tishagornguild', 4])
@@ -1518,6 +1528,7 @@ func tishagornguild(stage = 0):
 		return
 	elif stage == 3:
 		text = textnode.TishaGornBrand
+		sprite = [['tishashocked', 'pos1']]
 		globals.state.sidequests.emily = 101
 		var slave = maketisha()
 		slave.brand = 'basic'
@@ -1525,9 +1536,11 @@ func tishagornguild(stage = 0):
 		state = true
 		globals.get_tree().get_current_scene().get_node("outside").slaveguild('gorn')
 	elif stage == 4:
+		sprite = [['tishaneutral', 'pos1']]
 		text = textnode.TishaGornRefuseBrand
 		buttons.append(['Continue', 'tishagornguild', 5])
 	elif stage == 5:
+		sprite = [['tishaneutral', 'pos1']]
 		globals.get_tree().get_current_scene()._on_mansion_pressed()
 		if OS.get_name() != "HTML5" && globals.rules.fadinganimation == true:
 			yield(globals.get_tree().get_current_scene(), 'animfinished')
@@ -1536,11 +1549,13 @@ func tishagornguild(stage = 0):
 		buttons.append(['Have sex', 'tishagornguild', 7])
 		buttons.append(["Don't ask for anything", 'tishagornguild', 8])
 	elif stage == 6:
+		sprite = [['tishaneutral', 'pos1']]
 		text = textnode.TishaAskPayment
 		globals.state.sidequests.emily = 17
 		globals.state.upcomingevents.append({code = "tishapay", duration = 7})
 		state = true
 	elif stage == 7:
+		sprite = [['tishahappy', 'pos1']]
 		text = textnode.TishaSexSceneStart
 		if globals.player.penis.number > 0:
 			text += "\n\n" + textnode.TishaSexSceneEnd
@@ -1548,6 +1563,7 @@ func tishagornguild(stage = 0):
 		buttons.append(['Offer Tisha work for you', 'tishagornguild', 9])
 		buttons.append(['Not bother her', 'tishagornguild', 10])
 	elif stage == 8:
+		sprite = [['tishahappy', 'pos1']]
 		text = textnode.TishaRefusePayment + textnode.TishaSexSceneStart
 		globals.resources.mana += 10
 		if globals.player.penis.number > 0:
@@ -1559,6 +1575,7 @@ func tishagornguild(stage = 0):
 			if i.unique == "Emily":
 				i.tags.erase('nosex')
 		text = textnode.TishaOfferJob
+		sprite = [['tishahappy', 'pos1']]
 		var slave = maketisha()
 		slave.sexuals.unlocked = true
 		slave.sexuals.unlocks.append('petting')
@@ -1575,6 +1592,7 @@ func tishagornguild(stage = 0):
 				i.sexuals.unlocked = true
 				i.tags.erase("nosex")
 	elif stage == 10:
+		sprite = [['tishaneutral', 'pos1']]
 		for i in globals.slaves:
 			if i.unique == "Emily":
 				i.tags.erase('nosex')
@@ -1582,7 +1600,7 @@ func tishagornguild(stage = 0):
 		state = true
 		globals.state.sidequests.emily = 16
 
-	globals.get_tree().get_current_scene().dialogue(state,self,text,buttons)
+	globals.get_tree().get_current_scene().dialogue(state,self,text,buttons, sprite)
 
 func tishapay():
 	var text = "At the morning you receive a delivery: nice sum of gold from Tisha, who you helped previously. "
@@ -1595,7 +1613,9 @@ func emilytishasex(stage = 0):
 	var buttons = []
 	var emily
 	var tisha
+	var sprite = []
 	if stage == 0:
+		sprite = [['tishahappy', 'pos1'], ['emily2happy','pos2']]
 		for i in globals.slaves:
 			if i.unique == 'Emily':
 				emily = i
@@ -1605,11 +1625,14 @@ func emilytishasex(stage = 0):
 		tisha.metrics.sex += 1
 		emily.metrics.partners.append(tisha.id)
 		tisha.metrics.partners.append(emily.id)
+		emily.away.duration = 7
+		tisha.away.duration = 7
 		text = globals.questtext.TishaEmilySex
 		state = false
 		buttons.append(['Continue', "emilytishasex",1])
 		globals.resources.mana += 25
 	elif stage == 1:
+		sprite = [['tishahappy', 'pos1'], ['emily2happy','pos2']]
 		text = globals.questtext.TishaEmilySex2
 		state = true
-	globals.get_tree().get_current_scene().dialogue(state,self,text,buttons)
+	globals.get_tree().get_current_scene().dialogue(state,self,text,buttons, sprite)

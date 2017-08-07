@@ -42,8 +42,6 @@ tabs_visible = true
 
 [node name="Settings" type="Tabs" parent="TabContainer"]
 
-editor/display_folded = true
-visibility/visible = false
 anchor/right = 1
 anchor/bottom = 1
 focus/ignore_mouse = false
@@ -57,7 +55,7 @@ margin/bottom = 10.0
 
 [node name="screenresize" type="CheckBox" parent="TabContainer/Settings"]
 
-hint/tooltip = "Switch to full screen mode"
+hint/tooltip = "Change screen stretching mode (requires game restart to turn off)"
 focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
@@ -75,7 +73,7 @@ align = 0
 
 [node name="fading" type="CheckBox" parent="TabContainer/Settings"]
 
-hint/tooltip = "Switch to full screen mode"
+hint/tooltip = "Fade to black on window transition"
 focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
@@ -201,7 +199,6 @@ max_lines_visible = -1
 
 [node name="Game" type="Tabs" parent="TabContainer"]
 
-editor/display_folded = true
 visibility/visible = false
 anchor/right = 1
 anchor/bottom = 1
@@ -275,9 +272,9 @@ focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
-margin/left = 81.0
+margin/left = 80.0
 margin/top = 43.0
-margin/right = 356.0
+margin/right = 355.0
 margin/bottom = 70.0
 toggle_mode = true
 enabled_focus_mode = 2
@@ -332,9 +329,9 @@ focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
 margin/left = 5.0
-margin/top = 131.0
+margin/top = 132.0
 margin/right = 160.0
-margin/bottom = 158.0
+margin/bottom = 159.0
 toggle_mode = true
 enabled_focus_mode = 2
 shortcut = null
@@ -369,9 +366,9 @@ focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
 margin/left = 178.0
-margin/top = 131.0
+margin/top = 132.0
 margin/right = 363.0
-margin/bottom = 158.0
+margin/bottom = 159.0
 toggle_mode = true
 enabled_focus_mode = 2
 shortcut = null
@@ -469,8 +466,45 @@ percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
 
+[node name="Label4" type="Label" parent="TabContainer/Game"]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 59.0
+margin/top = 162.0
+margin/right = 217.0
+margin/bottom = 180.0
+text = "Alise on Day End"
+align = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="aliseoption" type="OptionButton" parent="TabContainer/Game"]
+
+hint/tooltip = "When to show Alise on Day End Popup"
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 49.0
+margin/top = 181.0
+margin/right = 228.0
+margin/bottom = 220.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Always"
+flat = false
+align = 0
+selected = 0
+items = [ "Always", null, false, -1, null, "After Daily Event", null, false, -1, null, "Never", null, false, -1, null ]
+
 [node name="Supporter section" type="Tabs" parent="TabContainer"]
 
+visibility/visible = false
 anchor/right = 1
 anchor/bottom = 1
 focus/ignore_mouse = false
@@ -1002,6 +1036,8 @@ flat = false
 [connection signal="value_changed" from="TabContainer/Game/malesslider" to="." method="_on_malesslider_value_changed"]
 
 [connection signal="value_changed" from="TabContainer/Game/futaslider" to="." method="_on_futaslider_value_changed"]
+
+[connection signal="item_selected" from="TabContainer/Game/aliseoption" to="." method="_on_aliseoption_item_selected"]
 
 [connection signal="meta_clicked" from="TabContainer/Supporter section/RichTextLabel" to="." method="_on_RichTextLabel_meta_clicked"]
 

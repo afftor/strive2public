@@ -140,6 +140,7 @@ func _input(event):
 		if event.scancode in [KEY_1,KEY_2,KEY_3,KEY_4,KEY_5,KEY_6,KEY_7,KEY_8]:
 			var key = dict[event.scancode]
 			if event.is_action_pressed(str(key)) == true && get_node("outsidebuttoncontainer").get_children().size() >= key+1 && self.is_visible() == true && get_parent().get_node("dialogue").is_hidden() == true:
+				get_parent().get_node("chooseslavepopup").set_hidden(true)
 				get_node("outsidebuttoncontainer").get_child(key).emit_signal("pressed")
 			elif event.is_action_pressed(str(key)) == true && get_parent().get_node("dialogue").is_hidden() == false && get_parent().get_node("dialogue/popupbuttoncenter/popupbuttons").get_children().size() >= key+1:
 				if get_parent().get_node("dialogue/popupbuttoncenter/popupbuttons").get_child(key).is_disabled() == false:
@@ -147,6 +148,10 @@ func _input(event):
 			elif event.is_action_pressed(str(key)) == true && get_parent().get_node("tutorialnode/response").is_hidden() == false && get_parent().get_node("tutorialnode/response/ScrollContainer/VBoxContainer").get_children().size() >= key+1:
 				if get_parent().get_node("tutorialnode/response/ScrollContainer/VBoxContainer").get_child(key).is_disabled() == false:
 					get_parent().get_node("tutorialnode/response/ScrollContainer/VBoxContainer").get_child(key).emit_signal("pressed")
+			elif event.is_action_pressed(str(key)) == true && get_parent().get_node("dailyevents").is_hidden() == false && get_parent().get_node("dailyevents/buttonpanel/ScrollContainer/VBoxContainer").get_children().size() >= key+1:
+				if get_parent().get_node("dailyevents/buttonpanel/ScrollContainer/VBoxContainer").get_child(key).is_disabled() == false:
+					get_parent().get_node("dailyevents/buttonpanel/ScrollContainer/VBoxContainer").get_child(key).emit_signal("pressed")
+
 
 func newslaveinguild(number, town = 'wimborn'):
 	while number > 0:
@@ -188,6 +193,7 @@ func setcharacter(text):
 	#get_node("charactersprite").set_as_toplevel(true)
 
 func slaveguild(guild = 'wimborn'):
+	mindread = false
 	if guild == 'wimborn':
 		slavearray = globals.guildslaves.wimborn
 		if get_node("charactersprite").is_visible() == false || get_node("charactersprite").get_texture() != load("res://files/images/fairy.png"):
@@ -210,7 +216,7 @@ func slaveguild(guild = 'wimborn'):
 		clearselection()
 		slavearray = globals.guildslaves.gorn
 		maintext.set_bbcode(globals.player.dictionaryplayer("Huge part of supposed guild takes a makeshift platform and tents on the outside with few half-empty cages. In the middle, you can see a presentation podium which is easily observable from main street. Despite Gorn being very different from common, primarily human-populated towns, it still directly follows Mage's Order directives — race diversity and casual slavery are very omnipresent. \n\nAs you walk in, one of the goblin receptionists quickly recognizes you as an Order member and hastily grabs your attention, sensing a profitable customer.\n\n— $sir interested in some heat-tolerant 'orkers? *chuckles* Or you are in preference of short girls? We quite often get those as well, for every taste and color!"))
-		var array = [{name = 'See slaves for sale',function = 'slaveguildslaves'}, {name = 'See custom requests',function = 'slaveguildquests'}, {name = 'Leave',function = 'togorn'}]
+		var array = [{name = 'See slaves for sale',function = 'slaveguildslaves'}, {name = 'Offer your servants',function = 'slaveguildsells'}, {name = 'See custom requests', function = 'slaveguildquests'},{name = 'Services for Slaves',function = 'slaveservice'}, {name = 'Leave',function = 'togorn'}]
 		if globals.state.sidequests.emily in [14,15]:
 			array.insert(1, {name = 'Search for Tisha', function = 'tishaquest'})
 		buildbuttons(array)
@@ -218,7 +224,7 @@ func slaveguild(guild = 'wimborn'):
 		clearselection()
 		slavearray = globals.guildslaves.frostford
 		maintext.set_bbcode(globals.player.dictionaryplayer("A humble local guild building is bright and warm inside. Just as the whole of Frostford, this place is serene in its mood compared to what you are used to. Realizing you belong to the Mage's Order, attendant politely greets you and asks how he could assist you. "))
-		var array = [{name = 'See slaves for sale',function = 'slaveguildslaves'}, {name = 'See custom requests',function = 'slaveguildquests'}, {name = 'Leave', function = 'tofrostford'}]
+		var array = [{name = 'See slaves for sale',function = 'slaveguildslaves'},{name = 'Offer your servants',function = 'slaveguildsells'}, {name = 'See custom requests', function = 'slaveguildquests'}, {name = 'Services for Slaves',function = 'slaveservice'}, {name = 'Leave', function = 'tofrostford'}]
 		buildbuttons(array)
 	get_node("playergrouppanel/VBoxContainer").set_hidden(true)
 	if globals.spelldict.mindread.learned == false:
@@ -242,6 +248,7 @@ func tofrostford():
 var selectedslave
 var selectedslaveprice
 var slavearray
+var mindread = false
 
 func slaveguildslaves():
 	get_node("slavebuypanel").set_hidden(false)
@@ -259,14 +266,20 @@ func slaveguildslaves():
 		newbutton.get_node('age').set_text(slave.age.capitalize())
 		newbutton.get_node('origins').set_text(slave.dictionary('Grade: '+slave.origins))
 		newbutton.get_node('price').set_text(str(round(max(slave.calculateprice()*0.8,50)))+ ' gold')
-		newbutton.set_name(slave.name)
+		newbutton.set_meta('slave', slave)
 		newbutton.connect('pressed',self,'selectslavebuy',[slave])
 	maintext.set_bbcode('')
+	get_node("slavebuypanel/statspanel").set_hidden(true)
 	clearbuttons()
 
 func selectslavebuy(slave):
 	selectedslaveprice = max(round(slave.calculateprice()*0.8),50)
 	selectedslave = slave
+	for i in get_node("slavebuypanel/slavebuypanel/ScrollContainer/VBoxContainer").get_children():
+		if i != get_node("slavebuypanel/slavebuypanel/ScrollContainer/VBoxContainer/slavebutton") && i.get_meta('slave') == slave:
+			i.set_pressed(true)
+		else:
+			i.set_pressed(false)
 	var text = ''
 	if slave.origins == 'slave':
 		text = "Former slaves are pretty affordable and really easy to deal with! I bet you'll like this one! "
@@ -277,22 +290,29 @@ func selectslavebuy(slave):
 	if text == '':
 		text = "Healthy and really Obedient! "
 	text = text +"\n\n— [color=yellow]"+str(selectedslaveprice)+ " gold[/color], and $he's all yours.[/color] "
-	get_node("slavebuypanel/slavedescription").set_bbcode(slave.description_small() + '\n\n[color=#ff00bf]— '+ slave.dictionary(text))
-	for i in get_node("slavebuypanel/slavebuypanel//ScrollContainer/VBoxContainer").get_children():
-		if i.get_name() != slave.name && i.is_pressed() == true:
-			i.set_pressed(false)
+	get_node("slavebuypanel/slavedescription").set_bbcode(slave.description_small() + '\n\n[color=#ff5df8]— '+ slave.dictionary(text))
 	if globals.resources.gold < selectedslaveprice:
 		get_node("slavebuypanel/purchasebutton").set_disabled(true)
 	else:
 		get_node("slavebuypanel/purchasebutton").set_disabled(false)
-	if globals.spelldict.mindread.learned == true && globals.spelldict.mindread.manacost <= globals.resources.mana:
+	if globals.spelldict.mindread.learned == true && globals.resources.mana >= 5 && mindread == false:
 		get_node("slavebuypanel/mindreadbutton").set_disabled(false)
 	else:
 		get_node("slavebuypanel/mindreadbutton").set_disabled(true)
+	get_node("slavebuypanel/statspanel").slave = slave
+	get_node("slavebuypanel/statspanel").set_hidden(false)
+	if mindread == true:
+		get_node("slavebuypanel/statspanel").mode = 'slaveadv'
+	else:
+		get_node("slavebuypanel/statspanel").mode = 'slavebase'
+	get_node("slavebuypanel/statspanel").show()
+
 
 func _on_mindreadbutton_pressed():
-	main.get_node("spellnode").slave = selectedslave
-	main.get_node("spellnode").mindreadeffect()
+	globals.resources.mana -= 5
+	mindread = true
+	
+	selectslavebuy(selectedslave)
 
 
 func selectslavesell(slave):
@@ -310,7 +330,9 @@ func selectslavesell(slave):
 	get_node("slavesellpanel/slavedescription").set_bbcode(text)
 	get_node("slavesellpanel/slavesellbutton").set_disabled(false)
 	for i in get_node("slavesellpanel/ScrollContainer/VBoxContainer").get_children():
-		if i.get_name() != slave.name && i.is_pressed() == true:
+		if i != get_node("slavesellpanel/ScrollContainer/VBoxContainer/slavebutton") && i.get_meta('slave') == slave:
+			i.set_pressed(true)
+		else:
 			i.set_pressed(false)
 
 
@@ -361,7 +383,7 @@ func slaveguildsells():
 			newbutton.set_hidden(false)
 			newbutton.get_node('name').set_text(slave.dictionary('$name, ')+ slave.race + ', '+ slave.sex + ', ' + slave.age + ', ' + slave.work)
 			newbutton.get_node('price').set_text(str(max(round(slave.calculateprice()*0.45),10))+ ' gold')
-			newbutton.set_name(slave.name)
+			newbutton.set_meta('slave', slave)
 			newbutton.connect('pressed',self,'selectslavesell',[slave])
 
 
@@ -856,7 +878,7 @@ func mageorder():
 	elif globals.state.mainquest >= 3:
 		array.append({name = 'Find Melissa', function = 'mageorderquest1'})
 	if globals.state.rank >= 1:
-		array.append({name = 'See available services',function = 'mageservices'})
+		array.append({name = 'Purchase New Spells',function = 'mageservices'})
 	
 	if globals.state.sidequests.emily == 12:
 		array.append({name = "Visit Tisha's workplace", function = "tishaquest"})
@@ -1070,70 +1092,6 @@ func _on_close_pressed():
 func _on_mageorderservices_visibility_changed():
 	if get_node("mageorderservices").is_visible() == false:
 		return
-	var text = ''
-	text = "Your library can help with studying and provide usful information.\n"
-	if globals.state.library == 0:
-		text = text + "Current level — 0. Upgrade cost — 500 gold. "
-		if globals.resources.gold >= 500:
-			get_node("mageorderservices/upgradelibrary").set_disabled(false)
-		else:
-			get_node("mageorderservices/upgradelibrary").set_disabled(true)
-	elif globals.state.library == 1:
-		text = text + "Current level — 1. Upgrade cost — 1000 gold. "
-		if globals.resources.gold >= 1000:
-			get_node("mageorderservices/upgradelibrary").set_disabled(false)
-		else:
-			get_node("mageorderservices/upgradelibrary").set_disabled(true)
-	elif globals.state.library == 2:
-		text = text + "Current level — 2. Upgrade cost — 1500 gold. "
-		if globals.resources.gold >= 1500:
-			get_node("mageorderservices/upgradelibrary").set_disabled(false)
-		else:
-			get_node("mageorderservices/upgradelibrary").set_disabled(true)
-	elif globals.state.library == 3:
-		text = text + "Current level — Max. "
-		get_node("mageorderservices/upgradelibrary").set_disabled(true)
-	get_node("mageorderservices/librarydescription").set_bbcode(text)
-	text = "Your alchemy room can be used for brewing specialized potions.\n"
-	if globals.state.alchemy == 0:
-		text = text + "You have no any sort of alchemical equipment yet. Purchase cost — 500 gold. "
-		if globals.resources.gold >= 500:
-			get_node("mageorderservices/upgradealchemy").set_disabled(false)
-		else:
-			get_node("mageorderservices/upgradealchemy").set_disabled(true)
-	elif globals.state.alchemy == 1:
-		text = text + "You have basic alchemy tools set up. Upgrade cost — 1000 gold. "
-		if globals.resources.gold >= 1000:
-			get_node("mageorderservices/upgradealchemy").set_disabled(false)
-		else:
-			get_node("mageorderservices/upgradealchemy").set_disabled(true)
-	elif globals.state.alchemy == 2:
-		text = text + "You have advanced alchemical laboratory set up. "
-		get_node("mageorderservices/upgradealchemy").set_disabled(true)
-	get_node("mageorderservices/alchemydescription").set_bbcode(text)
-	text = "Laboratory allows you to change and enhance yourself and other living beings.\n"
-	if globals.state.laboratory == 0:
-		text = text + "You have no laboratory equipment yet. Purchase cost — 1000 gold. "
-		if globals.resources.gold >= 1000:
-			get_node("mageorderservices/upgradelaboratory").set_disabled(false)
-		else:
-			get_node("mageorderservices/upgradelaboratory").set_disabled(true)
-	elif globals.state.laboratory == 1:
-		text = text + "You have basic functional laboratory. Upgrade cost — 3000 gold. "
-		if globals.resources.gold >= 3000:
-			get_node("mageorderservices/upgradelaboratory").set_disabled(false)
-		else:
-			get_node("mageorderservices/upgradelaboratory").set_disabled(true)
-	elif globals.state.laboratory == 2:
-		text = text + "You have advanced laboratory set up. "
-		get_node("mageorderservices/upgradelaboratory").set_disabled(true)
-	get_node("mageorderservices/laboratorydescription").set_bbcode(text)
-	if globals.state.rank < 2:
-		get_node("mageorderservices/upgradelaboratory").set_hidden(true)
-		get_node("mageorderservices/laboratorydescription").set_hidden(true)
-	else:
-		get_node("mageorderservices/upgradelaboratory").set_hidden(false)
-		get_node("mageorderservices/laboratorydescription").set_hidden(false)
 	buildspelllist()
 
 func buildspelllist():
@@ -1232,7 +1190,7 @@ func tishaquest():
 #################### Markets
 #
 func market():
-	var array = [{name = 'Market stalls', function = 'shopinitiate', args = 'wimbornmarket'}, {name = 'Carpentry', function = 'carpentry'}, {name = 'Return', function = 'town'}]
+	var array = [{name = 'Market stalls', function = 'shopinitiate', args = 'wimbornmarket'}, {name = 'Return', function = 'town'}]
 	get_node("charactersprite").set_hidden(true)
 	main.background_set('market')
 	if OS.get_name() != "HTML5" && globals.rules.fadinganimation == true:
@@ -1240,7 +1198,7 @@ func market():
 	var text = "Densely populated area filled with stalls, small buildings and people allowing you to find anything for your daily life. "
 	if globals.state.rank >= 3 && globals.state.sidequests.cali == 0:
 		text +=  "\n\n[color=yellow]You spot some commotion ongoing near one of the stalls.[/color]"
-		array.insert(2, {name = 'Check the commotion', function = "caliqueststart"})
+		array.insert(1, {name = 'Check the commotion', function = "caliqueststart"})
 	for slave in globals.slaves:
 		if slave.work == 'store':
 			text += slave.dictionary('\nYou can see $name helping around one of the shops.')
@@ -1248,9 +1206,9 @@ func market():
 			text += slave.dictionary('\nYou spot $name giving minor performance at one of the corners. ')
 	maintext.set_bbcode(text)
 	if globals.state.mainquest == 5:
-		array.insert(2, {name = 'Look for Sebastian', function = 'sebastian'})
+		array.insert(1, {name = 'Look for Sebastian', function = 'sebastian'})
 	elif globals.state.mainquest >= 7:
-		array.insert(2, {name = 'Visit Sebastian', function = 'sebastian'})
+		array.insert(1, {name = 'Visit Sebastian', function = 'sebastian'})
 	buildbuttons(array)
 
 func carpentry():
@@ -1433,7 +1391,10 @@ func shopsell():
 			newbutton.set_tooltip(item.name)
 			newbutton.get_node("price").set_text(str(round(tempitem.cost/5)))
 			if item.icon != null:
-				newbutton.get_node("icon").set_texture(item.icon)
+				if typeof(item.icon) == TYPE_STRING:
+					newbutton.get_node("icon").set_texture(globals.itemdict[item.code].icon)
+				else:
+					newbutton.get_node("icon").set_texture(item.icon)
 			else:
 				newbutton.get_node("icon").set_texture(null)
 				newbutton.get_node("name").set_text(item.name)
@@ -1568,7 +1529,7 @@ func caliqueststart(value = ''):
 		buttons.append(["Go with your words and take girl to jail", 'caliqueststart', 5])
 		buttons.append(["Talk to her", 'caliqueststart', 4])
 	elif globals.state.sidequests.cali == 4:
-		text = ("You share some food and ask her about her life.\n\n— Thanks for help... My name is Cali. I was captured from my village few weeks ago by bandits. They was about to sell me here but I managed to escape before they brought me to the guild. I have to get back home to my mother and brother... I hope they are alright.\n\nAfter few moments she says goodbye and prepares to leave.")
+		text = ("You share some food and ask her about her life.\n\n— Thanks for help... My name is Cali. I was captured from my village few weeks ago by bandits. They was about to sell me here but I managed to escape before they brought me to the guild. I have to get back home to my mother and father... I hope they are alright.\n\nAfter few moments she says goodbye and prepares to leave.")
 		buttons.append(["Offer to take her into your mansion", 'caliqueststart', 6])
 		buttons.append(["Offer to help her get home", 'caliqueststart', 7])
 		buttons.append(["Leave her on her own", 'caliqueststart', 100])
@@ -1705,7 +1666,7 @@ func sebastianorder():
 	else:
 		var slave = globals.state.sebastianslave
 		var array = [{name = "Pay", function = "sebastianpay"}, {name = "Refuse", function = "sebastianrefuse"}]
-		maintext.set_bbcode("After few moments, Sebastian presents to you a chained " + slave.race + slave.dictionary(" $child, who still looks pretty rebellious.\n\n— Got you what you asked for!\n\nYou slowly inspect $him.") + slave.description_full() + "\n\n-I would like to receive " + str(slave.calculateprice()) + slave.dictionary(" gold for my service. If you don't want $him, it's fine, since I can find another buyer in huge town like this."))
+		maintext.set_bbcode("After few moments, Sebastian presents to you a chained " + slave.race + slave.dictionary(" $child, who still looks pretty rebellious.\n\n— Got you what you asked for!\n\nYou slowly inspect $him.") + slave.description_full() + "\n\n— I would like to receive " + str(slave.calculateprice()) + slave.dictionary(" gold for my service. If you don't want $him, it's fine, since I can find another buyer in huge town like this."))
 		buildbuttons(array)
 
 func sebastianpay():

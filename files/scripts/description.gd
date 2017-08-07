@@ -182,7 +182,7 @@ static func getFeatures(slave):
 	plants = 'Various [color=aqua]plant matter[/color] naturally covers parts of $his body. ',
 	scales = '$His skin is partly covered with [color=aqua]scales[/color]. ',
 	feathers = '$His body is covered in [color=aqua]birdish feathers[/color] in many places. ',
-	full_body_fur = '$His body is covered in thick, soft [color=aqua]fur of ',
+	full_body_fur = '$His body is covered in thick, soft [color=aqua]fur of',
 	}
 	text2 = text2 + text[slave['skincov']]
 	if slave.piercing.navel == 'stud':

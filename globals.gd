@@ -5,7 +5,7 @@ var itemdict = {}
 var spelldict = {}
 var effectdict = {}
 var guildslaves = {wimborn = [], gorn = [], frostford = []}
-var gameversion = 4450
+var gameversion = 4460
 var state = progress.new()
 var developmode = false
 
@@ -82,6 +82,142 @@ amberroad = load("res://files/backgrounds/amberroad.png"),
 undercity = load("res://files/backgrounds/undercity.jpg"),
 tunnels = load("res://files/backgrounds/tunnels.jpg"),
 }
+var mansionupgradesdict = {
+farmcapacity = {
+name = "Capacity", 
+code = 'farmcapacity',
+description = "Adds new stables to the farm, increasing number of residents that can be assigned at a time.", 
+levels = 3,
+cost = 500,
+valuename = "Allowed cattle: ",
+valuenumber = ['2','5','8','12'],
+},
+farmhatchery = {
+name = "Hatchery", 
+code = 'farmhatchery',
+description = "Provides the farm with new equipment, allowing the use of slaves and snails for egg laying.", 
+levels = 1,
+cost = 1000,
+},
+farmtreatment = {
+name = "Improved Treatment", 
+code = 'farmtreatment',
+description = "Equips the farm with relaxation furniture and devices which are gentler on your cattle negating the demoralization of residents on the farm.", 
+levels = 1,
+cost = 2500,
+},
+
+foodcapacity = {
+name = "Food Storage Capacity",
+code = 'foodcapacity',
+description = "Adds additional space to the food storage area allowing you to keep more food at a time.", 
+levels = 5,
+cost = [250,500,1000,1500,2500],
+valuename = "Maximum food: ",
+valuenumber = ['500', '750', '1000', '1500', '2000', '3000'],
+},
+foodpreservation = {
+name = "Food Storage Preservation",
+code = 'foodpreservation',
+description = "Equips your food storage area with a cooling system which helps prevent food spoilage when storage is nearly full.", 
+levels = 1,
+cost = 1500,
+},
+
+jailcapacity = {
+name = "Capacity",
+code = 'jailcapacity',
+description = "Adds additional cells to your jail, increasing maximum number of prisoners it can hold at a time.", 
+levels = 8,
+cost = 200,
+valuename = "Jail Cells: ",
+},
+jailtreatment = {
+name = "Better Furnishing",
+code = 'jailtreatment',
+description = "Equips your jail with better furnishings and health care, preventing prisoners from accumulating stress.", 
+levels = 1,
+cost = 750,
+},
+jailincenses = {
+name = "Soothing Incences",
+code = 'jailincenses',
+description = "Equips your jail with burners for a special incenses which helps calm and adjust prisoners' attitude.", 
+levels = 1,
+cost = 1500,
+},
+
+mansioncommunal = {
+name = "Communal Room Beds",
+code = 'mansioncommunal',
+description = "Adds new beds to communal room, providing space for additional residents to sleep. ", 
+levels = 20,
+cost = 100,
+valuename = "Total beds: ",
+},
+mansionpersonal = {
+name = "New Personal Room",
+code = 'mansionpersonal',
+description = "Set up one of the free rooms for living. Personal rooms provide sense of [color=yellow]Luxury[/color] to their hosts. ", 
+levels = 10,
+cost = 300,
+valuename = "Total rooms: ",
+},
+mansionbed = {
+name = "Master's Bed Enlargement",
+code = 'mansionbed',
+description = "Enlarges your bed allowing you to host more people with you at night.. Sleeping in your room provides a sense of [color=yellow]Luxury[/color] to your partners.", 
+levels = 3,
+cost = 300,
+valuename = "Allowed partners: ",
+},
+mansionluxury = {
+name = "Mansion Furnishment",
+code = 'mansionluxury',
+description = "Decorates the mansion with better furniture and additional pieces of art. This provides a boost to the [color=yellow]Luxury[/color] provided to servants sleeping in personal rooms and your bed.", 
+levels = 2,
+cost = [1000,2000],
+},
+mansionalchemy = {
+name = "Alchemy Room",
+code = 'mansionalchemy',
+description = "Equips a spare room with alchemical tools and paraphernalia allowing you to brew basic potions.", 
+description2 = "Upgrades your Alchemy Room with additional equipment enabling you to brew a larger variety of potions.",
+levels = 2,
+cost = [500,1000],
+},
+mansionlibrary = {
+name = "Library",
+code = 'mansionlibrary',
+description = "Purchases new books and furniture for your library providing access to new books, articles and information as well as improving residents’ studies.", 
+levels = 3,
+cost = [500,1000,1500],
+},
+mansionlab = {
+name = "Laboratory",
+code = 'mansionlab',
+description = "Equips a spare room within the mansion with advanced devices and tools allowing you to conduct experiments and operations on both yourself and your slaves.", 
+description2 = "Upgrades your laboratory with the latest equipment and tools, unlocking new operations.", 
+levels = 2,
+cost = [1000,3000],
+},
+mansionkennels = {
+name = "Kennels",
+code = 'mansionkennels',
+description = "Builds a kennel on the mansion’s grounds providing space to keep hounds. Having hounds on the property reduces the chances of slaves escaping during the night, and for those so inclined unlocks the beastality action. ", 
+levels = 1,
+cost = 1500,
+},
+mansionnursery = {
+name = "Nursery Room",
+code = 'mansionnursery',
+description = "Upgrades and equips a room within the mansion to provide care for newborn babies and young children for a limited period.", 
+levels = 1,
+cost = 2000,
+},
+
+}
+
 
 var noimage = load("res://files/buttons/noimagesmall.png")
 
@@ -160,6 +296,7 @@ fadinganimation = true,
 permadeath = false,
 autoattack = true,
 gameloaded = false,
+enddayalise = 0,
 }
 
 class resource:
@@ -167,9 +304,11 @@ class resource:
 	var gold = 0 setget gold_set
 	var mana = 0 setget mana_set
 	var energy = 0 setget energy_set
-	var food = 0  setget food_set
+	var food = 0 setget food_set
 	var panel
 	var array = ['day','gold','mana','energy','food']
+	
+	var foodcaparray = [500, 750, 1000, 1500, 2000, 3000]
 	
 	func update():
 		for i in array:
@@ -216,6 +355,8 @@ class resource:
 		food = value
 		if food < 0:
 			food = 0
+		elif food >= foodcaparray[globals.state.mansionupgrades.foodcapacity]:
+			food = foodcaparray[globals.state.mansionupgrades.foodcapacity]
 		if panel != null:
 			panel.get_node('food').set_text(str(food))
 		if difference != 0:
@@ -300,6 +441,25 @@ class progress:
 	var alisecloth = 'normal'
 	var decisions = []
 	var lorefound = []
+	var mansionupgrades = {
+	farmcapacity = 0,
+	farmhatchery = 0,
+	farmtreatment = 0,
+	foodcapacity = 0,
+	foodpreservation = 0,
+	jailcapacity = 1,
+	jailtreatment = 0,
+	jailincenses = 0,
+	mansioncommunal = 4,
+	mansionpersonal = 1,
+	mansionbed = 0,
+	mansionluxury = 0,
+	mansionalchemy = 0,
+	mansionlibrary = 0,
+	mansionlab = 0,
+	mansionkennels = 0,
+	mansionnursery = 0,
+	}
 	
 	var ghostrep = {wimborn = 0, frostford = 0, gorn = 0}
 	
@@ -498,7 +658,6 @@ class slave:
 				globals.get_tree().get_current_scene().infotext(text)
 			if trait['effect'].empty() != true:
 				add_effect(trait['effect'])
-
 	
 	func trait_remove(trait):
 		var text = ''
@@ -845,32 +1004,62 @@ class slave:
 		text = globals.description.getSlaveDescription(self, false, false, captured)
 		return text
 	
+	func countluxuty():
+		var luxury = 0
+		var goldspent = 0
+		var foodspent = 0
+		var nosupply = false
+		var value = 0
+		if sleep == 'personal':
+			luxury += 10+(5*globals.state.mansionupgrades.mansionluxury)
+		elif sleep == 'your':
+			luxury += 5+(5*globals.state.mansionupgrades.mansionluxury)
+		if rules.betterfood == true && globals.resources.food >= 5:
+			globals.resources.food -= 5
+			foodspent += 5
+			luxury += 5
+		if rules.personalbath == true:
+			if spec != 'housekeeper':
+				value = 2
+			else:
+				value = 1
+			if globals.itemdict.supply.amount >= value:
+				luxury += 5
+				globals.itemdict.supply.amount -= value
+			else:
+				nosupply == true
+		if rules.pocketmoney == true:
+			if spec != 'housekeeper':
+				value = 10
+			else:
+				value = 5
+			if globals.resources.gold >= value:
+				luxury += value
+				goldspent += value
+				globals.resources.gold -= value
+		if rules.cosmetics == true:
+			if globals.itemdict.supply.amount > 1:
+				luxury += 5
+				globals.itemdict.supply.amount -= 1
+			else:
+				nosupply = true
+		for i in gear.values(): 
+			if !i in ['underwearplain','clothcommon'] && i != null:
+				var tempitem = globals.state.unstackables[i]
+				if tempitem.code in ['underwearlacy','underwearboxers']:
+					luxury += 5
+				elif tempitem.code in ["accgoldring"]:
+					luxury += 10
+		
+		var luxurydict = {luxury = luxury, goldspent = goldspent, foodspent = foodspent, nosupply = nosupply}
+		return luxurydict
 	
-	func skill_level(value):
-		var text
-		if value < 20:
-			text = 'None'
-		elif value < 40:
-			text = 'Novice'
-		elif value < 60:
-			text = 'Apprentice'
-		elif value < 80:
-			text = 'Journeyman'
-		elif value < 100:
-			text = 'Expert'
-		else:
-			text = 'Master'
-		return text
-	
-	func get_skill_short(input):
-		var text
-		var dict = {Novice = 'Nov',
-		Apprentice = 'Apr',
-		Journeyman = 'Jor',
-		Expert = 'Exp',
-		Master = 'Mast',
-		}
-		return dict[input]
+	func calculateluxury():
+		var luxurydict = {slave = 0,poor = 5,commoner = 15,rich = 25,noble = 40}
+		var luxury = luxurydict[origins]
+		if traits.has("Ascetic"):
+			luxury = luxury/2
+		return luxury
 	
 	func calculateprice():
 		var price = 0
@@ -974,6 +1163,26 @@ static func count_sleepers():
 	rval['communal'] = communal
 	return rval
 
+func showtooltip(text):
+	get_tree().get_current_scene().get_node("tooltip/RichTextLabel").set_bbcode(text)
+	#get_tree().get_current_scene().get_node("tooltip").set_size(get_tree().get_current_scene().get_node("tooltip/RichTextLabel").get_size())
+	var pos = get_tree().get_current_scene().get_global_mouse_pos()
+	pos = Vector2(pos.x+20, pos.y+20)
+	get_tree().get_current_scene().get_node("tooltip").set_pos(pos)
+	var screen = get_viewport().get_visible_rect()
+	var tooltipsize = get_tree().get_current_scene().get_node("tooltip").get_rect()
+	if tooltipsize.pos.x + tooltipsize.size.x >= screen.size.x:
+		get_tree().get_current_scene().get_node("tooltip").set_pos(Vector2(tooltipsize.pos.x + (screen.size.x - (tooltipsize.pos.x + tooltipsize.size.x)) , tooltipsize.pos.y))
+	tooltipsize = get_tree().get_current_scene().get_node("tooltip").get_rect()
+	if tooltipsize.pos.y + tooltipsize.size.y >= screen.size.y:
+		get_tree().get_current_scene().get_node("tooltip").set_pos(Vector2(tooltipsize.pos.x, tooltipsize.pos.y + (screen.size.y - (tooltipsize.pos.y + tooltipsize.size.y))-10))
+
+	get_tree().get_current_scene().get_node("tooltip").set_hidden(false)
+	#if get_tree().get_current_scene().get_node("tooltip/RichTextLabel").
+
+func hidetooltip():
+	get_tree().get_current_scene().get_node("tooltip").set_hidden(true)
+
 static func merge(target, patch):
 	for key in patch:
 		if target.has(key):
@@ -1069,6 +1278,9 @@ var penistypearray = ['human','canine','feline','equine']
 var alltails = ['cat','fox','wolf','bunny','bird','demon','dragon','scruffy','snake tail','racoon']
 var allwings = ['feathered_black', 'feathered_white', 'feathered_brown', 'leather_black','leather_red','insect']
 var allears = ['human','feathery','pointy','short_furry','long_pointy_furry','fins','long_round_furry', 'long_droopy_furry']
+var statsdict = {sstr = 'Strength', sagi = 'Agility', smaf = "Magic Affinity", send = "Endurance", cour = 'Courage', conf = 'Confidence', wit = 'Wit', charm = 'Charm'}
+var maxstatdict = {sstr = 'str_max', sagi = 'agi_max', smaf = 'maf_max', send = 'end_max', cour = 'cour_max', conf = 'conf_max', wit = 'wit_max', charm = 'charm_max'}
+var statsdescript = dictionary.statdescription
 var sleepdict = {communal = {name = 'Communal Room'}, jail = {name = "Jail"}, personal = {name = 'Personal Room'}, your = {name = "Your bed"}}
 
 #saveload system
@@ -1212,12 +1424,6 @@ func repairsave():
 		if i.stats.has('str_mod') == false:
 			for k in ['str_mod','agi_mod','maf_mod','end_mod']:
 				i.stats[k] = 0
-#	for i in state.babylist:
-#		if i.gear.has('clothes'):
-#			i.gear = {costume = 'clothcommon', underwear = 'underwearplain', armor = null, weapon = null, accessory = null}
-#		if i.stats.has('str_mod') == false:
-#			for k in ['str_mod','agi_mod','maf_mod','end_mod']:
-#				i.stats[k] = 0
 	#repairing items
 	if globals.player.ability.find('escape') < 0:
 		globals.player.ability.append('escape')
@@ -1233,6 +1439,7 @@ func repairsave():
 		state.portals.wimborn.enabled = true
 		state.portals.frostford.enabled = true
 		state.portals.gorn.enabled = true
+		state.sidequests.zoe = 0
 		state.portals[state.location].enabled = false
 	state.currentversion = gameversion
 

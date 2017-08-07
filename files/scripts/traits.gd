@@ -399,5 +399,18 @@ var traits = {
     "conflict": [
       ""
     ]
+  },
+  "Ascetic": {
+    "name": "Ascetic",
+    "description": "$name cares little about luxury around $him. \n\n[color=aqua]Luxury demands are lowered. [/color]",
+    "effect": {
+      
+    },
+    "tags": [
+      "mental",
+    ],
+    "conflict": [
+      ""
+    ]
   }
 }
