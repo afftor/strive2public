@@ -38,7 +38,7 @@ func _ready():
 	selectedslave = ''
 	get_node("TabContainer/Settings/fontsize").set_val(globals.rules.fontsize)
 	_on_soundslider_value_changed(globals.rules.musicvol*50)
-	if globals.state.roomscap.communal == 999:
+	if globals.state.nopoplimit == true:
 		get_node("TabContainer/Supporter section/cheatpanel/removepopcap").set_disabled(true)
 
 
@@ -241,9 +241,8 @@ func _on_fontsize_value_changed( value ):
 
 
 func _on_removepopcap_pressed():
-	for i in globals.state.roomscap:
-		globals.state.roomscap[i] = 999
-	if globals.state.roomscap.communal == 999:
+	globals.state.nopoplimit = true
+	if globals.state.nopoplimit == true:
 		get_node("TabContainer/Supporter section/cheatpanel/removepopcap").set_disabled(true)
 
 
@@ -297,3 +296,7 @@ func _on_cancel_pressed():
 func _on_aliseoption_item_selected( ID ):
 	globals.rules.enddayalise = ID
 
+
+
+func _on_addupgradepoint_pressed():
+	globals.resources.upgradepoints += 1

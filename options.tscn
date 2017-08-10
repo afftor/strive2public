@@ -42,6 +42,8 @@ tabs_visible = true
 
 [node name="Settings" type="Tabs" parent="TabContainer"]
 
+editor/display_folded = true
+visibility/visible = false
 anchor/right = 1
 anchor/bottom = 1
 focus/ignore_mouse = false
@@ -199,6 +201,7 @@ max_lines_visible = -1
 
 [node name="Game" type="Tabs" parent="TabContainer"]
 
+editor/display_folded = true
 visibility/visible = false
 anchor/right = 1
 anchor/bottom = 1
@@ -504,7 +507,6 @@ items = [ "Always", null, false, -1, null, "After Daily Event", null, false, -1,
 
 [node name="Supporter section" type="Tabs" parent="TabContainer"]
 
-visibility/visible = false
 anchor/right = 1
 anchor/bottom = 1
 focus/ignore_mouse = false
@@ -597,7 +599,6 @@ flat = false
 
 [node name="cheatpanel" type="Panel" parent="TabContainer/Supporter section"]
 
-editor/display_folded = true
 visibility/visible = false
 anchor/left = 3
 anchor/top = 3
@@ -686,12 +687,29 @@ size_flags/horizontal = 2
 size_flags/vertical = 2
 margin/left = 16.0
 margin/top = 185.0
-margin/right = 111.0
-margin/bottom = 217.0
+margin/right = 204.0
+margin/bottom = 221.0
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
 text = "Remove population limits"
+flat = false
+
+[node name="addupgradepoint" type="Button" parent="TabContainer/Supporter section/cheatpanel"]
+
+hint/tooltip = "Huge population may impact performance greatly"
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 16.0
+margin/top = 227.0
+margin/right = 204.0
+margin/bottom = 263.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Add Upgrade Point"
 flat = false
 
 [node name="unlockspells" type="Button" parent="TabContainer/Supporter section/cheatpanel"]
@@ -924,7 +942,6 @@ flat = false
 
 [node name="screenpopup" type="Popup" parent="."]
 
-editor/display_folded = true
 visibility/visible = false
 anchor/left = 3
 anchor/top = 3
@@ -1056,6 +1073,8 @@ flat = false
 [connection signal="pressed" from="TabContainer/Supporter section/cheatpanel/cheatmana" to="." method="_on_mana_pressed"]
 
 [connection signal="pressed" from="TabContainer/Supporter section/cheatpanel/removepopcap" to="." method="_on_removepopcap_pressed"]
+
+[connection signal="pressed" from="TabContainer/Supporter section/cheatpanel/addupgradepoint" to="." method="_on_addupgradepoint_pressed"]
 
 [connection signal="pressed" from="TabContainer/Supporter section/cheatpanel/unlockspells" to="." method="_on_unlockspells_pressed"]
 

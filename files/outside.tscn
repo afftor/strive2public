@@ -569,6 +569,7 @@ align = 0
 
 [node name="slavebuypanel" type="Control" parent="."]
 
+editor/display_folded = true
 visibility/visible = false
 anchor/right = 1
 anchor/bottom = 1
@@ -1264,6 +1265,7 @@ margin/bottom = 508.0
 
 [node name="ScrollContainer" type="ScrollContainer" parent="slaveservicepanel"]
 
+editor/display_folded = true
 anchor/bottom = 1
 focus/ignore_mouse = false
 focus/stop_mouse = true
@@ -1327,6 +1329,7 @@ max_lines_visible = -1
 
 [node name="speccontainer" type="ScrollContainer" parent="slaveservicepanel"]
 
+editor/display_folded = true
 anchor/left = 3
 anchor/right = 1
 focus/ignore_mouse = false
@@ -1513,6 +1516,7 @@ items = [  ]
 
 [node name="mageorderservices" type="Panel" parent="."]
 
+editor/display_folded = true
 visibility/visible = false
 anchor/left = 3
 anchor/top = 3
@@ -1685,279 +1689,6 @@ toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
 text = "Close"
-flat = false
-
-[node name="carpenter" type="Panel" parent="."]
-
-editor/display_folded = true
-visibility/visible = false
-anchor/left = 3
-anchor/top = 3
-anchor/right = 3
-anchor/bottom = 3
-focus/ignore_mouse = false
-focus/stop_mouse = true
-size_flags/horizontal = 2
-size_flags/vertical = 2
-margin/left = 294.5
-margin/top = 271.0
-margin/right = -314.5
-margin/bottom = -309.0
-
-[node name="Control" type="Control" parent="carpenter"]
-
-anchor/right = 1
-anchor/bottom = 1
-focus/ignore_mouse = false
-focus/stop_mouse = true
-size_flags/horizontal = 2
-size_flags/vertical = 2
-margin/left = -244.0
-margin/top = -15.0
-margin/right = -224.0
-margin/bottom = -5.0
-__meta__ = {
-"_edit_lock_": true
-}
-
-[node name="upgradecommunal" type="Button" parent="carpenter"]
-
-anchor/left = 3
-anchor/top = 3
-anchor/right = 3
-anchor/bottom = 3
-focus/ignore_mouse = false
-focus/stop_mouse = true
-size_flags/horizontal = 2
-size_flags/vertical = 2
-margin/left = -133.5
-margin/top = 264.0
-margin/right = -270.5
-margin/bottom = 226.0
-custom_fonts/font = ExtResource( 4 )
-toggle_mode = false
-enabled_focus_mode = 2
-shortcut = null
-text = "Upgrade"
-flat = false
-
-[node name="upgradepersonal" type="Button" parent="carpenter"]
-
-anchor/left = 3
-anchor/top = 3
-anchor/right = 3
-anchor/bottom = 3
-focus/ignore_mouse = false
-focus/stop_mouse = true
-size_flags/horizontal = 2
-size_flags/vertical = 2
-margin/left = -133.5
-margin/top = 184.0
-margin/right = -270.5
-margin/bottom = 146.0
-custom_fonts/font = ExtResource( 4 )
-toggle_mode = false
-enabled_focus_mode = 2
-shortcut = null
-text = "Upgrade"
-flat = false
-
-[node name="upgradejail" type="Button" parent="carpenter"]
-
-anchor/left = 3
-anchor/top = 3
-anchor/right = 3
-anchor/bottom = 3
-focus/ignore_mouse = false
-focus/stop_mouse = true
-size_flags/horizontal = 2
-size_flags/vertical = 2
-margin/left = -133.5
-margin/top = 22.0
-margin/right = -270.5
-margin/bottom = -16.0
-custom_fonts/font = ExtResource( 4 )
-toggle_mode = false
-enabled_focus_mode = 2
-shortcut = null
-text = "Upgrade"
-flat = false
-
-[node name="upgradefarm" type="Button" parent="carpenter"]
-
-anchor/left = 3
-anchor/top = 3
-anchor/right = 3
-anchor/bottom = 3
-focus/ignore_mouse = false
-focus/stop_mouse = true
-size_flags/horizontal = 2
-size_flags/vertical = 2
-margin/left = -133.5
-margin/top = -48.0
-margin/right = -270.5
-margin/bottom = -86.0
-custom_fonts/font = ExtResource( 4 )
-toggle_mode = false
-enabled_focus_mode = 2
-shortcut = null
-text = "Upgrade"
-flat = false
-
-[node name="upgradebed" type="Button" parent="carpenter"]
-
-anchor/left = 3
-anchor/top = 3
-anchor/right = 3
-anchor/bottom = 3
-focus/ignore_mouse = false
-focus/stop_mouse = true
-size_flags/horizontal = 2
-size_flags/vertical = 2
-margin/left = -133.5
-margin/top = 105.0
-margin/right = -270.5
-margin/bottom = 67.0
-custom_fonts/font = ExtResource( 4 )
-toggle_mode = false
-enabled_focus_mode = 2
-shortcut = null
-text = "Upgrade"
-flat = false
-
-[node name="RichTextLabel" type="RichTextLabel" parent="carpenter"]
-
-anchor/left = 3
-anchor/top = 3
-anchor/right = 3
-anchor/bottom = 3
-focus/ignore_mouse = false
-focus/stop_mouse = true
-size_flags/horizontal = 2
-size_flags/vertical = 2
-margin/left = 252.5
-margin/top = 271.0
-margin/right = -54.5
-margin/bottom = 208.0
-custom_fonts/normal_font = ExtResource( 4 )
-bbcode/enabled = true
-bbcode/bbcode = "Restructure communal room and fit 2 additional beds - 300 gold."
-visible_characters = -1
-
-[node name="RichTextLabel1" type="RichTextLabel" parent="carpenter"]
-
-anchor/left = 3
-anchor/top = 3
-anchor/right = 3
-anchor/bottom = 3
-focus/ignore_mouse = false
-focus/stop_mouse = true
-size_flags/horizontal = 2
-size_flags/vertical = 2
-margin/left = 254.5
-margin/top = 181.0
-margin/right = -52.5
-margin/bottom = 130.0
-custom_fonts/normal_font = ExtResource( 4 )
-bbcode/enabled = true
-bbcode/bbcode = "Build additional personal room - 500 gold"
-visible_characters = -1
-
-[node name="RichTextLabel2" type="RichTextLabel" parent="carpenter"]
-
-anchor/left = 3
-anchor/top = 3
-anchor/right = 3
-anchor/bottom = 3
-focus/ignore_mouse = false
-focus/stop_mouse = true
-size_flags/horizontal = 2
-size_flags/vertical = 2
-margin/left = 256.5
-margin/top = 110.0
-margin/right = -50.5
-margin/bottom = 46.0
-custom_fonts/normal_font = ExtResource( 4 )
-bbcode/enabled = true
-bbcode/bbcode = "Improve your room and expand sleeping space - 250 gold."
-visible_characters = -1
-
-[node name="RichTextLabel3" type="RichTextLabel" parent="carpenter"]
-
-anchor/left = 3
-anchor/top = 3
-anchor/right = 3
-anchor/bottom = 3
-focus/ignore_mouse = false
-focus/stop_mouse = true
-size_flags/horizontal = 2
-size_flags/vertical = 2
-margin/left = 257.5
-margin/top = 17.0
-margin/right = -49.5
-margin/bottom = -28.0
-custom_fonts/normal_font = ExtResource( 4 )
-bbcode/enabled = true
-bbcode/bbcode = "Increase jail's capacity - 250 gold"
-visible_characters = -1
-
-[node name="RichTextLabel5" type="RichTextLabel" parent="carpenter"]
-
-anchor/left = 3
-anchor/top = 3
-anchor/right = 3
-anchor/bottom = 3
-focus/ignore_mouse = false
-focus/stop_mouse = true
-size_flags/horizontal = 2
-size_flags/vertical = 2
-margin/left = 258.5
-margin/top = -49.0
-margin/right = -48.5
-margin/bottom = -94.0
-custom_fonts/normal_font = ExtResource( 4 )
-bbcode/enabled = true
-bbcode/bbcode = "Set up mansion's farm - 650 gold"
-visible_characters = -1
-
-[node name="RichTextLabel4" type="RichTextLabel" parent="carpenter"]
-
-anchor/left = 3
-anchor/top = 3
-anchor/right = 3
-anchor/bottom = 3
-focus/ignore_mouse = false
-focus/stop_mouse = true
-size_flags/horizontal = 2
-size_flags/vertical = 2
-margin/left = 278.5
-margin/top = -127.0
-margin/right = -281.5
-margin/bottom = -194.0
-custom_fonts/normal_font = ExtResource( 4 )
-bbcode/enabled = true
-bbcode/bbcode = ""
-visible_characters = -1
-
-[node name="carpenterleave" type="Button" parent="carpenter"]
-
-anchor/left = 3
-anchor/top = 3
-anchor/right = 3
-anchor/bottom = 3
-focus/ignore_mouse = false
-focus/stop_mouse = true
-size_flags/horizontal = 2
-size_flags/vertical = 2
-margin/left = 176.5
-margin/top = -222.0
-margin/right = -158.5
-margin/bottom = -269.0
-custom_fonts/font = ExtResource( 4 )
-toggle_mode = false
-enabled_focus_mode = 2
-shortcut = null
-text = "Leave"
 flat = false
 
 [node name="shoppanel" type="Control" parent="."]
@@ -2293,7 +2024,7 @@ text = "Elf"
 flat = false
 align = 0
 selected = 0
-items = [ "Elf", null, false, 0, null, "Dark Elf", null, false, 1, null, "Drow", null, false, 2, null, "Orc", null, false, 3, null, "Beastkin Cat", null, false, 4, null, "Beastkin Wolf", null, false, 5, null, "Beastkin Fox", null, false, 6, null, "Beastkin Bunny", null, false, 7, null, "Beastkin Tanuki", null, false, 8, null, "Halfkin Cat", null, false, 9, null, "Halfkin Wolf", null, false, 10, null, "Halfkin Fox", null, false, 11, null, "Halfkin Tanuki", null, false, 12, null, "Halfkin Bunny", null, false, 13, null, "Fairy", null, false, 14, null, "Dryad", null, false, 15, null, "Demon", null, false, 16, null, "Seraph", null, false, 17, null, "Taurus", null, false, 18, null, "Dragonkin", null, false, 19, null, "Gnome", null, false, 20, null, "Goblin", null, false, 21, null ]
+items = [ "Elf", null, false, 0, null, "Dark Elf", null, false, 1, null, "Drow", null, false, 2, null, "Orc", null, false, 3, null, "Beastkin Cat", null, false, 4, null, "Beastkin Wolf", null, false, 5, null, "Beastkin Fox", null, false, 6, null, "Beastkin Bunny", null, false, 7, null, "Beastkin Tanuki", null, false, 8, null, "Halfkin Cat", null, false, 9, null, "Halfkin Wolf", null, false, 10, null, "Halfkin Fox", null, false, 11, null, "Halfkin Tanuki", null, false, 12, null, "Halfkin Bunny", null, false, 13, null, "Fairy", null, false, 14, null, "Dryad", null, false, 15, null, "Demon", null, false, 16, null, "Seraph", null, false, 17, null, "Taurus", null, false, 18, null, "Dragonkin", null, false, 19, null, "Gnome", null, false, 20, null, "Goblin", null, false, 21, null, "Centaur", null, false, 22, null ]
 
 [node name="sebastianconfirm" type="Button" parent="sebastiannode"]
 
@@ -2372,18 +2103,6 @@ autoplay = "spritemovefairy"
 [connection signal="pressed" from="mageorderservices/learnspellbutton" to="." method="_on_learnspellbutton_pressed"]
 
 [connection signal="pressed" from="mageorderservices/close" to="." method="_on_close_pressed"]
-
-[connection signal="pressed" from="carpenter/upgradecommunal" to="." method="_on_upgradecommunal_pressed"]
-
-[connection signal="pressed" from="carpenter/upgradepersonal" to="." method="_on_upgradepersonal_pressed"]
-
-[connection signal="pressed" from="carpenter/upgradejail" to="." method="_on_upgradejail_pressed"]
-
-[connection signal="pressed" from="carpenter/upgradefarm" to="." method="_on_upgradefarm_pressed"]
-
-[connection signal="pressed" from="carpenter/upgradebed" to="." method="_on_upgradebed_pressed"]
-
-[connection signal="pressed" from="carpenter/carpenterleave" to="." method="_on_carpenterleave_pressed"]
 
 [connection signal="pressed" from="shoppanel/Panel/buybutton" to="." method="shopbuy"]
 

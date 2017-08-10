@@ -22,9 +22,13 @@ func _ready():
 
 func show():
 	get_tree().get_current_scene()._on_mansion_pressed()
+	if OS.get_name() != 'HTML5' && globals.rules.fadinganimation == true:
+		yield(get_tree().get_current_scene(), 'animfinished')
 	set_hidden(false)
+	get_node("upgradepoints").set_text("Free upgrade points:"+str(globals.resources.upgradepoints))
 	selectedupgrade = null
 	selectedcategory = null
+	get_node("categories/VBoxContainer/farm").set_hidden(globals.state.farm < 3)
 	get_node("upgradepanel").set_hidden(true)
 	for i in get_node("upgrades/VBoxContainer").get_children():
 		if i != get_node("upgrades/VBoxContainer/button"):
@@ -60,6 +64,8 @@ func categoryselect(button):
 		newbutton.set_meta("upgrade", upgrade)
 		newbutton.connect("pressed",self,'upgradeselected',[upgrade])
 
+var alchemy1 = ['aphrodisiac','hairgrowthpot','amnesiapot','lactationpot','miscariagepot','stimulantpot','deterrentpot']
+var alchemy2 = ['oblivionpot','oblivionpot','minoruspot','majoruspot','aphroditebrew']
 
 func upgradeselected(upgrade):
 	var text = ''
@@ -67,21 +73,25 @@ func upgradeselected(upgrade):
 	var canpurchase = true
 	var currentupgradelevel = globals.state.mansionupgrades[upgrade.code]
 	var cost
+	var limit = upgrade.levels
 	get_node("upgradepanel").popup()
 	for i in get_node("upgrades/VBoxContainer").get_children():
 		if i != get_node("upgrades/VBoxContainer/button") && i.get_meta('upgrade') != upgrade:
 			i.set_pressed(false)
 	text = upgrade.description
-	if upgrade.levels == 1:
+	if upgrade.code in ['mansioncommunal', 'mansionpersonal','mansionbed','jailcapacity'] && globals.state.nopoplimit == true:
+		limit = 999
+		
+	if limit == 1:
 		if currentupgradelevel == 1:
 			noprice = true
 			canpurchase = false
 			text += "\n[color=green]This upgrade is already purchased.[/color]"
 	else:
-		if currentupgradelevel < upgrade.levels:
+		if currentupgradelevel < limit:
 			if currentupgradelevel >= 1 && upgrade.has("description2"):
 				text = upgrade.description2
-			text += "\n\nCurrent level: " + str(currentupgradelevel) + "/" + str(upgrade.levels)
+			text += "\n\nCurrent level: " + str(currentupgradelevel) + "/" + str(limit)
 		else:
 			noprice = true
 			canpurchase = true
@@ -94,7 +104,7 @@ func upgradeselected(upgrade):
 			text += upgrade.valuenumber[currentupgradelevel]
 		else:
 			text += str(currentupgradelevel)
-		if upgrade.levels > currentupgradelevel:
+		if limit > currentupgradelevel:
 			text += "\nNext Level: "
 			if upgrade.has("valuenumber"):
 				text += upgrade.valuenumber[currentupgradelevel+1]
@@ -107,7 +117,8 @@ func upgradeselected(upgrade):
 			cost = upgrade.cost[currentupgradelevel]
 		purchaseupgrade.set_meta('cost', cost)
 		text += "\n\nPrice: [color=yellow]" + str(cost) + '[/color]'
-		if globals.resources.gold < cost:
+		text += "\n\nRequired Upgrade Points: " + str(upgrade.pointscost)
+		if globals.resources.gold < cost || globals.resources.upgradepoints < upgrade.pointscost:
 			canpurchase = false
 	get_node("upgradepanel/RichTextLabel").set_bbcode(text)
 	
@@ -124,7 +135,15 @@ func purchasconfirm():
 	var upgrade = purchaseupgrade.get_meta("upgrade")
 	var currentupgradelevel = globals.state.mansionupgrades[upgrade.code]
 	var cost = purchaseupgrade.get_meta("cost")
+	if upgrade.code == 'mansionalchemy':
+		if currentupgradelevel == 0:
+			for i in alchemy1:
+				globals.itemdict[i].unlocked = true
+		elif currentupgradelevel == 1:
+			for i in alchemy2:
+				globals.itemdict[i].unlocked = true
 	globals.resources.gold -= cost
+	globals.resources.upgradepoints -= upgrade.pointscost
 	globals.state.mansionupgrades[upgrade.code] += 1
 	categoryselect(selectedcategory)
 	upgradeselected(upgrade)

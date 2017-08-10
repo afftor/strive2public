@@ -741,7 +741,7 @@ type = 'basic',
 description = "$name will be helping out and managing your laboratory operations.\n\n[color=yellow]Requires grade of a [color=aqua]Commoner[/color] or higher. ",
 workline = "$name will be assisting you at the laboratory.",
 reqs = 'globals.originsarray.find(globals.currentslave.origins) >= 2',
-unlockreqs = 'globals.state.laboratory >= 1',
+unlockreqs = 'globals.state.mansionupgrades.mansionlab >= 1',
 maxnumber = 1,
 order = 14,
 tags = ['mansion'],
@@ -1059,6 +1059,8 @@ func _on_reverseportrait_pressed():
 			slave.imageportait = 'res://files/images/cali/caliportrait.png'
 		elif slave.unique == 'Emily':
 			slave.imageportait = "res://files/images/emily/emilyportrait.png"
+		elif slave.unique == 'Tisha':
+			slave.imageportait = "res://files/images/tisha/tishaportrait.png"
 		get_node("inspect/portait/Panel").set_hidden(true)
 		_on_slave_tab_visibility_changed()
 		get_tree().get_current_scene().rebuild_slave_list()

@@ -5,7 +5,7 @@ var itemdict = {}
 var spelldict = {}
 var effectdict = {}
 var guildslaves = {wimborn = [], gorn = [], frostford = []}
-var gameversion = 4460
+var gameversion = 4461
 var state = progress.new()
 var developmode = false
 
@@ -89,6 +89,7 @@ code = 'farmcapacity',
 description = "Adds new stables to the farm, increasing number of residents that can be assigned at a time.", 
 levels = 3,
 cost = 500,
+pointscost = 3,
 valuename = "Allowed cattle: ",
 valuenumber = ['2','5','8','12'],
 },
@@ -97,6 +98,7 @@ name = "Hatchery",
 code = 'farmhatchery',
 description = "Provides the farm with new equipment, allowing the use of slaves and snails for egg laying.", 
 levels = 1,
+pointscost = 10,
 cost = 1000,
 },
 farmtreatment = {
@@ -104,6 +106,7 @@ name = "Improved Treatment",
 code = 'farmtreatment',
 description = "Equips the farm with relaxation furniture and devices which are gentler on your cattle negating the demoralization of residents on the farm.", 
 levels = 1,
+pointscost = 20,
 cost = 2500,
 },
 
@@ -113,6 +116,7 @@ code = 'foodcapacity',
 description = "Adds additional space to the food storage area allowing you to keep more food at a time.", 
 levels = 5,
 cost = [250,500,1000,1500,2500],
+pointscost = 5,
 valuename = "Maximum food: ",
 valuenumber = ['500', '750', '1000', '1500', '2000', '3000'],
 },
@@ -121,6 +125,7 @@ name = "Food Storage Preservation",
 code = 'foodpreservation',
 description = "Equips your food storage area with a cooling system which helps prevent food spoilage when storage is nearly full.", 
 levels = 1,
+pointscost = 15,
 cost = 1500,
 },
 
@@ -130,6 +135,7 @@ code = 'jailcapacity',
 description = "Adds additional cells to your jail, increasing maximum number of prisoners it can hold at a time.", 
 levels = 8,
 cost = 200,
+pointscost = 3,
 valuename = "Jail Cells: ",
 },
 jailtreatment = {
@@ -137,6 +143,7 @@ name = "Better Furnishing",
 code = 'jailtreatment',
 description = "Equips your jail with better furnishings and health care, preventing prisoners from accumulating stress.", 
 levels = 1,
+pointscost = 15,
 cost = 750,
 },
 jailincenses = {
@@ -144,6 +151,7 @@ name = "Soothing Incences",
 code = 'jailincenses',
 description = "Equips your jail with burners for a special incenses which helps calm and adjust prisoners' attitude.", 
 levels = 1,
+pointscost = 20,
 cost = 1500,
 },
 
@@ -153,6 +161,7 @@ code = 'mansioncommunal',
 description = "Adds new beds to communal room, providing space for additional residents to sleep. ", 
 levels = 20,
 cost = 100,
+pointscost = 1,
 valuename = "Total beds: ",
 },
 mansionpersonal = {
@@ -161,6 +170,7 @@ code = 'mansionpersonal',
 description = "Set up one of the free rooms for living. Personal rooms provide sense of [color=yellow]Luxury[/color] to their hosts. ", 
 levels = 10,
 cost = 300,
+pointscost = 3,
 valuename = "Total rooms: ",
 },
 mansionbed = {
@@ -169,6 +179,7 @@ code = 'mansionbed',
 description = "Enlarges your bed allowing you to host more people with you at night.. Sleeping in your room provides a sense of [color=yellow]Luxury[/color] to your partners.", 
 levels = 3,
 cost = 300,
+pointscost = 3,
 valuename = "Allowed partners: ",
 },
 mansionluxury = {
@@ -176,6 +187,7 @@ name = "Mansion Furnishment",
 code = 'mansionluxury',
 description = "Decorates the mansion with better furniture and additional pieces of art. This provides a boost to the [color=yellow]Luxury[/color] provided to servants sleeping in personal rooms and your bed.", 
 levels = 2,
+pointscost = 15,
 cost = [1000,2000],
 },
 mansionalchemy = {
@@ -184,6 +196,7 @@ code = 'mansionalchemy',
 description = "Equips a spare room with alchemical tools and paraphernalia allowing you to brew basic potions.", 
 description2 = "Upgrades your Alchemy Room with additional equipment enabling you to brew a larger variety of potions.",
 levels = 2,
+pointscost = 5,
 cost = [500,1000],
 },
 mansionlibrary = {
@@ -191,6 +204,7 @@ name = "Library",
 code = 'mansionlibrary',
 description = "Purchases new books and furniture for your library providing access to new books, articles and information as well as improving residents’ studies.", 
 levels = 3,
+pointscost = 3,
 cost = [500,1000,1500],
 },
 mansionlab = {
@@ -199,6 +213,7 @@ code = 'mansionlab',
 description = "Equips a spare room within the mansion with advanced devices and tools allowing you to conduct experiments and operations on both yourself and your slaves.", 
 description2 = "Upgrades your laboratory with the latest equipment and tools, unlocking new operations.", 
 levels = 2,
+pointscost = 10,
 cost = [1000,3000],
 },
 mansionkennels = {
@@ -206,6 +221,7 @@ name = "Kennels",
 code = 'mansionkennels',
 description = "Builds a kennel on the mansion’s grounds providing space to keep hounds. Having hounds on the property reduces the chances of slaves escaping during the night, and for those so inclined unlocks the beastality action. ", 
 levels = 1,
+pointscost = 15,
 cost = 1500,
 },
 mansionnursery = {
@@ -213,6 +229,7 @@ name = "Nursery Room",
 code = 'mansionnursery',
 description = "Upgrades and equips a room within the mansion to provide care for newborn babies and young children for a limited period.", 
 levels = 1,
+pointscost = 15,
 cost = 2000,
 },
 
@@ -305,6 +322,7 @@ class resource:
 	var mana = 0 setget mana_set
 	var energy = 0 setget energy_set
 	var food = 0 setget food_set
+	var upgradepoints = 0 setget upgradepoints_set
 	var panel
 	var array = ['day','gold','mana','energy','food']
 	
@@ -391,6 +409,17 @@ class resource:
 		
 		
 	
+	func upgradepoints_set(value):
+		var difference = upgradepoints - value
+		var text = ""
+		upgradepoints = value
+		
+		if difference != 0:
+			text = "[color=green]Obtained " + str(abs(difference)) +  " Mansion Upgrade Points[/color]"
+		
+		if globals.get_tree().get_current_scene().has_node("infotext"):
+			globals.get_tree().get_current_scene().infotext(text)
+	
 	func energy_set(value):
 		if panel != null:
 			panel.get_node("energy").set_text(str(round(globals.player.energy)))
@@ -399,15 +428,11 @@ class progress:
 	var tutorialcomplete = false
 	var supporter = false
 	var location = 'wimborn'
-	var rooms = {bed = 1, jail = 2, communal = 4, personal = 1}
-	var roomscap = {bed = 3, jail = 8, communal = 20, personal = 10}
+	var nopoplimit = false
 	var condition = 85 setget cond_set
 	var conditionmod = 1.3
-	var alchemy = 0
-	var laboratory = 0 
 	var farm = 0 
 	var apiary = 0
-	var library = 0
 	var branding = 0
 	var slaveguildvisited = 0
 	var itemlist = {}
@@ -564,6 +589,7 @@ class slave:
 	var kinks = []
 	var forcedsex = false
 	var metrics = {ownership = 0, jail = 0, mods = 0, brothel = 0, sex = 0, partners = [], randompartners = 0, item = 0, spell = 0, orgy = 0, threesome = 0, win = 0, capture = 0, goldearn = 0, foodearn = 0, manaearn = 0, birth = 0, preg = 0, vag = 0, anal = 0, oral = 0, roughsex = 0, roughsexlike = 0, orgasm = 0}
+	var fromguild = false
 	var stats = {
 		str_cur = 0,
 		str_max = 0,
@@ -1441,6 +1467,23 @@ func repairsave():
 		state.portals.gorn.enabled = true
 		state.sidequests.zoe = 0
 		state.portals[state.location].enabled = false
+	if state.currentversion < 4460:
+		state.mansionupgrades.jailcapacity = state.rooms.jail
+		state.mansionupgrades.mansioncommunal = state.rooms.communal
+		state.mansionupgrades.mansionpersonal = state.rooms.personal
+		state.mansionupgrades.mansionbed = state.rooms.bed
+		state.mansionupgrades.mansionalchemy = state.alchemy
+		state.mansionupgrades.mansionlibrary = state.library
+		state.mansionupgrades.mansionlab = state.laboratory
+		if state.currentversion < 4461:
+			var alchemy1 = ['aphrodisiac','hairgrowthpot','amnesiapot','lactationpot','miscariagepot','stimulantpot','deterrentpot']
+			var alchemy2 = ['oblivionpot','oblivionpot','minoruspot','majoruspot','aphroditebrew']
+			if state.mansionupgrades.mansionalchemy == 1:
+				for i in alchemy1:
+					globals.itemdict[i].unlocked = true
+			if state.mansionupgrades.mansionalchemy == 2:
+				for i in alchemy2:
+					globals.itemdict[i].unlocked = true
 	state.currentversion = gameversion
 
 var showalisegreet = false

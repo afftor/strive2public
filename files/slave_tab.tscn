@@ -2136,8 +2136,8 @@ lines_skipped = 0
 max_lines_visible = -1
 
 [node name="contraception" type="CheckBox" parent="regulations/rules" groups=[
-"prisondisable",
 "slaverules",
+"prisondisable",
 ]]
 
 anchor/left = 1
@@ -2164,8 +2164,8 @@ flat = false
 align = 0
 
 [node name="aphrodisiac" type="CheckBox" parent="regulations/rules" groups=[
-"prisondisable",
 "slaverules",
+"prisondisable",
 ]]
 
 anchor/left = 1
@@ -2192,8 +2192,8 @@ flat = false
 align = 0
 
 [node name="silence" type="CheckBox" parent="regulations/rules" groups=[
-"advrules",
 "slaverules",
+"advrules",
 ]]
 
 anchor/left = 1
@@ -2218,8 +2218,8 @@ flat = false
 align = 0
 
 [node name="pet" type="CheckBox" parent="regulations/rules" groups=[
-"advrules",
 "slaverules",
+"advrules",
 ]]
 
 anchor/left = 1
@@ -2246,8 +2246,8 @@ flat = false
 align = 0
 
 [node name="masturbation" type="CheckBox" parent="regulations/rules" groups=[
-"advrules",
 "slaverules",
+"advrules",
 ]]
 
 anchor/left = 1
@@ -2273,8 +2273,8 @@ flat = false
 align = 0
 
 [node name="nudity" type="CheckBox" parent="regulations/rules" groups=[
-"advrules",
 "slaverules",
+"advrules",
 ]]
 
 anchor/left = 1
@@ -2300,8 +2300,8 @@ flat = false
 align = 0
 
 [node name="betterfood" type="CheckBox" parent="regulations/rules" groups=[
-"prisondisable",
 "slaverules",
+"prisondisable",
 ]]
 
 anchor/left = 1
@@ -2328,8 +2328,8 @@ flat = false
 align = 0
 
 [node name="personalbath" type="CheckBox" parent="regulations/rules" groups=[
-"prisondisable",
 "slaverules",
+"prisondisable",
 ]]
 
 anchor/left = 1
@@ -2356,8 +2356,8 @@ flat = false
 align = 0
 
 [node name="cosmetics" type="CheckBox" parent="regulations/rules" groups=[
-"prisondisable",
 "slaverules",
+"prisondisable",
 ]]
 
 anchor/left = 1
@@ -2384,8 +2384,8 @@ flat = false
 align = 0
 
 [node name="pocketmoney" type="CheckBox" parent="regulations/rules" groups=[
-"prisondisable",
 "slaverules",
+"prisondisable",
 ]]
 
 anchor/left = 1

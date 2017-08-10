@@ -464,13 +464,13 @@ func zoneenter(zone):
 			hasinjuries = true
 			continue
 	if globals.spelldict.heal.learned == true && (globals.player.health < globals.player.stats.health_max || hasinjuries == true) :
-		var tempdict = {name = "Use Heal to restore everyone's health", function = 'healeveryone'}
+		var tempdict = {name = "Use Heal to restore everyone's health", function = 'healeveryone', args = null}
 		if globals.resources.mana < 10:
 			tempdict.disabled = true
 			tempdict.tooltip = 'not enough mana'
 		array.append(tempdict)
 	if globals.spelldict.invigorate.learned == true && globals.state.playergroup.size() >= 1:
-		var tempdict = {name = "Cast Invigorate", function = 'castinvig'}
+		var tempdict = {name = "Cast Invigorate", function = 'castinvig', args = null}
 		if globals.resources.mana < 5:
 			tempdict.disabled = true
 			tempdict.tooltip = 'not enough mana'
@@ -482,7 +482,7 @@ func zoneenter(zone):
 func frostfordclearing():
 	event('frostforddryad')
 
-func healeveryone():
+func healeveryone(args = null):
 	var slave
 	var manaused = 0
 	if globals.player.health < globals.player.stats.health_max:
@@ -501,7 +501,7 @@ func healeveryone():
 		main.popup("Nobody has injuries in your party. ")
 	outside.playergrouppanel()
 
-func castinvig():
+func castinvig(args = null):
 	main.selectslavelist(false, 'castinvigtarget', self, 'true', false, true)
 
 func castinvigtarget(slave):
@@ -952,8 +952,8 @@ func checkjailbutton():
 	for i in get_tree().get_nodes_in_group('winoption'):
 		if i.get_item_text(i.get_selected()) == 'Jail':
 			counter += 1
-	winpanel.get_node("Label").set_text("Defeated and Captured | Jail cells left: " + str(globals.state.rooms.jail - (globals.count_sleepers().jail + counter)) )
-	if globals.state.rooms.jail <= globals.count_sleepers().jail + counter:
+	winpanel.get_node("Label").set_text("Defeated and Captured | Jail cells left: " + str(globals.state.mansionupgrades.jailcapacity - (globals.count_sleepers().jail + counter)) )
+	if globals.state.mansionupgrades.jailcapacity <= globals.count_sleepers().jail + counter:
 		for i in get_tree().get_nodes_in_group('winoption'):
 			i.set_item_disabled(2, true)
 	else:

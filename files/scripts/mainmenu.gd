@@ -158,10 +158,12 @@ func _on_startrandom_pressed():
 	globals.resources.day = 1
 	get_tree().change_scene("res://files/Mansion.scn")
 	if globals.state.sandbox == false:
+		globals.resources.upgradepoints = 20
 		globals.resources.gold = 500
 		globals.resources.food = 200
 		globals.resources.mana = 10
 	else:
+		globals.resources.upgradepoints = 5
 		for i in globals.state.portals.values():
 			if i.code != currentloc:
 				i.enabled = true
@@ -881,6 +883,7 @@ func _on_slaveconfirm_pressed():
 	
 	
 	if sandbox == false:
+		globals.resources.upgradepoints = 5
 		globals.resources.gold += 250
 		globals.resources.food += 200
 		globals.resources.mana += 10
@@ -888,6 +891,7 @@ func _on_slaveconfirm_pressed():
 		for i in globals.state.portals.values():
 			if i.code != currentloc:
 				i.enabled = true
+		globals.resources.upgradepoints = 20
 		globals.resources.gold += 5000
 		globals.resources.food += 500
 		globals.resources.mana += 100

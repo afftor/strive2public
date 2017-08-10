@@ -238,7 +238,7 @@ func _on_new_slave_button_pressed():
 	globals.state.branding = 2
 	globals.resources.gold += 100000
 	globals.resources.food += 1000
-	globals.resources.mana += 1000
+	globals.resources.mana += 5
 	globals.player.energy = 100
 	globals.state.reputation.frostford = 30
 	for i in ['armorchain','weaponclaymore','clothpet','clothninja']:
@@ -248,9 +248,9 @@ func _on_new_slave_button_pressed():
 	globals.state.sidequests.emily = 14
 	globals.state.rank = 3
 	globals.state.mainquest = 33
-	globals.state.farm = 4
+	globals.state.farm = 1
 	globals.state.mansionupgrades.mansionlab = 1
-	globals.state.mansionupgrades.mansionalchemy = 2
+	globals.state.mansionupgrades.mansionalchemy = 0
 
 func getridof():
 	if globals.state.companion == currentslave:
@@ -1865,7 +1865,7 @@ func _on_mansion_pressed():
 	else:
 		text += '[color=green]'
 	text += str(globals.state.mansionupgrades.mansioncommunal) + '[/color] beds in communal room\n'
-	text += 'You have ' + globals.fastif(sleepers.personal >= globals.state.mansionupgrades.mansionpersonal, '[color=red]', '[color=green]') + str(globals.state.mansionupgrades.mansionpersonal) + '[/color] ' + globals.fastif(globals.state.mansionupgrades.mansionpersonal > 1, 'personal rooms', 'personal room')+ ' available for living\nYour bed can fit ' +globals.fastif(sleepers['your_bed'] >= globals.state.mansionupgrades.mansionbed, '[color=red]', '[color=green]') + str(globals.state.rooms.bed) + '[/color] ' +  globals.fastif(globals.state.mansionupgrades.mansionpersonal > 1, 'persons', 'person')+' besides you.\n\nYour jail can hold up to ' +globals.fastif(sleepers.jail >= globals.state.mansionupgrades.jailcapacity, '[color=red]', '[color=green]') + str(globals.state.mansionupgrades.jailcapacity) +' [/color] prisoners. \n\n'
+	text += 'You have ' + globals.fastif(sleepers.personal >= globals.state.mansionupgrades.mansionpersonal, '[color=red]', '[color=green]') + str(globals.state.mansionupgrades.mansionpersonal) + '[/color] ' + globals.fastif(globals.state.mansionupgrades.mansionpersonal > 1, 'personal rooms', 'personal room')+ ' available for living\nYour bed can fit ' +globals.fastif(sleepers['your_bed'] >= globals.state.mansionupgrades.mansionbed, '[color=red]', '[color=green]') + str(globals.state.mansionupgrades.mansionbed) + '[/color] ' +  globals.fastif(globals.state.mansionupgrades.mansionpersonal > 1, 'persons', 'person')+' besides you.\n\nYour jail can hold up to ' +globals.fastif(sleepers.jail >= globals.state.mansionupgrades.jailcapacity, '[color=red]', '[color=green]') + str(globals.state.mansionupgrades.jailcapacity) +' [/color] prisoners. \n\n'
 	if globals.state.condition <= 20:
 		text += 'Mansion is [color=red]in a complete mess[/color].\n\n'
 	elif globals.state.condition <= 40:
@@ -1897,7 +1897,7 @@ func _on_mansion_pressed():
 	else:
 		get_node("MainScreen/mansion/headgirl").set_hidden(true)
 		get_node("MainScreen/mansion/slavelist").set_hidden(true)
-	if globals.state.farm == 4:
+	if globals.state.farm == 3:
 		get_node("buttonpanel/VBoxContainer/farm").set_disabled(false)
 	else:
 		get_node("buttonpanel/VBoxContainer/farm").set_disabled(true)
@@ -2277,7 +2277,7 @@ func _on_questnode_visibility_changed():
 	if globals.state.sidequests.brothel == 1:
 		sidetext.set_bbcode(sidetext.get_bbcode() + "—To let your slaves work at prostitution, you'll have to bring [color=green]Elf slave[/color] to the brothel. \n\n")
 	if globals.state.farm == 2:
-		sidetext.set_bbcode(sidetext.get_bbcode()+ "—Sebastian proposed you to find builders to set up your own human farm.\n\n")
+		sidetext.set_bbcode(sidetext.get_bbcode()+ "—Sebastian proposed you to purchase to set up your own human farm for 1000 gold.\n\n")
 	if dolinquestdict.has(str(globals.state.sidequests.dolin)):
 		sidetext.set_bbcode(sidetext.get_bbcode() + "—"+ dolinquestdict[str(globals.state.sidequests.dolin)]+"\n\n")
 	if caliquestdict.has(str(globals.state.sidequests.cali)):
@@ -3651,17 +3651,8 @@ func alisegreet():
 	get_node("tutorialnode").alisegreet()
 
 
-
-
-
-
-
-
 func _on_ugrades_pressed():
 	get_node("MainScreen/mansion/upgradespanel").show()
-
-
-
 
 func _on_upgradesclose_pressed():
 	get_node("MainScreen/mansion/upgradespanel").set_hidden(true)
