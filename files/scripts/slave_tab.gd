@@ -34,6 +34,9 @@ func _on_slave_tab_visibility_changed():
 	namelabel.set_hidden(false)
 	slave = globals.slaves[get_tree().get_current_scene().currentslave]
 	globals.currentslave = slave
+	get_node("stats/statspanel").slave = slave
+	get_node("stats/statspanel").mode = 'full'
+	get_node("stats/statspanel").show()
 	namelabel.set_text(slave.name_short())
 	var file = File.new()
 	setdescriptpos()
@@ -45,8 +48,6 @@ func _on_slave_tab_visibility_changed():
 	for i in get_node("inspect/traits/traitlist").get_children():
 		if i != get_node("inspect/traits/traitlist/Label"):
 			i.free()
-	for i in get_node("stats/skills/skilllist").get_children():
-		i.free()
 	for i in slave.traits.values():
 		label = get_node("inspect/traits/traitlist/Label").duplicate()
 		get_node("inspect/traits/traitlist").add_child(label)
@@ -63,10 +64,6 @@ func _on_slave_tab_visibility_changed():
 			var text = slave['skills'][i]['name'] + ': ' + slave.skill_level(slave['skills'][i]['value'])
 			label.set_text(text)
 			label.set_ignore_mouse(0)
-	if get_node("stats/skills/skilllist").get_child_count() <= 0:
-		var label = Label.new()
-		get_node("stats/skills/skilllist").add_child(label)
-		label.set_text('None')
 	var text = 'Learned abilities: '
 	for i in slave.ability:
 		var abil = globals.abilities.abilitydict[i]
@@ -206,9 +203,10 @@ func _on_childhood_mouse_enter():
 		if i != 'noble':
 			text += ' - '
 	text += '\n\n' + globals.dictionary.getOriginDescription(slave)
-	find_node('tooltip').set_hidden(false)
 	descripttext.set_as_toplevel(false)
-	get_node("inspect/tooltip/tooltiptext").set_bbcode(text)
+	globals.showtooltip(text)
+	#find_node('tooltip').set_hidden(false)
+	#get_node("inspect/tooltip/tooltiptext").set_bbcode(text)
 
 func traittooltip(node):
 	var slave = globals.slaves[get_tree().get_current_scene().currentslave]
@@ -223,51 +221,40 @@ func traittooltiphide():
 	find_node('tooltip').set_hidden(true)
 
 func _on_childhood_mouse_exit():
-	find_node('tooltip').set_hidden(true)
+	globals.hidetooltip()
 
 func _on_courfield_mouse_enter():
 	find_node('courval').set_hidden(false)
-	find_node('tooltip1').set_hidden(false)
-	get_node("stats/tooltip1/tooltiptext").set_bbcode("Courage represents how willing a person is to face any sort of threat. High courage allows them to venture into dangerous regions and overcome their fears. Low courage allows discipline through fear to be way more effective, but makes combat and adventure unbearable.\n\n[color=aqua]Courage can be increased by winning battles and succeding on the hunt. [/color]")
+	globals.showtooltip(globals.statsdescript.cour)
 
 func _on_courfield_mouse_exit():
 	find_node('courval').set_hidden(true)
-	find_node('tooltip1').set_hidden(true)
-
-#func _on_tooltip_visibility_changed():
-#	var pos = get_global_mouse_pos()
-#	pos.y -= find_node('tooltip1').get_rect().size.height
-#	find_node('tooltip1').set_global_pos(pos)
-
-
+	globals.hidetooltip()
 
 func _on_conffield_mouse_enter():
 	find_node('confval').set_hidden(false)
-	find_node('tooltip1').set_hidden(false)
-	get_node("stats/tooltip1/tooltiptext").set_bbcode("Confidence in one’s self represents how dependable a person is when put into a position of authority and must deal with other's opinions. High confidence is a must for any leadership or managerial role, otherwise their indecision will lead to poor performance. High confidence causes obedience to drop more quickly and refuse certain actions, while low confidence allows the slave to adopt new positions faster.\n\n[color=aqua]Confidence can be increased by participating in managing jobs and being praised. [/color]")
+	globals.showtooltip(globals.statsdescript.conf)
 
 
 func _on_conffield_mouse_exit():
 	find_node('confval').set_hidden(true)
-	find_node('tooltip1').set_hidden(true)
+	globals.hidetooltip()
 
 func _on_witfield_mouse_enter():
 	find_node('witval').set_hidden(false)
-	find_node('tooltip1').set_hidden(false)
-	get_node("stats/tooltip1/tooltiptext").set_bbcode("Wit represents the cognitive capabilities of a person; how quickly they think, how fast they learn, and how proactive they are at this. A high wit allows for quicker training and learning while a low wit would make the person incompetent at some occupations. High wit also makes it harder to influence a slave's mind via magic.\n\n[color=aqua]Wit can grow from studying in the library. [/color]")
+	globals.showtooltip(globals.statsdescript.wit)
 
 func _on_witfield_mouse_exit():
 	find_node('witval').set_hidden(true)
-	find_node('tooltip1').set_hidden(true)
+	globals.hidetooltip()
 
 func _on_charmfield_mouse_enter():
 	find_node('charmval').set_hidden(false)
-	find_node('tooltip1').set_hidden(false)
-	get_node("stats/tooltip1/tooltiptext").set_bbcode("Charm represents how well a person is perceived by others. Charming people attract everyone's attention and are easily liked, while those of the opposite case are overlooked. A high charm considerably affects a slave's overall value, and their ability to entertain. \n\n[color=aqua]Charm can be increased by some sex related actions. [/color]")
+	globals.showtooltip(globals.statsdescript.charm)
 
 func _on_charmfield_mouse_exit():
 	find_node('charmval').set_hidden(true)
-	find_node('tooltip1').set_hidden(true)
+	globals.hidetooltip()
 
 
 
@@ -424,9 +411,9 @@ func sleeprooms():
 	dict[count] = {}
 	dict[count].name = 'Personal Room'
 	dict[count].tooltip = slave.dictionary('$name will have personal room')
-	if slave.sleep == 'personal':
+	if slave.sleep == 'personal':globals.state.mansionupgrades.mansionbed
 		dict[count].state = 'selected'
-	elif beds.personal >= globals.state.rooms.personal:
+	elif beds.personal >= globals.state.mansionupgrades.mansionpersonal:
 		dict[count].state =  'disabled'
 		dict[count].tooltip = 'You have no more available personal rooms'
 	else:
@@ -441,7 +428,7 @@ func sleeprooms():
 	dict[count].tooltip = slave.dictionary('$name will be sleeping with you')
 	if slave.sleep == 'your':
 		dict[count].state = "selected"
-	elif beds.your_bed == globals.state.rooms.bed:
+	elif beds.your_bed == globals.state.mansionupgrades.mansionbed:
 		dict[count].state = "disabled"
 	elif slave.loyal + slave.obed < 130 || slave.tags.find('nosex') >= 0:
 		dict[count].state = "disabled" 
@@ -458,7 +445,7 @@ func sleeprooms():
 	dict[count].tooltip = "Servant will be confined in your jail"
 	if slave.sleep == 'jail':
 		dict[count].state = "selected"
-	elif beds.jail == globals.state.rooms.jail:
+	elif beds.jail >= globals.state.mansionupgrades.jailcapacity:
 		dict[count].state = "disabled"
 		dict[count].tooltip = "Your jail is full"
 	else:
@@ -754,7 +741,7 @@ type = 'basic',
 description = "$name will be helping out and managing your laboratory operations.\n\n[color=yellow]Requires grade of a [color=aqua]Commoner[/color] or higher. ",
 workline = "$name will be assisting you at the laboratory.",
 reqs = 'globals.originsarray.find(globals.currentslave.origins) >= 2',
-unlockreqs = 'globals.state.laboratory >= 1',
+unlockreqs = 'globals.state.mansionupgrades.mansionlab >= 1',
 maxnumber = 1,
 order = 14,
 tags = ['mansion'],
@@ -788,6 +775,12 @@ func joblist():
 	for i in array:
 		if globals.evaluate(i.unlockreqs) == true:
 			var newbutton = get_node("regulations/joblist/normaljobs/VBoxContainer/Button").duplicate()
+			var locked
+			for k in globals.state.portals.values():
+				if i.tags.find(k.code) >= 0 && k.enabled == false && globals.state.location != k.code:
+					locked = true
+			if locked == true:
+				continue
 			newbutton.set_hidden(false)
 			newbutton.set_text(i.name)
 			dict[i.type].add_child(newbutton)
@@ -806,7 +799,6 @@ func joblist():
 				elif slave.traits.has("Monogamous") || slave.traits.has("Prude"):
 					newbutton.set_disabled(true)
 					newbutton.set_tooltip(slave.dictionary("$name refuses to whore $himself."))
-
 			if i.tags.find('social') >= 0:
 				if slave.traits.has('Uncivilized') || slave.traits.has('Regressed'):
 					newbutton.set_disabled(true)
@@ -816,7 +808,6 @@ func joblist():
 					newbutton.set_disabled(true)
 					newbutton.set_tooltip(slave.dictionary("$name is not suited for leading roles. "))
 					
-		
 		
 			if i.maxnumber >= 1:
 				var counter = 0
@@ -1031,11 +1022,6 @@ func resort():
 			continue
 		i.set_hidden(false)
 		counter += 1
-#		if strictsearch == true:
-#			i.get_node("Label").set_text(i.replacen(race, "").replacen(gender, "").replacen('.jpg','').replacen('.png',''))
-#		else:
-#			i.get_node("Label").set_text(i.replacen('.jpg','').replacen('.png','').replacen('female','F').replacen('male','M'))
-	
 	if counter < 1:
 		get_node("inspect/portait/Panel/noimagestext").set_hidden(false)
 	else:
@@ -1070,9 +1056,11 @@ func _on_removeportrait_pressed():
 func _on_reverseportrait_pressed():
 	if slave.unique != null:
 		if slave.unique == 'Cali':
-			slave.imageportait = 'res://files/images/caliportrait.png'
+			slave.imageportait = 'res://files/images/cali/caliportrait.png'
 		elif slave.unique == 'Emily':
 			slave.imageportait = "res://files/images/emily/emilyportrait.png"
+		elif slave.unique == 'Tisha':
+			slave.imageportait = "res://files/images/tisha/tishaportrait.png"
 		get_node("inspect/portait/Panel").set_hidden(true)
 		_on_slave_tab_visibility_changed()
 		get_tree().get_current_scene().rebuild_slave_list()

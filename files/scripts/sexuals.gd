@@ -75,10 +75,16 @@ func _on_sexual_visibility_changed():
 	if slave.sexuals.has('lastaction') == false:
 		slave.sexuals.lastaction = null
 	
+	var actionarray = []
+	for i in sexbuttons.values():
+		actionarray.append(i)
+	actionarray.sort_custom(globals, 'sortbycost')
+	
 	if rape == false:
-		for i in slave.sexuals.actions:
-			var action = sexbuttons[i]
-			if  globals.evaluate(action.slavereqs) == false || globals.evaluate(action.playerreqs) == false:
+		for action in actionarray:
+		#for i in slave.sexuals.actions:
+			#var action = sexbuttons[i]
+			if !slave.sexuals.actions.has(action.code) || globals.evaluate(action.slavereqs) == false || globals.evaluate(action.playerreqs) == false:
 				continue
 			if (action.code == "rimjob" || action.code == "rimjobtake") && slave.sexuals.unlocks.has('anal') == false:
 				continue
@@ -87,7 +93,7 @@ func _on_sexual_visibility_changed():
 			button = get_node("foreplaycontainer/VBoxContainer/Button").duplicate()
 			button.set_hidden(false)
 			button.add_to_group('sexactions')
-			button.get_node("Label").set_text(str(action.energycost))
+			button.get_node("Label").set_text(str(action.cost))
 			if action.type == "foreplay":
 				get_node("foreplaycontainer/VBoxContainer").add_child(button)
 			elif action.type == 'penetration':
@@ -102,11 +108,11 @@ func _on_sexual_visibility_changed():
 		for i in sexbuttons.values():
 			if  globals.evaluate(i.slavereqs) == false || globals.evaluate(i.playerreqs) == false:
 				continue
-			if i.canbeforced == true && (i.code == 'ass' || i.code == 'dildo' || slave.sexuals.actions.has(i.code) ||(i.code == 'pussy' && slave.pussy.has == true)):
+			if i.canbeforced == true && (i.code in ['bestiality', 'ass', 'dildo', 'lbondage', 'hbondage'] || slave.sexuals.actions.has(i.code) ||(i.code == 'pussy' && slave.pussy.has == true)):
 				button = get_node("foreplaycontainer/VBoxContainer/Button").duplicate()
 				button.set_hidden(false)
 				button.add_to_group('sexactions')
-				button.get_node("Label").set_text(str(i.energycost))
+				button.get_node("Label").set_text(str(i.cost))
 				if i.type == "foreplay":
 					get_node("foreplaycontainer/VBoxContainer").add_child(button)
 				elif i.type == 'penetration':
@@ -257,11 +263,11 @@ func _on_confirmbutton_pressed():
 			get_tree().get_current_scene().popup(text)
 			return
 	
-	if action.energycost > slave.energy:
+	if action.cost > slave.energy:
 		text = slave.dictionary("$name has not enough energy for this action. ")
 		get_tree().get_current_scene().popup(text)
 		return
-	elif action.energycost > partner.energy || action.energycost > globals.player.energy:
+	elif action.cost > partner.energy || action.cost > globals.player.energy:
 		if partner == globals.player:
 			text = "You don't have enough energy for this action. "
 		else:
@@ -292,6 +298,10 @@ func sexinitiate(secondtime = false):
 	
 	slave.metrics.sex += 1
 	partner.metrics.sex += 1
+	
+	if globals.state.sidequests.emily == 16 && slave.unique in ['Emily','Tisha'] && partner.unique in ['Emily','Tisha']:
+		emilytishascene()
+		return
 	
 	if partner.metrics.partners.find(slave.id) < 0:
 		partner.metrics.partners.append(slave.id)
@@ -460,17 +470,17 @@ func sexinitiate(secondtime = false):
 	slave.metrics.manaearn += managain
 	globals.resources.mana += managain
 	if secondtime == true:
-		globals.player.energy = round(-action.energycost/2)
-		slave.energy = round(-action.energycost/2)
+		globals.player.energy = round(-action.cost/2)
+		slave.energy = round(-action.cost/2)
 		slave.lust = -20
 	else:
-		slave.energy = -action.energycost
-		partner.energy = -action.energycost
+		slave.energy = -action.cost
+		partner.energy = -action.cost
 		if slave.spec == 'nympho':
-			slave.energy = action.energycost/2
+			slave.energy = action.cost/2
 			text += "\n[color=green]$name's skills and training helped $him waste less energy.[/color]"
 		if globals.player != partner:
-			globals.player.energy = -action.energycost
+			globals.player.energy = -action.cost
 	
 	text += "\n\n[color=green]Earned " + str(affectionreward) + " affection with $name. [/color]"
 	text += "\n\n[color=aqua]You've gained " + str(managain) + " mana. [/color]"
@@ -509,12 +519,10 @@ func sexinitiate(secondtime = false):
 						else:
 							hole = holedict[int(round(rand_range(1,2)))]
 				
-			text += "\n\n[color=#ee2269]" + moresexline(tempaction.name) + "[/color]"
-			text = text.replace("$hole", hole)
-			if tempaction.energycost/2 > partner.energy:
-				text += "Sadly you have no more energy left to participate. "
-			else:
-				buttons.append([slave.dictionary('Concur with the request: '+ str(tempaction.energycost/2) + " energy." ),'repeatsex',tempaction])
+			if tempaction.cost/2 <= partner.energy && tempaction.cost/2 <= slave.energy:
+				text += "\n\n[color=#ee2269]" + moresexline(tempaction.name) + "[/color]"
+				text = text.replace("$hole", hole)
+				buttons.append([slave.dictionary('Concur with the request: '+ str(tempaction.cost/2) + " energy." ),'repeatsex',tempaction])
 	text = slave.dictionary(text)
 	text = text.replace('$2','$')
 	text = partner.dictionary(text)
@@ -621,6 +629,9 @@ func _on_confirm_pressed():
 	var mana = 0
 	var array = []
 	var drows = 0
+	if globals.state.sidequests.emily == 16 && (action == 'threesome' && slave.unique in ['Emily','Tisha'] && threesomepartner.unique in ['Emily','Tisha']):
+		emilytishascene()
+		return
 	if action == 'threesome':
 		array = [slave, threesomepartner]
 		globals.player.energy = -30
@@ -680,6 +691,10 @@ func _on_confirm_pressed():
 	globals.state.groupsex = false
 	get_node("group/grouppopup").set_hidden(true)
 	get_tree().get_current_scene().popup(text)
+
+func emilytishascene():
+	globals.state.sidequests.emily = 17
+	globals.events.emilytishasex()
 
 func _on_partner2_pressed():
 	globals.partner = slave
@@ -877,7 +892,7 @@ func selectedactionforlearn(actionbutton):
 	for i in action.actions:
 		var tempaction = sexbuttons[i]
 		text += tempaction.name + ', '
-	
+	text = text.substr(0, text.length() -2)+ '. '
 	if slave.sexuals.affection < action.cost:
 		text += "\n\n[color=red]Not enough affection[/color]"
 		disabled = true

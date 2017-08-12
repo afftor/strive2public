@@ -331,9 +331,23 @@ description = "You make your way through semi-utilized forest paths paying atten
 enemies = [['banditsmedium',10],['travelersgroup',25],['peasant',60],['thugseasy',75],['solobear', 100]],
 encounters = [],
 length = 5,
-exits = ['frostfordoutskirts'],
+exits = ['frostfordoutskirts','frostfordclearing'],
 tags = [],
 races = [['Beastkin Wolf', 40],['Halfkin Fox', 45],['Beastkin Fox', 50],['Halfkin Cat', 55],['Beastkin Cat',65],['Halfkin Wolf', 75],['Beastkin Wolf', 85],['Human', 100]]
+},
+
+frostfordclearing = {
+background = 'borealforest',
+reqs = "globals.state.mainquest in [28,28.1,30, 32]",
+combat = false,
+code = 'frostfordclearing',
+name = 'Clearing',
+description =  "",
+enemies = [],
+encounters = [],
+length = 0,
+exits = ['frostfordclearing'],
+tags = [],
 },
 
 frostford = {
@@ -438,6 +452,11 @@ func zoneenter(zone):
 	if zone.code == 'undercityruins' && progress >= 5 && globals.state.lorefound.find('amberguardlog2') < 0:
 		globals.state.lorefound.append('amberguardlog2')
 		outside.maintext.set_bbcode(outside.maintext.get_bbcode() + "[color=yellow]\n\nYou've found some old writings in the ruins. Does not look like what you came for, but you can read them later.[/color]")
+	if zone.code == 'frostfordoutskirtsexplore' && globals.state.mainquest in [27,30,32] && progress >= 5:
+		array.append({name = "Explore hunting grounds to South-East", function = 'event', args = 'frostforddryad'})
+	if zone.code == 'frostfordoutskirtsexplore' && globals.state.sidequests.zoe == 1 && progress >= 3:
+		globals.state.sidequests.zoe = 2
+		main.dialogue(true, self, globals.questtext.MainQuestFrostfordBeforeForestZoe, [], null)
 	var hasinjuries = false
 	for i in globals.state.playergroup:
 		var slave = globals.state.findslave(i)
@@ -445,13 +464,13 @@ func zoneenter(zone):
 			hasinjuries = true
 			continue
 	if globals.spelldict.heal.learned == true && (globals.player.health < globals.player.stats.health_max || hasinjuries == true) :
-		var tempdict = {name = "Use Heal to restore everyone's health", function = 'healeveryone'}
+		var tempdict = {name = "Use Heal to restore everyone's health", function = 'healeveryone', args = null}
 		if globals.resources.mana < 10:
 			tempdict.disabled = true
 			tempdict.tooltip = 'not enough mana'
 		array.append(tempdict)
 	if globals.spelldict.invigorate.learned == true && globals.state.playergroup.size() >= 1:
-		var tempdict = {name = "Cast Invigorate", function = 'castinvig'}
+		var tempdict = {name = "Cast Invigorate", function = 'castinvig', args = null}
 		if globals.resources.mana < 5:
 			tempdict.disabled = true
 			tempdict.tooltip = 'not enough mana'
@@ -460,7 +479,10 @@ func zoneenter(zone):
 		array.append({name = "Return to Mansion", function = "mansionreturn"})
 	outside.buildbuttons(array, self)
 
-func healeveryone():
+func frostfordclearing():
+	event('frostforddryad')
+
+func healeveryone(args = null):
 	var slave
 	var manaused = 0
 	if globals.player.health < globals.player.stats.health_max:
@@ -479,7 +501,7 @@ func healeveryone():
 		main.popup("Nobody has injuries in your party. ")
 	outside.playergrouppanel()
 
-func castinvig():
+func castinvig(args = null):
 	main.selectslavelist(false, 'castinvigtarget', self, 'true', false, true)
 
 func castinvigtarget(slave):
@@ -930,8 +952,8 @@ func checkjailbutton():
 	for i in get_tree().get_nodes_in_group('winoption'):
 		if i.get_item_text(i.get_selected()) == 'Jail':
 			counter += 1
-	winpanel.get_node("Label").set_text("Defeated and Captured | Jail cells left: " + str(globals.state.rooms.jail - (globals.count_sleepers().jail + counter)) )
-	if globals.state.rooms.jail <= globals.count_sleepers().jail + counter:
+	winpanel.get_node("Label").set_text("Defeated and Captured | Jail cells left: " + str(globals.state.mansionupgrades.jailcapacity - (globals.count_sleepers().jail + counter)) )
+	if globals.state.mansionupgrades.jailcapacity <= globals.count_sleepers().jail + counter:
 		for i in get_tree().get_nodes_in_group('winoption'):
 			i.set_item_disabled(2, true)
 	else:
@@ -1177,6 +1199,9 @@ func gornyris():
 	var state = false
 	var text
 	var buttons = []
+	if globals.player.penis.number < 1:
+		main.popup("This encounter requires your character to possess a penis. ")
+		return
 	if globals.state.sidequests.yris == 0:
 		text = globals.questtext.GornYrisMeet
 		if globals.resources.gold >= 200:
@@ -1191,11 +1216,11 @@ func gornyris():
 		else:
 			buttons.append({text = "Accept (200 Gold)", function = "gornyrisaccept", args = 1, disabled = true})
 	elif globals.state.sidequests.yris == 2:
-		text = globals.questtext.GornYrisAccepRepeat
+		text = globals.questtext.GornYrisRepeatMeet
 		if globals.resources.gold >= 200:
 			buttons.append({text = "Accept (200 Gold)", function = "gornyrisaccept", args = 2})
 			if globals.itemdict.deterrentpot.amount >= 1:
-				button.append({text = "Accept and use Deterrent potion (200 Gold)", args = 3})
+				buttons.append({text = "Accept and use Deterrent potion (200 Gold)", function = "gornyrisaccept", args = 3})
 		else:
 			buttons.append({text = "Accept (200 Gold)", function = "gornyrisaccept", args = 2, disabled = true})
 	elif globals.state.sidequests.yris == 3:
@@ -1211,7 +1236,12 @@ func gornyris():
 		else:
 			buttons.append({text = "Accept (1000 Gold)", function = "gornyrisaccept", args = 4})
 	buttons.append({text = "Refuse", function = "gornyrisaccept", args = 0})
+	gornbar()
 	main.dialogue(state, self, text, buttons)
+
+func gornyrisleave(args):
+	zoneenter('gorn')
+	main.close_dialogue()
 
 func gornyrisaccept(stage):
 	var text = ''
@@ -1219,7 +1249,7 @@ func gornyrisaccept(stage):
 	var buttons = []
 	if stage == 0:
 		text = globals.questtext.GornYrisRefuse
-		buttons.append({text = "Continue", function = 'zoneenter',args = 'gorn'})
+		buttons.append({text = "Continue", function = 'gornyrisleave', args = null})
 	elif stage == 1:
 		text = globals.questtext.GornYrisAccept1
 		globals.resources.gold -= 200
@@ -1234,9 +1264,11 @@ func gornyrisaccept(stage):
 	elif stage == 3:
 		text = globals.questtext.GornYrisAccept2
 		globals.state.sidequests.yris += 1
+		globals.itemdict.deterrentpot.amount -= 1
 		state = true
 		globals.resources.mana += 25
 	elif stage == 4:
+		globals.itemdict.deterrentpot.amount -= 1
 		text = globals.questtext.GornYrisAccept3
 		buttons.append({text = "Reveal everything", function = 'gornyrisaccept', args = 5})
 		buttons.append({text = "Demand the gold", function = 'gornyrisaccept', args = 6})
@@ -1248,10 +1280,12 @@ func gornyrisaccept(stage):
 		text = globals.questtext.GornYrisTakeGold
 		globals.state.sidequests.yris = 100
 		globals.resources.gold += 1000
+		text += "\n\nIn the end you get the gold you asked for, but never seen Yris again. "
 		state = true
 	elif stage == 7:
 		text = globals.questtext.GornYrisTakeGold2
 		globals.state.sidequests.yris = 100
+		text += "\n\nIn the end you get the gold you asked for, but never seen Yris again. "
 		globals.resources.gold += 1000
 		state = true
 	elif stage == 8:
@@ -1264,7 +1298,7 @@ func gornyrisaccept(stage):
 		slave.surname = ''
 		slave.tits.size = 'big'
 		slave.ass = 'average'
-		slave.face.beauty = 60
+		slave.face.beauty = 65
 		slave.hairlength = 'waist'
 		slave.height = 'average'
 		slave.haircolor = 'blond'
@@ -1285,18 +1319,23 @@ func gornyrisaccept(stage):
 		slave.sexuals.unlocks.append("petting")
 		slave.sexuals.unlocks.append('oral')
 		slave.sexuals.unlocks.append('vaginal')
+		slave.unlocksexuals()
 		slave.cleartraits()
 		slave.sagi += 1
 		slave.send += 1
 		slave.loyal = 25
 		slave.obed += 90
 		globals.slaves = slave
+	gornbar()
 	main.dialogue(state, self, text, buttons)
 
 func amberguard():
 	var array = []
 	outside.location = 'amberguard'
 	main.music_set('gorn')
+	if globals.state.portals.amberguard.enabled == false:
+		globals.state.portals.amberguard.enabled = true
+		outside.maintext.set_bbcode(outside.maintext.get_bbcode() + "\n\n[color=yellow]You have unlocked new portal![/color]")
 	if globals.state.mainquest == 17:
 		globals.state.mainquest = 18
 	elif globals.state.mainquest == 19:
@@ -1466,11 +1505,36 @@ func frostford():
 	outside.location = 'frostford'
 	main.music_set('gorn')
 	var array = []
+	if globals.state.mainquest in [28, 29, 30, 31, 33, 34, 35]:
+		array.append({name = "Visit City Hall", function = "frostfordcityhall"})
+	if globals.state.reputation.frostford >= 20 && globals.state.mainquest == 30 && globals.state.sidequests.zoe == 0:
+		var text = globals.questtext.MainQuestFrostfordCityhallZoe
+		var buttons = []
+		var sprite = []
+		buttons.append({text = 'Accept', function = "frostfordzoe", args = 1})
+		buttons.append({text = 'Refuse', function = "frostfordzoe", args = 2})
+		main.dialogue(false, self, text, buttons, sprite)
 	array.append({name = "Visit local Slave Guild", function = 'frostfordslaveguild'})
 	array.append({name = "Frostford's Market", function = 'frostfordmarket'})
 	array.append({name = "Outskirts", function = 'zoneenter', args = 'frostfordoutskirts'})
 	array.append({name = "Return to Mansion", function = 'mansionreturn'})
 	outside.buildbuttons(array,self)
+
+func frostfordzoe(stage):
+	var text
+	var buttons = []
+	var sprite = []
+	if stage == 1:
+		text = globals.questtext.MainQuestFrostfordCityhallZoeAccept
+		globals.state.sidequests.zoe = 1
+	elif stage == 2:
+		text = globals.questtext.MainQuestFrostfordCityhallZoeRefuse
+		globals.state.sidequests.zoe = 100
+	
+	main.dialogue(true, self, text, buttons, sprite)
+
+func frostfordcityhall():
+	globals.events.frostfordcityhall()
 
 func frostfordmarket():
 	outside.shopinitiate('frostfordmarket')

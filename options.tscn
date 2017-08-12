@@ -43,6 +43,7 @@ tabs_visible = true
 [node name="Settings" type="Tabs" parent="TabContainer"]
 
 editor/display_folded = true
+visibility/visible = false
 anchor/right = 1
 anchor/bottom = 1
 focus/ignore_mouse = false
@@ -56,7 +57,7 @@ margin/bottom = 10.0
 
 [node name="screenresize" type="CheckBox" parent="TabContainer/Settings"]
 
-hint/tooltip = "Switch to full screen mode"
+hint/tooltip = "Change screen stretching mode (requires game restart to turn off)"
 focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
@@ -74,7 +75,7 @@ align = 0
 
 [node name="fading" type="CheckBox" parent="TabContainer/Settings"]
 
-hint/tooltip = "Switch to full screen mode"
+hint/tooltip = "Fade to black on window transition"
 focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
@@ -274,9 +275,9 @@ focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
-margin/left = 81.0
+margin/left = 80.0
 margin/top = 43.0
-margin/right = 356.0
+margin/right = 355.0
 margin/bottom = 70.0
 toggle_mode = true
 enabled_focus_mode = 2
@@ -331,9 +332,9 @@ focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
 margin/left = 5.0
-margin/top = 131.0
+margin/top = 132.0
 margin/right = 160.0
-margin/bottom = 158.0
+margin/bottom = 159.0
 toggle_mode = true
 enabled_focus_mode = 2
 shortcut = null
@@ -368,9 +369,9 @@ focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
 margin/left = 178.0
-margin/top = 131.0
+margin/top = 132.0
 margin/right = 363.0
-margin/bottom = 158.0
+margin/bottom = 159.0
 toggle_mode = true
 enabled_focus_mode = 2
 shortcut = null
@@ -468,10 +469,44 @@ percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
 
+[node name="Label4" type="Label" parent="TabContainer/Game"]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 59.0
+margin/top = 162.0
+margin/right = 217.0
+margin/bottom = 180.0
+text = "Alise on Day End"
+align = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="aliseoption" type="OptionButton" parent="TabContainer/Game"]
+
+hint/tooltip = "When to show Alise on Day End Popup"
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 49.0
+margin/top = 181.0
+margin/right = 228.0
+margin/bottom = 220.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Always"
+flat = false
+align = 0
+selected = 0
+items = [ "Always", null, false, -1, null, "After Daily Event", null, false, -1, null, "Never", null, false, -1, null ]
+
 [node name="Supporter section" type="Tabs" parent="TabContainer"]
 
-editor/display_folded = true
-visibility/visible = false
 anchor/right = 1
 anchor/bottom = 1
 focus/ignore_mouse = false
@@ -652,12 +687,29 @@ size_flags/horizontal = 2
 size_flags/vertical = 2
 margin/left = 16.0
 margin/top = 185.0
-margin/right = 111.0
-margin/bottom = 217.0
+margin/right = 204.0
+margin/bottom = 221.0
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
 text = "Remove population limits"
+flat = false
+
+[node name="addupgradepoint" type="Button" parent="TabContainer/Supporter section/cheatpanel"]
+
+hint/tooltip = "Huge population may impact performance greatly"
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 16.0
+margin/top = 227.0
+margin/right = 204.0
+margin/bottom = 263.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Add Upgrade Point"
 flat = false
 
 [node name="unlockspells" type="Button" parent="TabContainer/Supporter section/cheatpanel"]
@@ -781,11 +833,27 @@ size_flags/vertical = 2
 margin/left = 348.0
 margin/top = 299.0
 margin/right = 471.0
-margin/bottom = 331.0
+margin/bottom = 335.0
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
 text = "Add Skillpoint"
+flat = false
+
+[node name="addlevel" type="Button" parent="TabContainer/Supporter section/cheatpanel"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 348.0
+margin/top = 349.0
+margin/right = 471.0
+margin/bottom = 385.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Add Level"
 flat = false
 
 [node name="levelup" type="Button" parent="TabContainer/Supporter section/cheatpanel"]
@@ -874,6 +942,7 @@ flat = false
 
 [node name="screenpopup" type="Popup" parent="."]
 
+visibility/visible = false
 anchor/left = 3
 anchor/top = 3
 anchor/right = 3
@@ -985,6 +1054,8 @@ flat = false
 
 [connection signal="value_changed" from="TabContainer/Game/futaslider" to="." method="_on_futaslider_value_changed"]
 
+[connection signal="item_selected" from="TabContainer/Game/aliseoption" to="." method="_on_aliseoption_item_selected"]
+
 [connection signal="meta_clicked" from="TabContainer/Supporter section/RichTextLabel" to="." method="_on_RichTextLabel_meta_clicked"]
 
 [connection signal="pressed" from="TabContainer/Supporter section/cheats" to="." method="_on_cheats_pressed"]
@@ -1003,6 +1074,8 @@ flat = false
 
 [connection signal="pressed" from="TabContainer/Supporter section/cheatpanel/removepopcap" to="." method="_on_removepopcap_pressed"]
 
+[connection signal="pressed" from="TabContainer/Supporter section/cheatpanel/addupgradepoint" to="." method="_on_addupgradepoint_pressed"]
+
 [connection signal="pressed" from="TabContainer/Supporter section/cheatpanel/unlockspells" to="." method="_on_unlockspells_pressed"]
 
 [connection signal="pressed" from="TabContainer/Supporter section/cheatpanel/selectslave" to="." method="_on_selectslave_pressed"]
@@ -1018,6 +1091,8 @@ flat = false
 [connection signal="pressed" from="TabContainer/Supporter section/cheatpanel/nostress" to="." method="_on_nostress_pressed"]
 
 [connection signal="pressed" from="TabContainer/Supporter section/cheatpanel/addskillpoints" to="." method="_on_addskillpoints_pressed"]
+
+[connection signal="pressed" from="TabContainer/Supporter section/cheatpanel/addlevel" to="." method="_on_addlevel_pressed"]
 
 [connection signal="pressed" from="TabContainer/Supporter section/cheatpanel/levelup" to="." method="_on_levelup_pressed"]
 

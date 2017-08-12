@@ -23,6 +23,7 @@ func _ready():
 	get_node("TabContainer/Game/receive").set_pressed(globals.rules.receiving)
 	get_node("TabContainer/Settings/fading").set_pressed(globals.rules.fadinganimation)
 	get_node("TabContainer/Game/permadeath").set_pressed(globals.rules.permadeath)
+	get_node("TabContainer/Game/aliseoption").select(globals.rules.enddayalise)
 	if globals.rules.children == true:
 		get_node("TabContainer/Game/noadults").set_hidden(false)
 		get_node("TabContainer/Game/noadults").set_pressed(globals.rules.noadults)
@@ -37,7 +38,7 @@ func _ready():
 	selectedslave = ''
 	get_node("TabContainer/Settings/fontsize").set_val(globals.rules.fontsize)
 	_on_soundslider_value_changed(globals.rules.musicvol*50)
-	if globals.state.roomscap.communal == 999:
+	if globals.state.nopoplimit == true:
 		get_node("TabContainer/Supporter section/cheatpanel/removepopcap").set_disabled(true)
 
 
@@ -135,6 +136,7 @@ func _on_cheatpanel_visibility_changed(slave = null):
 		get_node("TabContainer/Supporter section/cheatpanel/maxlewd").set_disabled(true)
 		get_node("TabContainer/Supporter section/cheatpanel/nostress").set_disabled(true)
 		get_node("TabContainer/Supporter section/cheatpanel/addskillpoints").set_disabled(true)
+		get_node("TabContainer/Supporter section/cheatpanel/addlevel").set_disabled(true)
 	else:
 		get_node("TabContainer/Supporter section/cheatpanel/selectedslavelabel").set_text('Selected slave - '+slave.name + '\nObedience - '+str(slave.obed)+'\nLust - '+str(slave.lust)+'\nLoyalty - '+str(slave.loyal) + '\nAffection - '+str(slave.sexuals.affection)+'\nStress - '+str(slave.stress) + '\nSkillpoints - ' + str(slave.level.skillpoints) )
 		selectedslave = slave
@@ -144,6 +146,7 @@ func _on_cheatpanel_visibility_changed(slave = null):
 		get_node("TabContainer/Supporter section/cheatpanel/maxlewd").set_disabled(false)
 		get_node("TabContainer/Supporter section/cheatpanel/nostress").set_disabled(false)
 		get_node("TabContainer/Supporter section/cheatpanel/addskillpoints").set_disabled(false)
+		get_node("TabContainer/Supporter section/cheatpanel/addlevel").set_disabled(false)
 
 func _on_selectslave_pressed():
 	if get_tree().get_current_scene().find_node('mansion'):
@@ -206,6 +209,10 @@ func _on_addskillpoints_pressed():
 	_on_cheatpanel_visibility_changed(selectedslave)
 
 
+func _on_addlevel_pressed():
+	selectedslave.level.value += 1
+
+
 func _on_levelup_pressed():
 	if globals.player != null:
 		globals.player.level.skillpoints += 1
@@ -234,9 +241,8 @@ func _on_fontsize_value_changed( value ):
 
 
 func _on_removepopcap_pressed():
-	for i in globals.state.roomscap:
-		globals.state.roomscap[i] = 999
-	if globals.state.roomscap.communal == 999:
+	globals.state.nopoplimit = true
+	if globals.state.nopoplimit == true:
 		get_node("TabContainer/Supporter section/cheatpanel/removepopcap").set_disabled(true)
 
 
@@ -284,3 +290,13 @@ func _on_cancel_pressed():
 	OS.set_window_fullscreen(!get_node("TabContainer/Settings/fullscreen").is_pressed())
 	get_node("TabContainer/Settings/fullscreen").set_pressed(globals.rules.fullscreen)
 	get_node("screenpopup").set_hidden(true)
+
+
+
+func _on_aliseoption_item_selected( ID ):
+	globals.rules.enddayalise = ID
+
+
+
+func _on_addupgradepoint_pressed():
+	globals.resources.upgradepoints += 1

@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=1]
+[gd_scene load_steps=32 format=1]
 
 [ext_resource path="res://files/theme.tres" type="Theme" id=1]
 [ext_resource path="res://files/scripts/outside.gd" type="Script" id=2]
@@ -12,10 +12,12 @@
 [ext_resource path="res://files/buttons/btn-norm-oran.png" type="Texture" id=10]
 [ext_resource path="res://files/buttons/btn-act-oran.png" type="Texture" id=11]
 [ext_resource path="res://files/buttongrouptheme.tres" type="Theme" id=12]
-[ext_resource path="res://Roundo-Medium.otf" type="DynamicFontData" id=13]
-[ext_resource path="res://files/theme slavetab.tres" type="Theme" id=14]
-[ext_resource path="res://files/buttons/itemactive.png" type="Texture" id=15]
-[ext_resource path="res://files/buttons/itemnormal.png" type="Texture" id=16]
+[ext_resource path="res://statspanel.tscn" type="PackedScene" id=13]
+[ext_resource path="res://files/buttons/statpanel.png" type="Texture" id=14]
+[ext_resource path="res://Roundo-Medium.otf" type="DynamicFontData" id=15]
+[ext_resource path="res://files/theme slavetab.tres" type="Theme" id=16]
+[ext_resource path="res://files/buttons/itemactive.png" type="Texture" id=17]
+[ext_resource path="res://files/buttons/itemnormal.png" type="Texture" id=18]
 
 [sub_resource type="StyleBoxTexture" id=1]
 
@@ -167,17 +169,33 @@ Button/styles/hover = SubResource( 6 )
 Button/styles/normal = SubResource( 7 )
 Button/styles/pressed = SubResource( 8 )
 
-[sub_resource type="DynamicFont" id=10]
+[sub_resource type="StyleBoxTexture" id=10]
+
+content_margin/left = -1.0
+content_margin/right = -1.0
+content_margin/top = -1.0
+content_margin/bottom = -1.0
+texture = ExtResource( 14 )
+margin/left = 0.0
+margin/right = 0.0
+margin/top = 0.0
+margin/bottom = 0.0
+expand_margin/left = 0.0
+expand_margin/right = 0.0
+expand_margin/top = 0.0
+expand_margin/bottom = 0.0
+draw_center = true
+
+[sub_resource type="DynamicFont" id=11]
 
 font/size = 20
 extra_spacing/top = 3
 font/use_mipmaps = false
 font/use_filter = true
-font/font = ExtResource( 13 )
+font/font = ExtResource( 15 )
 
 [sub_resource type="Animation" id=12]
 
-resource/name = "show"
 length = 0.3
 loop = false
 step = 0.1
@@ -202,7 +220,7 @@ tracks/1/keys = {
 "values": [ true ]
 }
 
-[sub_resource type="Animation" id=11]
+[sub_resource type="Animation" id=13]
 
 length = 0.3
 loop = false
@@ -225,7 +243,7 @@ tracks/1/keys = {
 "times": FloatArray( 0, 0.3 ),
 "transitions": FloatArray( 1, 1 ),
 "update": 0,
-"values": [ -527.5, -96.5 ]
+"values": [ -527.5, -63.5 ]
 }
 tracks/2/type = "value"
 tracks/2/path = NodePath("charactersprite:margin/top")
@@ -235,7 +253,7 @@ tracks/2/keys = {
 "times": FloatArray( 0, 0.3 ),
 "transitions": FloatArray( 1, 1 ),
 "update": 0,
-"values": [ 150.0, -12.0 ]
+"values": [ 150.0, -45.0 ]
 }
 tracks/3/type = "value"
 tracks/3/path = NodePath("charactersprite:margin/right")
@@ -245,7 +263,7 @@ tracks/3/keys = {
 "times": FloatArray( 0, 0.3 ),
 "transitions": FloatArray( 1, 1 ),
 "update": 0,
-"values": [ -540.0, -109.0 ]
+"values": [ -540.0, -121.0 ]
 }
 tracks/4/type = "value"
 tracks/4/path = NodePath("charactersprite:margin/bottom")
@@ -255,12 +273,12 @@ tracks/4/keys = {
 "times": FloatArray( 0, 0.3 ),
 "transitions": FloatArray( 1, 1 ),
 "update": 0,
-"values": [ -246.0, -84.0 ]
+"values": [ -246.0, -114.0 ]
 }
 
 [node name="outside" type="Panel"]
 
-visibility/self_opacity = 0.4
+visibility/self_opacity = 0.0
 anchor/right = 1
 anchor/bottom = 1
 focus/ignore_mouse = false
@@ -276,6 +294,22 @@ script/script = ExtResource( 2 )
 __meta__ = {
 "_edit_lock_": true
 }
+
+[node name="charactersprite" type="TextureFrame" parent="."]
+
+anchor/left = 3
+anchor/right = 1
+anchor/bottom = 1
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = -63.5
+margin/top = -45.0
+margin/right = -121.0
+margin/bottom = -114.0
+expand = true
+stretch_mode = 6
 
 [node name="playergrouppanel" type="Panel" parent="."]
 
@@ -397,22 +431,6 @@ margin/bottom = 52.0
 expand = true
 stretch_mode = 6
 
-[node name="charactersprite" type="TextureFrame" parent="."]
-
-anchor/left = 3
-anchor/right = 1
-anchor/bottom = 1
-focus/ignore_mouse = true
-focus/stop_mouse = true
-size_flags/horizontal = 2
-size_flags/vertical = 2
-margin/left = -96.5
-margin/top = -12.0
-margin/right = -109.0
-margin/bottom = -84.0
-expand = true
-stretch_mode = 6
-
 [node name="questlog" type="Button" parent="."]
 
 anchor/left = 1
@@ -442,7 +460,7 @@ size_flags/vertical = 2
 margin/left = 300.0
 margin/top = 4.0
 margin/right = -208.5
-margin/bottom = 2.0
+margin/bottom = -1.0
 
 [node name="buttonpanel" type="Panel" parent="."]
 
@@ -452,9 +470,9 @@ focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
-margin/left = -4.0
-margin/top = 0.0
-margin/right = 299.0
+margin/left = 2.0
+margin/top = 4.0
+margin/right = 305.0
 margin/bottom = -3.0
 custom_styles/panel = SubResource( 2 )
 
@@ -472,7 +490,7 @@ margin/right = -193.5
 margin/bottom = 11.0
 custom_fonts/normal_font = ExtResource( 4 )
 bbcode/enabled = true
-bbcode/bbcode = "\"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\""
+bbcode/bbcode = ""
 visible_characters = -1
 
 [node name="exploreprogress" type="ProgressBar" parent="."]
@@ -524,9 +542,9 @@ focus/stop_mouse = false
 size_flags/horizontal = 2
 size_flags/vertical = 2
 theme/theme = SubResource( 9 )
-margin/left = 11.0
+margin/left = 16.0
 margin/top = 13.0
-margin/right = 283.0
+margin/right = 288.0
 margin/bottom = 441.0
 alignment = 0
 
@@ -566,18 +584,20 @@ margin/bottom = 448.0
 
 [node name="slavebuypanel" type="Panel" parent="slavebuypanel"]
 
+editor/display_folded = true
 anchor/bottom = 1
 focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
-margin/left = 79.0
+margin/left = 81.0
 margin/top = 89.0
-margin/right = 370.0
+margin/right = 372.0
 margin/bottom = -443.0
 
 [node name="ScrollContainer" type="ScrollContainer" parent="slavebuypanel/slavebuypanel"]
 
+editor/display_folded = true
 anchor/bottom = 1
 focus/ignore_mouse = false
 focus/stop_mouse = true
@@ -711,6 +731,8 @@ anchor/left = 3
 anchor/top = 1
 anchor/right = 3
 anchor/bottom = 1
+hint/tooltip = "Allows to see more information about the slaves. 
+Costs 5 mana"
 focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
@@ -724,7 +746,7 @@ disabled = true
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
-text = "Use Mind Read"
+text = "Use Mind Read (5)"
 flat = false
 
 [node name="slavelistcancel" type="Button" parent="slavebuypanel"]
@@ -755,9 +777,9 @@ focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 0
 margin/left = 96.0
-margin/top = 58.0
+margin/top = 70.0
 margin/right = 216.0
-margin/bottom = 83.0
+margin/bottom = 95.0
 custom_fonts/font = ExtResource( 4 )
 text = "Available slaves"
 percent_visible = 1.0
@@ -780,6 +802,68 @@ custom_fonts/normal_font = ExtResource( 4 )
 bbcode/enabled = true
 bbcode/bbcode = "\"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\""
 visible_characters = -1
+
+[node name="statspanel" parent="slavebuypanel" instance=ExtResource( 13 )]
+
+margin/left = -785.5
+margin/top = 53.0
+margin/right = -1076.0
+margin/bottom = -447.0
+custom_styles/panel = SubResource( 10 )
+
+[node name="Label" parent="slavebuypanel/statspanel"]
+
+margin/left = 152.5
+margin/right = 23.5
+
+[node name="sstr" parent="slavebuypanel/statspanel"]
+
+margin/left = 112.5
+margin/right = 85.5
+
+[node name="sagi" parent="slavebuypanel/statspanel"]
+
+margin/left = 111.5
+margin/right = 84.5
+
+[node name="smaf" parent="slavebuypanel/statspanel"]
+
+margin/left = 111.5
+margin/right = 84.5
+
+[node name="send" parent="slavebuypanel/statspanel"]
+
+margin/left = 111.5
+margin/right = 84.5
+
+[node name="Label1" parent="slavebuypanel/statspanel"]
+
+margin/left = 6.5
+margin/right = -122.5
+
+[node name="cour" parent="slavebuypanel/statspanel"]
+
+margin/left = -21.5
+margin/right = -48.5
+
+[node name="conf" parent="slavebuypanel/statspanel"]
+
+margin/left = -22.5
+margin/right = -49.5
+
+[node name="wit" parent="slavebuypanel/statspanel"]
+
+margin/left = -22.5
+margin/right = -49.5
+
+[node name="charm" parent="slavebuypanel/statspanel"]
+
+margin/left = -22.5
+margin/right = -49.5
+
+[node name="leveltext" parent="slavebuypanel/statspanel"]
+
+visibility/visible = false
 
 [node name="slavesellpanel" type="Control" parent="."]
 
@@ -1181,6 +1265,7 @@ margin/bottom = 508.0
 
 [node name="ScrollContainer" type="ScrollContainer" parent="slaveservicepanel"]
 
+editor/display_folded = true
 anchor/bottom = 1
 focus/ignore_mouse = false
 focus/stop_mouse = true
@@ -1244,6 +1329,7 @@ max_lines_visible = -1
 
 [node name="speccontainer" type="ScrollContainer" parent="slaveservicepanel"]
 
+editor/display_folded = true
 anchor/left = 3
 anchor/right = 1
 focus/ignore_mouse = false
@@ -1440,13 +1526,10 @@ focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
-margin/left = 537.5
+margin/left = 292.5
 margin/top = 227.0
-margin/right = -539.5
+margin/right = -295.5
 margin/bottom = -224.0
-__meta__ = {
-"_edit_lock_": true
-}
 
 [node name="Control" type="Control" parent="mageorderservices"]
 
@@ -1456,9 +1539,9 @@ focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
-margin/left = -1.0
+margin/left = -251.0
 margin/top = -54.0
-margin/right = -5.0
+margin/right = -246.0
 margin/bottom = -93.0
 
 [node name="Label" type="Label" parent="mageorderservices"]
@@ -1471,11 +1554,11 @@ focus/ignore_mouse = true
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 0
-margin/left = 363.5
+margin/left = 94.0
 margin/top = 217.5
-margin/right = 221.5
+margin/right = -48.0
 margin/bottom = 194.5
-custom_fonts/font = SubResource( 10 )
+custom_fonts/font = SubResource( 11 )
 text = "Available spells"
 percent_visible = 1.0
 lines_skipped = 0
@@ -1491,10 +1574,10 @@ focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
-margin/left = 528.5
+margin/left = 269.0
 margin/top = 184.5
-margin/right = 325.5
-margin/bottom = -199.5
+margin/right = 66.0
+margin/bottom = -143.5
 scroll/horizontal = false
 scroll/vertical = true
 
@@ -1541,10 +1624,10 @@ focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
-margin/left = 218.5
-margin/top = -99.5
-margin/right = 87.5
-margin/bottom = -161.5
+margin/left = 79.0
+margin/top = -149.5
+margin/right = -52.0
+margin/bottom = -211.5
 custom_fonts/font = ExtResource( 4 )
 toggle_mode = false
 enabled_focus_mode = 2
@@ -1562,158 +1645,14 @@ focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
-margin/left = 293.5
-margin/top = 183.5
-margin/right = 17.5
-margin/bottom = -46.5
+margin/left = 14.0
+margin/top = 173.5
+margin/right = -262.0
+margin/bottom = -115.5
 custom_fonts/normal_font = ExtResource( 4 )
 bbcode/enabled = true
 bbcode/bbcode = ""
 visible_characters = -1
-
-[node name="librarydescription" type="RichTextLabel" parent="mageorderservices"]
-
-anchor/left = 3
-anchor/top = 3
-anchor/right = 3
-anchor/bottom = 3
-focus/ignore_mouse = false
-focus/stop_mouse = true
-size_flags/horizontal = 2
-size_flags/vertical = 2
-margin/left = -44.5
-margin/top = 192.5
-margin/right = -272.5
-margin/bottom = 72.5
-custom_fonts/normal_font = ExtResource( 4 )
-bbcode/enabled = true
-bbcode/bbcode = "This is spell description
-balbalblablabl 
-balbla blalblablablb balblab
-"
-visible_characters = -1
-
-[node name="alchemydescription" type="RichTextLabel" parent="mageorderservices"]
-
-anchor/left = 3
-anchor/top = 3
-anchor/right = 3
-anchor/bottom = 3
-focus/ignore_mouse = false
-focus/stop_mouse = true
-size_flags/horizontal = 2
-size_flags/vertical = 2
-margin/left = -43.5
-margin/top = 62.5
-margin/right = -271.5
-margin/bottom = -65.5
-custom_fonts/normal_font = ExtResource( 4 )
-bbcode/enabled = true
-bbcode/bbcode = "This is spell description
-balbalblablabl 
-balbla blalblablablb balblab
-"
-visible_characters = -1
-
-[node name="laboratorydescription" type="RichTextLabel" parent="mageorderservices"]
-
-anchor/left = 3
-anchor/top = 3
-anchor/right = 3
-anchor/bottom = 3
-focus/ignore_mouse = false
-focus/stop_mouse = true
-size_flags/horizontal = 2
-size_flags/vertical = 2
-margin/left = -42.5
-margin/top = -84.5
-margin/right = -270.5
-margin/bottom = -204.5
-custom_fonts/normal_font = ExtResource( 4 )
-bbcode/enabled = true
-bbcode/bbcode = "This is spell description
-balbalblablabl 
-balbla blalblablablb balblab
-"
-visible_characters = -1
-
-[node name="VSeparator" type="VSeparator" parent="mageorderservices"]
-
-anchor/left = 3
-anchor/top = 3
-anchor/right = 3
-anchor/bottom = 3
-focus/ignore_mouse = false
-focus/stop_mouse = true
-size_flags/horizontal = 2
-size_flags/vertical = 2
-margin/left = 28.5
-margin/top = 225.5
-margin/right = -11.5
-margin/bottom = -228.5
-
-[node name="upgradelibrary" type="Button" parent="mageorderservices"]
-
-anchor/left = 3
-anchor/top = 3
-anchor/right = 3
-anchor/bottom = 3
-focus/ignore_mouse = false
-focus/stop_mouse = true
-size_flags/horizontal = 2
-size_flags/vertical = 2
-margin/left = -353.5
-margin/top = 186.5
-margin/right = -522.5
-margin/bottom = 130.5
-custom_fonts/font = ExtResource( 4 )
-toggle_mode = false
-enabled_focus_mode = 2
-shortcut = null
-text = "Upgrade"
-flat = false
-
-[node name="upgradealchemy" type="Button" parent="mageorderservices"]
-
-anchor/left = 3
-anchor/top = 3
-anchor/right = 3
-anchor/bottom = 3
-focus/ignore_mouse = false
-focus/stop_mouse = true
-size_flags/horizontal = 2
-size_flags/vertical = 2
-margin/left = -354.5
-margin/top = 45.5
-margin/right = -523.5
-margin/bottom = -10.5
-custom_fonts/font = ExtResource( 4 )
-toggle_mode = false
-enabled_focus_mode = 2
-shortcut = null
-text = "Upgrade"
-flat = false
-
-[node name="upgradelaboratory" type="Button" parent="mageorderservices"]
-
-anchor/left = 3
-anchor/top = 3
-anchor/right = 3
-anchor/bottom = 3
-focus/ignore_mouse = false
-focus/stop_mouse = true
-size_flags/horizontal = 2
-size_flags/vertical = 2
-margin/left = -354.5
-margin/top = -107.5
-margin/right = -523.5
-margin/bottom = -163.5
-custom_fonts/font = ExtResource( 4 )
-toggle_mode = false
-enabled_focus_mode = 2
-shortcut = null
-text = "Upgrade"
-flat = false
 
 [node name="Panel" type="Panel" parent="mageorderservices"]
 
@@ -1742,287 +1681,14 @@ focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
 margin/left = 94.5
-margin/top = -232.5
+margin/top = -243.5
 margin/right = -74.5
-margin/bottom = -294.5
+margin/bottom = -305.5
 custom_fonts/font = ExtResource( 4 )
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
 text = "Close"
-flat = false
-
-[node name="carpenter" type="Panel" parent="."]
-
-editor/display_folded = true
-visibility/visible = false
-anchor/left = 3
-anchor/top = 3
-anchor/right = 3
-anchor/bottom = 3
-focus/ignore_mouse = false
-focus/stop_mouse = true
-size_flags/horizontal = 2
-size_flags/vertical = 2
-margin/left = 294.5
-margin/top = 271.0
-margin/right = -314.5
-margin/bottom = -309.0
-
-[node name="Control" type="Control" parent="carpenter"]
-
-anchor/right = 1
-anchor/bottom = 1
-focus/ignore_mouse = false
-focus/stop_mouse = true
-size_flags/horizontal = 2
-size_flags/vertical = 2
-margin/left = -244.0
-margin/top = -15.0
-margin/right = -224.0
-margin/bottom = -5.0
-__meta__ = {
-"_edit_lock_": true
-}
-
-[node name="upgradecommunal" type="Button" parent="carpenter"]
-
-anchor/left = 3
-anchor/top = 3
-anchor/right = 3
-anchor/bottom = 3
-focus/ignore_mouse = false
-focus/stop_mouse = true
-size_flags/horizontal = 2
-size_flags/vertical = 2
-margin/left = -133.5
-margin/top = 264.0
-margin/right = -270.5
-margin/bottom = 226.0
-custom_fonts/font = ExtResource( 4 )
-toggle_mode = false
-enabled_focus_mode = 2
-shortcut = null
-text = "Upgrade"
-flat = false
-
-[node name="upgradepersonal" type="Button" parent="carpenter"]
-
-anchor/left = 3
-anchor/top = 3
-anchor/right = 3
-anchor/bottom = 3
-focus/ignore_mouse = false
-focus/stop_mouse = true
-size_flags/horizontal = 2
-size_flags/vertical = 2
-margin/left = -133.5
-margin/top = 184.0
-margin/right = -270.5
-margin/bottom = 146.0
-custom_fonts/font = ExtResource( 4 )
-toggle_mode = false
-enabled_focus_mode = 2
-shortcut = null
-text = "Upgrade"
-flat = false
-
-[node name="upgradejail" type="Button" parent="carpenter"]
-
-anchor/left = 3
-anchor/top = 3
-anchor/right = 3
-anchor/bottom = 3
-focus/ignore_mouse = false
-focus/stop_mouse = true
-size_flags/horizontal = 2
-size_flags/vertical = 2
-margin/left = -133.5
-margin/top = 22.0
-margin/right = -270.5
-margin/bottom = -16.0
-custom_fonts/font = ExtResource( 4 )
-toggle_mode = false
-enabled_focus_mode = 2
-shortcut = null
-text = "Upgrade"
-flat = false
-
-[node name="upgradefarm" type="Button" parent="carpenter"]
-
-anchor/left = 3
-anchor/top = 3
-anchor/right = 3
-anchor/bottom = 3
-focus/ignore_mouse = false
-focus/stop_mouse = true
-size_flags/horizontal = 2
-size_flags/vertical = 2
-margin/left = -133.5
-margin/top = -48.0
-margin/right = -270.5
-margin/bottom = -86.0
-custom_fonts/font = ExtResource( 4 )
-toggle_mode = false
-enabled_focus_mode = 2
-shortcut = null
-text = "Upgrade"
-flat = false
-
-[node name="upgradebed" type="Button" parent="carpenter"]
-
-anchor/left = 3
-anchor/top = 3
-anchor/right = 3
-anchor/bottom = 3
-focus/ignore_mouse = false
-focus/stop_mouse = true
-size_flags/horizontal = 2
-size_flags/vertical = 2
-margin/left = -133.5
-margin/top = 105.0
-margin/right = -270.5
-margin/bottom = 67.0
-custom_fonts/font = ExtResource( 4 )
-toggle_mode = false
-enabled_focus_mode = 2
-shortcut = null
-text = "Upgrade"
-flat = false
-
-[node name="RichTextLabel" type="RichTextLabel" parent="carpenter"]
-
-anchor/left = 3
-anchor/top = 3
-anchor/right = 3
-anchor/bottom = 3
-focus/ignore_mouse = false
-focus/stop_mouse = true
-size_flags/horizontal = 2
-size_flags/vertical = 2
-margin/left = 252.5
-margin/top = 271.0
-margin/right = -54.5
-margin/bottom = 208.0
-custom_fonts/normal_font = ExtResource( 4 )
-bbcode/enabled = true
-bbcode/bbcode = "Restructure communal room and fit 2 additional beds - 300 gold."
-visible_characters = -1
-
-[node name="RichTextLabel1" type="RichTextLabel" parent="carpenter"]
-
-anchor/left = 3
-anchor/top = 3
-anchor/right = 3
-anchor/bottom = 3
-focus/ignore_mouse = false
-focus/stop_mouse = true
-size_flags/horizontal = 2
-size_flags/vertical = 2
-margin/left = 254.5
-margin/top = 181.0
-margin/right = -52.5
-margin/bottom = 130.0
-custom_fonts/normal_font = ExtResource( 4 )
-bbcode/enabled = true
-bbcode/bbcode = "Build additional personal room - 500 gold"
-visible_characters = -1
-
-[node name="RichTextLabel2" type="RichTextLabel" parent="carpenter"]
-
-anchor/left = 3
-anchor/top = 3
-anchor/right = 3
-anchor/bottom = 3
-focus/ignore_mouse = false
-focus/stop_mouse = true
-size_flags/horizontal = 2
-size_flags/vertical = 2
-margin/left = 256.5
-margin/top = 110.0
-margin/right = -50.5
-margin/bottom = 46.0
-custom_fonts/normal_font = ExtResource( 4 )
-bbcode/enabled = true
-bbcode/bbcode = "Improve your room and expand sleeping space - 250 gold."
-visible_characters = -1
-
-[node name="RichTextLabel3" type="RichTextLabel" parent="carpenter"]
-
-anchor/left = 3
-anchor/top = 3
-anchor/right = 3
-anchor/bottom = 3
-focus/ignore_mouse = false
-focus/stop_mouse = true
-size_flags/horizontal = 2
-size_flags/vertical = 2
-margin/left = 257.5
-margin/top = 17.0
-margin/right = -49.5
-margin/bottom = -28.0
-custom_fonts/normal_font = ExtResource( 4 )
-bbcode/enabled = true
-bbcode/bbcode = "Increase jail's capacity - 250 gold"
-visible_characters = -1
-
-[node name="RichTextLabel5" type="RichTextLabel" parent="carpenter"]
-
-anchor/left = 3
-anchor/top = 3
-anchor/right = 3
-anchor/bottom = 3
-focus/ignore_mouse = false
-focus/stop_mouse = true
-size_flags/horizontal = 2
-size_flags/vertical = 2
-margin/left = 258.5
-margin/top = -49.0
-margin/right = -48.5
-margin/bottom = -94.0
-custom_fonts/normal_font = ExtResource( 4 )
-bbcode/enabled = true
-bbcode/bbcode = "Set up mansion's farm - 650 gold"
-visible_characters = -1
-
-[node name="RichTextLabel4" type="RichTextLabel" parent="carpenter"]
-
-anchor/left = 3
-anchor/top = 3
-anchor/right = 3
-anchor/bottom = 3
-focus/ignore_mouse = false
-focus/stop_mouse = true
-size_flags/horizontal = 2
-size_flags/vertical = 2
-margin/left = 278.5
-margin/top = -127.0
-margin/right = -281.5
-margin/bottom = -194.0
-custom_fonts/normal_font = ExtResource( 4 )
-bbcode/enabled = true
-bbcode/bbcode = ""
-visible_characters = -1
-
-[node name="carpenterleave" type="Button" parent="carpenter"]
-
-anchor/left = 3
-anchor/top = 3
-anchor/right = 3
-anchor/bottom = 3
-focus/ignore_mouse = false
-focus/stop_mouse = true
-size_flags/horizontal = 2
-size_flags/vertical = 2
-margin/left = 176.5
-margin/top = -222.0
-margin/right = -158.5
-margin/bottom = -269.0
-custom_fonts/font = ExtResource( 4 )
-toggle_mode = false
-enabled_focus_mode = 2
-shortcut = null
-text = "Leave"
 flat = false
 
 [node name="shoppanel" type="Control" parent="."]
@@ -2046,7 +1712,7 @@ focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
-theme/theme = ExtResource( 14 )
+theme/theme = ExtResource( 16 )
 margin/left = 37.0
 margin/top = 63.0
 margin/right = 260.0
@@ -2189,8 +1855,8 @@ margin/bottom = 50.0
 toggle_mode = true
 enabled_focus_mode = 2
 shortcut = null
-textures/pressed = ExtResource( 15 )
-textures/hover = ExtResource( 16 )
+textures/pressed = ExtResource( 17 )
+textures/hover = ExtResource( 18 )
 params/resize_mode = 0
 params/stretch_mode = 0
 
@@ -2342,18 +2008,14 @@ margin/bottom = -88.0
 
 [node name="sebastionorder" type="OptionButton" parent="sebastiannode"]
 
-anchor/left = 3
-anchor/top = 3
-anchor/right = 3
-anchor/bottom = 3
 focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
-margin/left = 496.5
-margin/top = 84.0
-margin/right = 313.5
-margin/bottom = 40.0
+margin/left = 44.0
+margin/top = 213.0
+margin/right = 227.0
+margin/bottom = 257.0
 custom_fonts/font = ExtResource( 4 )
 toggle_mode = false
 enabled_focus_mode = 2
@@ -2362,22 +2024,18 @@ text = "Elf"
 flat = false
 align = 0
 selected = 0
-items = [ "Elf", null, false, 0, null, "Dark Elf", null, false, 1, null, "Drow", null, false, 2, null, "Orc", null, false, 3, null, "Beastkin Cat", null, false, 4, null, "Beastkin Wolf", null, false, 5, null, "Beastkin Fox", null, false, 6, null, "Beastkin Bunny", null, false, 7, null, "Beastkin Tanuki", null, false, 8, null, "Halfkin Cat", null, false, 9, null, "Halfkin Wolf", null, false, 10, null, "Halfkin Fox", null, false, 11, null, "Halfkin Tanuki", null, false, 12, null, "Halfkin Bunny", null, false, 13, null, "Fairy", null, false, 14, null, "Dryad", null, false, 15, null, "Demon", null, false, 16, null, "Seraph", null, false, 17, null, "Taurus", null, false, 18, null, "Dragonkin", null, false, 19, null, "Gnome", null, false, 20, null, "Goblin", null, false, 21, null ]
+items = [ "Elf", null, false, 0, null, "Dark Elf", null, false, 1, null, "Drow", null, false, 2, null, "Orc", null, false, 3, null, "Beastkin Cat", null, false, 4, null, "Beastkin Wolf", null, false, 5, null, "Beastkin Fox", null, false, 6, null, "Beastkin Bunny", null, false, 7, null, "Beastkin Tanuki", null, false, 8, null, "Halfkin Cat", null, false, 9, null, "Halfkin Wolf", null, false, 10, null, "Halfkin Fox", null, false, 11, null, "Halfkin Tanuki", null, false, 12, null, "Halfkin Bunny", null, false, 13, null, "Fairy", null, false, 14, null, "Dryad", null, false, 15, null, "Demon", null, false, 16, null, "Seraph", null, false, 17, null, "Taurus", null, false, 18, null, "Dragonkin", null, false, 19, null, "Gnome", null, false, 20, null, "Goblin", null, false, 21, null, "Centaur", null, false, 22, null ]
 
 [node name="sebastianconfirm" type="Button" parent="sebastiannode"]
 
-anchor/left = 3
-anchor/top = 3
-anchor/right = 3
-anchor/bottom = 3
 focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
-margin/left = 496.5
-margin/top = -5.0
-margin/right = 367.5
-margin/bottom = -40.0
+margin/left = 44.0
+margin/top = 302.0
+margin/right = 173.0
+margin/bottom = 337.0
 custom_fonts/font = ExtResource( 4 )
 toggle_mode = false
 enabled_focus_mode = 2
@@ -2387,18 +2045,14 @@ flat = false
 
 [node name="sebastiancancel" type="Button" parent="sebastiannode"]
 
-anchor/left = 3
-anchor/top = 3
-anchor/right = 3
-anchor/bottom = 3
 focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
-margin/left = 496.5
-margin/top = -61.0
-margin/right = 367.5
-margin/bottom = -96.0
+margin/left = 44.0
+margin/top = 358.0
+margin/right = 173.0
+margin/bottom = 393.0
 custom_fonts/font = ExtResource( 4 )
 toggle_mode = false
 enabled_focus_mode = 2
@@ -2412,7 +2066,7 @@ playback/process_mode = 1
 playback/default_blend_time = 0.0
 root/root = NodePath("..")
 anims/show = SubResource( 12 )
-anims/spritemovefairy = SubResource( 11 )
+anims/spritemovefairy = SubResource( 13 )
 playback/active = true
 playback/speed = 1.0
 blend_times = [  ]
@@ -2448,25 +2102,7 @@ autoplay = "spritemovefairy"
 
 [connection signal="pressed" from="mageorderservices/learnspellbutton" to="." method="_on_learnspellbutton_pressed"]
 
-[connection signal="pressed" from="mageorderservices/upgradelibrary" to="." method="_on_upgradelibrary_pressed"]
-
-[connection signal="pressed" from="mageorderservices/upgradealchemy" to="." method="_on_upgradealchemy_pressed"]
-
-[connection signal="pressed" from="mageorderservices/upgradelaboratory" to="." method="_on_upgradelaboratory_pressed"]
-
 [connection signal="pressed" from="mageorderservices/close" to="." method="_on_close_pressed"]
-
-[connection signal="pressed" from="carpenter/upgradecommunal" to="." method="_on_upgradecommunal_pressed"]
-
-[connection signal="pressed" from="carpenter/upgradepersonal" to="." method="_on_upgradepersonal_pressed"]
-
-[connection signal="pressed" from="carpenter/upgradejail" to="." method="_on_upgradejail_pressed"]
-
-[connection signal="pressed" from="carpenter/upgradefarm" to="." method="_on_upgradefarm_pressed"]
-
-[connection signal="pressed" from="carpenter/upgradebed" to="." method="_on_upgradebed_pressed"]
-
-[connection signal="pressed" from="carpenter/carpenterleave" to="." method="_on_carpenterleave_pressed"]
 
 [connection signal="pressed" from="shoppanel/Panel/buybutton" to="." method="shopbuy"]
 
@@ -2481,3 +2117,4 @@ autoplay = "spritemovefairy"
 [connection signal="pressed" from="sebastiannode/sebastiancancel" to="." method="_on_sebastiancancel_pressed"]
 
 
+[editable path="slavebuypanel/statspanel"]
