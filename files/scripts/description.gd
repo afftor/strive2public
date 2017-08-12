@@ -52,19 +52,19 @@ static func getBodyshapeDesc(slave):
 	shortstack = '$His body is rather [color=yellow]petite[/color], about half the size of the average person. ',
 	jelly = '$His body is [color=yellow]jelly-like[/color] and partly transparent. ',
 	halfbird = '$His body has [color=yellow]wings for arms and avian legs[/color] making everyday tasks difficult. ',
-	halfsnake = 'The lower portion of '+ '$His body ends with a [color=yellow]snake’s tail[/color]. ', 
+	halfsnake = 'The lower portion of $his body consists of a long-winding [color=yellow]snake’s tail[/color]. ', 
 	halffish = '$His body is [color=yellow]scaly and sleek[/color], possessing fins and webbed digits. ',
-	halfspider = "The lower portion of $his body ends with a [color=yellow]spider's legs and abdomen[/color]. ",
-	halfhorse = 'While '+ '$Hisupper body is human, $his lower body is rather [color=yellow]equine[/color] in nature. ',
-	halfsquid =  'The lower portion of '+ '$His body consists of a [color=yellow]number of tentacular appendages[/color], similar to those of an octopus. ', 
+	halfspider = "The lower portion of $his body consists of a [color=yellow]spider's legs and abdomen[/color]. ",
+	halfhorse = 'While $his upper body is human, $his lower body is [color=yellow]equine[/color] in nature. ',
+	halfsquid =  'The lower portion of $his body consists of a [color=yellow]number of tentacular appendages[/color], similar to those of an octopus. ', 
 	} 
 	var text2 = text[slave['bodyshape']]
 	return text2
 
 static func getAge(slave):
-	var text = {child = '$He looks like a [color=aqua]child[/color], that has barely hit puberty. ',
-	teen = "$He's a young looking [color=aqua]teen[/color]. ",
-	adult = "$He's a full grown [color=aqua]adult[/color] $sex. ",
+	var text = {child = '$He looks like a [color=aqua]child[/color] that has barely hit puberty. ',
+	teen = "$He's a young-looking [color=aqua]teen[/color]. ",
+	adult = "$He's a fully-grown [color=aqua]adult[/color] $sex. ",
 	}
 	var text2 = text[slave['age']]
 	return text2
@@ -102,7 +102,7 @@ static func getHair(slave):
 	var text2
 	var color = '[color=aqua]' + slave['haircolor'] + '[/color]'
 	var text = {
-	ear = '$His ' + color + ' hair cut [color=aqua]short[/color]. ',
+	ear = '$His ' + color + ' hair is cut [color=aqua]short[/color]. ',
 	neck = '$His ' + color + ' hair falls down to just [color=aqua]below $his neck[/color]. ',
 	shoulder = '$His wavy ' + color + ' hair is [color=aqua]shoulder length[/color]. ',
 	waist = '$His gorgeous ' + color + ' hair [color=aqua]sways down to $his waist[/color]. ',
@@ -111,11 +111,11 @@ static func getHair(slave):
 	text2 = text[slave['hairlength']]
 	text = {
 	straight = 'It [color=aqua]hangs freely[/color] from ' +  '$his head. ',
-	ponytail = 'It tied in a [color=aqua]high ponytail[/color]. ',
-	twintails = 'It managed in a girly [color=aqua]twintails[/color]. ',
-	braid = 'It combed into a single [color=aqua]braid[/color]. ',
-	'two braids' : 'It combed into [color=aqua]two braids[/color]. ',
-	bun = "It's tied into a neat [color=aqua]bun[/color]. ",
+	ponytail = 'It is tied in a [color=aqua]high ponytail[/color]. ',
+	twintails = 'It is managed in girly [color=aqua]twin-tails[/color]. ',
+	braid = 'It is combed into a single [color=aqua]braid[/color]. ',
+	'two braids' : 'It is combed into [color=aqua]two braids[/color]. ',
+	bun = "It is tied into a neat [color=aqua]bun[/color]. ",
 	}
 	color = '[color=aqua]' + slave['eyecolor'] + '[/color]'
 	text2 = text2 + text[slave['hairstyle']] + '$His eyes are ' + color + '. '
@@ -126,7 +126,7 @@ static func getHair(slave):
 	if (slave['eyesclera'] != 'normal'):
 		text2 = text2 + '$His sclera is of [color=aqua]' + slave['eyesclera']+ '[/color] color. '	
 	if slave.piercing.nose == 'ring':
-		text2 += '$His nose contains a [color=aqua]large nose ring[/color] in it. '
+		text2 += '$His nose bears a [color=aqua]large nose ring[/color] in it. '
 	elif slave.piercing.nose == 'stud':
 		text2 += '$His nose has a [color=aqua]small stud[/color] in it. '
 	if slave.piercing.lips == 'ring':
@@ -134,7 +134,7 @@ static func getHair(slave):
 	elif slave.piercing.lips == 'stud':
 		text2 += '$His lip has a [color=aqua]small stud[/color] in it. '
 	if slave.piercing.tongue == 'stud':
-		text2 += '$His tongue has a notorious [color=aqua]stud[/color], which can be seen when $he talks. '
+		text2 += '$His tongue has a shiny [color=aqua]stud[/color], which can be seen when $he talks. '
 	return text2
 
 static func getFeatures(slave):
@@ -158,7 +158,7 @@ static func getFeatures(slave):
 	}
 	text2 = text2 + text[slave['ears']]
 	if slave.piercing.earlobes == 'earrings':
-		text2 += '$His ears are decorated with pair of [color=aqua]fancy earrings[/color]. '
+		text2 += '$His ears are decorated with a pair of [color=aqua]fancy earrings[/color]. '
 	elif slave.piercing.earlobes == 'stud':
 		text2 += '$His ears have a pair of [color=aqua]small studs[/color] in them. '
 	text = { # Skin Lines
@@ -179,9 +179,9 @@ static func getFeatures(slave):
 	text2 = text2 + text[slave['skin']]
 	text = { #Skin Coverage Lines
 	none = '',
-	plants = 'Various [color=aqua]plant matter[/color] naturally covers parts of $his body. ',
+	plants = 'Various leaves and bits of [color=aqua]plant matter[/color] naturally cover parts of $his body. ',
 	scales = '$His skin is partly covered with [color=aqua]scales[/color]. ',
-	feathers = '$His body is covered in [color=aqua]birdish feathers[/color] in many places. ',
+	feathers = '$His body is covered in [color=aqua]bird-like feathers[/color] in many places. ',
 	full_body_fur = '$His body is covered in thick, soft [color=aqua]fur of',
 	}
 	text2 = text2 + text[slave['skincov']]
@@ -219,8 +219,8 @@ static func getFeatures(slave):
 	text2 = text2 + text[slave['wings']]
 	text = { # Tails lines
 	none = '',
-	cat = 'Below $his waist, you spot a slim, [color=aqua]cat tail[/color] covered with fur. ',
-	fox = '$He has a large, fluffy [color=aqua]tail of a fox[/color]. ',
+	cat = 'Below $his waist, you spot a slim [color=aqua]cat tail[/color] covered with fur. ',
+	fox = '$He has a large, fluffy [color=aqua]fox tail[/color]. ',
 	wolf =  "Below $his waist there's a short, fluffy, [color=aqua]wolf tail[/color]. ",
 	bunny =  '$He has a [color=aqua]small ball of fluff[/color] behind $his rear. ',
 	racoon = '$He has a plump, fluffy [color=aqua]raccoon tail[/color]. ',
@@ -236,12 +236,12 @@ static func getFeatures(slave):
 	}
 	text2 = text2 + text[slave['tail']]
 	text = {
-	tiny = '$His stature is [color=aqua]extremely small[/color], barely half of normal person. ',
-	petite = '$His stature is [color=aqua]petite[/color], almost childish. ',
+	tiny = '$His stature is [color=aqua]extremely small[/color], barely half the size of a normal person. ',
+	petite = '$His stature is [color=aqua]petite[/color], almost child-like. ',
 	short = '$His height is quite [color=aqua]short[/color]. ',
-	average = '$He is of normal [color=aqua]average[/color] height. ',
-	tall = '$He is quite [color=aqua]tall[/color] compared to average person. ',
-	towering = '$He is unusually tall, [color=aqua]towering[/color] among others. ',
+	average = '$He is of pretty normal, [color=aqua]average[/color] height. ',
+	tall = '$He is quite [color=aqua]tall[/color] compared to an average person. ',
+	towering = '$He is unusually tall, [color=aqua]towering[/color] over others. ',
 	}
 	text2 = text2 + text[slave['height']] + '\n\n'
 	text = {#tits strings
@@ -249,7 +249,7 @@ static func getFeatures(slave):
 	small = '$He has [color=yellow]small[/color], round boobs. ',
 	average= '$His nice, [color=yellow]perky[/color] breasts are firm and inviting. ',
 	big = '$His [color=yellow]big[/color] tits are pleasantly soft, but still have a nice spring to them. ',
-	huge = '$His [color=yellow]giant[/color] tits are mindblowing. ',
+	huge = '$His [color=yellow]giant[/color] tits are mind-blowingly big. ',
 	masculine = '$His chest is of definitive [color=yellow]masculine[/color] shape. ',
 	}
 	text2 = text2 + text[slave['tits']['size']]
@@ -262,7 +262,7 @@ static func getFeatures(slave):
 	average= '$He  has a nice, [color=yellow]pert[/color] ass you could bounce a coin off of. ',
 	big = '$He has a pleasantly [color=yellow]plump[/color], heart-shaped ass that jiggles enticingly with each step. ',
 	huge = '$He has a [color=yellow]huge[/color], attention-grabbing ass. ',
-	masculine = '$His ass has definitive [color=yellow]masculine[/color] shape. ',
+	masculine = '$His ass definitively has a [color=yellow]masculine[/color] shape. ',
 	}
 	text2 = text2 + text[slave['ass']]
 	return text2
@@ -306,12 +306,12 @@ static func getSexFeatures(slave):
 		human_small = 'Below $his waist dangles a [color=yellow]tiny humanish dick[/color], small enough that it could be called cute. ',
 		human_average ='$He has an [color=yellow]ordinary humanish penis[/color] below $his waist, more than enough to make most men proud. ',
 		human_big = 'A [color=yellow]huge humanish cock[/color] swings heavily from $his groin, big enough to give even the most veteran whore pause. ',
-		canine_small = 'A slender, pointed [color=yellow]dog dick[/color] hangs below $his waist, so small that its knot is barely noticeable. ',
+		canine_small = 'A slender, pointed [color=yellow]canine dick[/color] hangs below $his waist, so small that its knot is barely noticeable. ',
 		canine_average =  '$He has a knobby, red, [color=yellow]canine cock[/color] of respectable size below $his waist, which wouldn’t look out of place on on a large dog. ', 
-		canine_big =  'Growing from $his crotch is a [color=yellow]massive canine dick[/color], red-skinned and sporting a massive knot near the base. ',
-		feline_small =  'A [color=yellow]tiny feline penis[/color] below $his waist, so small you can barely see the barbs. ',
+		canine_big =  'Growing from $his crotch is a [color=yellow]massive canine dick[/color], red-skinned and sporting a thick knot near the base. ',
+		feline_small =  'A [color=yellow]tiny feline penis[/color] dangles below $his waist, so small you can barely see the barbs. ',
 		feline_average = '$He has a barbed [color=yellow]cat dick[/color] growing from $his crotch, big enough to rival an average human. ',
-		feline_big =  'There is a frighteningly [color=yellow]large feline cock[/color] hanging between $his thighs, it’s sizable barbs making it somewhat intimidating. ', 
+		feline_big =  'There is a frighteningly [color=yellow]large feline cock[/color] hanging between $his thighs, its sizable barbs making it somewhat intimidating. ', 
 		equine_small = 'Below $his waist hangs a [color=yellow]smallish equine cock[/color], which is still respectable compared to the average man. ',
 		equine_average= 'There is a [color=yellow]sizable equine cock[/color] growing from $his nethers, which, while small on a horse, is still thicker and heavier than the average human tool. ',
 		equine_big = 'A [color=yellow]massive equine cock[/color] hangs heavily below $his waist, it’s mottled texture not quite matching the rest of $his skin. ',
@@ -335,7 +335,7 @@ static func getSexFeatures(slave):
 	elif slave.preg.duration > 16:
 		text2 = text2 + "\n\n$His advanced pregnancy is clearly evident by the moderate bulge in $his belly."
 	elif slave.preg.duration > 8:
-		text2 = text2 + "\n\nThe unborn fetus causes $his belly to bulge slightly"
+		text2 = text2 + "\n\nThe unborn fetus causes $his belly to bulge slightly."
 	
 	if slave.preg.has_womb == false && slave.sex != 'male':
 		text2 = text2 + "\n\n[color=yellow]$name is sterile and won't be able to get pregnant.[/color]"
@@ -346,13 +346,13 @@ static func getSexFeatures(slave):
 static func getModFeatures(slave):
 	var text = ''
 	if slave.mods.has('augmentfur'):
-		text += "[color=#B05DB0]$His fur is magically augmented and provides extra resistance to harmful effects.[/color]\n"
+		text += "[color=#B05DB0]$His fur is magically augmented and provides extra resistance against harmful effects.[/color]\n"
 	if slave.mods.has('augmentscales'):
-		text += "[color=#B05DB0]$His scales are thicker than normal and provide extra protection on impacts.[/color]\n"
+		text += "[color=#B05DB0]$His scales are thicker than normal and provide extra protection against impacts.[/color]\n"
 	if slave.mods.has('augmenthearing'):
 		text += "[color=#B05DB0]$His hearing is magically augmented and more sensitive to the surroundings.[/color]\n"
 	if slave.mods.has('augmentstr'):
-		text += "[color=#B05DB0]$His muscles has been magically improved and can perform greater with proper training.[/color]\n"
+		text += "[color=#B05DB0]$His muscles has been magically improved and can perform greater feats with proper training.[/color]\n"
 	if slave.mods.has('augmentagi'):
 		text += "[color=#B05DB0]$His reflexes and flexibility has been magically improved and $his physic potential way higher than usual.[/color]\n"
 	
@@ -369,7 +369,7 @@ static func getSlaveStatus(slave):
 	elif slave.obed <= 40:
 		text = '[color=#FFA500]$name prefers to avoid looking at you and reacts poorly to your commands. [/color]'
 	elif slave.obed <= 60:
-		text = "[color=yellow]$name shows some respect to you, but it's clear that $he forces $himself to do it. [/color]"
+		text = "[color=yellow]$name shows some respect to you, but it is clear that $he forces $himself to do it. [/color]"
 	elif slave.obed <= 80:
 		text = '[color=#adff2f]$name is pretty considerate and tries to appeal to you, showing that your opinion is important to $him. [/color]' 
 	else:
@@ -397,9 +397,9 @@ static func getSlaveStatus(slave):
 	elif slave.loyal <= 60:
 		text = text + '[color=yellow]$name shows considerable loyalty to you as $his master.[/color] '
 	elif slave.loyal <= 80:
-		text = text + '[color=#adff2f]$name shows strong bond feelings $he has towards you.[/color] '
+		text = text + '[color=#adff2f]$name shows a strong bond and deep feelings that $he has towards you.[/color] '
 	else:
-		text = text + "[color=green]To $name nothing is more important than you and your will.[/color] "
+		text = text + "[color=green]To $name, nothing is more important than you and your will.[/color] "
 	
 	
 	if slave.effects.has('captured') == true:
@@ -413,14 +413,14 @@ func getBabyDescription(slave):
 	var dict = {}
 	dict = {
 	none = '',
-	plants = "It's covered in some green plant matter. ",
-	scales = "It's covered in few scales. ",
+	plants = "It is covered in some leaves and green plant matter. ",
+	scales = "It is covered in a few scales. ",
 	feathers = "It has bird feathers in some places. ",
-	full_body_fur = "It's slightly covered in fur. ",
+	full_body_fur = "It shows the beginnings of fur. ",
 	}
 	text = text + dict[slave.skincov]
 	if slave.tail != 'none':
-		text = text + '$He appear to have small tail, inherited from one of the parents. '
+		text = text + '$He appears to have small tail, inherited from one of the parents. '
 	if slave.horns != 'none':
 		text = text + '$He has pair of tiny horns on $his head. '
 	dict = {
