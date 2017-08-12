@@ -483,38 +483,38 @@ func genetalia(dict, action):
 	if modification.code == 'penis' && action == 'grow':
 		text = "$name's clit will be turned into a fully functional, fertile human penis. Semen will be produced by miniscule innards.\n\nRequirements: "
 	elif modification.code == 'penis' && action == 'remove':
-		text = "$name's penis will be magically reverted into clitoris.\n\nRequirements:"
+		text = "$name's penis will be magically reverted into a clitoris.\n\nRequirements:"
 	elif modification.code == 'penis' && action == 'humanshape':
-		text = "$name's cock will be changed to the normal. \n\nRequirements:"
+		text = "$name's cock will be changed to human shape. \n\nRequirements:"
 	elif modification.code == 'penis' && action == 'felineshape':
-		text = "$name's cock will be changed to the feline, fitted with small barbs. \n\nRequirements:"
+		text = "$name's cock will be changed to feline shape, fitted with small barbs. \n\nRequirements:"
 	elif modification.code == 'penis' && action == 'canineshape':
-		text = "$name's cock will be changed to the canine, with a sizeable knot on the base. \n\nRequirements:"
+		text = "$name's cock will be changed to canine shape, with a sizeable knot at the base. \n\nRequirements:"
 	elif modification.code == 'penis' && action == 'equineshape':
-		text = "$name's cock will be changed to the equine, with considerable enlargement. \n\nRequirements:"
+		text = "$name's cock will be changed to equine shape, with a blunt tip and flared head. \n\nRequirements:"
 	elif modification.code == 'penis' && action == 'pussy':
 		if slave.pussy.has == false:
-			text = "$name will obtain a fully functional female vagina capable of pregnancy. \n\nRequirements:"
+			text = "$name will obtain a fully functional vagina capable of pregnancy. \n\nRequirements:"
 		else:
 			text = "$name's womb will be restored and capable of pregnancy again. \n\nRequirements:"
 	elif modification.code == 'tits' && action == 'developtits':
 		text = "$name's additional rudimentary nipples will be developed into full-functional mammaries. \n\nRequirements:"
 	elif modification.code == 'tits' && action == 'reversetits':
-		text = "$name's secondary tits will be reverted back to the rudimentary nipples. \n\nRequirements:"
+		text = "$name's secondary tits will be reverted back to rudimentary nipples. \n\nRequirements:"
 	elif modification.code == 'tits' && action == 'addnipples':
-		text = "$name's chest will be augmented with additional pair of nipples.\n\nRequirements:"
+		text = "$name's chest will be augmented with an additional pair of nipples.\n\nRequirements:"
 	elif modification.code == 'tits' && action == 'removenipples':
 		text = "A pair of secondary nipples will be removed from $name's chest. \n\nRequirements:"
 	elif modification.code == 'tits' && action == 'maximizenipples':
 		text = "$name's chest and stomach will be modified to hold 4 pairs of additional nipples. \n\nRequirements:"
 	elif modification.code == 'tits' && action == 'minimizenipples':
-		text = "All, but one pair of original nipples will be removed from $name's chest. \n\nRequirements:"
+		text = "All but one pair of $his original nipples will be removed from $name's chest. \n\nRequirements:"
 	elif modification.code == 'tits' && action == 'hollownipples':
-		text = "$name's nipples will be altered to be more elastic and sensitive, and breasts will be hollow inside allowing $him to receive pleasure from penetration. \n\nRequirements:"
+		text = "$name's nipples will be altered to be more elastic and sensitive, with the breasts hollow inside allowing $him to receive pleasure from penetration. \n\nRequirements:"
 	elif modification.code == 'balls' && action == 'grow':
 		text = "$name will grow a pair of small testicles. \n\nRequirements:"
 	elif modification.code == 'balls' && action == 'remove':
-		text = "$name will have $his testicles visibly removed(does not impact fertility). \n\nRequirements:"
+		text = "$name will have $his testicles moved inside his body cavity, hiding them from sight (does not impact fertility). \n\nRequirements:"
 	elif modification.code == 'mod' && action == 'fur':
 		text = "$name's fur will be magically augmented to provide better protection. \n\nRequirements:"
 	elif modification.code == 'mod' && action == 'scale':

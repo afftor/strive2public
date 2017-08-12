@@ -79,7 +79,7 @@ var traits = {
   },
   "Deviant": {
     "name": "Deviant",
-    "description": "$name has a flavor for very unusual sexual practices. A cat is fine too. \n\n[color=aqua]Degrading sexual actions have no penalty. [/color]",
+    "description": "$name has a fondness for very unusual sexual practices. A cat or dog is fine for $him too. \n\n[color=aqua]Degrading sexual actions have no penalty. [/color]",
     "effect": {
       
     },
@@ -140,7 +140,7 @@ var traits = {
   },
   "Monogamous": {
     "name": "Monogamous",
-    "description": "$name does not favor random encounters and believes in one true partner for life. \n\n[color=aqua]Refuses to work as prostitute, loyalty builds faster from sex with master. Sleeping with other partners is more stressful. [/color]",
+    "description": "$name does not favor random encounters and believes there is one true partner in life for $him. \n\n[color=aqua]Refuses to work as prostitute, loyalty builds faster from sex with master. Sleeping with other partners is more stressful. [/color]",
     "effect": {
       
     },
@@ -168,7 +168,7 @@ var traits = {
   },
   "Clingy": {
     "name": "Clingy",
-    "description": "$name gets easily attached to people. However this behavior rarely met with acceptance, which in turn annoys $him. \n\n[color=aqua]Loyalty grows faster from actions, Obedience drops quickly if constantly ignored. [/color]",
+    "description": "$name gets easily attached to people. However this behavior is rarely met with acceptance, which in turn annoys $him. \n\n[color=aqua]Loyalty grows faster from actions, Obedience drops quickly if constantly ignored. [/color]",
     "effect": {
       "code": "clingy",
       "loyalty_mod": 35
@@ -213,7 +213,7 @@ var traits = {
   },
   "Scarred": {
     "name": "Scarred",
-    "description": "$name's body is covered in massive burn scars. Besides terrific looks, $he also suffers from low confidence.\n\n[color=aqua]--Beauty, -Confidence [/color]",
+    "description": "$name's body is covered in massive burn scars. Besides being terrifying to look at, this also makes $him suffer from low confidence.\n\n[color=aqua]--Beauty, -Confidence [/color]",
     "effect": {
       "code": "scarred",
       "conf_cur": -30,
@@ -245,7 +245,7 @@ var traits = {
   },
   "Prude": {
     "name": "Prude",
-    "description": "$name is very intolerant of many sexual practices, believing there's too many inappropriate behaviors which shouldn't be practiced.\n\n[color=aqua]Sexual actions are harder to initiate and are less impactful. Refuses to work on sex-related jobs. [/color]",
+    "description": "$name is very intolerant of many sexual practices, believing there are many inappropriate behaviors which shouldn't be practiced.\n\n[color=aqua]Sexual actions are harder to initiate and are less impactful. Refuses to work on sex-related jobs. [/color]",
     "effect": {
       
     },
@@ -368,7 +368,7 @@ var traits = {
   },
   "Sex-crazed": {
     "name": "Sex-crazed",
-    "description": "$name barely can keep $his mind off dirty stuff. $His perpetular excitement makes $him look and enjoy nearly everything at the cost of $his sanity. \n\n[color=aqua]Min lust++; Max Wit --; Max Confidence --; no penalty from any sexual activity and brothel assignement. [/color]",
+    "description": "$name barely can keep $his mind off dirty stuff. $His perpetual excitement makes $him look and enjoy nearly everything at the cost of $his sanity. \n\n[color=aqua]Min lust++; Max Wit --; Max Confidence --; no penalty from any sexual activity and brothel assignement. [/color]",
     "effect": {
       "code": "sexcrazed",
       "wit_max": -80,
@@ -411,6 +411,6 @@ var traits = {
     ],
     "conflict": [
       ""
-    ]
+    ]    
   }
 }
