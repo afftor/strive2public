@@ -144,7 +144,7 @@ func _on_startrandom_pressed():
 	var newslave = globals.slavegen.newslave(globals.starting_pc_races[rand_range(0,globals.starting_pc_races.size())],'random','female','commoner')
 	newslave.obed = 100
 	newslave.loyal = 20
-	newslave.face.beauty = 40
+	newslave.beautybase = 40
 	newslave.cleartraits()
 	newslave.work = 'forage'
 	globals.slaves = newslave
@@ -280,7 +280,7 @@ func advancestage(confirm = false):
 		player = globals.player
 		player.hairstyle = 'straight'
 		player.cleartraits()
-		player.face.beauty = 40
+		player.beautybase = 40
 		stage6()
 		get_node("TextureFrame/newgame/stage6").set_hidden(false)
 	elif stage == 6:
@@ -289,6 +289,7 @@ func advancestage(confirm = false):
 	elif stage == 7:
 		startslave = globals.slavegen.newslave(slavetemplate.race, slavetemplate.age, slavetemplate.sex, 'poor')
 		startslave.cleartraits()
+		startslave.beautybase = 40
 		stage8()
 		get_node("TextureFrame/newgame/stage8").set_hidden(false)
 
@@ -393,7 +394,8 @@ var playeragi = 4
 var playermaf = 4
 var playerend = 4
 var pointsleft = 2
-
+var playersex = 'male'
+var playerage = 'teen'
 
 func stage5():
 	get_node("TextureFrame/newgame/stage5/age").clear()
@@ -402,10 +404,23 @@ func stage5():
 		if i == 'futanari' && globals.rules.futa == false:
 			continue
 		get_node("TextureFrame/newgame/stage5/sex").add_item(i)
+		if playersex == i:
+			get_node("TextureFrame/newgame/stage5/sex").select(get_node("TextureFrame/newgame/stage5/sex").get_item_count()-1)
 	for i in ['adult','teen']:
 		get_node("TextureFrame/newgame/stage5/age").add_item(i)
+		if playerage == i:
+			get_node("TextureFrame/newgame/stage5/age").select(get_node("TextureFrame/newgame/stage5/age").get_item_count()-1)
 	var text = "[center]Strength: [color=yellow]" + str(playerstr) + "[/color]\nAgility: [color=yellow]" + str(playeragi) + "[/color]\nMagic: [color=yellow]" + str(playermaf) + "[/color]\nEndurance: [color=yellow]"+ str(playerend) + "[/color] \nPoints Left: [color=green]"+str(pointsleft) + "[/color][/center]"
 	get_node("TextureFrame/newgame/stage5/stattext").set_bbcode(text)
+
+
+func _on_sex_item_selected( ID ):
+	playersex = get_node("TextureFrame/newgame/stage5/sex").get_item_text(ID)
+
+
+func _on_age_item_selected( ID ):
+	playerage = get_node("TextureFrame/newgame/stage5/age").get_item_text(ID)
+
 
 func statup(button):
 	if pointsleft >= 1:
@@ -683,6 +698,7 @@ func _on_backgroundconfirm_pressed():
 	if player == null:
 		globals.player = globals.slavegen.newslave(currentrace, currentage, currentsex, 'slave')
 		player = globals.player
+		player.beautybase = 40
 		player.cleartraits()
 	player.stats.str_max = playerstr
 	player.stats.agi_max = playeragi
@@ -788,6 +804,7 @@ func slaveoption(id, button):
 	elif button.get_name() == 'slavesex':
 		slavetemplate.sex = button.get_item_text(id)
 	startslave = globals.slavegen.newslave(slavetemplate.race, slavetemplate.age, slavetemplate.sex, 'poor')
+	startslave.beautybase = 40
 	startslave.cleartraits()
 	stage8()
 
@@ -860,7 +877,7 @@ func _on_slaveconfirm_pressed():
 		startslave[i] = rand_range(30,35)
 	startslave.memory = startslavebackground
 	startslave.obed = 90
-	startslave.face.beauty = 40
+	startslave.beautybase = 40
 	if startslave.memory.find('$sibling') >= 0:
 		startslave.relatives.mother = 0
 		startslave.relatives.father = 0
@@ -927,8 +944,6 @@ farmer = {code = 'farmer', name = "Farmer", descript = "Your childhood has been 
 noble = {code = 'noble', name = "Aristocrat", descript = "You were born a member of small and fairly poor aristocrat family. Despite having a relatively reasonable life, your home estate was constantly in danger from your overly ambitious relatives and strong neighbours. After you have found out about your inheritance, you decided to leave everything to your older brother and, with what small possessions you've kept, moved to find out if you can pick up a new opportunity entirely on your own. \n\n[color=aqua]Start with extra 200 gold and 2 Maid Uniforms.[/color] "},
 mage = {code = 'mage', name = "Researcher", descript = "Despite being born in a poor family, you've always shown a profound interest in complex subjects such as alchemy and magic. Thankfully, you've managed to enroll into small local school which gave you a significant opportunities by sharing their resources. After news about your inheritance reached you, it was a chance you couldn't let slip: you quickly packed your most valuable tools and moved out. \n\n[color=aqua]Start with an Alchemy Room and a Heal spell. [/color]"},
 }
-
-
 
 
 

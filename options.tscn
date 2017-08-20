@@ -43,7 +43,6 @@ tabs_visible = true
 [node name="Settings" type="Tabs" parent="TabContainer"]
 
 editor/display_folded = true
-visibility/visible = false
 anchor/right = 1
 anchor/bottom = 1
 focus/ignore_mouse = false
@@ -507,6 +506,7 @@ items = [ "Always", null, false, -1, null, "After Daily Event", null, false, -1,
 
 [node name="Supporter section" type="Tabs" parent="TabContainer"]
 
+visibility/visible = false
 anchor/right = 1
 anchor/bottom = 1
 focus/ignore_mouse = false

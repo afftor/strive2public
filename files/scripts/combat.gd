@@ -541,7 +541,7 @@ func actionexecute(actor, target, skill):
 			targetparty = playergroup
 			for i in playergroup:
 				if i.target == playergroup.find(target) && i.action.code == 'protect' && i != target:
-					text = actor.name + ' tries to attack ' + target.name + ', but ' + i.name + ' moves in and takes the hit. '
+					text = '$name tries to attack ' + target.name + ', but ' + i.name + ' moves in and takes the hit. '
 					if target.action.code == 'protect':
 						target.target = playergroup.find(target)
 					text += actionexecute(actor, i, skill)
@@ -550,7 +550,7 @@ func actionexecute(actor, target, skill):
 			targetparty = enemygroup
 			for i in enemygroup:
 				if i.target == enemygroup.find(target) && i.action.code == 'protect':
-					text = actor.name + ' tries to attack ' + target.name + ', but ' + i.name + ' moves in and takes the hit. '
+					text = '$name tries to attack ' + target.name + ', but ' + i.name + ' moves in and takes the hit. '
 					if target.action.code == 'protect':
 						target.target = enemygroup.find(target)
 					text += actionexecute(actor, i, skill)
@@ -582,25 +582,25 @@ func actionexecute(actor, target, skill):
 					damage += 5
 			if hit == 'precise':
 				damage = damage*1.3
-				text = text + actor.name + "'s swift attack lands precisely at desirable spot. " 
+				text = text + "$name's swift attack lands precisely at desirable spot. " 
 			if damage < 0:
 				damage = 0
 			if hit != 'miss' && hit != 'glance':
 				var power = powercompare(actor.power, target.power)
 				if power == 'overpower':
 					target.health -= damage*1.3
-					text = text + actor.name + "'s force overpowers " + target.name + ' and deals great damage.(' + str(round(damage*1.3)) + ")" 
+					text = text + "$name's  force overpowers " + target.name + ' and deals great damage.(' + str(round(damage*1.3)) + ")" 
 				elif power == 'normal' || hit == 'precise':
 					target.health -= damage
-					text = text + actor.name + " damages " + target.name + '.(' + str(round(damage)) + ")" 
+					text = text + "$name damages " + target.name + '.(' + str(round(damage)) + ")" 
 				else:
 					target.health -= damage/1.75
-					text = text + actor.name + "'s attack struggles to ovecome " + target.name + "'s defence and falls in efficiency.(" + str(round(damage/1.75)) + ")" 
+					text = text + "$name's attack struggles to ovecome " + target.name + "'s defence and falls in efficiency.(" + str(round(damage/1.75)) + ")" 
 			elif hit == 'glance':
 				target.health -= damage/2
-				text = text + actor.name + "'s attack lacks in speed and only partly damages " + target.name + ".(" + str(round(damage/2)) + ")" 
+				text = text + "$name's attack lacks in speed and only partly damages " + target.name + ".(" + str(round(damage/2)) + ")" 
 			elif hit == 'miss':
-				text = text + actor.name + "'s attack misses " + target.name + '. '
+				text = text + "$name's attack misses " + target.name + '. '
 			if target.action.code != 'protect':
 				target.energy -= (targethealthinit - target.health)/5
 			else:
@@ -648,8 +648,9 @@ func combatantdictionary(combatant, text):
 	if playergroup.find(combatant) >= 0:
 		if playergroup.find(combatant) == 0:
 			text = text.replace('$name', 'You')
-			#text = text.replace('goes', 'go')
-			text = text.replace("'s", "r")
+			text = text.replace(' goes ', ' go ')
+			text = text.replace(' does ', ' do ')
+			text = text.replace("'s ", "r ")
 		else:
 			text = text.replace('$name', combatant.name)
 		if combatant.action.target == 'enemy':

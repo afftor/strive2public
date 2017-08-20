@@ -49,7 +49,7 @@ func _on_sexual_visibility_changed():
 	
 	if slave.sexuals.unlocked == false:
 		get_node("hidingpanel").set_hidden(false)
-		get_node("hidingpanel/RichTextLabel").set_bbcode(slave.dictionary(get_node("hidingpanel/RichTextLabel").get_bbcode()))
+		get_node("hidingpanel/RichTextLabel").set_bbcode(slave.dictionary("You don't have $name's consent for personal actions. \n\n[color=red]Forcing $him into having sex will greatly impact $his opinion of you.[/color]"))
 		return
 	else:
 		get_node("hidingpanel").set_hidden(true)
@@ -82,8 +82,6 @@ func _on_sexual_visibility_changed():
 	
 	if rape == false:
 		for action in actionarray:
-		#for i in slave.sexuals.actions:
-			#var action = sexbuttons[i]
 			if !slave.sexuals.actions.has(action.code) || globals.evaluate(action.slavereqs) == false || globals.evaluate(action.playerreqs) == false:
 				continue
 			if (action.code == "rimjob" || action.code == "rimjobtake") && slave.sexuals.unlocks.has('anal') == false:
@@ -274,11 +272,20 @@ func _on_confirmbutton_pressed():
 			text = partner.dictionary("$name has not enough energy for this action. ")
 		get_tree().get_current_scene().popup(text)
 		return
+	elif slave.stress >= 80 && rape == false:
+		text = slave.dictionary("$name is too stressed and wishes to stay alone.")
+		return
 	elif slave.pussy.virgin == true && action.tags.find('penetration') >= 0 && (get_node("descriptpanel/holebutton").get_selected_ID() == 1 || action.tags.find('pussy') >= 0):
 		get_tree().get_current_scene().yesnopopup(slave.dictionary("$name currently is a virgin. Continue?"), 'sexinitiate' ,self)
 		return
 	
 	sexinitiate()
+
+var nakedspritesdict = {
+	Cali = {cons = 'calinakedhappy', rape = 'calinakedangry', clothcons = 'calineutral', clothrape = 'caliangry2'},
+	Tisha = {cons = 'tishanakedhappy', rape = 'tishanakedneutral', clothcons = 'tishanakedhappy', clothrape = 'tishanakedneutral'},
+	Emily = {cons = 'emilynakedhappy', rape = 'emilynakedneutral', clothcons = 'emily2happy', clothrape = 'emily2worried'}
+	}
 
 func sexinitiate(secondtime = false):
 	var text = ''
@@ -295,6 +302,7 @@ func sexinitiate(secondtime = false):
 	var consecheck = 'consensual'
 	var lusteffect = action.lusteffect
 	var buttons = []
+	var sprites = []
 	
 	slave.metrics.sex += 1
 	partner.metrics.sex += 1
@@ -426,6 +434,8 @@ func sexinitiate(secondtime = false):
 		slave.metrics.oral += 1
 	elif action.code in ['blowjobgive','oral','rimjobgive']:
 		partner.metrics.oral += 1
+	if action.code in ['frottage','tribadism'] && slave.traits.has('Bisexual') == false && rand_range(0,10) >= 2.5:
+		slave.add_trait(globals.origins.trait("Bisexual"))
 	if orgasm == true:
 		managain += 1
 		slave.metrics.orgasm += 1
@@ -487,6 +497,28 @@ func sexinitiate(secondtime = false):
 	
 	slave.sexuals.affection += affectionreward
 	
+	
+	
+	for i in [slave, partner]:
+		if i.unique in ['Cali','Tisha','Emily']:
+			var sprite
+			var pos 
+			if action.code == 'kiss':
+				if rape == true && rapelike == false:
+					sprite = nakedspritesdict[i.unique].clothrape
+				else:
+					sprite = nakedspritesdict[i.unique].clothcons
+			else:
+				if rape == true && rapelike == false:
+					sprite = nakedspritesdict[i.unique].rape
+				else:
+					sprite = nakedspritesdict[i.unique].cons
+			if i == slave:
+				pos = 'pos1'
+			else:
+				pos = 'pos2'
+			sprites.append([sprite, pos])
+	
 	text += getessencesfromsex(slave, managain)
 	
 	text = text.replace("$hole", hole)
@@ -526,7 +558,7 @@ func sexinitiate(secondtime = false):
 	text = slave.dictionary(text)
 	text = text.replace('$2','$')
 	text = partner.dictionary(text)
-	get_tree().get_current_scene().dialogue(true, self, slave.dictionary(text), buttons)
+	get_tree().get_current_scene().dialogue(true, self, slave.dictionary(text), buttons, sprites)
 	get_tree().get_current_scene().rebuild_slave_list()
 	get_parent()._on_slave_tab_visibility_changed()
 	updateinfo()
@@ -629,11 +661,23 @@ func _on_confirm_pressed():
 	var mana = 0
 	var array = []
 	var drows = 0
+	var sprites = []
 	if globals.state.sidequests.emily == 16 && (action == 'threesome' && slave.unique in ['Emily','Tisha'] && threesomepartner.unique in ['Emily','Tisha']):
 		emilytishascene()
 		return
 	if action == 'threesome':
+		
 		array = [slave, threesomepartner]
+		for i in [slave, threesomepartner]:
+			if i.unique in ['Cali','Tisha','Emily']:
+				var sprite
+				var pos 
+				sprite = nakedspritesdict[i.unique].cons
+				if i == slave:
+					pos = 'pos1'
+				else:
+					pos = 'pos2'
+				sprites.append([sprite, pos])
 		globals.player.energy = -30
 		text += "You, " + slave.dictionary("$name, ") + threesomepartner.dictionary("and $name get onto the bed and spend next few hours having wild sex with each other. ")
 		mana += round(slave.lust/15 + threesomepartner.lust/15 + 4)
@@ -687,10 +731,10 @@ func _on_confirm_pressed():
 		globals.itemdict.aphroditebrew.amount -= 1
 	text += "\n\nYou earned " + str(mana) + " mana."
 	globals.resources.mana += round(mana)
-	 
+	
 	globals.state.groupsex = false
 	get_node("group/grouppopup").set_hidden(true)
-	get_tree().get_current_scene().popup(text)
+	get_tree().get_current_scene().dialogue(true, self, text, [], sprites)
 
 func emilytishascene():
 	globals.state.sidequests.emily = 17
@@ -892,7 +936,8 @@ func selectedactionforlearn(actionbutton):
 	for i in action.actions:
 		var tempaction = sexbuttons[i]
 		text += tempaction.name + ', '
-	text = text.substr(0, text.length() -2)+ '. '
+	if action.actions.size() >= 1:
+		text = text.substr(0, text.length() -2)+ '. '
 	if slave.sexuals.affection < action.cost:
 		text += "\n\n[color=red]Not enough affection[/color]"
 		disabled = true

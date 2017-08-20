@@ -112,7 +112,6 @@ static func newslave(race, age, sex, origins = 'slave'):
 	slave.nickname = ''
 	slave.fetch(getRaceFunction(race))
 	temp = {
-	face = {beauty = round(rand_range(1, 100)), appeal = round(rand_range(1,100))},
 	relatives = {father = -1, mother = -1, siblings = [], children =[]},
 	brand = 'none',
 	preg = getPregnancy(slave['sex'], slave['age']),
@@ -187,7 +186,7 @@ static func get_caste(slave, caste):
 		slave.conf -= rand_range(10,30)
 		slave.wit -= rand_range(10,30)
 		slave.charm -= rand_range(10,30)
-		slave.face.beauty = rand_range(5,40)
+		slave.beautybase = rand_range(5,40)
 		slave.stats.obed_mod = 25
 		if rand_range(0,10) > 6:
 			spin = 1
@@ -196,7 +195,7 @@ static func get_caste(slave, caste):
 		slave.conf -= rand_range(5,15)
 		slave.wit -= rand_range(5,15)
 		slave.charm += rand_range(-5,15)
-		slave.face.beauty = rand_range(10,50)
+		slave.beautybase = rand_range(10,50)
 		if rand_range(0,10) > 4:
 			spin = 2
 	elif caste == 'commoner':
@@ -204,14 +203,14 @@ static func get_caste(slave, caste):
 		slave.conf += rand_range(-5,15)
 		slave.wit += rand_range(-5,15)
 		slave.charm += rand_range(-5,20)
-		slave.face.beauty = rand_range(25,65)
+		slave.beautybase = rand_range(25,65)
 		spin = 3
 	elif caste == 'rich':
 		slave.cour += rand_range(5,20)
 		slave.conf += rand_range(5,25)
 		slave.wit += rand_range(5,20)
 		slave.charm += rand_range(-5,15)
-		slave.face.beauty = rand_range(35,75)
+		slave.beautybase = rand_range(35,75)
 		slave.stats.obed_mod = -20
 		spin = 4
 	elif caste == 'noble':
@@ -219,7 +218,7 @@ static func get_caste(slave, caste):
 		slave.conf += rand_range(10,30)
 		slave.wit += rand_range(10,30)
 		slave.charm += rand_range(10,30)
-		slave.face.beauty = rand_range(45,95)
+		slave.beautybase = rand_range(45,95)
 		slave.stats.obed_mod = -40
 		spin = 5
 	while spin > 0:

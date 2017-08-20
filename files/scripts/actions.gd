@@ -20,6 +20,9 @@ func _ready():
 		if i.is_in_group("sexpunish") != true:
 			i.connect("mouse_enter", self, 'showenergytooltip', [i])
 			i.connect("mouse_exit", self, 'hideenergytooltip')
+	
+	for i in get_node("tattoopanel/VBoxContainer").get_children():
+		i.connect('pressed',self,'choosetattooarea',[i])
 
 func _on_actions_visibility_changed():
 	if get_parent().is_hidden() == true:
@@ -396,6 +399,7 @@ func _on_talk_pressed():
 		text += "— One tail is not what I used to, but at least it's just as fluffy as you'd expect. "
 	get_tree().get_current_scene().popup(slave.dictionary(text))
 
+#Piercing
 
 var piercingdict = {
 earlobes = {name = 'earlobes', options = ['earrings', 'stud'], requirement = null, id = 1},
@@ -460,9 +464,170 @@ func pierceselect(ID, node):
 		slave.piercing[node] = piercingdict[node].options[ID-1]
 	_on_piercing_pressed()
 
-
-
 func _on_closebutton_pressed():
 	get_node("piercingpanel").set_hidden(true)
+
+
+#tattoo
+
+var tattoosdescript = { #this goes like : start + tattoo theme + end + tattoo description: I.e On $his face you see a notable nature themed tattoo, depicting flowers and vines
+face = {start = "On $his cheek you see a notable ", end = " themed tattoo, depicting"},
+chest = {start = "$His chest is decorated with a", end = " tattoo, portraying"},
+waist = {start = "On lower part of $his back, you spot a ", end = " tattooed image of "},
+arms = {start = "$His arm has a skillfully created ", end = " image of "},
+legs = {start = "$His ankle holds a piece of ", end = " art, representing"},
+ass = {start = "$His butt has a large ", end = " themed image showing "},
+}
+
+var tattoooptions = {
+none = {name = 'none', descript = "", applydescript = "Select a theme for future tattoo"},
+nature = {name = 'nature', descript = " flowers and vines", function = "naturetattoo", applydescript = "Nature thematic tattoo will increase $name's beauty. "},
+tribal = {name = 'tribal',descript = " totemic markings and symbols", function = "tribaltattoo", applydescript = "Tribal thematic tattoo will increase $name's scouting performance. "},
+degrading = {name = 'derogatory', descript = " rude words and lewd drawings", function = "degradingtattoo",  applydescript = "Derogatory tattoo will promote $name's lust and enforce obedience. "},
+animalistic = {name = 'beastly', descript = " realistic beasts and insects", function = "animaltattoo", applydescript = "Animalistic tattoo will boost $name's energy regeneration. "},
+magic = {name = "energy", descript = " empowering patterns and runes", function = "manatattoo", applydescript = "Magic tattoo will increase $name's Magic Affinity. "},
+}
+
+var tattoolevels = {
+nature = {
+1 : {bonusdescript = "+5 Beauty", effect = 'nature1'}, 
+2 : {bonusdescript = "+10 Beauty", effect = 'nature2'}, 
+3 : {bonusdescript = "+15 Beauty", effect = 'nature3'}, 
+highest = "+15 Beauty",
+},
+tribal = {
+1 : {bonusdescript = "+3 Awareness", effect = 'tribal1'}, 
+2 : {bonusdescript = "+6 Awareness", effect = 'tribal2'}, 
+3 : {bonusdescript = "+9 Awareness", effect = 'tribal3'}, 
+highest = "+9 Awareness",
+},
+degrading = {
+1 : {bonusdescript = "+5 Lust and Obedience per day", effect = 'degrading1'}, 
+2 : {bonusdescript = "+10 Lust and Obedience per day", effect = 'degrading2'}, 
+3 : {bonusdescript = "+15 Lust and Obedience per day", effect = 'degrading3'}, 
+4 : {bonusdescript = "+20 Lust and Obedience per day", effect = 'degrading4'}, 
+highest = "+20 Lust and Obedience per day",
+},
+animalistic = {
+1 : {bonusdescript = "+8 Energy per day", effect = 'animalistic1'}, 
+2 : {bonusdescript = "+16 Energy per day", effect = 'animalistic2'}, 
+3 : {bonusdescript = "+24 Energy per day", effect = 'animalistic3'},
+highest = "+24 Energy per day",
+},
+magic = {
+1 : {bonusdescript = "+0 Magic Affinity", effect = 'magic1'}, 
+2 : {bonusdescript = "+1 Magic Affinity", effect = 'magic2'}, 
+3 : {bonusdescript = "+1 Magic Affinity", effect = 'magic3'}, 
+4 : {bonusdescript = "+1 Magic Affinity", effect = 'magic4'}, 
+5 : {bonusdescript = "+2 Magic Affinity", effect = 'magic5'}, 
+highest = '+2 Magic Affinity',
+},
+}
+
+var tattoodict = {
+none = {value = 0, code = 'none'},
+nature = {value = 1, code = 'nature'},
+tribal = {value = 2, code = 'tribal'},
+degrading = {value = 3, code = 'degrading'},
+animalistic = {value = 4, code = 'animalistic'},
+magic = {value = 5, code = 'magic'},
+}
+
+var selectedpart = ''
+var slavetattoos = {}
+var tattootheme = 'none'
+
+func _on_applybutton_pressed():
+	slave.tattoo[selectedpart] = tattootheme
+	if get_node("tattoopanel/tattoooptions").is_disabled():
+		return
+	elif tattootheme == 'none':
+		return
+	counttattoos()
+	var tattooDict = {currentlevel = slavetattoos[slave.tattoo[selectedpart]]}
+	if tattoolevels[tattootheme].has(tattooDict.currentlevel-1):
+		slave.add_effect(globals.effectdict[tattoolevels[tattootheme][tattooDict.currentlevel-1].effect],true)
+	if tattoolevels[tattootheme].has(tattooDict.currentlevel):
+		slave.add_effect(globals.effectdict[tattoolevels[tattootheme][tattooDict.currentlevel].effect])
+	get_parent()._on_slave_tab_visibility_changed()
+	for i in get_node("tattoopanel/VBoxContainer").get_children():
+		if i.get_name() == selectedpart:
+			choosetattooarea(i)
+
+func _on_tattoo_pressed():
+	get_node("tattoopanel").popup()
+	tattootheme = 'none'
+	selectedpart = ''
+	counttattoos()
+	get_node("tattoopanel/tattoooptions").set_hidden(true)
+	get_node("tattoopanel/RichTextLabel").set_bbcode("Select body part to work on")
+	for i in get_node("tattoopanel/VBoxContainer").get_children():
+		i.set_pressed(false)
+		if i.get_name() in ['legs','arms']:
+			if i.get_name() == 'legs' && slave.legs in ['webbed','fur_covered','normal','scales']:
+				i.set_disabled(false)
+			elif i.get_name() == 'arms' && slave.arms in ['webbed','fur_covered','normal','scales']:
+				i.set_disabled(false)
+			else:
+				i.set_disabled(true)
+
+func counttattoos():
+	slavetattoos = {none = 0,nature = 0, tribal = 0, degrading = 0, animalistic = 0, magic = 0}
+	for i in slave.tattoo:
+		slavetattoos[slave.tattoo[i]] += 1
+
+func choosetattooarea(button):
+	var area = button.get_name()
+	var text = ''
+	selectedpart = str(area)
+	for i in get_node("tattoopanel/VBoxContainer").get_children():
+		if i == button:
+			i.set_pressed(true)
+		else:
+			i.set_pressed(false)
+	get_node("tattoopanel/tattoooptions").set_hidden(false)
+	get_node("tattoopanel/tattoooptions").select(tattoodict[slave.tattoo[area]].value)
+	if get_node("tattoopanel/tattoooptions").get_selected() == 0:
+		text = "$name currently has no tattoos on $his " + area + ". "
+		get_node("tattoopanel/tattoooptions").set_disabled(false)
+	else:
+		get_node("tattoopanel/tattoooptions").set_disabled(true)
+		text = "$name has a [color=aqua]" + tattoooptions[slave.tattoo[area]].name + '[/color] tattoo on $his ' + area + '. ' 
+	get_node("tattoopanel/RichTextLabel").set_bbcode(slave.dictionary(text))
+
+func _on_tattooclose_pressed():
+	get_node("tattoopanel").set_hidden(true)
+
+
+func _on_tattoooptions_item_selected( ID ):
+	for i in tattoodict.values():
+		if i.value == get_node("tattoopanel/tattoooptions").get_selected():
+			tattootheme = i.code
+	var text = slave.dictionary(tattoooptions[tattootheme].applydescript)
+	if tattootheme != 'none':
+		text += "\n\n"
+		if slavetattoos[tattootheme] > 0:
+			text += "Current Level: " + str(slavetattoos[tattootheme])
+			if tattoolevels[tattootheme].has(slavetattoos[tattootheme]):
+				text += "\nCurrent Bonus: " + tattoolevels[tattootheme][slavetattoos[tattootheme]].bonusdescript
+			else:
+				text += "\nCurrent Bonus: " + tattoolevels[tattootheme].highest
+		if tattoolevels[tattootheme].has(slavetattoos[tattootheme]+1):
+			text += "\nNext Bonus: " + tattoolevels[tattootheme][slavetattoos[tattootheme]+1].bonusdescript
+		else:
+			text += "\n[color=yellow]No additional effects. [/color]"
+	get_node("tattoopanel/RichTextLabel").set_bbcode(text)
+
+
+
+
+
+
+
+
+
+
+
+
 
 

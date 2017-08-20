@@ -592,7 +592,7 @@ func slaveforquestselected(slave):
 
 var repeatablesdict = {
 sex = 'Sex',obed = 'Obedience', cour = 'Courage',conf = 'Confidence',wit = 'Wit', charm = 'Charm', 
-'face.beauty':'Beauty',lewd = 'Lewdness', dom = 'Role Preference', 
+'beauty':'Beauty',lewd = 'Lewdness', dom = 'Role Preference', 
 'sexuals.unlocks' : "Unlocked Sex Categories",
 'sstr' : 'Strength', 'sagi' : 'Agility', 'smaf' : 'Magic Affinity', 'send' : 'Endurance',
 loyal = 'Loyalty', race = 'Race', age = 'Age', hairlength = 'Hair Length', origins = 'Origins',
@@ -917,6 +917,7 @@ func capitalteleport():
 	main.dialogue(state, self, text, buttons, sprites)
 	mageorder()
 
+
 func mageorderquest1(slave = null):
 	var buttons = []
 	var text = ''
@@ -932,7 +933,7 @@ func mageorderquest1(slave = null):
 			buttons.append(['Select Slave', 'selectslaveforquest', 'mageorderquest1'])
 		else:
 			slave = questgiveawayslave
-			if slave.obed >= 90 && slave.race == 'Human' && slave.face.beauty >= 30 && slave.sex == 'female':
+			if slave.obed >= 90 && slave.race == 'Human' && slave.beauty >= 40 && slave.sex == 'female':
 				text = "— Looks about right. Ready to part with her?"
 				buttons.append(['Give away ' + slave.name, 'givecompanion'])
 				buttons.append(['Select Slave', 'selectslaveforquest', 'mageorderquest1'])
@@ -942,7 +943,6 @@ func mageorderquest1(slave = null):
 	elif globals.state.mainquest == 2:
 		sprites = [['melissafriendly','pos1','opac']]
 		text = ("After a brief talk, the girl at the reception desk leads to you a room where you find an exquisitely dressed woman.\n\n— Oh, a new face here. I'm Melissa. I am pleased to know that there's a new person in our glorious establishment; and an active one too. Fresh blood is exactly what we need here in the Order.\n\n— First thing, it's great that you helped out our grumpy fellow with new staff. Let me compensate you for that. No worries, you earned it, and it should help your sustain and our cause. \n\n[color=green]Melissa passes you 250 gold. [/color]\n\n— Promotions are not very useful in terms of privileges for the commonfolk we have around, but for you it will grant access to some of the great knowledge and technology we have. I'd like to offer you a partnership. You help me, and I will push you up the stairs. How does that sound?")
-		globals.resources.gold += 250
 		buttons.append(['Agree','mageorderquest2'])
 	elif str(globals.state.mainquest) in ['3','3.1']:
 		sprites = [['melissafriendly','pos1','opac']]
@@ -1095,6 +1095,7 @@ func mageorderquest2():
 	if globals.state.mainquest == 2:
 		sprites = [['melissafriendly','pos1']]
 		globals.state.mainquest = 3
+		globals.resources.gold += 250
 		text = "— Marvelous! So here's the first thing we have on our hands. You likely know of the Brands and their utility. But those are the result of crude and very old work; surely anyone would want something much more efficient. For that, we have invented an upgrade to the old brands. They are generally referred to as 'Refined Brands' and are not very well known by the masses. The idea is pretty simple; to make the brand and branded person follow complex rules instead of just submissive basics. I can't overstate how amazingly useful it is, but those old fools at the council don't seem to bother.\n\n— The main issue is the magic essence, which is pretty hard to gather in large amounts as it is produced by fairies. Yeah, those shortstacks with childish behavior. Getting your hands on one seems to be getting harder and harder by the day. I want you to find me one, and in exchange I'll promote you, and share with you the knowledge of how to place a Refined Brand on a slave.\n\n— You will likely find fairies in the Far Eerie Woods or elven grove. It's a devilish looking place beyond the elven parts of the forest. That place is likely affected by a taint or some magical phenomenon that nobody can quite figure out. All of the creatures there seem to lose  their sentience and become hostile to outsiders. Fairies are not generally like that, so I figured you may be able to tame one if you get her out of there. If not, she'd still be useful to us. Now, if you’ll excuse me, I still have some affairs to attend to today. Be careful, honey.\n\n[color=green]Your main quest has been updated. [/color]"
 	main.dialogue(true, self, text, buttons, sprites)
 
@@ -1547,8 +1548,7 @@ func calimake():
 	calitemp.surname = 'Nuisal'
 	calitemp.tits.size = 'flat'
 	calitemp.ass = 'small'
-	calitemp.face.beauty = 55
-	calitemp.face.appeal = 20
+	calitemp.beauty = 55
 	calitemp.hairlength = 'shoulder'
 	calitemp.height = 'short'
 	calitemp.haircolor = 'gray'
@@ -1727,8 +1727,7 @@ func emily(state = 1):
 		emily.surname = 'Hale'
 		emily.tits.size = 'small'
 		emily.ass = 'small'
-		emily.face.beauty = 33
-		emily.face.appeal = 20
+		emily.beauty = 33
 		emily.hairlength = 'neck'
 		emily.height = 'average'
 		emily.haircolor = 'brown'

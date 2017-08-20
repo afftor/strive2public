@@ -183,6 +183,7 @@ func mindreadeffect():
 	globals.resources.mana -= spell.manacost
 	text = "You peer into $name's soul. $He is of " + slave.origins + " origins. \nObedience: " + str(round(slave.obed)) + ', Stress: '+ str(round(slave.stress)) + ', Loyalty: ' + str(round(slave.loyal)) + ', Lust: '+ str(round(slave.lust)) + ', Courage: ' + str(round(slave.cour)) + ', Confidence: ' + str(round(slave.conf)) + ', Wit: '+ str(round(slave.wit)) + ', Charm: ' + str(round(slave.charm)) + ", Toxicity: " + str(floor(slave.toxicity)) + ", Dominance: " + str(floor(slave.dom)) 
 	text += "\nStrength: " + str(slave.sstr) + ", Agility: " + str(slave.sagi) + ", Magic Affinity: " + str(slave.smaf) + ", Endurance: " + str(slave.send)
+	text += "\nBase Beauty: " + str(slave.beautybase) + ', Temporal Beauty: ' + str(slave.beautytemp)
 	if slave.effects.has('captured') == true:
 		text = text + "\n$name doesn't accept $his new life in your domain. Strength : " + str(slave.effects.captured.duration)
 	if slave.praise > 0:
@@ -415,7 +416,7 @@ func mutate(power=2, silent = false):
 			slave.ears = globals.allears[rand_range(0, globals.allears.size())]
 		elif line == "beauty":
 			text += "$name's face has drastically changed. "
-			slave.face.beauty = round(rand_range(10, 90))
+			slave.beautybase = round(rand_range(10, 90))
 		elif line == "lactation":
 			if slave.tits.lactation == false:
 				text += "$name's breats started secreting milk. "

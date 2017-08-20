@@ -268,10 +268,10 @@ beautypot = {
 	code = 'beautypot',
 	name = 'Beauty Mixture',
 	icon = load("res://files/images/items/beautypot.png"),
-	description = "Clears the complexion and smoothes unsightly contours. Administer with care. ",
+	description = "Clears the complexion and smoothes unsightly contours. Temporal effect. Administer with care. ",
 	effect = 'beautyeffect',
 	recipe = '',
-	cost = 250,
+	cost = 75,
 	type = 'potion',
 	toxicity = 10,
 	unlocked = false,
@@ -427,7 +427,7 @@ clothkimono = {
 	name = 'Kimono',
 	icon = load("res://files/images/items/clothkimono.png"),
 	description = "Brightly colored foreign clothes which are pretty popular for certain people.",
-	effect = [{type = 'onequip', effect = 'beauty', effectvalue = 10, descript = "Slightly increases beauty"}],
+	effect = [{type = 'onequip', effect = 'appeal', effectvalue = 10, descript = "Slightly increases beauty"}],
 	recipe = '',
 	reqs = null,
 	cost = 150,
@@ -736,7 +736,7 @@ func end(value):
 	slave.stats.end_mod += value
 
 func beauty(value):
-	slave.face.beauty += value
+	slave.beautytemp += value
 
 func checkreqs(item):
 	if item.reqs == null:
@@ -1010,18 +1010,13 @@ func deterrenteffect():
 
 func beautyeffect():
 	var text = ''
-	var temp = 1
 	if slave == globals.player:
-		text = slave.dictionary('You apply the Beauty Mixture to your face, which makes your skin smoother and removes flaws.')
+		text = slave.dictionary('You apply the Beauty Mixture to your face, which makes your skin smoother and hides visible flaws.')
 	else:
-		text = slave.dictionary('You order $name to apply Beauty Mixture to $his face, which will make $his skin smoother and remove flaws.')
-	if slave.face.beauty <= 30:
-		temp = 2
-	elif slave.face.beauty >= 60:
-		temp = 0.5
+		text = slave.dictionary('You order $name to apply Beauty Mixture to $his face, which will make $his skin smoother and hides visible flaws.')
 	if slave.traits.has("Scarred"):
 		slave.trait_remove('Scarred')
-	slave.face.beauty = min(slave.face.beauty + rand_range(4,8)*temp,100)
+	slave.add_effect(globals.effectdict.beautypot)
 	return text
 
 var currentpotion = ''

@@ -46,7 +46,7 @@ kidnap = {function = 'kidnap', reqs = "slave.work in ['escort','prostitution','f
 gift = {function = 'gift', reqs = "slave.obed >= 60"},
 injure = {function = 'injure', reqs = "slave.work != 'rest'"},
 escapedslave = {function = 'escapedslave', reqs = "slave.work != 'rest'"},
-teenagersflirt = {function = 'teenagersflirt', reqs = "slave.face.beauty >= 40"},
+teenagersflirt = {function = 'teenagersflirt', reqs = "slave.beauty >= 40"},
 devotedevent = {function = 'devotedevent', reqs = "slave.traits.has('Devoted')"},
 passiveevent = {function = 'passiveevent', reqs = "slave.traits.has('Passive') && globals.slaves.size() > 6"},
 masochistevent = {function = 'masochistevent', reqs = "slave.traits.has('Masochist')"},

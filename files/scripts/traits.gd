@@ -217,7 +217,7 @@ var traits = {
     "effect": {
       "code": "scarred",
       "conf_cur": -30,
-      "face.beauty": -50
+      "beautybase": -30
     },
     "tags": [
       "physical",

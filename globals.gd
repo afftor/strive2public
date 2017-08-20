@@ -5,7 +5,7 @@ var itemdict = {}
 var spelldict = {}
 var effectdict = {}
 var guildslaves = {wimborn = [], gorn = [], frostford = []}
-var gameversion = 4461
+var gameversion = 4470
 var state = progress.new()
 var developmode = false
 
@@ -38,6 +38,33 @@ var player = slave.new()
 var partner
 var clothes = load("res://files/scripts/clothes.gd").costumelist()
 var underwear = load("res://files/scripts/clothes.gd").underwearlist()
+
+var spritedict = {
+fairy = load("res://files/images/fairy.png"),
+melissafriendly = load("res://files/images/melissafriendly.png"),
+melissaneutral = load("res://files/images/melissaneutral.png"),
+melissaworried = load("res://files/images/melissaworried.png"),
+emilyhappy = load("res://files/images/emily/emilyhappy.png"),
+emilynormal = load("res://files/images/emily/emilynormal.png"),
+emily2normal = load("res://files/images/emily/emily2neutral.png"),
+emily2happy = load("res://files/images/emily/emily2happy.png"),
+emily2worried = load("res://files/images/emily/emily2worried.png"),
+emilynakedhappy = load("res://files/images/emily/emilynakedhappy.png"),
+emilynakedneutral = load("res://files/images/emily/emilynakedneutral.png"),
+calineutral = load("res://files/images/cali/calineutral.png"),
+calihappy = load("res://files/images/cali/calihappy.png"),
+calinakedhappy = load("res://files/images/cali/calinakedneutral.png"),
+calinakedangry = load("res://files/images/cali/calinakedangry.png"),
+caliangry = load("res://files/images/cali/caliangry.png"),
+caliangry2 = load("res://files/images/cali/caliangry2.png"),
+sebastian = load("res://files/images/sebastian.png"),
+tishahappy = load("res://files/images/tisha/tishahappy.png"),
+tishaneutral = load("res://files/images/tisha/tishaneutral.png"),
+tishaangry = load("res://files/images/tisha/tishaangry.png"),
+tishashocked = load("res://files/images/tisha/tishashocked.png"),
+tishanakedhappy = load("res://files/images/tisha/tishanakedhappy.png"),
+tishanakedneutral = load("res://files/images/tisha/tishanakedneutral.png"),
+}
 
 var musicdict = {
 combat1 = load("res://files/music/Corruption.ogg"),
@@ -552,7 +579,10 @@ class slave:
 	var tail = ''
 	var wings = ''
 	var horns = ''
-	var face = {beauty = 0, appeal = 0}
+	var beauty = 0 setget ,beauty_get
+	var beautybase = 0 setget beautybase_set
+	var beautytemp = 0 
+	
 	var tits = {size = '', lactation = false, extrapairs = 0, developed = false,}
 	var pussy = {virgin = true, has = true}
 	var ass = ''
@@ -580,6 +610,8 @@ class slave:
 	var away = {duration = 0, at = ''}
 	var cattle = {is_cattle = false, work = '', used_for = 'food'}
 	var mods = {}
+	var tattoo = {chest = 'none', face = 'none', ass = 'none', arms = 'none', legs = 'none', waist = 'none'}
+	var tattooshow = {chest = true, face = true, ass = true, arms = true, legs = true, waist = true}
 	var tags = []
 	var origins = ''
 	var originstrue = ''
@@ -712,15 +744,22 @@ class slave:
 				for i in effect:
 					if stats.has(i):
 						stats[i] = stats[i] + -effect[i]
-					if i == 'face.beauty':
-						face.beauty = face.beauty + -effect[i]
+					elif i == 'beautybase':
+						beautybase = beautybase + -effect[i]
+					elif i == 'beautytemp':
+						beautytemp = beautytemp + -effect[i]
 		elif remove != true:
 			effects[effect.code] = effect
 			for i in effect:
 				if stats.has(i):
 					stats[i] = stats[i] + effect[i]
-				elif i == 'face.beauty':
-					face.beauty = face.beauty + effect[i]
+				elif i == 'beautybase':
+					beautybase = beautybase + effect[i]
+				elif i == 'beautytemp':
+					beautytemp = beautytemp + effect[i]
+	
+	func beauty_get():
+		return beautybase + beautytemp
 	
 	
 	func health_set(value):
@@ -864,6 +903,9 @@ class slave:
 	func end_set(value):
 		stats.end_cur = min(value, stats.end_max)
 	
+	func beautybase_set(value):
+		value = round(value)
+		beautybase = min(max(value,0),100)
 	
 	func loyal_get():
 		return stats.loyal_cur
@@ -912,6 +954,14 @@ class slave:
 	
 	func end_get():
 		return stats.end_cur + stats.end_mod
+	
+	func awareness():
+		var number = 0
+		number = self.sagi*3 + self.wit/10
+		if mods.has('augmenthearing'):
+			number += 3
+		return number
+	
 	
 	func health_icon():
 		var health
@@ -1089,7 +1139,7 @@ class slave:
 	
 	func calculateprice():
 		var price = 0
-		price = face.beauty*4
+		price = beautybase*2 + beautytemp*1.5
 		for i in [self.sstr, self.sagi, self.smaf, self.send]:
 			if i > 0:
 				var counter = i
@@ -1140,10 +1190,6 @@ class slave:
 			price = 5
 		return round(price)
 	
-	func calculateappeal():
-		var value = 0
-		value = round(face.beauty/3) 
-		face.appeal = value
 	
 	func fetch(dict):
 		for key in dict:
@@ -1204,6 +1250,7 @@ func showtooltip(text):
 		get_tree().get_current_scene().get_node("tooltip").set_pos(Vector2(tooltipsize.pos.x, tooltipsize.pos.y + (screen.size.y - (tooltipsize.pos.y + tooltipsize.size.y))-10))
 
 	get_tree().get_current_scene().get_node("tooltip").set_hidden(false)
+	get_tree().get_current_scene().get_node("tooltip").set_as_toplevel(true)
 	#if get_tree().get_current_scene().get_node("tooltip/RichTextLabel").
 
 func hidetooltip():
@@ -1456,34 +1503,11 @@ func repairsave():
 		globals.player.abilityactive.append('escape')
 		if globals.spelldict.heal.learned == true && globals.player.ability.find('heal') < 0:
 			globals.player.ability.append('heal')
-	if state.alchemy >= 2:
-		itemdict.aphroditebrew.unlocked = true
-	if state.currentversion <= 44:
-		showalisegreet = true
-	if state.currentversion < 4450:
-		state.portals = progress.new().portals
-		state.portals.wimborn.enabled = true
-		state.portals.frostford.enabled = true
-		state.portals.gorn.enabled = true
-		state.sidequests.zoe = 0
-		state.portals[state.location].enabled = false
-	if state.currentversion < 4460:
-		state.mansionupgrades.jailcapacity = state.rooms.jail
-		state.mansionupgrades.mansioncommunal = state.rooms.communal
-		state.mansionupgrades.mansionpersonal = state.rooms.personal
-		state.mansionupgrades.mansionbed = state.rooms.bed
-		state.mansionupgrades.mansionalchemy = state.alchemy
-		state.mansionupgrades.mansionlibrary = state.library
-		state.mansionupgrades.mansionlab = state.laboratory
-		if state.currentversion < 4461:
-			var alchemy1 = ['aphrodisiac','hairgrowthpot','amnesiapot','lactationpot','miscariagepot','stimulantpot','deterrentpot']
-			var alchemy2 = ['oblivionpot','oblivionpot','minoruspot','majoruspot','aphroditebrew']
-			if state.mansionupgrades.mansionalchemy == 1:
-				for i in alchemy1:
-					globals.itemdict[i].unlocked = true
-			if state.mansionupgrades.mansionalchemy == 2:
-				for i in alchemy2:
-					globals.itemdict[i].unlocked = true
+	if typeof(state.portals) == TYPE_ARRAY:
+		var portaldict = {}
+		for i in state.portals:
+			portaldict[i] = {enabled = true, code = i}
+		state.portals = portaldict
 	state.currentversion = gameversion
 
 var showalisegreet = false

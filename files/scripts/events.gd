@@ -57,7 +57,7 @@ func gornpalaceivran(stage):
 		ivran = globals.slavegen.newslave('Dark Elf', 'adult', 'female', 'rich')
 		ivran.name = 'Ivran'
 		ivran.surname = ''
-		ivran.face.beauty = 75
+		ivran.beauty = 75
 		ivran.haircolor = 'brown'
 		ivran.hairlength = 'shoulder'
 		ivran.hairstyle = 'straight'
@@ -476,7 +476,7 @@ func zoemake():
 	var slave = globals.slavegen.newslave('Beastkin Wolf', 'teen', 'female', 'noble')
 	slave.name = 'Zoe'
 	slave.surname = ''
-	slave.face.beauty = 45
+	slave.beauty = 45
 	slave.haircolor = 'brown'
 	slave.hairlength = 'shoulder'
 	slave.hairstyle = 'straight'
@@ -779,7 +779,7 @@ func calivillage3(stage):
 		globals.resources.gold += 300
 	elif stage == 2:
 		text = textnode.CaliVillageRefuseReward
-		globals.state.rooms.communal += 2
+		globals.resources.upgradepoints += 4
 	globals.get_tree().get_current_scene().dialogue(true,self,text)
 
 var calibanditcampstage = 0 #0 - nothing, 1 - poisoned mead, 2 - dominated, 3 - both
@@ -855,7 +855,7 @@ func calibanditcampchoice(choice):
 	var slave = globals.slavegen.newslave('Human', 'teen', 'female', 'commoner')
 	slave.name = 'Tia'
 	slave.surname = 'Fallton'
-	slave.face.beauty = 75
+	slave.beauty = 75
 	slave.haircolor = 'brown'
 	slave.hairlength = 'waist'
 	slave.hairstyle = 'straight'
@@ -1333,7 +1333,7 @@ func maketisha():
 	slave.name = 'Tisha'
 	slave.surname = 'Hale'
 	slave.unique = 'Tisha'
-	slave.face.beauty = 80
+	slave.beauty = 80
 	slave.haircolor = 'auburn'
 	slave.hairlength = 'waist'
 	slave.hairstyle = 'braid'

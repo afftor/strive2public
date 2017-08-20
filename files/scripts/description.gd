@@ -1,6 +1,7 @@
 
 extends Node
 
+
 static func getSlaveDescription(slave, forself = false, full = true, captured = false):
 	var piercingarray = ['eyebrow','earlobes','nose','lips','tongue','nipples','clit','labia','penis','navel']
 	for i in piercingarray:
@@ -72,7 +73,8 @@ static func getAge(slave):
 static func getBeauty(slave):
 	var calculate 
 	var text = ''
-	var appeal = slave['face']['beauty']
+	var appeal = slave.beauty
+	var tempappeal = slave.beautytemp
 	
 	if (appeal <= 15):
 		calculate = 'ugly'
@@ -95,7 +97,12 @@ static func getBeauty(slave):
 	beautiful = '$He looks exceptionally [color=yellow]beautiful[/color], having no visible flaws and easily evoking envy. ', 
 	}
 	text = text + dict[calculate]
-	text += "(" + str(floor(appeal)) + ")"
+	text += "(" 
+	if tempappeal != 0:
+		text += '[color=aqua]'+str(floor(appeal))+'[/color]'
+	else:
+		text += str(floor(appeal)) 
+	text +=  ")"
 	return text
 
 static func getHair(slave):
@@ -139,6 +146,23 @@ static func getHair(slave):
 
 static func getFeatures(slave):
 	var text2
+	var tattoosdescript = { #this goes like : start + tattoo theme + end + tattoo description: I.e On $his face you see a notable nature themed tattoo, depicting flowers and vines
+	face = {start = "On $his cheek you see a notable ", end = " themed tattoo, depicting"},
+	chest = {start = "$His chest is decorated with a ", end = " tattoo, portraying"},
+	waist = {start = "On lower part of $his back, you spot a ", end = " tattooed image of"},
+	arms = {start = "$His arm has a skillfully created ", end = " image of"},
+	legs = {start = "$His ankle holds a piece of ", end = " art, representing"},
+	ass = {start = "$His butt has a large ", end = " themed image showing "},
+	}
+	
+	var tattoooptions = {
+	none = {name = 'none', descript = "", applydescript = "Select a theme for future tattoo"},
+	nature = {name = 'nature', descript = " flowers and vines", function = "naturetattoo", applydescript = "Nature thematic tattoo will increase $name's beauty. "},
+	tribal = {name = 'tribal',descript = " totemic markings and symbols", function = "tribaltattoo", applydescript = "Tribal thematic tattoo will increase $name's scouting performance. "},
+	degrading = {name = 'derogatory', descript = " rude words and lewd drawings", function = "degradingtattoo",  applydescript = "Derogatory tattoo will promote $name's lust and enforce obedience. "},
+	animalistic = {name = 'beastly', descript = " realistic beasts and insects", function = "animaltattoo", applydescript = "Animalistic tattoo will boost $name's energy regeneration. "},
+	magic = {name = "energy", descript = " empowering patterns and runes", function = "manatattoo", applydescript = "Magic tattoo will increase $name's Magic Affinity. "},
+	}
 	var text = { # Horns lines
 	none = '',
 	short = 'There is a pair of [color=aqua]tiny, pointed horns[/color] on top of $his head. ',
@@ -185,8 +209,6 @@ static func getFeatures(slave):
 	full_body_fur = '$His body is covered in thick, soft [color=aqua]fur of',
 	}
 	text2 = text2 + text[slave['skincov']]
-	if slave.piercing.navel == 'stud':
-		text2 += '$His navel is pierced and decorated with a [color=aqua]small stud[/color]. '
 	if (slave['furcolor'] != 'none' && slave['skincov'] == 'full_body_fur'): 
 		text ={ # fur color
 		white = ' marble color[/color]. ',
@@ -199,6 +221,30 @@ static func getFeatures(slave):
 		brown = ' light-brown tone[/color]. ',
 		}
 		text2 = text2 + text[slave['furcolor']]
+	if slave.piercing.navel == 'stud':
+		text2 += '$His navel is pierced and decorated with a [color=aqua]small stud[/color]. '
+	var sametattoo = true
+	for i in slave.tattoo.values():
+		if slave.tattoo.face != i || slave.tattoo.face == 'none':
+			print(i)
+			sametattoo = false
+			break
+	if sametattoo == true:
+		text2 += "$name's entire body is tattoed with [color=yellow]" + tattoooptions[slave.tattoo.face].name + '[/color] pattern, featuring complex ' + tattoooptions[slave.tattoo.face].descript + '. '
+	else:
+		if slave.tattoo.face != 'none' && slave.tattooshow.face == true:
+			text2 += tattoosdescript.face.start + '[color=yellow]' + tattoooptions[slave.tattoo.face].name + '[/color]' + tattoosdescript.face.end + tattoooptions[slave.tattoo.face].descript + '. '
+		if slave.tattoo.chest != 'none' && slave.tattooshow.chest == true:
+			text2 += tattoosdescript.chest.start + '[color=yellow]' + tattoooptions[slave.tattoo.chest].name + '[/color]' + tattoosdescript.chest.end + tattoooptions[slave.tattoo.chest].descript + '. '
+		if slave.tattoo.arms != 'none' && slave.tattooshow.arms == true:
+			text2 += tattoosdescript.arms.start + '[color=yellow]' + tattoooptions[slave.tattoo.arms].name + '[/color]' + tattoosdescript.arms.end + tattoooptions[slave.tattoo.arms].descript + '. '
+		if slave.tattoo.waist != 'none' && slave.tattooshow.waist == true:
+			text2 += tattoosdescript.waist.start + '[color=yellow]' + tattoooptions[slave.tattoo.waist].name + '[/color]' + tattoosdescript.waist.end + tattoooptions[slave.tattoo.waist].descript + '. '
+		if slave.tattoo.legs != 'none' && slave.tattooshow.legs == true:
+			text2 += tattoosdescript.legs.start + '[color=yellow]' + tattoooptions[slave.tattoo.legs].name + '[/color]' + tattoosdescript.legs.end + tattoooptions[slave.tattoo.legs].descript + '. '
+		if slave.tattoo.ass != 'none' && slave.tattooshow.ass == true:
+			text2 += tattoosdescript.ass.start + '[color=yellow]' + tattoooptions[slave.tattoo.ass].name + '[/color]' + tattoosdescript.ass.end + tattoooptions[slave.tattoo.ass].descript + '. '
+	
 	if (slave['arms'] != 'normal'):
 		text = {
 		scales = '$His' + globals.fastif(slave['legs'] == 'scales', ' arms and legs', ' arms') + ' are covered in [color=aqua]scales[/color]. ',
@@ -253,6 +299,7 @@ static func getFeatures(slave):
 	masculine = '$His chest is of definitive [color=yellow]masculine[/color] shape. ',
 	}
 	text2 = text2 + text[slave['tits']['size']]
+
 	if slave.mods.has('hollownipples') == true:
 		text2 += '[color=#B05DB0]$His breasts has been modified and are flexible and sensitive enough for penetration. [/color]'
 	
@@ -437,5 +484,4 @@ func getBabyDescription(slave):
 	
 	text = slave.dictionary(text)
 	return text
-
 

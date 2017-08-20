@@ -9,7 +9,7 @@ func _ready():
 	set_process_input(true)
 	for i in get_tree().get_nodes_in_group('slaverules'):
 		i.connect("pressed", self, 'rulecheck', [i])
-#
+
 func _input(event):
 	if get_tree().get_current_scene().get_node("screenchange/AnimationPlayer").is_playing() == true && get_tree().get_current_scene().get_node("screenchange/AnimationPlayer").get_current_animation() == "fadetoblack" || get_node("regulations/clothes&relatives&customs/nicknamepanel").is_visible() || get_node("inspect/portait/Panel").is_visible():
 		return
@@ -656,7 +656,7 @@ reqs = "true",
 unlockreqs = 'true',
 maxnumber = 0,
 order = 9,
-tags = ['gorn','physical'],
+tags = ['frostford','physical'],
 },ffprostitution = {
 code = 'ffprostitution',
 name = "F - Prostitution",
@@ -730,7 +730,7 @@ type = 'basic',
 description = "$name will be managing your farm and slaves assigned to it. \n\n[color=yellow]Requires grade of a [color=aqua]Commoner[/color] or higher. ",
 workline = "$name will be looking over your farm and collect its' income.",
 reqs = 'globals.originsarray.find(globals.currentslave.origins) >= 2',
-unlockreqs = 'globals.state.farm >= 4',
+unlockreqs = 'globals.state.farm >= 3',
 maxnumber = 1,
 order = 13,
 tags = ['mansion','management'],

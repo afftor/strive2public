@@ -165,7 +165,7 @@ func _on_assignbutton_pressed():
 		newbutton.set_text(slave.name_long() + ' ' + slave.race)
 		if globals.state.playergroup.find(slave.id) >= 0:
 			newbutton.set_pressed(true)
-		elif globals.state.playergroup.size() >= 3 || slave.energy <= 10 || slave.loyal + slave.obed < 90 || slave.sleep == 'jail' || slave.away.duration != 0:
+		elif globals.state.playergroup.size() >= 3 || slave.energy <= 10 || slave.stress >= 80 || slave.loyal + slave.obed < 90 || slave.sleep == 'jail' || slave.away.duration != 0:
 			newbutton.set_disabled(true)
 		newbutton.connect("pressed",self,'addtogroup',[slave, newbutton])
 	if globals.state.playergroup.size() <= 0:
@@ -208,12 +208,13 @@ func _on_new_slave_button_pressed():
 	slave.sagi = 5
 	slave.smaf = 5
 	slave.send = 10
+	slave.tattoo.face = 'nature'
 	slave.attention = 70
 	slave.level.value = 10
 	for i in ['conf','cour','charm','wit']:
 		slave[i] = 100
-	slave.sexuals.unlocks.append('group')
-	slave.sexuals.unlocks.append('swing')
+	#slave.sexuals.unlocks.append('group')
+	#slave.sexuals.unlocks.append('swing')
 	slave.level.skillpointsbought = 1
 	slave.ability.append('debilitate')
 	for i in globals.state.portals.values():
@@ -248,7 +249,7 @@ func _on_new_slave_button_pressed():
 	globals.state.sidequests.emily = 14
 	globals.state.rank = 3
 	globals.state.mainquest = 33
-	globals.state.farm = 1
+	globals.state.farm = 3
 	globals.state.mansionupgrades.mansionlab = 1
 	globals.state.mansionupgrades.mansionalchemy = 0
 
@@ -285,6 +286,7 @@ func rebuild_slave_list():
 			node.set_meta('pos', size)
 			slavelist.add_child(node)
 			node.find_node('name').set_text(slave.name_long())
+			node.get_node('slavename/name').connect('pressed', self, 'openslavetab', [slave])
 			node.find_node('health').set_normal_texture(slave.health_icon())
 			node.find_node('healthvalue').set_text(str(round(slave.health)))
 			node.find_node('obedience').set_normal_texture(slave.obed_icon())
@@ -317,6 +319,7 @@ func rebuild_slave_list():
 				node.set_meta('pos', size)
 				slavelist.add_child(node)
 				node.find_node('name').set_text(slave.name_long())
+				node.get_node('slavename/name').connect('pressed', self, 'openslavetab', [slave])
 				node.find_node('health').set_normal_texture(slave.health_icon())
 				node.find_node('healthvalue').set_text(str(round(slave.health)))
 				node.find_node('obedience').set_normal_texture(slave.obed_icon())
@@ -366,6 +369,11 @@ func rebuild_slave_list():
 	get_node("charlistcontrol/CharList/res_number").set_bbcode('[center]Residents: ' + str(globals.slaves.size())+'[/center]')
 	get_node("ResourcePanel/population").set_text(str(globals.slavecount()))
 	_on_orderbutton_pressed()
+
+func openslavetab(slave):
+	currentslave = globals.slaves.find(slave)
+	get_node("MainScreen/slave_tab").set_hidden(true)
+	get_node("MainScreen/slave_tab").set_hidden(false)
 
 func updateslaveinfo(slave):
 	pass
@@ -1101,7 +1109,7 @@ func forage(slave):
 
 func hunt(slave):#agility, strength, endurance, courage
 	var text = "$name went to the forest in search for wild animals.\n"
-	var food = slave.sagi*rand_range(10,20) + slave.send*rand_range(5,10)
+	var food = slave.awareness()*rand_range(2,4) + slave.send*rand_range(5,10)
 	if slave.cour < 60 && rand_range(0,100) + slave.cour/4 < 45:
 		food = food*rand_range(0.25, 0.50)
 		text +=  "Due to [color=yellow]lack of courage[/color], $he obtained less food than $he could. \n"
@@ -1544,26 +1552,7 @@ func _on_popupmessagetext_meta_clicked( meta ):
 	if meta == 'patreon':
 		OS.shell_open('https://www.patreon.com/maverik')
 
-var spritedict = {
-fairy = load("res://files/images/fairy.png"),
-melissafriendly = load("res://files/images/melissafriendly.png"),
-melissaneutral = load("res://files/images/melissaneutral.png"),
-melissaworried = load("res://files/images/melissaworried.png"),
-emilyhappy = load("res://files/images/emily/emilyhappy.png"),
-emilynormal = load("res://files/images/emily/emilynormal.png"),
-emily2normal = load("res://files/images/emily/emily2neutral.png"),
-emily2happy = load("res://files/images/emily/emily2happy.png"),
-emily2worried = load("res://files/images/emily/emily2worried.png"),
-calineutral = load("res://files/images/cali/calineutral.png"),
-calihappy = load("res://files/images/cali/calihappy.png"),
-caliangry = load("res://files/images/cali/caliangry.png"),
-caliangry2 = load("res://files/images/cali/caliangry2.png"),
-sebastian = load("res://files/images/sebastian.png"),
-tishahappy = load("res://files/images/tisha/tishahappy.png"),
-tishaneutral = load("res://files/images/tisha/tishaneutral.png"),
-tishaangry = load("res://files/images/tisha/tishaangry.png"),
-tishashocked = load("res://files/images/tisha/tishashocked.png"),
-}
+var spritedict = globals.spritedict
 
 func dialogue(showclose, destination, dialogtext, dialogbuttons = null, sprites = null): #for arrays: 0 - boolean to show close button or not. 1 - node to return connection back. 2 - text to show 3+ - arrays of buttons and functions in those
 	var text = get_node("dialogue/dialoguetext")
@@ -1850,10 +1839,7 @@ func _on_mansion_pressed():
 	for i in globals.state.portals.values():
 		if i.enabled == true:
 			portals = true
-	if portals == true:
-		get_node("buttonpanel/VBoxContainer/portals").set_disabled(false)
-	else:
-		get_node("buttonpanel/VBoxContainer/portals").set_disabled(true)
+	get_node("buttonpanel/VBoxContainer/portals").set_disabled(!portals)
 	textnode.set_hidden(false)
 	var sleepers = globals.count_sleepers()
 	text = 'You are at your mansion, which is located near [color=aqua]'+ globals.state.location.capitalize()+'[/color].\n\n' 
@@ -2417,9 +2403,9 @@ func impregnation(mother, father = null, anyfather = false):
 	if baby.race.find('Halfkin')>=0 && mother.race.find('Beastkin') >= 0 && father.race.find('Beastkin') < 0:
 		baby.bodyshape = 'humanoid'
 	if rand_range(0,10) > 5:
-		baby.face.beauty = father.face.beauty
+		baby.beautybase = father.beautybase
 	else:
-		baby.face.beauty = mother.face.beauty
+		baby.beautybase = mother.beautybase
 	baby.relatives.father = realfather
 	baby.relatives.mother = mother.id
 	mother.preg.baby = baby.id
@@ -2962,6 +2948,9 @@ func _on_orderbutton_pressed():
 
 ####### PORTALS
 func _on_portals_pressed():
+	_on_mansion_pressed()
+	if OS.get_name() != 'HTML5' && globals.rules.fadinganimation == true:
+		yield(self, 'animfinished')
 	var list = get_node("MainScreen/mansion/portalspanel/ScrollContainer/VBoxContainer")
 	var button = get_node("MainScreen/mansion/portalspanel/ScrollContainer/VBoxContainer/portalbutton")
 	get_node("MainScreen/mansion/portalspanel").set_hidden(false)

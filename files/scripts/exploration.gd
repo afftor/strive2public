@@ -144,7 +144,7 @@ code = 'grove',
 name = 'Far Eerie Woods',
 description = "This portion of the forest is deeply shadowed, and strange sounds drift in and out of hearing. Something about the atmosphere keeps the normal forest creatures silent, lending an eerie, mystic feeling to the grove you stand within.",
 enemies = [['dryad',10], ['solobear', 15], ['fairy', 30],['wolveshard', 45],['plantseasy',80], ['wolveseasy', 100]],
-encounters = [['dolingrove','globals.state.sidequests.dolin == 12',25],['snailevent','globals.state.farm >= 4 && globals.state.snails < 10',10]],
+encounters = [['dolingrove','globals.state.sidequests.dolin == 12',25],['snailevent','globals.state.mansionupgrades.farmhatchery >= 1 && globals.state.snails < 10',10]],
 length = 7,
 exits = ['wimbornoutskirts'],
 tags = [],
@@ -404,11 +404,9 @@ func zoneenter(zone):
 			if scouttemp == null:
 				globals.state.playergroup.erase(i)
 			else:
-				if scouttemp.sagi*3+scouttemp.wit/10 > scoutawareness:
+				if scouttemp.awareness() > scoutawareness:
 					scout = scouttemp
-					scoutawareness = scouttemp.sagi*3+scouttemp.wit/10
-					if scout.mods.has('augmenthearing'):
-						scoutawareness += 3
+					scoutawareness = scout.awareness()
 	else:
 		scout = globals.player
 	main.checkplayergroup()
@@ -523,14 +521,12 @@ func enemyencounter():
 	if globals.state.playergroup.size() > 0:
 		for i in globals.state.playergroup:
 			scouttemp = globals.state.findslave(i)
-			if scouttemp.sagi*3+scouttemp.wit/10 > scoutawareness:
+			if scouttemp.awareness() > scoutawareness:
 				scout = scouttemp
-				scoutawareness = scouttemp.sagi*3+scouttemp.wit/10
-				if scout.mods.has('augmenthearing'):
-					scoutawareness += 3
+				scoutawareness = scout.awareness()
 	else:
 		scout = globals.player
-		scoutawareness = scout.sagi*3+scout.wit/10
+		scoutawareness = scout.awareness()
 	if currentzone.encounters.size() > 0:
 		for i in currentzone.encounters:
 			enc = i[0]
@@ -820,6 +816,9 @@ func enemyleave():
 		if slave.energy <= 10:
 			globals.state.playergroup.erase(slave.id)
 			text += slave.name + " is too exhausted to continue and returns back to mansion. "
+		elif slave.stress >= 80:
+			globals.state.playergroup.erase(slave.id)
+			text += slave.name + " is too stressed to continue and returns back to mansion. "
 	zoneenter(currentzone.code)
 	if text != '':
 		outside.maintext.set_bbcode(outside.maintext.get_bbcode()+'\n[color=yellow]'+text+'[/color]')
