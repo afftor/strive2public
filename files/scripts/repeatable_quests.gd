@@ -44,15 +44,9 @@ func questarray():
 	var questsarray = {
 	quest001 = {
 	code = '001',
-<<<<<<< HEAD
-	shortdescription = 'Local aristocrat wants an obedient servant for his house. ',
-	description = 'Local nobleman looking for an obedient worker for his estate, or someone who will provide one. The semi-famous house name provides some crediability to the customer. A $sex servant must present themselves meekly and have above avearge looks. Only humanoids. ',
-	reqs = [['obed','gte', 90],['conf','lte',40],['beauty','gte',50],['bodyshape','eq','humanoid']],
-=======
 	shortdescription = 'A local aristocrat wants an obedient servant for his house. ',
 	description = 'A local nobleman is looking for an obedient worker for his estate, or someone who will provide one. The semi-famous house name provides some crediability to the customer. A $sex servant must present $himself meekly and have above avearge looks. Only humanoids. ',
 	reqs = [['obed','gte', 90],['conf','lte',40],['face.beauty','gte',50],['bodyshape','eq','humanoid']],
->>>>>>> f8a15ae858423291cf9fbf2aa5eed21f01785829
 	reqstemp = [['sex', 'eq', randsex()]],
 	time = round(rand_range(4,7)),
 	reward = round(rand_range(80,110))*10,
@@ -95,13 +89,8 @@ func questarray():
 	quest005 = {
 	code = '005',
 	shortdescription = 'Brothel owner looking for a new resident.',
-<<<<<<< HEAD
-	description = "As the last $race girl has been bought out by one of her frequent costumers, there's a dire need for a new one. ",
-	reqs = [['obed','gte', 90], ['sexuals.unlocks', 'gte', 5], ['beauty','gte',40]],
-=======
 	description = "As the last $race girl has been bought out by one of her frequent customers, there's a dire need for a new one. ",
 	reqs = [['obed','gte', 90], ['sexuals.unlocks', 'gte', 5], ['face.beauty','gte',40]],
->>>>>>> f8a15ae858423291cf9fbf2aa5eed21f01785829
 	reqstemp = [['race','eq',commonrace()]],
 	time = round(rand_range(4,6)),
 	reward = round(rand_range(45,70))*10,
@@ -110,15 +99,9 @@ func questarray():
 	},
 	quest006 = {
 	code = '006',
-<<<<<<< HEAD
-	shortdescription = "The market stall needs a helping hand. ",
-	description = "One of the somewhat successful merchants decided to work his way on getting dependable assistant. Besides the pleasant looks they must be able to handle all sorts of people they would be interacting with.",
-	reqs = [['obed','gte', 90], ['conf', 'gte', 50],['charm','gte',40], ['beauty','gte',40]],
-=======
 	shortdescription = "A market stall needs a helping hand. ",
 	description = "One of the somewhat successful merchants has decided to get a dependable assistant. Besides being pleasant to look at, they must be able to handle all sorts of people they would be interacting with.",
 	reqs = [['obed','gte', 90], ['conf', 'gte', 50],['charm','gte',40], ['face.beauty','gte',40]],
->>>>>>> f8a15ae858423291cf9fbf2aa5eed21f01785829
 	reqstemp = [],
 	time = round(rand_range(5,9)),
 	reward = round(rand_range(75,95))*10,
@@ -151,13 +134,8 @@ func questarray():
 	code = '009',
 	questreq = globals.rules.male_chance >= 10,
 	shortdescription = "Undisclosed customer wants a very pretty boy of young age.",
-<<<<<<< HEAD
-	description = "A small note with hefty award looking for a considerably attractive feminine boy for bed duty. Few notes on the desirable appearance included. ",
-	reqs = [['obed','gte', 90], ['sex','eq','male'], ['age','eq','teen'], ['beauty','gte',70], ['hairlength','gte',3]],
-=======
 	description = "A small note promises a hefty reward for delivery of an obedient boy for bed duty. It also specifies that a desirable appearance is required. ",
 	reqs = [['obed','gte', 90], ['sex','eq','male'], ['age','eq','teen'], ['face.beauty','gte',70], ['hairlength','gte',3]],
->>>>>>> f8a15ae858423291cf9fbf2aa5eed21f01785829
 	reqstemp = [],
 	time = round(rand_range(4,8)),
 	reward = round(rand_range(75,100))*10,
@@ -177,15 +155,9 @@ func questarray():
 	},
 	quest011 = {
 	code = '011',
-<<<<<<< HEAD
-	shortdescription = "Local nobleman looks for a bride for his son.",
-	description = "The head of a noble house is arranging a marriage for his love-timid son. In order to preserve their aristocratic namesake, a pure maiden of Noble descent is required. Must be knowledgeable in the management of an estate, and have an attractiveness befitting of nobility. ",
-	reqs = [['obed','gte', 80], ['sex','eq','female'],['origins','eq','noble'],['beauty','gte',80] ],
-=======
 	shortdescription = "A local nobleman is looking for a bride for his son.",
 	description = "The head of a noble house wants to arrange a marriage for his love-timid son. In order to preserve their aristocratic dynasty, a pure maiden of Noble descent is required. She must be knowledgeable in the management of an estate, and have an attractiveness befitting for nobility. ",
 	reqs = [['obed','gte', 80], ['sex','eq','female'],['origins','eq','noble'],['face.beauty','gte',80] ],
->>>>>>> f8a15ae858423291cf9fbf2aa5eed21f01785829
 	reqstemp = [],
 	time = round(rand_range(6,12)),
 	reward = round(rand_range(80,120))*10,
