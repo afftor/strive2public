@@ -22,17 +22,23 @@ func _input(event):
 
 
 func _on_slave_tab_visibility_changed():
-	#get_node("sexual").partner = null
 	var label
 	var text = ""
 	var namelabel = get_tree().get_current_scene().get_node("MainScreen/namelabel")
-	if tab != 'prison':
-		tab = null
 	if is_hidden() == true:
 		namelabel.set_hidden(true)
 		return
-	namelabel.set_hidden(false)
 	slave = globals.slaves[get_tree().get_current_scene().currentslave]
+	if slave.sleep == 'jail':
+		tab = 'prison'
+		get_tree().get_current_scene().background_set('jail')
+	else:
+		tab = null
+		get_tree().get_current_scene().background_set('mansion')
+	if OS.get_name() != "HTML5" && globals.rules.fadinganimation == true:
+		yield(get_tree().get_current_scene(), 'animfinished')
+	
+	namelabel.set_hidden(false)
 	globals.currentslave = slave
 	get_node("stats/statspanel").slave = slave
 	get_node("stats/statspanel").mode = 'full'
@@ -57,13 +63,6 @@ func _on_slave_tab_visibility_changed():
 		label.set_ignore_mouse(false)
 		label.connect("mouse_enter", self, 'traittooltip', [label])
 		label.connect("mouse_exit", self, 'traittooltiphide')
-	for i in slave.skills:
-		if slave['skills'][i]['value'] >= 15:
-			var label = Label.new()
-			find_node('skilllist').add_child(label)
-			var text = slave['skills'][i]['name'] + ': ' + slave.skill_level(slave['skills'][i]['value'])
-			label.set_text(text)
-			label.set_ignore_mouse(0)
 	var text = 'Learned abilities: '
 	for i in slave.ability:
 		var abil = globals.abilities.abilitydict[i]
@@ -100,7 +99,7 @@ func _on_slave_tab_visibility_changed():
 		find_node('brandbutton').set_disabled(true)
 	else:
 		find_node('brandbutton').set_disabled(false)
-	text = "Health : " + str(round(slave.health)) + '/' + str(round(slave.stats.health_max)) + '\nEnergy : ' + str(round(slave.energy)) + '/' + str(round(slave.stats.energy_max)) + '\nLevel : '+str(slave.level.value) + '\nExp : '+str(round(slave.level.xp))+'\nSkillpoints : '+str(slave.level.skillpoints)
+	text = "Health : " + str(round(slave.health)) + '/' + str(round(slave.stats.health_max)) + '\nEnergy : ' + str(round(slave.energy)) + '/' + str(round(slave.stats.energy_max)) + '\nLevel : '+str(slave.level) + '\nExp : '+str(round(slave.xp))+'\nSkillpoints : '+str(slave.skillpoints)
 	get_node("stats/levelinfo").set_bbcode(text)
 	if slave.spec == null:
 		get_node("stats/spec").set_text("Specialization: None")
@@ -115,6 +114,7 @@ func _on_slave_tab_visibility_changed():
 	if globals.state.tutorial.slave == false:
 		globals.state.tutorial.slave = true
 		get_tree().get_current_scene().get_node("tutorialnode").slaveinitiate()
+	
 
 func buildmetrics():
 	var text = ""
@@ -156,6 +156,9 @@ func setdescriptpos():
 			get_node("inspect/AnimationPlayer").play("descriptportait")
 		else:
 			slave.imageportait = null
+			get_node("inspect/portait").set_texture(null)
+			get_node("inspect/portaitpanel").set_hidden(true)
+			get_node("inspect/AnimationPlayer").play("descriptfull")
 	else:
 		get_node("inspect/portait").set_texture(null)
 		get_node("inspect/portaitpanel").set_hidden(true)

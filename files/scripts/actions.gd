@@ -50,6 +50,16 @@ func _on_actions_visibility_changed():
 		get_node("cuthair").set_tooltip('')
 	get_node("hairstyle").set_text(slave.hairstyle)
 	get_node("cuthair/Label").set_text(slave.dictionary("$name's hair length - "+slave.hairlength))
+	if globals.state.mansionupgrades.mansionparlor >= 1:
+		get_node("tattoo").set_disabled(false)
+		get_node("piercing").set_disabled(false)
+		get_node("tattoo").set_tooltip("")
+		get_node("piercing").set_tooltip("")
+	else:
+		get_node("tattoo").set_disabled(true)
+		get_node("piercing").set_disabled(true)
+		get_node("tattoo").set_tooltip("Unlock Beauty Parlor to access Tattoo options. ")
+		get_node("piercing").set_tooltip("Unlock Beauty Parlor to access Piercing options. ")
 	if globals.resources.gold >= 15 && globals.player.energy >= 10:
 		get_node("gift").set_disabled(false)
 	else:
@@ -74,7 +84,7 @@ func showenergytooltip(button):
 	var xsize = button.get_size().x
 	pos = Vector2(pos.x,pos.y-15)
 	get_node("energycosttooltip").set_hidden(false)
-	get_node("energycosttooltip").set_size(Vector2(xsize, get_node("energycosttooltip").get_size().y)) 
+	get_node("energycosttooltip").set_size(Vector2(xsize, get_node("energycosttooltip").get_size().y))
 	get_node("energycosttooltip").set_global_pos(pos)
 	get_node("energycosttooltip").set_text(str(button.get_meta('cost')) + ' energy')
 	if button.get_meta('cost') > globals.player.energy:
@@ -108,7 +118,7 @@ func actionbuttons(button):
 			text = text + '\n$He unhappy to your repremand, as $he does not believe $he has offended you rightly.'
 			slave.stress += 15
 		else:
-			text = text + "\n$He does not seems to be very afraid of your threats, as you haven't followed through on them previously." 
+			text = text + "\n$He does not seems to be very afraid of your threats, as you haven't followed through on them previously."
 			slave.obed += max(20 - slave.conf/5,0)
 			slave.punish.expect = true
 			if slave.race == 'Human':
@@ -138,7 +148,7 @@ func actionbuttons(button):
 				slave.effects.captured.duration -= 1
 				text = text + "\nBy the end $he glares at you with sorrow and hatred, showing leftovers of a yet untamed spirit."
 			else:
-				text = text + "\nBy the end $he is begging for mercy and takes your lesson to heart." 
+				text = text + "\nBy the end $he is begging for mercy and takes your lesson to heart."
 				slave.obed += rand_range(30,60)
 			if slave.punish.expect == true:
 				slave.obed += rand_range(20,40)
@@ -150,7 +160,7 @@ func actionbuttons(button):
 				slave.conf += -rand_range(2,5)
 				slave.cour += -rand_range(2,5)
 		else:
-			text = text + "\n$He obediently takes $his punishment and begs for your pardon, but $name doesn't feel like $he trully deserves such a treatment." 
+			text = text + "\n$He obediently takes $his punishment and begs for your pardon, but $name doesn't feel like $he trully deserves such a treatment."
 			slave.obed += rand_range(20,30)
 			slave.conf += -rand_range(3,6)
 			slave.cour += -rand_range(3,6)
@@ -244,9 +254,12 @@ func actionbuttons(button):
 				else:
 					text += "[color=yellow]— Uhm... I don't mind... I mean if you wish so, $master. [/color]"
 				text+= "\n\n[color=green]Unlocked sexual actions with $name.[/color]"
+				if slave.levelupreqs.has('code') && slave.levelupreqs.code == 'relationship':
+					text += "\n\n[color=green]As you got closer with $name, you felt like $he unlocked new potential. [/color]"
+					slave.levelup()
 				slave.sexuals.unlocked = true
 	if button.is_in_group('sexpunish') == true:
-		if slave.lust > 70 || (slave.lust > 30 && (slave.traits.has('Masochist') == true||slave.dom <= 20)): 
+		if slave.lust > 70 || (slave.lust > 30 && (slave.traits.has('Masochist') == true||slave.dom <= 20)):
 			text = text + "\nDuring the procedure $name twitches and climaxes, unable to hold back $his excitement."
 			slave.lust = -rand_range(8,15)
 			if rand_range(1,10) > 7 || slave.effects.has('entranced') == true:
@@ -256,7 +269,7 @@ func actionbuttons(button):
 		slave.stress += rand_range(15,25)
 		slave.lust = rand_range(2,10)
 		if slave.obed < 75||slave.traits.has('Masochist') == true:
-			text = text + "\nBy the end $he begs for mercy and clearly takes your lesson to heart." 
+			text = text + "\nBy the end $he begs for mercy and clearly takes your lesson to heart."
 			slave.obed += rand_range(15,30)
 			if slave.punish.expect == true:
 				slave.obed += rand_range(30,60)
@@ -268,7 +281,7 @@ func actionbuttons(button):
 				slave.conf += -rand_range(1,4)
 				slave.cour += -rand_range(1,4)
 		else:
-			text = text + "\n$He obediently takes $his punishment and begs for your pardon, but it seems like $he doesn't feel $he trully deserved it." 
+			text = text + "\n$He obediently takes $his punishment and begs for your pardon, but it seems like $he doesn't feel $he trully deserved it."
 			slave.obed += rand_range(15,25)
 			slave.conf += -rand_range(1,4)
 			slave.cour += -rand_range(1,4)
@@ -335,7 +348,7 @@ func _on_castspell_pressed():
 	else:
 		get_node("selectspellpanel/spellusebutton").set_disabled(false)
 
-var spellselected 
+var spellselected
 
 func spellbuttonpressed(spell):
 	spellselected = spell
@@ -367,9 +380,18 @@ func _on_spellusebutton_pressed():
 
 
 func _on_talk_pressed():
+	var state = true
+	var sprite = []
+	var buttons = []
+	var nakedspritesdict = get_parent().get_node("sexual").nakedspritesdict
 	if slave.unique == 'Cali' && globals.state.sidequests.cali in [12,13,22]:
 		globals.events.calitalk0()
 		return
+	if slave.unique in ['Cali','Tisha','Emily', 'Chloe']:
+		if slave.obed >= 80 && slave.stress < 50:
+			sprite = [[nakedspritesdict[slave.unique].clothcons, 'pos1', 'opac']]
+		else:
+			sprite = [[nakedspritesdict[slave.unique].clothrape, 'pos1', 'opac']]
 	var text = 'You ask $name about $his life. \n'
 	if slave.obed < 50:
 		text = text + "— I don't wanna talk with you after all you've done!\n"
@@ -386,10 +408,7 @@ func _on_talk_pressed():
 				text = text + "Even though I'm just your little slave now. \n"
 		else:
 			text = text + globals.player.dictionaryplayer("— I'll try my best for you, $master. Despite what others might think, you are invaluable to me!\n")
-#		if slave.pussy.has == true:
-#			if slave.pussy.first == 'you' && slave.loyal > 40:
-#				text = text + globals.player.dictionaryplayer("— I'm very glad you have been my first, $master.\n")
-		if slave.stress > 60:
+		if slave.stress > 50:
 			text = text + "— It has been tough for me recently... Could you consider giving me a small break, please?\n"
 		if slave.lust >= 60 && slave.sexuals.unlocked == true && slave.sexuals.actions.has('pussy'):
 			text = text + "— I actually would love to fuck right now. \n"
@@ -397,7 +416,24 @@ func _on_talk_pressed():
 			text = text + "— Uhm... would you like to give me some private attention? — $name gives you a deep lusting look. \n"
 	if slave.name == "Tamamo" && slave.race.find("Fox") >= 0:
 		text += "— One tail is not what I used to, but at least it's just as fluffy as you'd expect. "
-	get_tree().get_current_scene().popup(slave.dictionary(text))
+	if slave.xp >= 100 && slave.levelupreqs.has('code') == false:
+		buttons.append({text = slave.dictionary("Investigate $name's potential"), function = 'levelreqs'})
+	elif slave.levelupreqs.has('code'):
+		text += "\n\n[color=yellow]Your investigation shown, that " + slave.dictionary(slave.levelupreqs.speech) + '[/color]'
+		if slave.levelupreqs.activate == 'fromtalk':
+			buttons.append({text = slave.levelupreqs.button, function = 'levelup', args = slave.levelupreqs.effect})
+	
+	get_tree().get_current_scene().dialogue(state, self, slave.dictionary(text), buttons, sprite)
+
+
+func levelreqs():
+	globals.jobs.getrequest(slave)
+	_on_talk_pressed()
+	get_parent()._on_slave_tab_visibility_changed()
+
+func levelup(command):
+	globals.jobs.call(command, slave)
+	globals.get_tree().get_current_scene().close_dialogue()
 
 #Piercing
 
@@ -444,7 +480,7 @@ func _on_piercing_pressed():
 			for i in ii.options:
 				newline.get_node("pierceoptions").add_item(i)
 				if slave.piercing[ii.name] == i:
-					newline.get_node("pierceoptions").select(newline.get_node("pierceoptions").get_item_count()-1) 
+					newline.get_node("pierceoptions").select(newline.get_node("pierceoptions").get_item_count()-1)
 				#elif slave.piercing[ii.name] == null:
 				#	newline.get_node('pierceoptions').set_disabled(true)
 				#	newline.get_node('pierceoptions').set_text('Non Pierced')
@@ -490,36 +526,36 @@ magic = {name = "energy", descript = " empowering patterns and runes", function 
 
 var tattoolevels = {
 nature = {
-1 : {bonusdescript = "+5 Beauty", effect = 'nature1'}, 
-2 : {bonusdescript = "+10 Beauty", effect = 'nature2'}, 
-3 : {bonusdescript = "+15 Beauty", effect = 'nature3'}, 
+1 : {bonusdescript = "+5 Beauty", effect = 'nature1'},
+2 : {bonusdescript = "+10 Beauty", effect = 'nature2'},
+3 : {bonusdescript = "+15 Beauty", effect = 'nature3'},
 highest = "+15 Beauty",
 },
 tribal = {
-1 : {bonusdescript = "+3 Awareness", effect = 'tribal1'}, 
-2 : {bonusdescript = "+6 Awareness", effect = 'tribal2'}, 
-3 : {bonusdescript = "+9 Awareness", effect = 'tribal3'}, 
+1 : {bonusdescript = "+3 Awareness", effect = 'tribal1'},
+2 : {bonusdescript = "+6 Awareness", effect = 'tribal2'},
+3 : {bonusdescript = "+9 Awareness", effect = 'tribal3'},
 highest = "+9 Awareness",
 },
 degrading = {
-1 : {bonusdescript = "+5 Lust and Obedience per day", effect = 'degrading1'}, 
-2 : {bonusdescript = "+10 Lust and Obedience per day", effect = 'degrading2'}, 
-3 : {bonusdescript = "+15 Lust and Obedience per day", effect = 'degrading3'}, 
-4 : {bonusdescript = "+20 Lust and Obedience per day", effect = 'degrading4'}, 
+1 : {bonusdescript = "+5 Lust and Obedience per day", effect = 'degrading1'},
+2 : {bonusdescript = "+10 Lust and Obedience per day", effect = 'degrading2'},
+3 : {bonusdescript = "+15 Lust and Obedience per day", effect = 'degrading3'},
+4 : {bonusdescript = "+20 Lust and Obedience per day", effect = 'degrading4'},
 highest = "+20 Lust and Obedience per day",
 },
 animalistic = {
-1 : {bonusdescript = "+8 Energy per day", effect = 'animalistic1'}, 
-2 : {bonusdescript = "+16 Energy per day", effect = 'animalistic2'}, 
+1 : {bonusdescript = "+8 Energy per day", effect = 'animalistic1'},
+2 : {bonusdescript = "+16 Energy per day", effect = 'animalistic2'},
 3 : {bonusdescript = "+24 Energy per day", effect = 'animalistic3'},
 highest = "+24 Energy per day",
 },
 magic = {
-1 : {bonusdescript = "+0 Magic Affinity", effect = 'magic1'}, 
-2 : {bonusdescript = "+1 Magic Affinity", effect = 'magic2'}, 
-3 : {bonusdescript = "+1 Magic Affinity", effect = 'magic3'}, 
-4 : {bonusdescript = "+1 Magic Affinity", effect = 'magic4'}, 
-5 : {bonusdescript = "+2 Magic Affinity", effect = 'magic5'}, 
+1 : {bonusdescript = "+0 Magic Affinity", effect = 'magic1'},
+2 : {bonusdescript = "+1 Magic Affinity", effect = 'magic2'},
+3 : {bonusdescript = "+1 Magic Affinity", effect = 'magic3'},
+4 : {bonusdescript = "+1 Magic Affinity", effect = 'magic4'},
+5 : {bonusdescript = "+2 Magic Affinity", effect = 'magic5'},
 highest = '+2 Magic Affinity',
 },
 }
@@ -538,18 +574,25 @@ var slavetattoos = {}
 var tattootheme = 'none'
 
 func _on_applybutton_pressed():
-	slave.tattoo[selectedpart] = tattootheme
+	slave.tattooshow[selectedpart] = !get_node("tattoopanel/invisible").is_pressed()
+	get_parent()._on_slave_tab_visibility_changed()
 	if get_node("tattoopanel/tattoooptions").is_disabled():
 		return
 	elif tattootheme == 'none':
 		return
+	elif globals.itemdict.magicessenceing.amount < 1 || globals.itemdict.supply.amount < 1:
+		get_tree().get_current_scene().infotext("[color=red]Not enough resources[/color]")
+		return
+	else:
+		globals.itemdict.magicessenceing.amount -= 1
+		globals.itemdict.supply.amount -= 1
 	counttattoos()
+	slave.tattoo[selectedpart] = tattootheme
 	var tattooDict = {currentlevel = slavetattoos[slave.tattoo[selectedpart]]}
 	if tattoolevels[tattootheme].has(tattooDict.currentlevel-1):
 		slave.add_effect(globals.effectdict[tattoolevels[tattootheme][tattooDict.currentlevel-1].effect],true)
 	if tattoolevels[tattootheme].has(tattooDict.currentlevel):
 		slave.add_effect(globals.effectdict[tattoolevels[tattootheme][tattooDict.currentlevel].effect])
-	get_parent()._on_slave_tab_visibility_changed()
 	for i in get_node("tattoopanel/VBoxContainer").get_children():
 		if i.get_name() == selectedpart:
 			choosetattooarea(i)
@@ -588,11 +631,12 @@ func choosetattooarea(button):
 	get_node("tattoopanel/tattoooptions").set_hidden(false)
 	get_node("tattoopanel/tattoooptions").select(tattoodict[slave.tattoo[area]].value)
 	if get_node("tattoopanel/tattoooptions").get_selected() == 0:
-		text = "$name currently has no tattoos on $his " + area + ". "
+		text += "$name currently has no tattoos on $his " + area + ". "
 		get_node("tattoopanel/tattoooptions").set_disabled(false)
 	else:
 		get_node("tattoopanel/tattoooptions").set_disabled(true)
-		text = "$name has a [color=aqua]" + tattoooptions[slave.tattoo[area]].name + '[/color] tattoo on $his ' + area + '. ' 
+		text += "$name has a [color=aqua]" + tattoooptions[slave.tattoo[area]].name + '[/color] tattoo on $his ' + area + '. '
+		text += "\n[color=aqua]Apply to change visibility[/color]"
 	get_node("tattoopanel/RichTextLabel").set_bbcode(slave.dictionary(text))
 
 func _on_tattooclose_pressed():

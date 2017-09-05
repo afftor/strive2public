@@ -43,6 +43,7 @@ tabs_visible = true
 [node name="Settings" type="Tabs" parent="TabContainer"]
 
 editor/display_folded = true
+visibility/visible = false
 anchor/right = 1
 anchor/bottom = 1
 focus/ignore_mouse = false
@@ -520,6 +521,7 @@ margin/bottom = 4.0
 
 [node name="Label1" type="Label" parent="TabContainer/Supporter section"]
 
+visibility/visible = false
 focus/ignore_mouse = true
 focus/stop_mouse = true
 size_flags/horizontal = 2
@@ -597,7 +599,7 @@ shortcut = null
 text = "Confirm"
 flat = false
 
-[node name="cheatpanel" type="Panel" parent="TabContainer/Supporter section"]
+[node name="cheatpanel" type="PopupPanel" parent="TabContainer/Supporter section"]
 
 visibility/visible = false
 anchor/left = 3
@@ -613,6 +615,7 @@ margin/left = 355.5
 margin/top = 233.5
 margin/right = -332.5
 margin/bottom = -214.5
+popup/exclusive = false
 
 [node name="close" type="Button" parent="TabContainer/Supporter section/cheatpanel"]
 
@@ -865,11 +868,27 @@ size_flags/vertical = 2
 margin/left = 17.0
 margin/top = 269.0
 margin/right = 140.0
-margin/bottom = 301.0
+margin/bottom = 305.0
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
 text = "Add Skillpoint"
+flat = false
+
+[node name="unlockgallery" type="Button" parent="TabContainer/Supporter section/cheatpanel"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 17.0
+margin/top = 314.0
+margin/right = 140.0
+margin/bottom = 350.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Fully Unlock Gallery"
 flat = false
 
 [node name="selectedslavelabel" type="Label" parent="TabContainer/Supporter section/cheatpanel"]
@@ -930,10 +949,10 @@ focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
-margin/left = 321.0
-margin/top = 424.0
-margin/right = 431.0
-margin/bottom = 461.0
+margin/left = 312.0
+margin/top = 434.0
+margin/right = 422.0
+margin/bottom = 473.0
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
@@ -1095,6 +1114,8 @@ flat = false
 [connection signal="pressed" from="TabContainer/Supporter section/cheatpanel/addlevel" to="." method="_on_addlevel_pressed"]
 
 [connection signal="pressed" from="TabContainer/Supporter section/cheatpanel/levelup" to="." method="_on_levelup_pressed"]
+
+[connection signal="pressed" from="TabContainer/Supporter section/cheatpanel/unlockgallery" to="." method="_on_unlockgallery_pressed"]
 
 [connection signal="pressed" from="Done" to="." method="_on_Done_pressed"]
 

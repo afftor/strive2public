@@ -495,7 +495,6 @@ visible_characters = -1
 
 [node name="exploreprogress" type="ProgressBar" parent="."]
 
-editor/display_folded = true
 anchor/left = 1
 anchor/right = 1
 focus/ignore_mouse = false
@@ -569,8 +568,6 @@ align = 0
 
 [node name="slavebuypanel" type="Control" parent="."]
 
-editor/display_folded = true
-visibility/visible = false
 anchor/right = 1
 anchor/bottom = 1
 focus/ignore_mouse = true
@@ -584,7 +581,6 @@ margin/bottom = 448.0
 
 [node name="slavebuypanel" type="Panel" parent="slavebuypanel"]
 
-editor/display_folded = true
 anchor/bottom = 1
 focus/ignore_mouse = false
 focus/stop_mouse = true
@@ -862,6 +858,21 @@ margin/left = -22.5
 margin/right = -49.5
 
 [node name="leveltext" parent="slavebuypanel/statspanel"]
+
+margin/right = 305.0
+
+[node name="levelreqs" parent="slavebuypanel/statspanel"]
+
+visibility/visible = false
+
+[node name="traittext" parent="slavebuypanel/statspanel"]
+
+margin/left = 20.0
+margin/top = 254.0
+margin/right = 27.0
+margin/bottom = 361.0
+
+[node name="levelprogress" parent="slavebuypanel/statspanel"]
 
 visibility/visible = false
 
@@ -1994,6 +2005,7 @@ suffix = ""
 
 [node name="sebastiannode" type="Control" parent="."]
 
+editor/display_folded = true
 visibility/visible = false
 anchor/right = 1
 anchor/bottom = 1

@@ -5,9 +5,10 @@ var itemdict = {}
 var spelldict = {}
 var effectdict = {}
 var guildslaves = {wimborn = [], gorn = [], frostford = []}
-var gameversion = 4470
+var gameversion = 4471
 var state = progress.new()
 var developmode = false
+var gameloaded = false
 
 var resources = resource.new()
 var slavegen = load("res://files/scripts/slavegen.gd").new()
@@ -24,6 +25,8 @@ var effects = load("res://files/scripts/effects.gd").new()
 var events = load("res://files/scripts/events.gd").new()
 var dailyevents = load("res://files/scripts/dailyevents.gd").new()
 var jobs = load("res://files/scripts/jobs&specs.gd").new()
+var mansionupgrades = load("res://files/scripts/mansionupgrades.gd").new()
+var gallery = load("res://files/scripts/gallery.gd").new()
 var questtext = events.textnode
 var slaves = [] setget slaves_set
 var starting_pc_races = ['Human', 'Elf', 'Dark Elf', 'Orc', 'Demon', 'Beastkin Cat', 'Beastkin Wolf', 'Beastkin Fox', 'Halfkin Cat', 'Halfkin Wolf', 'Halfkin Fox', 'Taurus']
@@ -64,6 +67,14 @@ tishaangry = load("res://files/images/tisha/tishaangry.png"),
 tishashocked = load("res://files/images/tisha/tishashocked.png"),
 tishanakedhappy = load("res://files/images/tisha/tishanakedhappy.png"),
 tishanakedneutral = load("res://files/images/tisha/tishanakedneutral.png"),
+chloehappy = load("res://files/images/chloe/chloehappy.png"),
+chloenakedhappy = load("res://files/images/chloe/chloenakedhappy.png"),
+chloeneutral = load("res://files/images/chloe/chloeneutral.png"),
+chloenakedneutral = load("res://files/images/chloe/chloenakedneutral.png"),
+chloehappy2 = load("res://files/images/chloe/chloehappy2.png"),
+chloeshy2 = load("res://files/images/chloe/chloeshy2.png"),
+chloenakedshy = load("res://files/images/chloe/chloenakedshy.png"),
+chloeneutral2 = load("res://files/images/chloe/chloeneutral2.png"),
 }
 
 var musicdict = {
@@ -92,11 +103,11 @@ brothel = load("res://files/backgrounds/brothel.jpg"),
 library = load("res://files/backgrounds/library.jpg"),
 forest = load("res://files/backgrounds/forest.jpg"),
 shaliq = load("res://files/backgrounds/shaliq.jpg"),
-crossroads = load("res://files/backgrounds/crossroads.jpg"),
+crossroads = load("res://files/backgrounds/crossroads.png"),
 grove = load("res://files/backgrounds/grove.jpg"),
 highlands = load("res://files/backgrounds/highlands.jpg"),
 marsh = load("res://files/backgrounds/marsh.jpg"),
-meadows = load("res://files/backgrounds/meadows.jpg"),
+meadows = load("res://files/backgrounds/meadows.png"),
 sea = load("res://files/backgrounds/sea.jpg"),
 lab1 = load("res://files/backgrounds/laboratory1.jpg"),
 lab2 = load("res://files/backgrounds/laboratory2.jpg"),
@@ -109,158 +120,7 @@ amberroad = load("res://files/backgrounds/amberroad.png"),
 undercity = load("res://files/backgrounds/undercity.jpg"),
 tunnels = load("res://files/backgrounds/tunnels.jpg"),
 }
-var mansionupgradesdict = {
-farmcapacity = {
-name = "Capacity", 
-code = 'farmcapacity',
-description = "Adds new stables to the farm, increasing number of residents that can be assigned at a time.", 
-levels = 3,
-cost = 500,
-pointscost = 3,
-valuename = "Allowed cattle: ",
-valuenumber = ['2','5','8','12'],
-},
-farmhatchery = {
-name = "Hatchery", 
-code = 'farmhatchery',
-description = "Provides the farm with new equipment, allowing the use of slaves and snails for egg laying.", 
-levels = 1,
-pointscost = 10,
-cost = 1000,
-},
-farmtreatment = {
-name = "Improved Treatment", 
-code = 'farmtreatment',
-description = "Equips the farm with relaxation furniture and devices which are gentler on your cattle negating the demoralization of residents on the farm.", 
-levels = 1,
-pointscost = 20,
-cost = 2500,
-},
-
-foodcapacity = {
-name = "Food Storage Capacity",
-code = 'foodcapacity',
-description = "Adds additional space to the food storage area allowing you to keep more food at a time.", 
-levels = 5,
-cost = [250,500,1000,1500,2500],
-pointscost = 5,
-valuename = "Maximum food: ",
-valuenumber = ['500', '750', '1000', '1500', '2000', '3000'],
-},
-foodpreservation = {
-name = "Food Storage Preservation",
-code = 'foodpreservation',
-description = "Equips your food storage area with a cooling system which helps prevent food spoilage when storage is nearly full.", 
-levels = 1,
-pointscost = 15,
-cost = 1500,
-},
-
-jailcapacity = {
-name = "Capacity",
-code = 'jailcapacity',
-description = "Adds additional cells to your jail, increasing maximum number of prisoners it can hold at a time.", 
-levels = 8,
-cost = 200,
-pointscost = 3,
-valuename = "Jail Cells: ",
-},
-jailtreatment = {
-name = "Better Furnishing",
-code = 'jailtreatment',
-description = "Equips your jail with better furnishings and health care, preventing prisoners from accumulating stress.", 
-levels = 1,
-pointscost = 15,
-cost = 750,
-},
-jailincenses = {
-name = "Soothing Incences",
-code = 'jailincenses',
-description = "Equips your jail with burners for a special incenses which helps calm and adjust prisoners' attitude.", 
-levels = 1,
-pointscost = 20,
-cost = 1500,
-},
-
-mansioncommunal = {
-name = "Communal Room Beds",
-code = 'mansioncommunal',
-description = "Adds new beds to communal room, providing space for additional residents to sleep. ", 
-levels = 20,
-cost = 100,
-pointscost = 1,
-valuename = "Total beds: ",
-},
-mansionpersonal = {
-name = "New Personal Room",
-code = 'mansionpersonal',
-description = "Set up one of the free rooms for living. Personal rooms provide sense of [color=yellow]Luxury[/color] to their hosts. ", 
-levels = 10,
-cost = 300,
-pointscost = 3,
-valuename = "Total rooms: ",
-},
-mansionbed = {
-name = "Master's Bed Enlargement",
-code = 'mansionbed',
-description = "Enlarges your bed allowing you to host more people with you at night.. Sleeping in your room provides a sense of [color=yellow]Luxury[/color] to your partners.", 
-levels = 3,
-cost = 300,
-pointscost = 3,
-valuename = "Allowed partners: ",
-},
-mansionluxury = {
-name = "Mansion Furnishment",
-code = 'mansionluxury',
-description = "Decorates the mansion with better furniture and additional pieces of art. This provides a boost to the [color=yellow]Luxury[/color] provided to servants sleeping in personal rooms and your bed.", 
-levels = 2,
-pointscost = 15,
-cost = [1000,2000],
-},
-mansionalchemy = {
-name = "Alchemy Room",
-code = 'mansionalchemy',
-description = "Equips a spare room with alchemical tools and paraphernalia allowing you to brew basic potions.", 
-description2 = "Upgrades your Alchemy Room with additional equipment enabling you to brew a larger variety of potions.",
-levels = 2,
-pointscost = 5,
-cost = [500,1000],
-},
-mansionlibrary = {
-name = "Library",
-code = 'mansionlibrary',
-description = "Purchases new books and furniture for your library providing access to new books, articles and information as well as improving residents’ studies.", 
-levels = 3,
-pointscost = 3,
-cost = [500,1000,1500],
-},
-mansionlab = {
-name = "Laboratory",
-code = 'mansionlab',
-description = "Equips a spare room within the mansion with advanced devices and tools allowing you to conduct experiments and operations on both yourself and your slaves.", 
-description2 = "Upgrades your laboratory with the latest equipment and tools, unlocking new operations.", 
-levels = 2,
-pointscost = 10,
-cost = [1000,3000],
-},
-mansionkennels = {
-name = "Kennels",
-code = 'mansionkennels',
-description = "Builds a kennel on the mansion’s grounds providing space to keep hounds. Having hounds on the property reduces the chances of slaves escaping during the night, and for those so inclined unlocks the beastality action. ", 
-levels = 1,
-pointscost = 15,
-cost = 1500,
-},
-mansionnursery = {
-name = "Nursery Room",
-code = 'mansionnursery',
-description = "Upgrades and equips a room within the mansion to provide care for newborn babies and young children for a limited period.", 
-levels = 1,
-pointscost = 15,
-cost = 2000,
-},
-
-}
+var mansionupgradesdict = mansionupgrades.dict
 
 
 var noimage = load("res://files/buttons/noimagesmall.png")
@@ -273,24 +133,52 @@ func _init():
 	if rules.custommouse == false:
 		Input.set_custom_mouse_cursor(null)
 
+
 func loadsettings():
 	var settings = File.new()
 	if settings.file_exists("user://settings.ini") == false:
 		settings.open("user://settings.ini", File.WRITE)
 		settings.store_line(var2str(rules))
 		settings.close()
+		
 	settings.open("user://settings.ini", File.READ)
 	var temp = str2var(settings.get_as_text())
 	for i in rules:
 		if temp.has(i):
 			rules[i] = temp[i]
-	#rules = str2var(settings.get_line())
 	settings.close()
+	#Glossary
+	var data = {chars = charactergallery}
+	
+	if settings.file_exists("user://progressdata") == false:
+		var file = settings.open_encrypted_with_pass("user://progressdata", File.WRITE, 'tehpass')
+		settings.store_var(data)
+		settings.close()
+	
+	settings.open_encrypted_with_pass("user://progressdata", File.READ, 'tehpass')
+	temp = settings.get_var().chars
+	#print(temp)
+	for char in charactergallery:
+		if temp.has(char):
+			for part in charactergallery[char]:
+				if part in ['unlocked', 'nakedunlocked'] && temp[char].has(part):
+					charactergallery[char][part] = temp[char][part]
+				elif part == 'scenes':
+					for scene in range(temp[char][part].size()):
+						charactergallery[char][part][scene].unlocked = temp[char][part][scene].unlocked
+			#if temp.has(i):
+	settings.close()
+
+var charactergallery = gallery.charactergallery
 
 func overwritesettings():
 	var settings = File.new()
 	settings.open("user://settings.ini", File.WRITE)
 	settings.store_line(var2str(rules))
+	settings.close()
+	settings.open_encrypted_with_pass("user://progressdata", File.WRITE, 'tehpass')
+	var data = {chars = charactergallery}
+	settings.store_var(data)
 	settings.close()
 
 func clearstate():
@@ -339,9 +227,11 @@ oldresize = false,
 fadinganimation = true,
 permadeath = false,
 autoattack = true,
-gameloaded = false,
-enddayalise = 0,
+enddayalise = 1,
 }
+
+
+
 
 class resource:
 	var day = 1 setget day_set
@@ -467,7 +357,7 @@ class progress:
 	var mainquest = 0
 	var rank = 0
 	var password = ''
-	var sidequests = {emily = 0, brothel = 0, cali = 0, dolin = 0, ayda = 0, ivran = '', yris = 0, zoe = 0}
+	var sidequests = {emily = 0, brothel = 0, cali = 0, chloe = 0, ayda = 0, ivran = '', yris = 0, zoe = 0, ayneris = 0}
 	var repeatables = {wimbornslaveguild = [], frostfordslaveguild = [], gornslaveguild = []}
 	var babylist = []
 	var companion = -1
@@ -485,7 +375,7 @@ class progress:
 	var reputation = {wimborn = 0, frostford = 0, gorn = 0} setget reputation_set
 	var dailyeventcountdown = 0
 	var dailyeventprevious = 0
-	var currentversion = 4450
+	var currentversion = 4470
 	var unstackables = {}
 	var supplykeep = 10
 	var tutorial = {basics = false, slave = false, alchemy = false, jail = false, lab = false, farm = false, outside = false, combat = false}
@@ -511,9 +401,11 @@ class progress:
 	mansionlab = 0,
 	mansionkennels = 0,
 	mansionnursery = 0,
+	mansionparlor = 0,
 	}
 	
 	var ghostrep = {wimborn = 0, frostford = 0, gorn = 0}
+	
 	
 	func reputation_set(value):
 		var text = ''
@@ -591,7 +483,6 @@ class slave:
 	var preg = {}
 	var rules = {'silence':false, 'pet':false, 'contraception':false, 'aphrodisiac':false, 'masturbation':false, 'nudity':false, 'betterfood':false, 'personalbath':false,'cosmetics':false,'pocketmoney':false}
 	var traits = {}
-	var skills = {}
 	var relatives = {}
 	var gear = {costume = null, underwear = null, armor = null, weapon = null, accessory = null}
 	var genes = {}
@@ -603,7 +494,10 @@ class slave:
 	var abilityactive = []
 	var customdesc = ''
 	var piercing = {}
-	var level = {}
+	var level = 0
+	var xp = 0
+	var skillpoints = 0
+	var levelupreqs = {}
 	var sleep = ''
 	var punish = {expect = false, strength = 0}
 	var praise = 0
@@ -729,6 +623,15 @@ class slave:
 		if globals.get_tree().get_current_scene().has_node("infotext") && globals.slaves.find(self) >= 0 && away.at != 'hidden':
 			globals.get_tree().get_current_scene().infotext(text)
 	
+	func levelup():
+		levelupreqs.clear()
+		level += 1
+		skillpoints += 3
+		xp = 0
+		sexuals.affection += round(rand_range(5,10))
+		if self != globals.player:
+			globals.get_tree().get_current_scene().infotext(dictionary("[color=green]$name has advanced to Level " + str(level)+ '[/color]'))
+	
 	
 	func cleartraits():
 		spec = null
@@ -736,6 +639,9 @@ class slave:
 			trait_remove(i.name)
 		for i in ['str_base','agi_base', 'maf_base', 'end_base','str_cur','agi_cur', 'maf_cur', 'end_cur']:
 			stats[i] = 0
+		skillpoints = 2
+		level = 1
+		xp = 0
 	
 	func add_effect(effect, remove = false):
 		if effects.has(effect.code):
@@ -902,6 +808,7 @@ class slave:
 	
 	func end_set(value):
 		stats.end_cur = min(value, stats.end_max)
+		self.health = self.health
 	
 	func beautybase_set(value):
 		value = round(value)
@@ -977,7 +884,7 @@ class slave:
 		var obed
 		if float(stats.obed_cur)/stats.obed_max > 0.75: 
 			obed = load("res://files/buttons/icons/obedience/2.png")#'res://files/buttons/obed_high.png')
-		elif float(stats.obed_cur)/stats.obed_cur > 0.4:
+		elif float(stats.obed_cur)/stats.obed_max > 0.4:
 			obed = load("res://files/buttons/icons/obedience/1.png")#'res://files/buttons/obed_med.png')
 		else:
 			obed = load("res://files/buttons/icons/obedience/3.png")#'res://files/buttons/obed_low.png')
@@ -1056,6 +963,7 @@ class slave:
 		string = string.replace('$master', globals.fastif(sex == 'male', 'Master', "Mistress"))
 		string = string.replace('$haircolor', haircolor)
 		string = string.replace('$eyecolor', eyecolor)
+		string = string.replace('$race', globals.decapitalize(race).replace('_', ' '))
 		return string
 	
 	func dictionaryplayerplus(text):
@@ -1139,22 +1047,12 @@ class slave:
 	
 	func calculateprice():
 		var price = 0
-		price = beautybase*2 + beautytemp*1.5
-		for i in [self.sstr, self.sagi, self.smaf, self.send]:
-			if i > 0:
-				var counter = i
-				while counter > 0:
-					price += 20
-					counter -= 1
-#			var temp = skills[i].value
-#			while temp > 19:
-#				temp -= 20
-#				price += 20
+		price = beautybase*2.5 + beautytemp*1.5
+		price += (level-1)*50
 		if pussy.virgin == true:
 			price = price*1.2
 		if sex == 'futanari':
 			price = price*1.1
-		price = price + (-50+self.obed/2)
 		for i in traits.values():
 			if i.tags.find('detrimental') >= 0:
 				price = price*0.80
@@ -1170,8 +1068,8 @@ class slave:
 			price = price*2.5
 		elif race == 'Dragonkin':
 			price = price*3.5
-		if self.health < 50:
-			price = price/2
+		#if self.health < 50:
+		#	price = price/2
 		if self.toxicity >= 60:
 			price = price/2
 		if origins == 'slave':
@@ -1186,6 +1084,8 @@ class slave:
 			price = price*2
 		if traits.has('Uncivilized') == true:
 			price = price/1.5
+		if effects.has('captured') == true:
+			price = price/2
 		if price < 0:
 			price = 5
 		return round(price)
@@ -1412,6 +1312,9 @@ func load_game(filename):
 	for i in state.itemlist:
 		itemdict[i].amount = state.itemlist[i].amount
 		itemdict[i].unlocked = state.itemlist[i].unlocked
+	for i in statetemp.sidequests:
+		if state.sidequests.has(i) == false:
+			state.sidequests[i] = statetemp.sidequests[i]
 	state.itemlist = {}
 	for i in state.spelllist:
 		spelldict[i].learned = true
@@ -1423,10 +1326,14 @@ func load_game(filename):
 	for i in currentline.slaves:
 		newslave = slave.new()
 		newslave = dict2inst(i)
+		if i.has('face'):
+			newslave.beautybase = round(i.face.beauty)
 		slaves.append(newslave)
 	for i in currentline.babylist:
 		newslave = slave.new()
 		newslave = dict2inst(i)
+		if i.has('face'):
+			newslave.beautybase = round(i.face.beauty)
 		state.babylist.append(newslave)
 	savegame.close()
 	if state.customcursor == null:
@@ -1435,7 +1342,7 @@ func load_game(filename):
 		state.customcursor = "res://files/buttons/kursor1.png"
 	
 	
-	rules.gameloaded =true
+	gameloaded = true
 	if state.currentversion != gameversion:
 		print("Using old save, attempting repair")
 		repairsave()
@@ -1457,6 +1364,8 @@ func repairsave():
 		globals.state.sidequests.ayda = 0
 	if globals.state.sidequests.has("yris") == false:
 		globals.state.sidequests.yris = 0
+	if globals.state.sidequests.has("ayneris") == false:
+		globals.state.sidequests.ayneris = 0
 	#repairing slaves
 	var tempslaves = []
 	tempslaves.append(player)
@@ -1486,7 +1395,6 @@ func repairsave():
 			i.metrics.orgasm = 0
 			i.metrics.mods = 0
 			i.metrics.randompartners = 0
-		i.skills = {}
 		if i.origins == 'atypical':
 			i.origins = 'commoner'
 		if i.origins == 'royal':
@@ -1508,6 +1416,8 @@ func repairsave():
 		for i in state.portals:
 			portaldict[i] = {enabled = true, code = i}
 		state.portals = portaldict
+	if !state.mansionupgrades.has('mansionparlor'):
+		state.mansionupgrades.mansionparlor = 0
 	state.currentversion = gameversion
 
 var showalisegreet = false

@@ -207,6 +207,7 @@ func slaveguild(guild = 'wimborn'):
 		if globals.state.slaveguildvisited == 0:
 			maintext.set_bbcode(globals.player.dictionary("The first time you enter through the doors of the town's central building, you are mildly surprised to find it it very clean and bright inside. Arriving at the reception, a small cheerful fairy girl emerges from nearby to assist you. Her friendly and somewhat whimsical looks make you realize she must be one of the main receptionists hired to drag in potential clients. \n\n[color=yellow]— Welcome $sir! I do not believe I have see you here before, is this your first time?. You seem to be a respectable person! If you will allow me, I shall help you get familiar with our establishment!\n\n— From our facilities here we can provide our clients with many affordable and obedient staff members. Yes, the possession of another person is allowed as long as you have the rights. Despite overall humanity progression, it is still very far from providing sufficient food and living conditions for everyone. By selling themselves into others custody, many find a way to survive, cover their debts or help their family. \n\n— Sometimes we deal with, so called, 'prisoners of war', to help them to adapt to life in our care. Don't you find this is way more humane giving them a new chance, instead of outright slaughtering them?\n\n— This is where we come in. place and ensure, that your deal is secured. Slaves give up a huge part of their freedom. We take care to teach them to act appropriately, so you may be sure their initial behaviour will be acceptable.  To strengthen your ownership we will gladly help brand your purchase.\n\n— After slave becomes your property, you are free to employ them as you see fit, but keep in mind, that inhumane treatment may cause you quite a few problems. We strongly advise against unnecessary deaths and mutilations, nor we do support people harshly abusing their privileges over others. \n\n— Lastly, if you have possession of someone, you no longer have a need for and wish to part with, we can surely offer you something!\n\n— I hope, my explanation was helpful, $sir! Let me know if there's something else I can assist you with![/color]"))
 			globals.state.slaveguildvisited = 1
+			globals.charactergallery.fairy.unlocked = true
 		else:
 			maintext.set_bbcode(globals.player.dictionary("You enter through the guild’s doors, and are greeted once again by the busy sights and sounds of customers, slaves, and workers shuffling around at blistering speeds. You give a polite bow to one of the receptionists and grab a pen to sign in. In few moments your short acquaintance appears before you.\n\n[color=yellow]— Ah, my pleasure, $name, how can I help you today?[/color] "))
 		var array = [{name = 'See slaves for sale', function = 'slaveguildslaves'}, {name = 'Offer your servants',function = 'slaveguildsells'}, {name = 'See custom requests', function = 'slaveguildquests'},{name = 'Services for Slaves',function = 'slaveservice'},{name = 'Leave', function = 'town'}]
@@ -236,7 +237,7 @@ func slaveguild(guild = 'wimborn'):
 func slaveguildfairy():
 	globals.state.mainquest = 3.1
 	slaveguild()
-	maintext.set_bbcode(questtext.GuildFairyMainQuest)
+	maintext.set_bbcode(globals.player.dictionary(questtext.GuildFairyMainQuest))
 
 func togorn():
 	get_node("playergrouppanel/VBoxContainer").set_hidden(false)
@@ -317,7 +318,7 @@ func _on_mindreadbutton_pressed():
 
 
 func selectslavesell(slave):
-	selectedslaveprice = (round(max(slave.calculateprice()*0.45,10)))
+	selectedslaveprice = (round(max(slave.calculateprice()*0.6,10)))
 	selectedslave = slave
 	var text = ''
 	if selectedslaveprice >= 300:
@@ -396,7 +397,7 @@ func slaveguildsells():
 			slavelist.add_child(newbutton)
 			newbutton.set_hidden(false)
 			newbutton.get_node('name').set_text(slave.dictionary('$name, ')+ slave.race + ', '+ slave.sex + ', ' + slave.age + ', ' + slave.work)
-			newbutton.get_node('price').set_text(str(max(round(slave.calculateprice()*0.45),10))+ ' gold')
+			newbutton.get_node('price').set_text(str(max(round(slave.calculateprice()*0.6),10))+ ' gold')
 			newbutton.set_meta('slave', slave)
 			newbutton.connect('pressed',self,'selectslavesell',[slave])
 
@@ -525,7 +526,7 @@ func _on_questaccept_pressed():
 				globals.state.labassit = -1
 			globals.slaves.remove(globals.slaves.find(offeredslave))
 			selectedquest.taken = false
-			globals.player.level.xp += selectedquest.reward/10
+			globals.player.xp += selectedquest.reward/10
 			globals.resources.gold += selectedquest.reward
 			if selectedquest.difficulty == 'easy':
 				globals.state.reputation[location] += 3
@@ -942,6 +943,7 @@ func mageorderquest1(slave = null):
 				buttons.append(['Select Slave', 'selectslaveforquest', 'mageorderquest1'])
 	elif globals.state.mainquest == 2:
 		sprites = [['melissafriendly','pos1','opac']]
+		globals.charactergallery.melissa.unlocked = true
 		text = ("After a brief talk, the girl at the reception desk leads to you a room where you find an exquisitely dressed woman.\n\n— Oh, a new face here. I'm Melissa. I am pleased to know that there's a new person in our glorious establishment; and an active one too. Fresh blood is exactly what we need here in the Order.\n\n— First thing, it's great that you helped out our grumpy fellow with new staff. Let me compensate you for that. No worries, you earned it, and it should help your sustain and our cause. \n\n[color=green]Melissa passes you 250 gold. [/color]\n\n— Promotions are not very useful in terms of privileges for the commonfolk we have around, but for you it will grant access to some of the great knowledge and technology we have. I'd like to offer you a partnership. You help me, and I will push you up the stairs. How does that sound?")
 		buttons.append(['Agree','mageorderquest2'])
 	elif str(globals.state.mainquest) in ['3','3.1']:
@@ -1017,10 +1019,12 @@ func mageorderquest1(slave = null):
 		sprites = [['melissafriendly','pos1','opac']]
 		text = questtext.MainQuestGornMelissaReturn
 		state = false
+		globals.resources.upgradepoints += 5
 		buttons.append(['Close', "orderhade"])
 		globals.state.mainquest = 17
 	elif globals.state.mainquest == 25:
 		globals.state.mainquest = 26
+		globals.resources.upgradepoints += 5
 		sprites = [['melissafriendly','pos1','opac']]
 		text = questtext.MainQuestUndercityReturn
 	elif globals.state.mainquest == 26:
@@ -1031,6 +1035,7 @@ func mageorderquest1(slave = null):
 		text = "You decide there's nothing you can gain from visiting Melissa right now. "
 	elif globals.state.mainquest >= 36:
 		text = "[color=yellow]— Wow, that's quite an accomplishment, making it this far. I'm sorry, but this story is not finished yet and you will have to wait for some time. Thank you for staying with us and see you next time, $name.[/color]"
+		globals.resources.upgradepoints += 10
 		sprites = [['melissafriendly','pos1','opac']]
 	main.dialogue(state, self, text, buttons, sprites)
 	mageorder()
@@ -1059,8 +1064,9 @@ func givecompanion():
 				globals.player.ability.append('mindread')
 			globals.state.branding = 1
 			globals.state.rank = 1
-			globals.player.level.value += 1
-			globals.player.level.skillpoints += 1
+			globals.player.level += 1
+			globals.player.skillpoints += 1
+			globals.resources.upgradepoints += 5
 			main.getridof()
 	elif str(globals.state.mainquest) in ['3','3.1']:
 		if slave != null:
@@ -1071,8 +1077,9 @@ func givecompanion():
 			globals.resources.gold += 500
 			globals.state.rank = 2
 			globals.state.branding = 2
-			globals.player.level.value += 1
-			globals.player.level.skillpoints += 1
+			globals.player.level += 1
+			globals.player.skillpoints += 1
+			globals.resources.upgradepoints += 5
 			main.getridof()
 	elif globals.state.mainquest == 10:
 		globals.state.mainquest = 11
@@ -1081,8 +1088,9 @@ func givecompanion():
 		globals.state.rank = 3
 		globals.resources.gold += 750
 		main.currentslave = globals.slaves.find(slave)
-		globals.player.level.value += 1
-		globals.player.level.skillpoints += 1
+		globals.player.level += 1
+		globals.player.skillpoints += 1
+		globals.resources.upgradepoints += 5
 		main.getridof()
 	questgiveawayslave = null
 	main.dialogue(true, self, text, buttons, sprites)
@@ -1470,6 +1478,7 @@ func caliqueststart(value = ''):
 		buttons.append(["Ignore it",'caliqueststart', 10])
 	elif globals.state.sidequests.cali == 1:
 		text = ("You approach shop owner and tell him, that it is improper to stereotype on other races and it is guild's free will to welcome every other humanoid race. As he sees your badge, he quickly restrains himself and begs for pardon.\n\n[color=aqua]— She's a thief, Milord! She stolen big chunk of pork from me. Witnesses will confirm it. [/color]\n\nAs you look at the girl, she glares back but don't deny accusation. You notice that she looks pretty scrawny and is probably one of the homeless around town. By the law theft is a considerable offence and will result in flagellation.")
+		globals.charactergallery.cali.unlocked = true
 		if globals.resources.gold >= 50:
 			buttons.append(["Offer compensation for her", 'caliqueststart', 2])
 		buttons.append(["Offer to take her away for personal punishment", 'caliqueststart', 3])
@@ -1545,7 +1554,7 @@ func calimake():
 		age = 'teen'
 	var calitemp = globals.slavegen.newslave('Halfkin Wolf', age, 'female', 'commoner')
 	calitemp.name = 'Cali'
-	calitemp.surname = 'Nuisal'
+	calitemp.surname = ''
 	calitemp.tits.size = 'flat'
 	calitemp.ass = 'small'
 	calitemp.beauty = 55
@@ -1702,6 +1711,7 @@ func emily(state = 1):
 	main.close_dialogue()
 	globals.state.sidequests.emily = state
 	if state == 1:
+		globals.charactergallery.emily.unlocked = true
 		text = questtext.EmilyMeet
 		if globals.resources.food < 10:
 			buttons.append({text = 'Give her food', function = 'emily', args = 2, disabled = true, tooltip = "not enough food"})

@@ -97,7 +97,7 @@ domination = {
 	description = 'Attempts to overwhelm  the target′s mind and instill unwavering obedience. May cause irreversible mental trauma. ',
 	effect = 'dominationeffect',
 	manacost = 40,
-	req = 2,
+	req = 10,
 	price = 500,
 	personal = true,
 	combat = false,
@@ -189,7 +189,7 @@ func mindreadeffect():
 	if slave.praise > 0:
 		text = text + '\n$name is still upbeat from you praising $him.'
 	if slave.punish.expect == true:
-		text = text + '\n$name still strongly* fears your punishment.'
+		text = text + '\n$name still strongly fears your punishment.'
 	if slave.traits.size() >= 0:
 		text += '\n$name has corresponding traits:'
 		for i in slave.traits.values():
@@ -203,7 +203,7 @@ func mindreadeffect():
 func sedationeffect():
 	var spell = globals.spelldict.sedation
 	globals.resources.mana -= spell.manacost
-	slave.stress += -rand_range(20,30)
+	slave.stress -= rand_range(20,30) + globals.player.smaf*6
 	if slave.obed < 40:
 		slave.obed += rand_range(20,30)
 	main.popup(slave.dictionary('You cast Sedation spell on the $name and $he relaxes a bit.'))
@@ -214,7 +214,7 @@ func healeffect():
 	var spell = globals.spelldict.heal
 	globals.resources.mana -= spell.manacost
 	if slave.health < 80:
-		slave.health = rand_range(20,30)
+		slave.health = rand_range(20,30) + globals.player.smaf*5
 		text = "After you finish casting the spell, $name's wounds close up. "
 		if slave.loyal < 20:
 			slave.loyal += rand_range(2,4)
@@ -231,6 +231,7 @@ func dreameffect():
 	globals.resources.mana -= spell.manacost
 	slave.away.duration = 1
 	slave.energy = slave.stats.energy_max
+	slave.stress -= rand_range(25,50)
 	text = 'You cast sleep on $name, putting $him into deep rest until the next day. '
 	main.popup(slave.dictionary(text))
 	main.rebuild_slave_list()
@@ -241,7 +242,7 @@ func invigorateeffect():
 	var spell = globals.spelldict.invigorate
 	globals.resources.mana -= spell.manacost
 	slave.energy = slave.stats.energy_max/2
-	slave.stress += rand_range(20,30)
+	slave.stress += rand_range(30,35)-globals.player.smaf*4
 	globals.player.energy = 50
 	main.popup(slave.dictionary("You cast Invigorate on $name. Your and $his energy is partly restored. $His stress has increased. "))
 
@@ -295,7 +296,7 @@ func dominationeffect():
 	var text = ''
 	var spell = globals.spelldict.domination
 	globals.resources.mana -= spell.manacost
-	if rand_range(0,100) < 20:
+	if rand_range(0,100) < 20 && globals.player.smaf < 5:
 		text = "Your spell badly damages $name's mind as $he twiches and yells under its' effect."
 		slave.cour -= rand_range(1,25)
 		slave.conf -= rand_range(1,25)

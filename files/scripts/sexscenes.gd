@@ -60,7 +60,9 @@ consensual = "Guiding $name over to a sofa, you gently push $him to sit back on 
 swing = "After you point $name out to $2name, $2he approaches $him and soon is working on $name's $hole with $2his hand. The stimulation soon brings $him to a loudly moaned climax, cumming hard. ",
 }, 'oral': {
 consensual = "You guide $name over to your desk, instructing $him to sit on its edge. Crouching in front of $him, you bare $his crotch and push $his legs apart a little, then get to licking $his pussy. Swipe after swipe of your tongue pushes $name to higher and higher arousal in no time, soon giving $him an orgasm and covering your tongue with $his female juices. Catching $his breath afterwards, $name squeezes your shoulders in thanks and contently sighs your name. ",
+rape = "You tie $name over your desk, so that $his crotch is bare and available. $he tries to struggle as you run a finger over $his clit, but to no avail. Without warning you descend upon the waiting fold and begin licking $his pussy. Swipe after swipe of your tongue pushes $name to higher and higher arousal despite $his ever more feeble struggles. You quickly switch between licking, flicking and sucking hard enough to hurt. In moments, $he explodens in an orgasm, covering your face with $his female juices. Breathing heavily, $name gives you a vacant stare. ",
 swing = "You direct $2name to take care of $name's need and watch them get into bed together. Soon, $name is lying back with $his legs spread wide, $his friend lying between $his legs and lapping at $name's pussy. It doesn't take all that long before the stimulation pushes $him to a gasping climax, splashing $2name's smiling face with pussy juice. ",
+swingforced = '',
 }, 'blowjob': {
 consensual = "As you step up to $name and tell $him to start pleasuring you, $he readily crouches down takes your cock into $his mouth. Bobbing up and down on your shaft, $he gives you an eager blowjob, eventually making you cum. ",
 rape = "Taking hold of $name by $his shoulder, you force $him to $his knees. Then you grab $his head by the hair and pull it back harshly, forcing your cock into $his mouth. Maintaining the forceful grip on $name, you face-fuck $him and eventually pour everything you have down $his throat.",
@@ -80,7 +82,9 @@ consensual = "$name kneels before you and obediently opens $his mouth to start l
 swing = "",
 }, 'blowjobgive': {
 consensual = "Calling $name over, you put a hand on $his crotch, rubbing the growing bulge there. Then you crouch down and pull away $his clothes, baring your servant's crotch. $He moans in pleasure as you give $him fine blowjob, teasing $his shaft with your lips and tongue until $he comes and you swallow $his load. ",
+rape = "You have $name tied up in a chair, naked, $his member exposed and waiting. When you put your hand on $his crotch, $he flinches and tries to get away. After a bit of hand teasing, during which $name keeps $his eyes averted, you take $his road in your mouth. There in no visible reaction on $his face, but the fast hardening dick does not lie. You increase your pace, teasing $his shaft with your lips and tongue until it's twiching and bulging with need, audiable grunts now becoming apparent. $his head arches back and twists in a grimace, as the climax cannot be contained longer. ",
 swing = "After you point $name out to $2him, $2name eagerly walks up to $him and pulls $him into a tight embrace. Kissing $name, your servant crouches down with a smile and pulls aside $his clothes, revealing $his quickly hardening cock. $name moans in pleasure as $2name takes $his manhood into $2his mouth and starts to bob up and down on it, giving $him a fine blowjob. Teasing $him with $2his lips and tongue, it doesn't take all that long before $name comes with an urgent groan and $2name swallows $his load. ",
+swingforced = '',
 }, 'titfuckgive': {
 consensual = "Guiding $name over to a bed, you tell $him to sit down on its edge, then sink into a crouch and pull out $his cock. With a grin on your face, you hold up the quickly hardening shaft and give it a slow, teasing lick. It is fun to see $name react to the stimulation, moaning out loud and digging $his hands into the blanket on the mattress. Baring your own chest, you then proceed to rub $his erection between them, giving $him a very nice time with your boobs and mouth. As wound up as you have $him by this time, it doesn't take all that long before $he comes, giving you a creamy white pearl necklace. ",
 swing = "Following your instructions, $2name and $name quickly strip, then $2name crouches down and starts to give your other servant a really nice tit-fuck with $2his ample breasts. Between rubbing up against shapely breasts and being serviced orally, it doesn't take all that long before $name comes with a grunt, giving $2name a creamy pearl necklace of cum. ",
@@ -96,7 +100,9 @@ swing = "Gleefully setting to strip down your two servants, you tell $name to st
 swingforced = "$2name forcefully pushes down $name onto the bed and ruthlessly penetrates $his asshole with $2penis. ",
 }, 'pussytake': {
 consensual = "Guiding $name to your own big and soft bed, you spend a little fun-time stripping $him and yourself, then get in the bed and lay back. With an inviting wave at your naked partner, you spread your legs wide, baring your pussy for $him to see. There is a broad smile on $his face as the $race steps forward, $his $penis leading the way for $him to climb on top of you. Nudging apart your nether lips, $he slides into you with a grunt right after that, then proceeds to give you a pleasurable time of hard fucking. ",
+rape = "You have $name tied to the bed, hands and legs held by firm leater straps. Standing over $him you use your foot to tease $his hardening member, all the while berating how pathetic it is. As you begin lowering yourself, $he struggles in a fit of panic, but you simply grab a firm hold of the shaft and lower yourself on it. You begin bouncing, chaning the pace and occasionaly gyrating your hips, paying close attenetion to $name's face and $his feeble attmpts at supressing $his moans. Soon, $he can't take it no more and explosedes inside you, filling you with cum.",
 swing = "Guiding your two servants to a bed, you order the two of them to strip down and get on it. They eagerly comply and soon are entwined on the bed, caressing each other and making out. You do not have to say anything more as their mutual stimulation soon expands to $2name moving to straddle $2his partner, then sinking $2his pussy down on $his $penis. Both of them moan loudly as $2he starts to grind against $name, joyfully taking $his length into $2his body. ",
+swingforced = '',
 }, 'asstake': {
 consensual =  "Moving over to your office with $name in tow, you quickly strip down and bend over, bracing yourself against the writing desk with your ass raised high. It takes nothing more than a lewd smile over your shoulder to get $him lined up behind you, naked and ready to fuck. $He of course first puts $his face between your buttocks, eating you out to prepare $his $master for penetration, but it is more than clear how eager $name is to take you. Soon, $he slaps $his $penis between your buttocks, then proceeds to push in and goes on to pound your ass from there. ",
 swing = "Gleefully setting to strip down your two servants, you tell $2name to step up against a wall, bracing $2himself with both hands and bending forward a little. With you giving $2his buttocks an appreciative squeeze or two, $name readily picks up on your plan for how this should go, and before long, $he stands beside you, $his $penis at the ready. Yielding your place, you watch as $name steps up and sinks $himself into $2name's asshole, taking $2him hard from behind. ",
@@ -164,7 +170,9 @@ swing = "You watch as $name and $2name get closer and tightly push and rub their
 },
 'tribadism': {
 consensual = "After taking off clothes, you sit and closely embrace $name. After minor petting, you press your wet cunt against $his, feeling $his warmth and moist. As you both grind against each other, you share a long kiss and reach orgasm. ",
+rape = "$name is brought to you, hand tied tighly behind $his back. You push $him onto the bed you press your wet cunt against $his, feeling $his warmth. $He tries to escape, but a hard slap and a reminder of what to expect makes $him go limp. You ride $him roughly despite the lack of foreplay and lubricaton. The vocal protests slowy subdue as your own juices easy the friction and $his begin to flow. You do not stop untill you cum twice, leaving $name spent and with a sore groin. ",
 swing = "You watch as $name and $2name get closer and begin to grind their pussies against each other. You can see them both quite enjoying this as they nearly losing themself in pleasure. ",
+swingforced = "You have $name and $2name firmly tied with arms on their backs, then you pass the ropes trough a single hook on the ceeling and hoist them in the air. They are now hanging almost horizontally, their pussies facing eachother. After arranging them in a scissor position you simply step away and let gravity do the rest. No matter how much they struggle, their own body weight keeps pushing them back into eachother, and they soon figure the best thing to do is stay still. But you'll have non of that. Using feathers and a whip, you tease $2name and whip $name, their movement causing stimulation to their partner. It's not long until they are both shaking, accusing each other of not standing still even as they grind ever harder. They both orgasm hard, coating eachothers privates in pussy juice. ",
 },
 }
 
@@ -236,7 +244,7 @@ type = 'foreplay',
 description = "You will lick $name's pussy.",
 cost = 20,
 basereward = 4,
-canbeforced = false,
+canbeforced = true,
 tags = ['touch','dom','cancum'],
 basemana = 2,
 alwaysallowed = false,
@@ -326,7 +334,7 @@ type = 'foreplay',
 description = 'You will give blowjob to $name.',
 cost = 20,
 basereward = 4,
-canbeforced = false,
+canbeforced = true,
 tags = ['touch','dom','penis','cancum'],
 basemana = 3,
 alwaysallowed = false,
@@ -491,7 +499,7 @@ type = 'penetration',
 description = "$name will fuck you in the pussy with $penis",
 cost = 25,
 basereward = 4,
-canbeforced = false,
+canbeforced = true,
 tags = ['penis','cancum','selfpenetration'],
 basemana = 5,
 alwaysallowed = false,
@@ -671,7 +679,7 @@ type = 'fetish',
 description = "You will rub your pussy against $name's. ",
 cost = 20,
 basereward = 4,
-canbeforced = false,
+canbeforced = true,
 tags = ['fetish','cancum'],
 basemana = 3,
 alwaysallowed = false,
@@ -780,7 +788,7 @@ func blowjobsex(slave):
 	if rand_range(0,1) >= 0.5:
 		text += "As you get closer to climax, you order $him to swallow everything. Your semen gushes into $his mouth" +globals.fastif(slave.sexuals.actions.blowjob < 3, ", nearly making $him choke", "") + ".  $name shows you the creamy covering of $his tongue proudly before swallowing it down with a grin. After thanking $him, you leave $him to $his duties."
 	else:
-		text += "As you climax, you pull out of $his mouth and covering $his "+ globals.fastif(slave.face.beauty >= 70, "pretty", "") + " face and "+slave.haircolor + " hair with your seed."
+		text += "As you climax, you pull out of $his mouth and covering $his "+ globals.fastif(slave.beauty >= 70, "pretty", "") + " face and "+slave.haircolor + " hair with your seed."
 	return text
 	
 func blowjobrape(slave):

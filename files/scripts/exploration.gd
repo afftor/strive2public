@@ -26,7 +26,7 @@ code = 'forest',
 name = 'Ancient Forest',
 description = "You stand deep within this ancient forest. Giant trees tower above you, reaching into the skies and casting deep shadows on the ground below. As the wind whispers past, you can hear the movement of small creature in the undergrowth and birds singing from their perches above.",
 enemies = [['thugseasy',10],['banditseasy', 20], ['peasant', 25],['solobear', 40], ['wolveseasy', 100]],
-encounters = [['dolinforest','globals.state.sidequests.dolin == 0 || globals.state.sidequests.dolin == 5',10]],
+encounters = [['chloeforest','globals.state.sidequests.chloe in [0,1]',10]],
 length = 5,
 exits = ['shaliq', 'wimbornoutskirts'],
 tags = [],
@@ -57,7 +57,7 @@ code = 'amberguardforest',
 name = 'Amber Road',
 description = "Amber Road is a long way through seeming glade and various small settlements and hills. ",
 enemies = [['solobear', 15], ['wolveshard', 65], ['direwolveseasy', 100]],
-encounters = [],
+encounters = [['aynerisencounter','globals.state.sidequests.ayneris in [0,1,2]',15]],
 length = 4,
 exits = ['amberguard','witchhut','undercityentrance'],
 tags = [],
@@ -144,7 +144,7 @@ code = 'grove',
 name = 'Far Eerie Woods',
 description = "This portion of the forest is deeply shadowed, and strange sounds drift in and out of hearing. Something about the atmosphere keeps the normal forest creatures silent, lending an eerie, mystic feeling to the grove you stand within.",
 enemies = [['dryad',10], ['solobear', 15], ['fairy', 30],['wolveshard', 45],['plantseasy',80], ['wolveseasy', 100]],
-encounters = [['dolingrove','globals.state.sidequests.dolin == 12',25],['snailevent','globals.state.mansionupgrades.farmhatchery >= 1 && globals.state.snails < 10',10]],
+encounters = [['chloegrove','globals.state.sidequests.chloe == 6',25],['snailevent','globals.state.mansionupgrades.farmhatchery >= 1 && globals.state.snails < 10',10]],
 length = 7,
 exits = ['wimbornoutskirts'],
 tags = [],
@@ -851,6 +851,9 @@ func enemydefeated():
 	var expearned = 0
 	var supplyearned = 0
 	for unit in enemygroup.units:
+		if unit.state == 'escaped':
+			expearned += unit.rewardexp*0.66
+			continue
 		if unit.capture != null:
 			defeated.units.append(unit.capture)
 			defeated.names.append(unit.name)
@@ -870,15 +873,19 @@ func enemydefeated():
 					text = text + '\nLooted ' + item.name + '.'
 					item.amount += 1
 		expearned += unit.rewardexp
+	expearned = round(expearned)
 	globals.resources.gold += goldearned
 	text += '\nYou have received a total sum of [color=yellow]' + str(round(goldearned)) +'[/color] pieces of gold and [color=aqua]' + str(expearned) + '[/color] experience points. '
 	if supplyearned > 0:
 		globals.itemdict.supply.amount += supplyearned
 		text += "\nYou have collected " + str(supplyearned) + " units of supplies from defeated enemies. \n"
-	globals.player.level.xp += round(expearned/(globals.state.playergroup.size()+1))
+	globals.player.xp += round(expearned/(globals.state.playergroup.size()+1))
 	for i in globals.state.playergroup:
 		var slave = globals.state.findslave(i)
-		slave.level.xp += round(expearned/globals.state.playergroup.size()+1)
+		slave.xp += round(expearned/(globals.state.playergroup.size()+1))
+		if slave.levelupreqs.has('code') && slave.levelupreqs.code == 'wincombat':
+			slave.levelup()
+			text += slave.dictionary("\n[color=green]Your decisive win inspired $name, and made $him unlock new potential. \n")
 		if slave.health > slave.stats.health_max/1.3:
 			slave.cour += rand_range(1,3)
 	
@@ -1005,13 +1012,16 @@ func _on_confirmwinning_pressed(secondary = false):
 			for i in range(0, defeated.units.size()):
 				if defeated.select[i] == 1:
 					if defeated.faction[i] == 'stranger':
-						globals.state.reputation[location] -= 1.5
+						globals.state.reputation[location] -= 2
 					elif defeated.faction[i] == 'bandit':
 						globals.state.reputation[location] += 1
 					var rand = rand_range(5,10)
+					defeated.units[i].add_effect(globals.effectdict.captured)
 					text += defeated.names[i] + ' has been sold for ' + str(round(max(defeated.units[i].calculateprice()*0.3,rand))) + ' gold.\n'
 					globals.resources.gold += max(defeated.units[i].calculateprice()*0.3,rand)
 		for i in range(0, defeated.units.size()):
+			if defeated.faction[i] == 'stranger':
+				globals.state.reputation[location] -= 1
 			if defeated.select[i] == 0:
 				if defeated.names[i] != 'Captured':
 					text += defeated.units[i].dictionary("You have left $race $child alone.\n")
@@ -1116,6 +1126,8 @@ func capturedecide(stage): #1 - no reward, 2 - material, 3 - sex, 4 - join
 		if rand_range(0,100) >= 20 + globals.state.reputation[location]/4:
 			text = "$name excuses $himself, but can't accept your proposal and quickly leaves. "
 		else:
+			rewardslave.obed = 85
+			rewardslave.stress = 10
 			globals.slaves = rewardslave
 			text = "$name observes you for some time, measuring you words, but to your surprise, $he complies either out of symphathy, or out of desperate life $he had to carry. "
 	main.dialogue(true,self,rewardslave.dictionary(text))
@@ -1203,6 +1215,7 @@ func gornyris():
 		return
 	if globals.state.sidequests.yris == 0:
 		text = globals.questtext.GornYrisMeet
+		globals.charactergallery.yris.unlocked = true
 		if globals.resources.gold >= 200:
 			buttons.append({text = "Accept (200 Gold)", function = "gornyrisaccept", args = 1})
 		else:
@@ -1250,6 +1263,8 @@ func gornyrisaccept(stage):
 		text = globals.questtext.GornYrisRefuse
 		buttons.append({text = "Continue", function = 'gornyrisleave', args = null})
 	elif stage == 1:
+		globals.charactergallery.yris.scenes[0].unlocked = true
+		globals.charactergallery.yris.nakedunlocked = true
 		text = globals.questtext.GornYrisAccept1
 		globals.resources.gold -= 200
 		globals.resources.mana += 15
@@ -1262,11 +1277,13 @@ func gornyrisaccept(stage):
 		globals.resources.mana += 15
 	elif stage == 3:
 		text = globals.questtext.GornYrisAccept2
+		globals.charactergallery.yris.scenes[1].unlocked = true
 		globals.state.sidequests.yris += 1
 		globals.itemdict.deterrentpot.amount -= 1
 		state = true
 		globals.resources.mana += 25
 	elif stage == 4:
+		globals.charactergallery.yris.scenes[2].unlocked = true
 		globals.itemdict.deterrentpot.amount -= 1
 		text = globals.questtext.GornYrisAccept3
 		buttons.append({text = "Reveal everything", function = 'gornyrisaccept', args = 5})
@@ -1297,7 +1314,7 @@ func gornyrisaccept(stage):
 		slave.surname = ''
 		slave.tits.size = 'big'
 		slave.ass = 'average'
-		slave.face.beauty = 65
+		slave.beautybase = 72
 		slave.hairlength = 'waist'
 		slave.height = 'average'
 		slave.haircolor = 'blond'
@@ -1491,6 +1508,9 @@ func gornmarket():
 	outside.shopinitiate('gornmarket')
 
 func amberguardmarket():
+	if globals.state.sidequests.ayneris >= 4:
+		globals.events.aynerismarket()
+		return
 	outside.shopinitiate('amberguardmarket')
 
 func gornpalace():
@@ -1544,6 +1564,7 @@ func gornslaveguild():
 func frostfordslaveguild():
 	outside.slaveguild('frostford')
 
+
 func shaliq():
 	var array = []
 	if globals.state.sidequests.cali == 17:
@@ -1551,305 +1572,37 @@ func shaliq():
 	elif globals.state.sidequests.cali in [20,21]:
 		globals.events.calivillage2()
 	array.append({name = "Visit Local Trader", function = 'shaliqshop'})
-	if globals.state.sidequests.dolin >= 7:
-		array.append({name = "Visit Dolin's house", function = "dolinhouse"})
+	if globals.state.sidequests.chloe >= 1:
+		array.append({name = "Visit Chloe's house", function = "chloehouse"})
 	array.append({name = "Leave to the forest", function = 'zoneenter', args = 'forest'})
-	if globals.state.sidequests.dolin == 6:
-		globals.state.sidequests.dolin = 7
-		outside.maintext.set_bbcode(globals.player.dictionaryplayer("You lead Dolin back to the village she resides, as she tells you about herself. She's a researcher and inventor, came here for some inspirations and peace of mind.\n\n- Thanks again $name! If you are interested, come see me around here. I may have something interesting for you."))
-	elif globals.state.sidequests.dolin == 15:
-		globals.state.sidequests.dolin = 16
-		outside.maintext.set_bbcode("You lead Dolin back to her house and give her some time to rest and clean herself.")
+	if globals.state.sidequests.chloe == 15:
+		globals.state.sidequests.chloe = 16
+		outside.maintext.set_bbcode("You lead Chloe back to her house and give her some time to rest and clean herself.")
 		
 	outside.buildbuttons(array,self)
 
 func shaliqshop():
 	outside.shopinitiate('shaliqshop')
 
-#	buttoncontainer = globals.get_tree().get_current_scene().get_node("outside").get_node("outsidebuttoncontainer")
-#	button = globals.get_tree().get_current_scene().get_node("outside").get_node("outsidebuttoncontainer/buttontemplate")
-#	if globals.state.sidequests.dolin >= 7:
-#		newbutton = button.duplicate()
-#		buttoncontainer.add_child(newbutton)
-#		newbutton.set_text("Visit Dolin's house")
-#		newbutton.set_hidden(false)
-#		newbutton.connect('pressed', self, 'dolinhouse')
-#	newbutton = button.duplicate()
-#	buttoncontainer.add_child(newbutton)
-#	newbutton.set_text('Leave to the forest')
-#	newbutton.set_hidden(false)
-#	newbutton.connect('pressed', self, 'zoneenter', ['forest'] )
-#	if globals.state.sidequests.dolin == 6:
-#		globals.state.sidequests.dolin = 7
-#		outside.maintext.set_bbcode(globals.player.dictionaryplayer("You lead Dolin back to the village she resides, as she tells you about herself. She's a researcher and inventor, came here for some inspirations and peace of mind.\n\n- Thanks again $name! If you are interested, come see me around here. I may have something interesting for you."))
-#	elif globals.state.sidequests.dolin == 15:
-#		globals.state.sidequests.dolin = 16
-#		outside.maintext.set_bbcode("You lead Dolin back to her house and give her some time to rest and clean herself.")
+func chloeforest():
+	globals.events.chloeforest()
 
-func dolinforest(state = globals.state.sidequests.dolin):
-	globals.state.sidequests.dolin = state
-	outside.clearbuttons()
-	var havegnomemember = false
-	for i in globals.state.playergroup:
-		var slave = globals.state.findslave(i)
-		if slave.race == 'Gnome':
-			havegnomemember = true
-	if scout.sagi >= 3 && globals.state.sidequests.dolin == 0 && scout.race != 'Gnome':
-		outside.maintext.set_bbcode('You spot a lone gnome girl who seems lost. She takes notice of your presence and starts to panic, preparing to run away before you’ve even lifted a finger. It’s oddly refreshing to be feared without having to prove anything.')
-		if globals.spelldict.sedation.learned == true && globals.spelldict.sedation.manacost <= globals.resources.mana:
-			newbutton = button.duplicate()
-			buttoncontainer.add_child(newbutton)
-			newbutton.set_text('Cast Sedation')
-			newbutton.set_hidden(false)
-			newbutton.connect('pressed', self, 'dolinforest', [1] )
-		newbutton = button.duplicate()
-		buttoncontainer.add_child(newbutton)
-		newbutton.set_text('Leave her alone')
-		newbutton.set_hidden(false)
-		newbutton.connect('pressed', self, 'zoneenter', ['forest'] )
-	elif scout.sagi >= 3 && havegnomemember == true && globals.state.sidequests.dolin == 0:
-		outside.maintext.set_bbcode("You spot a lone gnome girl who seems lost. She takes notice of your presence and seems to panic for a moment. She prepares to run away, but calms down when she notices another gnome in your party.")
-		newbutton = button.duplicate()
-		buttoncontainer.add_child(newbutton)
-		newbutton.set_text('Talk with her')
-		newbutton.set_hidden(false)
-		newbutton.connect('pressed', self, 'dolinforest', [2] )
-		newbutton = button.duplicate()
-		buttoncontainer.add_child(newbutton)
-		newbutton.set_text('Leave her alone')
-		newbutton.set_hidden(false)
-		newbutton.connect('pressed', self, 'zoneenter', ['forest'] )
-	elif globals.state.sidequests.dolin == 1:
-		globals.resources.mana -= globals.spelldict.sedation.manacost
-		outside.maintext.set_bbcode("You quickly cast Sedation on her. She shoots you a puzzled look, blinking rapidly for several seconds until the magic has run its course, and she’s ready to talk.")
-		newbutton = button.duplicate()
-		buttoncontainer.add_child(newbutton)
-		newbutton.set_text('Talk with her')
-		newbutton.set_hidden(false)
-		newbutton.connect('pressed', self, 'dolinforest', [2] )
-	elif globals.state.sidequests.dolin == 2:
-		outside.maintext.set_bbcode("- Oh, uh, h-hello. I, uh, kinda thought you were some kind of giant, gnome-eating bandit for a second there. N-not that big people terrify me or anything!\n\nShe coughs and rubs one of her arms, clearly embarrassed.\n\n- Well... Actually I moved to a nearby village, but I just can't learn the surroundings, and keep getting lost. I'm just not used to all this open… Openness.\n\n- Say, do you happen to know the road? Could you help me out?")
-		newbutton = button.duplicate()
-		buttoncontainer.add_child(newbutton)
-		newbutton.set_text('Lead her to the Shaliq')
-		newbutton.set_hidden(false)
-		newbutton.connect('pressed', self, 'dolinforest', [4] )
-		newbutton = button.duplicate()
-		buttoncontainer.add_child(newbutton)
-		newbutton.set_text("Tell her you don't know it")
-		newbutton.set_hidden(false)
-		newbutton.connect('pressed', self, 'dolinforest', [3] )
-	elif globals.state.sidequests.dolin == 3:
-		outside.maintext.set_bbcode("- Oh, I see... Well, don't worry, I'll manage! Good luck then, see you around!\n\nSaying that, she quickly retreats, disappearing from sight.")
-		newbutton = button.duplicate()
-		buttoncontainer.add_child(newbutton)
-		globals.state.sidequests.dolin = 5
-		newbutton.set_text('Move on')
-		newbutton.set_hidden(false)
-		newbutton.connect('pressed', self, 'zoneenter', ['forest'] )
-	elif globals.state.sidequests.dolin == 4:
-		outside.maintext.set_bbcode("- Really?! Oh thank goodness, you’re a lifesaver, literally! My name’s Dolin by the way. Man am I glad I didn’t run away from you.\n\nShe seems genuinely relieved that you can show her the way.\n\n- B-but don’t get me wrong, it’s not like tall people scare me or anything like that... A-anyway! We should really head back before it gets too dark.")
-		globals.state.sidequests.dolin = 6
-		newbutton = button.duplicate()
-		buttoncontainer.add_child(newbutton)
-		newbutton.set_text('Proceed to Shaliq with Dolin')
-		newbutton.set_hidden(false)
-		newbutton.connect('pressed', self, 'zoneenter', ['shaliq'] )
-	elif globals.state.sidequests.dolin == 5:
-		outside.maintext.set_bbcode("- Oh, it's you again! Ugh... Yeah, I kinda forgot the road again. I should really start carrying around one of those absurd round things with the pointy dealy. Looks like you know the way better than I do, have you figured out the roads yet?")
-		newbutton = button.duplicate()
-		buttoncontainer.add_child(newbutton)
-		newbutton.set_text('Lead her to the Shaliq')
-		newbutton.set_hidden(false)
-		newbutton.connect('pressed', self, 'dolinforest', [4] )
-		newbutton = button.duplicate()
-		buttoncontainer.add_child(newbutton)
-		newbutton.set_text("Tell her you don't know it")
-		newbutton.set_hidden(false)
-		newbutton.connect('pressed', self, 'dolinforest', [3] )
-	else:
-		outside.maintext.set_bbcode("You almost spot someone in the bushes but they escape before you can make your move.\n\n[color=yellow](Scout check failed)[/color]")
-		newbutton = button.duplicate()
-		buttoncontainer.add_child(newbutton)
-		newbutton.set_text('Move on')
-		newbutton.set_hidden(false)
-		newbutton.connect('pressed', self, 'zoneenter', ['forest'] )
-
-func dolinhouse(state = globals.state.sidequests.dolin):
-	globals.state.sidequests.dolin = state
-	outside.clearbuttons()
-	buttoncontainer = globals.get_tree().get_current_scene().get_node("outside").get_node("outsidebuttoncontainer")
-	button = globals.get_tree().get_current_scene().get_node("outside").get_node("outsidebuttoncontainer/buttontemplate")
-	if globals.state.sidequests.dolin == 7:
-		outside.maintext.set_bbcode("Dolin invites you into her spacious hut, a variety of odd looking gadgets and tools are neatly arranged throughout her abode.\n\n- Oh, hello! It's nice that you actually came! It's kinda never occurred to me that you’re a mage before. From what I’ve gathered, you aren’t from around these parts, so I guess you use teleportation, huh?\n\n- I'm not all that into magic myself, but I’ve found some use for it. Care to make a deal? Provide me with some mana, and I can share a spell an old friend passed onto me during some experiments I was running at the time.\n\n- It lets you influence the target’s mind, letting you plant some serious suggestions. I’ve never really been into mind control, but you should have plenty of use for it. So how about it; 25 mana for the spell sound fair?")
-		globals.state.sidequests.dolin = 8
-	elif globals.state.sidequests.dolin == 8:
-		outside.maintext.set_bbcode("- You're back! So, how are you doing? Ready to help me out?")
-		if globals.resources.mana >= 25:
-			newbutton = button.duplicate()
-			buttoncontainer.add_child(newbutton)
-			newbutton.set_text('Agree')
-			newbutton.set_hidden(false)
-			newbutton.connect('pressed', self, 'dolinhouse', [9] )
-	elif globals.state.sidequests.dolin == 9:
-		globals.state.sidequests.dolin = 10
-		globals.resources.mana -= 25
-		globals.spelldict.entrancement.learned = true
-		if globals.abilities.abilitydict.has('entrancement') == true:
-			globals.player.ability.append('entrancement')
-		if globals.player.penis.number >= 1:
-			outside.maintext.set_bbcode("- Great! Just stay right there for a moment!\n\nShe leaves you alone for a moment to dig through her closet, eventually returning with an ordinary looking glass tube that has some sort of strange device attached to it.\n\n- Found it. I haven’t actually had the chance to use it before, but it should work. And, um… If you don’t mind, I can help out, I guess.\n\nDeciding to give her the lead, you follow Dolin over to a bench and take a seat. She carefully rubs at your groin, and with a surprised gasp, she frees your manhood, clearly intimidated by its size.\n\n- I-I uh, guess it’s only natural that you’d be big in more ways than one...\n\nThe awkward little gnome takes hold of your penis, at first gently stroking your cock, and adjusting her hand movements and pressure to try and give you the most pleasure. Her innocence and cute looks are enough to keep you going, but it’s clear she won’t be getting you off with her lack of technique this way, a fact she seems quick to catch onto. With clear arousal and determination in her eyes, she adds her mouth into the mix.\n\nWith a hint of worship, the eager gnome dutifully attends to your throbbing member, stroking and sucking so you can reach orgasm much faster, and you’re more than happy to oblige her efforts. With each movement she becomes just a little more confident, acting more and more bold, and you realize she’s observing you; looking at every little reaction and learning your sweet spots.\n\nAs you’re about to cum, Dolin pulls your cock out of her mouth, pushes it into the device she brought out at the start, and finishes you off with her hand. Your orgrasm is no different from any other, but for once you feel yourself giving mana instead of taking it, as the device sucks the bounty into its storage.\n\nDolin gleams with joy, happily smiling as she runs off to put her new possession away.\n\n[color=yellow]You have learned the Entrancement Spell.[/color]")
-		else:
-			outside.maintext.set_bbcode("Dolin gleams with joy, happily smiling as she runs off to put her new possession away.\n\n[color=yellow]You have learned the Entrancement Spell.[/color]")
-	elif globals.state.sidequests.dolin == 10:
-		outside.maintext.set_bbcode(globals.player.dictionaryplayer("- $name! How are you doing? Sorry, I'm bit busy with experiment. But please come back some other time!"))
-	elif globals.state.sidequests.dolin == 11:
-		globals.state.sidequests.dolin = 12
-		outside.maintext.set_bbcode("You knock, and go inside, but it seems there's nobody around. After looking around a bit you find a note left by Dolin, saying she went to the deeper parts of the forest. As it seems that she hasn't been around for some time, you decide it may be a good idea to look for her.")
-	elif globals.state.sidequests.dolin == 12:
-		outside.maintext.set_bbcode("You already searched and couldn't find Dolin here.")
-	elif globals.state.sidequests.dolin == 16:
-		outside.maintext.set_bbcode(globals.player.dictionaryplayer("As you come in, you can see Dolin has regained her composure, although something about her isn’t quite right. Her face is bright red and she certainly looks restless.\n\n- $name, thanks for saving me from there. That was embarrassing... letting you see me like that...\n\n- I can’t believe I fell into that damn hole. After a while I just got so hungry and ate some strange berries... Then I just couldn't think straight for days... I think there's also something in the air.\n\n- But that aside, I need your help. You see... I still can't calm down. It's not as bad as it was there, but I just can't concentrate on anything. I have a recipe for an antidote which should help. Can...can you make it for me? Please? I know you should have some equipment. Sorry for giving you so much trouble, but there's really nobody else I could ask right now.\n\nYou take the recipe from her and promise to return soon."))
-		globals.state.sidequests.dolin = 17
-	elif globals.state.sidequests.dolin == 17:
-		outside.maintext.set_bbcode("You decide it's better not to needlessly disturb Dolin right now. ")
-	elif globals.state.sidequests.dolin == 18:
-		globals.state.sidequests.dolin = 30
-		outside.maintext.set_bbcode(globals.player.dictionaryplayer("As you pass antidote bottle to the Dolin, she looks very relieved.\n\n- Thank you, $name! You’re a lifesaver.\n\nAfter some time she completely calms down and you can see her relax.\n\n- Can't believe it happened to me... I really owe you one, I guess. Um... how about this?\n\nShe spends some time looking through her stuff, until finally finds an old looking scroll.\n\n- This is supposed to be a dangerous spell, but you helped me, and I think you would use it responsibly. Take it. And... I wouldn't mind if you come see me again sometimes, if you aren’t too disturbed after seeing me like that."))
-	elif globals.state.sidequests.dolin == 19:
-		globals.state.sidequests.dolin = 32
-		outside.maintext.set_bbcode(globals.player.dictionaryplayer("As you pass the disguised bottle to the Dolin, she looks very relieved.\n\n- Thank you, $name! I knew I could rely on you!\n\nAs she gulps down on potion, her face  becomes more relaxed.\n\n- Huh... this has an interesting taste... What was I doing again...\n\nAs the amnesia potion starts to take effect, Dolin appears to be less and less conscious of the world around her. With her mind in such a vulnerable state, it’s a trivial matter to use your entrancement spell to implant a number of suggestions within her. As you lead her back to your mansion, you reflect on the irony of using the very spell she taught you to brainwash her."))
-		dolinmake()
-		dolin.loyal += 50
-		dolin.wit = 75
-		globals.slaves = dolin
-		newbutton = button.duplicate()
-		buttoncontainer.add_child(newbutton)
-		newbutton.set_text('Continue')
-		newbutton.set_hidden(false)
-		newbutton.connect('pressed', main,'_on_mansion_pressed' )
-	elif globals.state.sidequests.dolin == 20:
-		outside.maintext.set_bbcode(globals.player.dictionaryplayer("As you pass the disguised bottle to the Dolin, she looks very relieved.\n\n- Thank you, $name! I knew I could rely on you!\n\nAs she gulps down on potion, she looks slightly puzzled.\n\n- Huh... this is a different taste from what I expected...\n\nAfter a few moments she starts panting, the unquenchable lust in her body growing even wilder than it was before.\n\n- No way!.. I must have... Mixed up the formula... Ah!...\n\nAs her body explodes into orgasm, she's completely at a loss for words. only having you in her sight.\n\nAfter a few joyful hours you realize all of her free will is overwritten by wild desire. After a minor break you make a decision:"))
-		newbutton = button.duplicate()
-		buttoncontainer.add_child(newbutton)
-		newbutton.set_text('Take her into your mansion')
-		newbutton.set_hidden(false)
-		newbutton.connect('pressed', self, 'dolinhouse', [25] )
-		newbutton = button.duplicate()
-		buttoncontainer.add_child(newbutton)
-		newbutton.set_text('Sell her to the brothel')
-		newbutton.set_hidden(false)
-		newbutton.connect('pressed', self, 'dolinhouse', [26] )
-	elif globals.state.sidequests.dolin == 25:
-		globals.state.sidequests.dolin = 31
-		dolinmake()
-		dolin.sexuals.affection += round(rand_range(20,50))
-		dolin.loyal += 25
-		dolin.sexuals.affection += 250
-		dolin.add_trait(globals.origins.trait('Sex-crazed'))
-		globals.slaves = dolin
-		outside.maintext.set_bbcode(globals.player.dictionaryplayer("Sex-crazed Dolin becomes your servant."))
-		newbutton = button.duplicate()
-		buttoncontainer.add_child(newbutton)
-		newbutton.set_text('Continue')
-		newbutton.set_hidden(false)
-		newbutton.connect('pressed', main,'_on_mansion_pressed' )
-	elif globals.state.sidequests.dolin == 26:
-		globals.state.sidequests.dolin = 33
-		outside.maintext.set_bbcode(globals.player.dictionaryplayer("You lead whats left of gnome girl to the local brothel. After some haggling, you make a deal for 500 gold, and leave her in the custody of the owner. It seems that her new occupation fits her animal instincts, making any further involvement of yours pointless."))
-		globals.resources.gold += 500
-		newbutton = button.duplicate()
-		buttoncontainer.add_child(newbutton)
-		newbutton.set_text('Continue')
-		newbutton.set_hidden(false)
-		newbutton.connect('pressed', main,'_on_mansion_pressed' )
-	elif globals.state.sidequests.dolin == 30:
-		outside.maintext.set_bbcode("Dolin happily greets you as you visit her and you spend some relaxed time together. It seems she grew very fond of you. ")
-	elif globals.state.sidequests.dolin in [31,32,33]:
-		outside.maintext.set_bbcode("This place is empty now. There's no point to return here anymore.")
-		newbutton = button.duplicate()
-		buttoncontainer.add_child(newbutton)
-		newbutton.set_text('Return')
-		newbutton.set_hidden(false)
-		newbutton.connect('pressed', self, 'zoneenter', ['shaliq'] )
-	
-	
-	
-	
-	if globals.state.sidequests.dolin in [22,20,25,26,31,32,33]:
-		pass
-	else:
-		newbutton = button.duplicate()
-		buttoncontainer.add_child(newbutton)
-		newbutton.set_text('Return')
-		newbutton.set_hidden(false)
-		newbutton.connect('pressed', self, 'zoneenter', ['shaliq'] )
-
-var dolin
-func dolinmake():
-	var dolintemp = globals.slavegen.newslave('Gnome', 'adult', 'female', 'commoner')
-	dolintemp.name = 'Dolin'
-	dolintemp.unique = 'Dolin'
-	dolintemp.surname = 'Seyfert'
-	dolintemp.tits.size = 'average'
-	dolintemp.ass = 'big'
-	dolintemp.face.beauty = 60
-	dolintemp.hairlength = 'shoulder'
-	dolintemp.height = 'tiny'
-	dolintemp.haircolor = 'red'
-	dolintemp.eyecolor = 'green'
-	dolintemp.skin = 'fair'
-	dolintemp.hairstyle = 'ponytail'
-	dolintemp.pussy.virgin = false
-	dolintemp.pussy.first = 'unknown'
-	dolintemp.relatives.father = -1
-	dolintemp.relatives.mother = -1
-	dolintemp.sexuals.affection += 10
-	dolintemp.wit = 15
-	dolintemp.cleartraits()
-	dolintemp.obed += 90
-	dolin = dolintemp
-
-func dolingrove(state = globals.state.sidequests.dolin):
-	globals.state.sidequests.dolin = state
-	outside.clearbuttons()
-	buttoncontainer = globals.get_tree().get_current_scene().get_node("outside").get_node("outsidebuttoncontainer")
-	button = globals.get_tree().get_current_scene().get_node("outside").get_node("outsidebuttoncontainer/buttontemplate")
-	if globals.state.sidequests.dolin == 12:
-		outside.maintext.set_bbcode(globals.player.dictionaryplayer("After spending some time managing your way through uninviting flora, you come across a steep ravine. From above you spot traces of someone been through recently. As you move along it, you eventually  find a small shadow at the bottom of ravine. Even though there's some noise, calling it out has no reaction and you decide to descend into the ravine.\n\nUnsurprisingly, the shadow turns out to be your old acquaintance Dolin. She is hardly recognisable, as she crawls half-naked, on the ground. She barely recognizes you, being semiconscious, moaning and blissfully rubbing her bare crotch.\n\n- $name?... You found me... I want you... Please, I can't... I can't calm down...\n\nAs the gnome girl raises up and stumbles your direction, she latches on you while rubbing her soaked thighs together.\n\n- I just... Need to calm  down... "))
-		if globals.player.penis.number >= 1:
-			outside.maintext.set_bbcode(outside.maintext.get_bbcode() + 'I want your cock.')
-		newbutton = button.duplicate()
-		buttoncontainer.add_child(newbutton)
-		newbutton.set_text('Fuck her')
-		newbutton.set_hidden(false)
-		newbutton.connect('pressed', self, 'dolingrove', [13] )
-		newbutton = button.duplicate()
-		buttoncontainer.add_child(newbutton)
-		newbutton.set_text('Masturbate her')
-		newbutton.set_hidden(false)
-		newbutton.connect('pressed', self, 'dolingrove', [14] )
-	if globals.state.sidequests.dolin == 13:
-		outside.maintext.set_bbcode("You give in to the horny girl's temptations. With a blissful expression she pulls down your pants and lustfully strokes your cock, making it fully erect. As you lay down on the grass, she quickly crawls on top and clumsily begins to ride you with her soaking pussy. Her moans quickly grow louder and and her frantic movements indicate she’s close to orgasming.\n\nAs you both convulse in orgasm, she briefly faints on top of you. This makes you slightly worried, but a few nudges bring her back to consciousness\n\n- We... should get out of here.\n\nNot wasting any more time, you help the still-woozy gnome to get out of the ravine and return with her back to the Shaliq.")
-		globals.state.sidequests.dolin = 15
-		newbutton = button.duplicate()
-		buttoncontainer.add_child(newbutton)
-		newbutton.set_text('Continue')
-		newbutton.set_hidden(false)
-		newbutton.connect('pressed', self, 'zoneenter', ['shaliq'] )
-	if globals.state.sidequests.dolin == 14:
-		outside.maintext.set_bbcode("You take the horny girl and place her small body on your lap, with easy access to her pussy. As you work through her folds in attempt to quickly bring her to orgasm, she turns to embrace you and gives you a sloppy, lustful kiss.\n\n")
-		globals.state.sidequests.dolin = 15
-		if scout.sexuals.unlocked == true && scout.lust >= 30 :
-			outside.maintext.set_bbcode(outside.maintext.get_bbcode() +scout.dictionary("$name, deciding to take part in the fun, gets on her knees and licks all over the poor girl's pussy.\n\n"))
-		outside.maintext.set_bbcode(outside.maintext.get_bbcode() + "After few minutes Dolin finally reaches orgasm and regains her senses.\n\n- T-thank you... we should leave this place now.\n\nWithout wasting any more time, you help still-woozy gnome to get out of the ravine and return with her back to the Shaliq.")
-		newbutton = button.duplicate()
-		buttoncontainer.add_child(newbutton)
-		newbutton.set_text('Continue')
-		newbutton.set_hidden(false)
-		newbutton.connect('pressed', self, 'zoneenter', ['shaliq'] )
+func aynerisencounter():
+	globals.events.aynerisforest()
 
 
+func chloehouse():
+	if globals.state.sidequests.chloe in [2,3]:
+		globals.events.chloevillage(1)
+	elif globals.state.sidequests.chloe in [4,5,6]:
+		globals.events.chloevillage(4)
+	elif globals.state.sidequests.chloe in [7,8,9]:
+		globals.events.chloevillage(5)
+	elif globals.state.sidequests.chloe == 10:
+		globals.events.chloevillage(8)
+
+func chloegrove():
+	globals.events.chloegrove()
 
 func encounterdictionary(text):
 	var string = text

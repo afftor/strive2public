@@ -70,8 +70,13 @@ slavechar = [
 {sprite = 'norhap', text = "There are two attributes, Mental and Physical, which are deciding factors in how servants perform and react to the variety of things you put them through."},
 {text = "The Mental stats consist of [color=aqua]Courage[/color], [color=aqua]Confidence[/color], [color=aqua]Wit[/color], and [color=aqua]Charm[/color].  The higher those are, the better servants will perform their tasks and jobs."},
 {text = "Those stats could also play against you if you're servants are not happy or rebelling against you.  In other words, their high aptitude may push them further away from you."},
-{text = "The Physical stats are way more important when regarding combat. They are pretty self-explanatory.  We can talk about them later if you need more explanation. "},
-{text = "Lastly, your servants will gain experience from their actions and from combat, battling your enemies.  When a servant gains a level they also gain extra skill points which you can assign at a later time.", choice = 'slave'},
+{text = "The Physical stats are way more important when regarding combat. They are pretty self-explanatory.  We can talk about them later if you need more explanation.", choice = 'slave'}
+],
+slavelevel = [
+{sprite = 'norhap', text = "It seems, your servant has reached enough experience to advance to next level. That's great as they will earn new [color=yellow]Attribute Points[/color]."},
+{text = "But first you'll have to figure out what's holding them back. For that, talk to them and discover what they require. This might be anything, fights, gifts, love..."},
+{text = "Once you satisfy that need, they will increase their level and will start to accumulate more experience. "},
+{text = "Higher levels require harder conditions to be met before your servants can advance. However, it's also possible to change the condition to a new random one with some alchemy. ", choice = 'slave'},
 ],
 slavecond = [
 {sprite = 'norwin', text = "There are three things you need to have knowledge of regarding your servants.  These are: Obedience, Stress and Loyalty."},
@@ -181,6 +186,10 @@ redress = [
 {text = "Please, try not to stare too hard.  Even I can get embarrassed at times."},
 {sprite = 'norhap',text = "Would you like anything else?", choice = 'menu'}
 ],
+gallery = [
+{sprite = 'norneu', text = "With pleasure."},
+{funct = 'galleryshow'}
+],
 redressback = [
 {sprite = 'nornes', text = "As you wish.", funct = ['hide', 'alisenormal']},
 {sprite = 'altsmi', text = "Done!", funct = ['unhide']},
@@ -189,6 +198,7 @@ redressback = [
 returntomain = [
 {sprite = 'norhap', text = "Any other questions, hun?", choice = 'gamehelp'},
 ],
+
 bugreport = [
 {sprite = 'norneu',text = "Oh dear!  I'm so sorry that a bug found its way to you.  Strive is still heavily in development, so please forgive us. "},
 {text = "You can make a report at [color=aqua][url=patreon]Patreon[/url][/color] or at [color=aqua][url=itch]itch.io in the bug report thread[/url][/color].  Click on any one of the links to open the site within your browser."},
@@ -206,9 +216,10 @@ helpproject = [
 var choices = {
 intro = [{text = "— Go on (enable tutorial help)", funct = 'basics'}, {text = "— No need (skip tutorial)", funct = "endtutorial"}],
 close = [{text = "End", funct = 'close'}],
-menu = [{text = "I want to ask about...", funct = 'help'}, {text = "I want to see the old help section", funct = "oldhelp"}, {text = "I want you to wear something more revealing", funct = 'alisechange', reqs = "globals.state.alisecloth != 'naked'"},{text = "I want you to wear your normal costume", funct = 'alisechangeback', reqs = "globals.state.alisecloth != 'normal'"},{text = "Nothing", funct = 'close'}],
+menu = [{text = "I want to ask about...", funct = 'help'}, {text = "I want to see the old help section", funct = "oldhelp"},{text = "Show me Character Gallery", funct = 'showgallery'}, {text = "I want you to wear something more revealing", funct = 'alisechange', reqs = "globals.state.alisecloth != 'naked'"},{text = "I want you to wear your normal costume", funct = 'alisechangeback', reqs = "globals.state.alisecloth != 'normal'"},{text = "Nothing", funct = 'close'}],
 slave = [
 {text = 'Characteristics', funct = 'slavechar'},
+{text = 'Leveling', funct = 'slavelevel'},
 {text = 'Conditions', funct = 'slavecond'},
 {text = 'Grade', funct = 'slavegrade'},
 {text = "Jobs", funct = 'slavejobs'},
@@ -264,10 +275,11 @@ func _input(event):
 		else:
 			if lastline != true && currentdict != null && (get_node("tutsprite").get_opacity() >= 1 || get_node("tutsprite").get_opacity() <= 0):
 				advance()
+	
 
 func _process(delta):
 	if get_node("speech/RichTextLabel").get_visible_characters() <= get_node("speech/RichTextLabel").get_total_character_count():
-		get_node("speech/RichTextLabel").set_visible_characters(get_node("speech/RichTextLabel").get_visible_characters() + 1)
+		get_node("speech/RichTextLabel").set_visible_characters(get_node("speech/RichTextLabel").get_visible_characters() + 2)
 	if get_node("speech/RichTextLabel").get_visible_characters() >= get_node("speech/RichTextLabel").get_total_character_count():
 		emit_signal('textshown')
 		set_process(false)
@@ -401,6 +413,9 @@ func basics():
 func starttutorial():
 	self.currentdict = textdict.introduction
 
+func showgallery():
+	self.currentdict = textdict.gallery
+
 func menu():
 	showchoice('menu')
 
@@ -453,6 +468,9 @@ func slaveinitiate():
 func slavechar():
 	self.currentdict = textdict.slavechar
 
+func slavelevel():
+	self.currentdict = textdict.slavelevel
+	
 func slavecond():
 	self.currentdict = textdict.slavecond
 
@@ -518,3 +536,7 @@ func _on_RichTextLabel_meta_clicked( meta ):
 	elif meta == "blogpost":
 		OS.shell_open('http://strivefopower.blogspot.com')
 
+func galleryshow():
+	get_parent().get_node("gallery").set_hidden(false)
+	get_parent().get_node("gallery").show()
+	close()

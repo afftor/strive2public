@@ -2,7 +2,7 @@ extends Node
 
 var textnode = load('res://files/scripts/questtext.gd').new()
 var emilystate = 0
-var outside 
+var outside
 #Mainquests
 
 
@@ -291,6 +291,7 @@ func frostfordcityhall(stage = 0):
 	elif stage == 1:
 		text = textnode.MainQuestFrostfordCityhallZoe
 		state = false
+		globals.charactergallery.zoe.unlocked = true
 		buttons.append({text = 'Accept', function = "frostfordcityhall", args = 2})
 		buttons.append({text = 'Refuse', function = "frostfordcityhall", args = 3})
 	elif stage == 2:
@@ -391,7 +392,6 @@ func dryadfightwin():
 	var buttons = []
 	text = textnode.MainQuestFrostfordForestWin
 	globals.state.mainquest = 35
-	print(globals.state.mainquest)
 	globals.get_tree().get_current_scene().get_node("explorationnode").zoneenter('frostfordoutskirts')
 	globals.get_tree().get_current_scene().dialogue(true, self, text, buttons, sprite)
 
@@ -607,8 +607,10 @@ func caliproposal(stage = 0):
 		buttons = [["Accept Cali's feelings",'caliproposal',1],['Stay friends','caliproposal',2]]
 		state = false
 	elif stage == 1:
-		sprite = [['calihappy','pos1']]
+		sprite = [['calinakedhappy','pos1']]
 		text = textnode.CaliAcceptProposal
+		globals.charactergallery.cali.scenes[0].unlocked = true
+		globals.charactergallery.cali.nakedunlocked = true
 		if globals.player.penis.number >= 1:
 			cali.pussy.virgin = false
 			cali.pussy.first = 'you'
@@ -1095,6 +1097,8 @@ func calibadend(choice):
 		text = textnode.CaliLeave
 		globals.state.playergroup.erase(cali.id)
 		globals.slaves.erase(cali)
+	
+	globals.resources.upgradepoints += 10
 	globals.get_tree().get_current_scene().get_node("explorationnode").zoneenter('wimbornoutskirts')
 	globals.get_tree().get_current_scene().dialogue(true,self,globals.player.dictionaryplayer(text),null,sprite)
 	globals.state.sidequests.cali = 102
@@ -1126,6 +1130,7 @@ func caligoodend(choice):
 		globals.get_tree().get_current_scene()._on_mansion_pressed()
 	if choice != 3:
 		globals.get_tree().get_current_scene().get_node("explorationnode").zoneenter('wimbornoutskirts')
+	globals.resources.upgradepoints += 15
 	globals.get_tree().get_current_scene().dialogue(true,self,globals.player.dictionaryplayer(text),null,sprite)
 	globals.state.sidequests.cali = 103
 
@@ -1144,6 +1149,45 @@ func calireturn():
 
 func caliparentsdie():
 	globals.state.sidequests.caliparentsdead = true
+
+func sexscene(value):
+	var text = ''
+	var sprite = []
+	if value == 'emilyshowersex':
+		text = textnode.EmilyShowerSex
+		sprite = [['emilynakedhappy','pos1']]
+	elif value == 'showerrape':
+		text = textnode.EmilyShowerRape
+		sprite = [['emilynakedneutral','pos1']]
+	elif value == 'tishaemilysex':
+		text = globals.questtext.TishaEmilySex
+		sprite = [['tishanakedhappy', 'pos1'], ['emilynakedhappy','pos2']]
+	elif value == 'tishablackmail':
+		text = textnode.TishaEmilyBrandCompensation
+		sprite = [['tishanakedneutral','pos1']]
+	elif value == 'tishareward':
+		sprite = [['tishanakedhappy', 'pos1']]
+		text = textnode.TishaSexSceneStart + '\n\n' + textnode.TishaSexSceneEnd
+	elif value == "calivirgin":
+		sprite = [['calinakedhappy','pos1']]
+		text = textnode.CaliAcceptProposal + '\n' + textnode.CaliProposalSexMale
+	elif value == 'yrisblowjob':
+		text = textnode.GornYrisAccept1
+	elif value == 'yrissex':
+		text = textnode.GornYrisAccept2
+	elif value == 'yrissex2':
+		text = textnode.GornYrisAccept3
+	elif value == "chloemana":
+		sprite = [['chloeshy2','pos1']]
+		text = textnode.ChloeShaliqTakeMana
+	elif value == 'chloeforest':
+		sprite = [['chloenakedshy', 'pos1']]
+		text = textnode.ChloeGroveFound + '\n\n' + textnode.ChloeGroveSex
+	elif value == "aynerispunish":
+		text = textnode.AynerisPunish1
+	elif value == "aynerissex":
+		text = textnode.AynerisPunish2
+	globals.get_tree().get_current_scene().dialogue(true,self,text,[],sprite)
 
 func emilymansion(stage = 0):
 	var text = ""
@@ -1167,6 +1211,7 @@ func emilymansion(stage = 0):
 	elif stage == 1:
 		globals.itemdict.aphrodisiac.amount -= 1
 		text = textnode.EmilyShowerSex
+		sprite = [['emilynakedhappy','pos1']]
 		emily.sexuals.unlocked = true
 		emily.sexuals.unlocks.append('vaginal')
 		emily.sexuals.unlocks.append('petting')
@@ -1179,8 +1224,11 @@ func emilymansion(stage = 0):
 		emily.stress += 50
 		emily.loyal += 15
 		emily.lust += 50
+		globals.charactergallery.emily.scenes[0].unlocked = true
+		globals.charactergallery.emily.nakedunlocked = true
 	elif stage == 2:
 		text = textnode.EmilyShowerRape
+		sprite = [['emilynakedneutral','pos1']]
 		emily.tags.erase('nosex')
 		emily.sexuals.unlocked = true
 		emily.stress += 100
@@ -1189,6 +1237,8 @@ func emilymansion(stage = 0):
 		emily.metrics.vag += 1
 		emily.metrics.partners.append(globals.player.id)
 		emily.obed = 0
+		globals.charactergallery.emily.scenes[1].unlocked = true
+		globals.charactergallery.emily.nakedunlocked = true
 		globals.state.upcomingevents.append({code = 'emilyescape', duration = 2})
 	elif stage == 3:
 		text = textnode.EmilyMansion2
@@ -1218,6 +1268,7 @@ func tishaappearance():
 		return
 	var text = textnode.TishaEncounter
 	sprite = [['emily2normal','pos2','opac2'],['tishaangry','pos1','opac']]
+	globals.charactergallery.tisha.unlocked = true
 	if emily.loyal >= 25:
 		text += textnode.TishaEmilyLoyal
 		sprite = [['emily2happy','pos2','opac2'],['tishashocked','pos1','opac']]
@@ -1273,7 +1324,9 @@ func tishadecision(number):
 		text = "You send Tisha off as you hold all the rights over Emily now. Having no choice, she curses you and leaves. "
 	elif number == 5:
 		text = textnode.TishaEmilyBrandCompensation
-		sprite = [['tishanormal','pos1']]
+		sprite = [['tishanakedneutral','pos1']]
+		globals.charactergallery.tisha.scenes[1].unlocked = true
+		globals.charactergallery.tisha.nakedunlocked = true
 		buttons.append(['Go with your word and release Emily', 'tishadecision', 10])
 		buttons.append(['Keep Emily anyway', 'tishadecision', 9])
 		text += "\n\n[color=green]You've earned 15 mana.\n\nTisha now belongs to you. [/color]"
@@ -1286,7 +1339,7 @@ func tishadecision(number):
 		if emilystate == 'loyal':
 			emily.away.at = 'hidden'
 			emily.away.duration = -1
-			emily.obed += -20
+			emily.obed -= 20
 			globals.state.upcomingevents.append({code = 'emilyreturn', duration = 5})
 			globals.state.sidequests.emily = 10
 		else:
@@ -1318,6 +1371,7 @@ func tishadecision(number):
 		effect.duration = 15
 		globals.state.reputation.wimborn -= 20
 		emily.add_effect(effect)
+		emily.tags.erase('nosex')
 		tisha.add_effect(effect)
 	elif number == 10:
 		text = textnode.TishaEmilyReleaseEmily
@@ -1325,6 +1379,7 @@ func tishadecision(number):
 		globals.state.reputation.wimborn -= 10
 		tisha.obed += 50
 		globals.slaves.erase(emily)
+	globals.get_tree().get_current_scene().rebuild_slave_list()
 	globals.get_tree().get_current_scene().dialogue(state,self,text,buttons,sprite)
 
 
@@ -1555,15 +1610,19 @@ func tishagornguild(stage = 0):
 		globals.state.upcomingevents.append({code = "tishapay", duration = 7})
 		state = true
 	elif stage == 7:
-		sprite = [['tishahappy', 'pos1']]
+		sprite = [['tishanakedhappy', 'pos1']]
 		text = textnode.TishaSexSceneStart
+		globals.charactergallery.tisha.nakedunlocked = true
+		globals.charactergallery.tisha.scenes[1].unlocked = true
 		if globals.player.penis.number > 0:
 			text += "\n\n" + textnode.TishaSexSceneEnd
 		globals.resources.mana += 10
 		buttons.append(['Offer Tisha work for you', 'tishagornguild', 9])
 		buttons.append(['Not bother her', 'tishagornguild', 10])
 	elif stage == 8:
-		sprite = [['tishahappy', 'pos1']]
+		sprite = [['tishanakedhappy', 'pos1']]
+		globals.charactergallery.tisha.nakedunlocked = true
+		globals.charactergallery.tisha.scenes[1].unlocked = true
 		text = textnode.TishaRefusePayment + textnode.TishaSexSceneStart
 		globals.resources.mana += 10
 		if globals.player.penis.number > 0:
@@ -1575,7 +1634,7 @@ func tishagornguild(stage = 0):
 			if i.unique == "Emily":
 				i.tags.erase('nosex')
 		text = textnode.TishaOfferJob
-		sprite = [['tishahappy', 'pos1']]
+		sprite = [['tishanakedhappy', 'pos1']]
 		var slave = maketisha()
 		slave.sexuals.unlocked = true
 		slave.sexuals.unlocks.append('petting')
@@ -1587,6 +1646,7 @@ func tishagornguild(stage = 0):
 		globals.slaves = slave
 		state = true
 		globals.state.sidequests.emily = 16
+		globals.resources.upgradepoints += 10
 		for i in globals.slaves:
 			if i.unique == 'Emily':
 				i.sexuals.unlocked = true
@@ -1599,6 +1659,7 @@ func tishagornguild(stage = 0):
 		text = textnode.TishaLeave
 		state = true
 		globals.state.sidequests.emily = 16
+		globals.resources.upgradepoints += 10
 
 	globals.get_tree().get_current_scene().dialogue(state,self,text,buttons, sprite)
 
@@ -1615,7 +1676,8 @@ func emilytishasex(stage = 0):
 	var tisha
 	var sprite = []
 	if stage == 0:
-		sprite = [['tishahappy', 'pos1'], ['emily2happy','pos2']]
+		text = globals.questtext.TishaEmilySex
+		sprite = [['tishanakedhappy', 'pos1'], ['emilynakedhappy','pos2']]
 		for i in globals.slaves:
 			if i.unique == 'Emily':
 				emily = i
@@ -1627,12 +1689,390 @@ func emilytishasex(stage = 0):
 		tisha.metrics.partners.append(emily.id)
 		emily.away.duration = 7
 		tisha.away.duration = 7
-		text = globals.questtext.TishaEmilySex
 		state = false
 		buttons.append(['Continue', "emilytishasex",1])
 		globals.resources.mana += 25
+		globals.charactergallery.emily.scenes[2].unlocked = true
+		globals.charactergallery.tisha.scenes[2].unlocked = true
+		globals.charactergallery.emily.nakedunlocked = true
+		globals.charactergallery.tisha.nakedunlocked = true
 	elif stage == 1:
 		sprite = [['tishahappy', 'pos1'], ['emily2happy','pos2']]
 		text = globals.questtext.TishaEmilySex2
 		state = true
 	globals.get_tree().get_current_scene().dialogue(state,self,text,buttons, sprite)
+
+#Chloe
+
+func chloeforest(stage = 0):
+	var text = ''
+	var state = false
+	var sprite = [['chloehappy', 'pos1']]
+	var buttons = []
+	if stage == 0:
+		sprite = [['chloeneutral', 'pos1', 'opac']]
+		if globals.state.sidequests.chloe == 1:
+			chloeforest(3)
+			return
+		else:
+			var havegnomemember = false
+			for i in globals.state.playergroup:
+				var slave = globals.state.findslave(i)
+				if slave.race == 'Gnome':
+					havegnomemember = true
+			if havegnomemember == false:
+				text = textnode.ChloeEncounter
+				if globals.spelldict.sedation.learned == true && globals.spelldict.sedation.manacost < globals.resources.mana:
+					buttons.append({text = 'Cast Sedation',function = 'chloeforest',args = 1, disabled = false})
+				elif globals.spelldict.sedation.learned == true:
+					buttons.append({text = 'Cast Sedation',function = 'chloeforest',args = 1, disabled = true, tooltip = 'Not enough mana'})
+				else:
+					buttons.append({text = "You have no other available options yet",function = 'chloeforest',args = 1, disabled = true})
+			else:
+				text = textnode.ChloeEncounterGnome
+				buttons.append({text = 'Talk with her',function = 'chloeforest',args = 2, disabled = true, tooltip = 'Not enough mana'})
+			buttons.append({text = 'Leave her alone',function = 'chloeforest',args = 6})
+	
+	
+	
+	elif stage == 1:
+		globals.resources.mana -= globals.spelldict.sedation.manacost
+		text = textnode.ChloeSedate + textnode.ChloeEncounterTalk
+		globals.state.sidequests.chloe = 1
+		buttons.append({text = 'Lead her to the Shaliq',function = 'chloeforest',args = 4})
+		buttons.append({text = "Tell her you can't help",function = 'chloeforest',args = 5})
+	elif stage == 2:
+		text = textnode.ChloeEncounterTalk
+		globals.state.sidequests.chloe = 1
+		buttons.append({text = 'Lead her to the Shaliq',function = 'chloeforest',args = 4})
+		buttons.append({text = "Tell her you can't help",function = 'chloeforest',args = 5})
+	elif stage == 3:
+		text = textnode.ChloeEncounterRepeat
+		buttons.append({text = 'Lead her to the Shaliq',function = 'chloeforest',args = 4})
+		buttons.append({text = "Tell her you can't help",function = 'chloeforest',args = 5})
+	elif stage == 4:
+		text = textnode.ChloeEncounterHelp
+		buttons.append({text = 'Proceed to Shaliq with Chloe',function = 'chloeforest',args = 7})
+	elif stage == 5:
+		text = textnode.ChloeEncounterRefuse
+		buttons.append({text = 'Continue',function = 'chloeforest',args = 6})
+	elif stage == 6:
+		globals.get_tree().get_current_scene().get_node("explorationnode").zoneenter('forest')
+		globals.get_tree().get_current_scene().close_dialogue()
+		return
+	elif stage == 7:
+		text = textnode.ChloeShaliq
+		globals.state.sidequests.chloe = 2
+		globals.get_tree().get_current_scene().get_node("explorationnode").zoneenter('shaliq')
+		buttons.append({text = 'Leave',function = 'chloevillage',args = 0})
+	globals.get_tree().get_current_scene().dialogue(state,self,text,buttons,sprite)
+
+func chloevillage(stage = 0):
+	var text = ''
+	var state = true
+	var sprite = [['chloehappy2', 'pos1','opac']]
+	var buttons = []
+	if stage == 0:
+		globals.get_tree().get_current_scene().get_node("explorationnode").zoneenter('shaliq')
+		globals.get_tree().get_current_scene().close_dialogue()
+		return
+	elif stage == 1:
+		text = textnode.ChloeShaliqOffer
+		globals.charactergallery.chloe.unlocked = true
+		globals.state.sidequests.chloe = 3
+		state = false
+		if globals.resources.mana >= 25:
+			buttons.append({text = 'Agree',function = 'chloevillage',args = 3})
+		else:
+			buttons.append({text = 'Agree',function = 'chloevillage',args = 3, disabled = true})
+		buttons.append({text = 'Leave',function = 'chloevillage',args = 0})
+	elif stage == 2:
+		text = textnode.ChloeShaliqReturn
+		state = false
+		if globals.resources.mana >= 25:
+			buttons.append({text = 'Agree',function = 'chloevillage',args = 3})
+		else:
+			buttons.append({text = 'Agree',function = 'chloevillage',args = 3, disabled = true})
+		buttons.append({text = 'Leave',function = 'chloevillage',args = 0})
+	elif stage == 3:
+		sprite = [['chloeshy2', 'pos1']]
+		globals.charactergallery.chloe.scenes[0].unlocked = true
+		globals.resources.mana -= 25
+		globals.state.sidequests.chloe = 4
+		globals.spelldict.entrancement.learned = true
+		globals.state.upcomingevents.append({code = 'chloemissing', duration = 7})
+		if globals.abilities.abilitydict.has('entrancement') == true:
+			globals.player.ability.append('entrancement')
+		if globals.player.penis.number >= 1:
+			text = textnode.ChloeShaliqTakeMana
+		else:
+			text = "Chloe gleams with joy, happily smiling as she runs off to put her new possession away.\n\n[color=aqua]You have learned the Entrancement Spell.[/color]"
+		globals.get_tree().get_current_scene().get_node("explorationnode").zoneenter('shaliq')
+	elif stage == 4:
+		if globals.state.sidequests.chloe == 4:
+			text = textnode.ChloeShaliqBusy
+		elif globals.state.sidequests.chloe == 5:
+			text = textnode.ChloeShaliqMissing
+			sprite = []
+			globals.state.sidequests.chloe = 6
+		elif globals.state.sidequests.chloe == 6:
+			sprite = []
+			text = textnode.ChloeShaliqMissingRepeat
+	elif stage == 5:
+		if globals.state.sidequests.chloe == 7:
+			text = textnode.ChloeVillageHelp
+			globals.state.sidequests.chloe = 8
+			[['chloeshy2', 'pos1','opac']]
+		elif globals.state.sidequests.chloe == 8:
+			text = textnode.ChloeHelpReturn
+		elif globals.state.sidequests.chloe == 9:
+			globals.state.sidequests.chloe = 10
+			globals.resources.upgradepoints += 10
+			if globals.state.decisions.find('chloeaphrodisiac') >= 0:
+				text = textnode.ChloeAphrodisiac
+				sprite = [['chloeshy2', 'pos1']]
+				state = false
+				globals.state.reputation.wimborn -= 20
+				buttons.append({text = 'Sell her to brothel',function = 'chloevillage',args = 6})
+				buttons.append({text = 'Keep her to self',function = 'chloevillage',args = 7})
+			if globals.state.decisions.find('chloeamnesia') >= 0:
+				text = textnode.ChloeAmnesia
+				globals.state.reputation.wimborn -= 10
+				var chloe = chloemake()
+				chloe.loyal += 25
+				globals.slaves = chloe
+			if globals.state.decisions.find('chloecure') >= 0:
+				text = textnode.ChloeCure
+				globals.spelldict.domination.learned = true
+				text += "\n\n[color=aqua]You've learned Domination spell[/color]"
+	elif stage == 6:
+		text = textnode.ChloeBrothel
+		sprite = [['chloenakedhappy', 'pos1']]
+		globals.resources.gold += 500
+	elif stage == 7:
+		text = textnode.ChloeTakeSelf
+		var chloe = chloemake()
+		chloe.loyal += 25
+		chloe.sexuals.affection += 250
+		chloe.add_trait(globals.origins.trait('Sex-crazed'))
+		sprite = [['chloehappy2', 'pos1']]
+		globals.slaves = chloe
+	elif stage == 8:
+		if globals.state.decisions.find('chloecure') >= 0:
+			text = textnode.ChloeVisit
+		else:
+			text = textnode.ChloeEmpty
+	globals.get_tree().get_current_scene().dialogue(state,self,text,buttons,sprite)
+
+func chloemissing():
+	globals.state.sidequests.chloe = 5
+
+func chloegrove(stage = 0):
+	var text = ''
+	var state = false
+	var sprite = [['chloenakedhappy', 'pos1','opac']]
+	var buttons = []
+	
+	if stage == 0:
+		globals.state.sidequests.chloe = 7
+		globals.charactergallery.chloe.nakedunlocked = true
+		text = textnode.ChloeGroveFound
+		buttons.append({text = 'Have sex with Chloe',function = 'chloegrove',args = 1})
+		buttons.append({text = 'Masturbate Chloe',function = 'chloegrove',args = 2})
+	elif stage in [1,2]:
+		if stage == 1:
+			sprite = [['chloenakedshy', 'pos1']]
+			globals.charactergallery.chloe.scenes[1].unlocked = true
+			text = textnode.ChloeGroveSex
+		elif stage == 2:
+			text = textnode.ChloeGroveMasturbate
+		globals.resources.mana += 15
+		sprite = [['chloenakedneutral', 'pos1']]
+		buttons.append({text = 'Continue',function = 'chloegrove',args = 3})
+	elif stage == 3:
+		globals.get_tree().get_current_scene().close_dialogue()
+		globals.get_tree().get_current_scene().get_node("explorationnode").zoneenter('shaliq')
+		
+		return
+		
+	
+	globals.get_tree().get_current_scene().dialogue(state,self,text,buttons,sprite)
+
+func chloealchemy(stage = 0):
+	var buttons = []
+	var text = 'As you prepare to make the required antidote, your experience says you can take advantage of the situation. Perhaps you could try adding some additional potion for differnt effect, providing you have them. '
+	if stage == 0:
+		buttons.append(['Make an antidote for Chloe','chloealchemy',1])
+		if globals.itemdict.amnesiapot.amount >= 1:
+			buttons.append({text = 'Mix antidote with amnesia potion', function = 'chloealchemy', args = 2})
+		else:
+			buttons.append({text = 'Mix antidote with amnesia potion', function = 'chloealchemy', args = 2, disabled = true, tooltip = 'Amnesia Potion Required'})
+		if globals.itemdict.aphrodisiac.amount >= 1 && globals.itemdict.stimulantpot.amount >= 1: 
+			buttons.append({text = 'Replace antidote with high grade stimulant', function = 'chloealchemy', args = 3})
+		else:
+			buttons.append({text = 'Replace antidote with high grade stimulant', function = 'chloealchemy', args = 3, disabled = true, tooltip = 'Aphrodisiac and Stimulant Required'})
+	elif stage == 1:
+		globals.state.decisions.append("chloecure")
+	elif stage == 2:
+		globals.state.decisions.append("chloeamnesia")
+		globals.itemdict.amnesiapot.amount -= 1
+	elif stage == 3:
+		globals.state.decisions.append("chloeaphrodisiac")
+		globals.itemdict.aphrodisiac.amount -= 1
+		globals.itemdict.stimulantpot.amount -= 1
+	if stage in [1,2,3]:
+		text = 'After half-hour you finish preparations and now can return back to Chloe.'
+		globals.state.sidequests.chloe = 9
+	globals.get_tree().get_current_scene().dialogue(true, self, text, buttons)
+
+
+
+func chloemake():
+	var chloetemp = globals.slavegen.newslave('Gnome', 'adult', 'female', 'commoner')
+	chloetemp.name = 'Chloe'
+	chloetemp.unique = 'Chloe'
+	chloetemp.surname = ''
+	chloetemp.tits.size = 'average'
+	chloetemp.ass = 'big'
+	chloetemp.beautybase = 60
+	chloetemp.hairlength = 'shoulder'
+	chloetemp.height = 'tiny'
+	chloetemp.haircolor = 'red'
+	chloetemp.eyecolor = 'green'
+	chloetemp.skin = 'fair'
+	chloetemp.hairstyle = 'ponytail'
+	chloetemp.pussy.virgin = false
+	chloetemp.pussy.first = 'unknown'
+	chloetemp.relatives.father = -1
+	chloetemp.relatives.mother = -1
+	chloetemp.sexuals.affection += 10
+	chloetemp.imageportait = 'res://files/images/chloe/chloeportrait.png'
+	chloetemp.stats.cour_base = 57
+	chloetemp.stats.conf_base = 34
+	chloetemp.stats.wit_base = 77
+	chloetemp.stats.charm_base = 51
+	chloetemp.cleartraits()
+	chloetemp.obed += 90
+	return chloetemp
+
+func aynerisforest(stage = 0):
+	var state = false
+	var text = ''
+	var buttons = []
+	var sprites = []
+	if stage == 0:
+		if globals.state.sidequests.ayneris == 0:
+			text = textnode.AynerisMeet1
+		elif globals.state.sidequests.ayneris in [1,2]:
+			text = textnode.AynerisMeet2
+			if globals.state.sidequests.ayneris == 1:
+				text += "\n\n[color=yellow]— It's him again! You thought you could get away after defeating me? This time you won't be so lucky. [/color]"
+			else:
+				text += "\n\n[color=yellow]— It's you, bastard! After what you did, you dare come here again? Get him! [/color]"
+		buttons.append({text = 'Fight', function = 'aynerisforest', args = 1})
+	elif stage == 1:
+		if globals.state.sidequests.ayneris == 0:
+			globals.get_tree().get_current_scene().get_node("explorationnode").buildenemies("ayneris1")
+		else:
+			globals.get_tree().get_current_scene().get_node("explorationnode").buildenemies("ayneris2")
+		globals.get_tree().get_current_scene().close_dialogue()
+		globals.get_tree().get_current_scene().get_node("explorationnode").launchonwin = 'ayneriswin'
+		globals.get_tree().get_current_scene().get_node("combat").nocaptures = true
+		globals.get_tree().get_current_scene().get_node("explorationnode").enemyfight()
+		return
+	elif stage == 2:
+		text = textnode.AynerisPunish1
+		globals.charactergallery.ayneris.scenes[0].unlocked = true
+		globals.state.sidequests.ayneris = 2
+		globals.resources.mana += 10
+		state = true
+	elif stage == 3:
+		text = textnode.AynerisLeave
+		state = true
+	elif stage == 4:
+		text = textnode.AynerisPunish2
+		globals.charactergallery.ayneris.scenes[1].unlocked = true
+		globals.state.sidequests.ayneris = 3
+		globals.state.upcomingevents.append({code = 'aynerisnextstage', duration = 3})
+		globals.resources.mana += 15
+		state = true
+	globals.get_tree().get_current_scene().dialogue(state, self, text, buttons, sprites)
+
+func ayneriswin():
+	var state = false
+	var text = ''
+	var buttons = []
+	var sprites = []
+	globals.get_tree().get_current_scene().get_node("explorationnode").zoneenter("amberguardforest")
+	if globals.state.sidequests.ayneris == 0:
+		globals.charactergallery.ayneris.unlocked = true
+		globals.state.sidequests.ayneris = 1
+		text = textnode.AynerisWin1
+		buttons.append({text = 'Punish', function = 'aynerisforest', args = 2})
+		buttons.append({text = 'Leave', function = 'aynerisforest', args = 3})
+	elif globals.state.sidequests.ayneris in [1,2]:
+		text = textnode.AynerisWin2
+		if globals.state.sidequests.ayneris == 1:
+			buttons.append({text = 'Punish', function = 'aynerisforest', args = 2})
+		else:
+			buttons.append({text = 'Punish', function = 'aynerisforest', args = 4})
+		buttons.append({text = 'Leave', function = 'aynerisforest', args = 3})
+		
+	globals.get_tree().get_current_scene().dialogue(state, self, text, buttons, sprites)
+
+func aynerismarket(stage = 0):
+	var state = true
+	var text = ''
+	var buttons = []
+	var sprites = []
+	if stage == 0:
+		state = false
+		text = textnode.AynerisMeet3
+		buttons.append({text = 'Accept', function = 'aynerismarket', args = 1})
+		buttons.append({text = 'Refuse', function = 'aynerismarket', args = 2})
+	elif stage == 1:
+		text = textnode.AynerisOfferJoin
+		var slave = aynerismake()
+		globals.slaves = slave
+		globals.state.sidequests.ayneris = 5
+	elif stage == 2:
+		text = textnode.AynerisIgnore
+		globals.state.sidequests.ayneris = 6
+		
+	globals.get_tree().get_current_scene().dialogue(state, self, text, buttons, sprites)
+
+func aynerisnextstage():
+	globals.state.sidequests.ayneris += 1
+
+func aynerismake():
+	var slave = globals.slavegen.newslave('Elf', 'teen', 'female', 'noble')
+	slave.name = 'Ayneris'
+	slave.unique = 'Ayneris'
+	slave.surname = ''
+	slave.tits.size = 'average'
+	slave.ass = 'average'
+	slave.beautybase = 65
+	slave.hairlength = 'waist'
+	slave.height = 'average'
+	slave.haircolor = 'blond'
+	slave.eyecolor = 'blue'
+	slave.skin = 'fair'
+	slave.hairstyle = 'straight'
+	slave.pussy.virgin = false
+	slave.pussy.first = 'you'
+	slave.sexuals.unlocked = true
+	slave.relatives.father = -1
+	slave.relatives.mother = -1
+	slave.sexuals.affection += 10
+	slave.stats.cour_base = 65
+	slave.stats.conf_base = 88
+	slave.stats.wit_base = 51
+	slave.stats.charm_base = 48
+	slave.cleartraits()
+	slave.level = 2
+	slave.sagi = 2
+	slave.sstr = 1
+	slave.skillpoints = 2
+	slave.add_trait(globals.origins.trait('Masochist'))
+	slave.obed += 90
+	return slave

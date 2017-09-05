@@ -106,7 +106,7 @@ func _on_sexual_visibility_changed():
 		for i in sexbuttons.values():
 			if  globals.evaluate(i.slavereqs) == false || globals.evaluate(i.playerreqs) == false:
 				continue
-			if i.canbeforced == true && (i.code in ['bestiality', 'ass', 'dildo', 'lbondage', 'hbondage'] || slave.sexuals.actions.has(i.code) ||(i.code == 'pussy' && slave.pussy.has == true)):
+			if i.canbeforced == true && (i.code in ['bestiality', 'ass', 'dildo', 'lbondage', 'hbondage','oral','blowjobgive','tribadism','pussytake'] || slave.sexuals.actions.has(i.code) ||(i.code == 'pussy' && slave.pussy.has == true)):
 				button = get_node("foreplaycontainer/VBoxContainer/Button").duplicate()
 				button.set_hidden(false)
 				button.add_to_group('sexactions')
@@ -284,7 +284,8 @@ func _on_confirmbutton_pressed():
 var nakedspritesdict = {
 	Cali = {cons = 'calinakedhappy', rape = 'calinakedangry', clothcons = 'calineutral', clothrape = 'caliangry2'},
 	Tisha = {cons = 'tishanakedhappy', rape = 'tishanakedneutral', clothcons = 'tishanakedhappy', clothrape = 'tishanakedneutral'},
-	Emily = {cons = 'emilynakedhappy', rape = 'emilynakedneutral', clothcons = 'emily2happy', clothrape = 'emily2worried'}
+	Emily = {cons = 'emilynakedhappy', rape = 'emilynakedneutral', clothcons = 'emily2happy', clothrape = 'emily2worried'},
+	Chloe = {cons = 'chloenakedhappy', rape = 'chloenakedneutral', clothcons = 'chloehappy2', clothrape = 'chloeneutral2'},
 	}
 
 func sexinitiate(secondtime = false):
@@ -500,7 +501,7 @@ func sexinitiate(secondtime = false):
 	
 	
 	for i in [slave, partner]:
-		if i.unique in ['Cali','Tisha','Emily']:
+		if i.unique in ['Cali','Tisha','Emily', 'Chloe']:
 			var sprite
 			var pos 
 			if action.code == 'kiss':

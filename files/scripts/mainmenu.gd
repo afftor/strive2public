@@ -35,10 +35,6 @@ func _ready():
 	if globals.rules.oldresize == true:
 		get_tree().set_screen_stretch(1, 1080, Vector2(1080,600))
 	charcreateinitiate()
-	#for i in get_node("TextureFrame/newgame/stage6").get_children():
-	#	if !i.get_name() in ['Label', 'lookconfirm','chardescript','virgin','name','surname','haircolor','eyecolor']:
-	#		i.connect("item_selected", self, 'appearanceselct'
-	
 
 var maintheme = globals.musicdict.maintheme
 
@@ -67,7 +63,6 @@ func _on_exit_pressed():
 
 
 func _on_start_pressed():
-	#get_node("TextureFrame/newgame1").set_hidden(false)
 	get_node("TextureFrame/newgame").set_hidden(false)
 	advancestage()
 
@@ -173,7 +168,7 @@ func _on_startrandom_pressed():
 		globals.state.mainquest = 26
 		globals.state.rank = 4
 		globals.state.sidequests.brothel = 2
-		globals.state.farm = 4
+		globals.state.farm = 3
 		globals.state.branding = 2
 		globals.state.portals.amberguard.enabled = true
 		globals.itemdict.youthingpot.unlocked = true
@@ -358,7 +353,7 @@ func _on_closeintro_pressed():
 var locationdict = {
 wimborn = {code = 'wimborn', name = 'Wimborn', descript = "Wimborn is the biggest local human city, its rich infrastructure and dense population allows even beginners to make out their living, as long as they are diligent.\n\n[color=aqua][center]Default Start — Recommended.[/center][/color]"},
 gorn = {code = 'gorn', name = 'Gorn', descript = "Gorn is the central Orcish city with hot climate and strict ruleship. There's no Mage's Order, but local slave market is never empty."},
-frostford = {code = 'frostford', name = 'Frostford', descript = "Frostford, located in cold, northern regions, mostly populated by Beastkin. Despite serene attitude of locals, it's covered in snow most of the time and limiting food sources makes it difficult to survive without reasonable preparations and trustworthy people.\n\n[color=aqua][center]In work[/center][/color] "},
+frostford = {code = 'frostford', name = 'Frostford', descript = "Frostford, located in cold, northern regions, mostly populated by Beastkin. Despite serene attitude of locals, it's covered in snow most of the time and limiting food sources makes it difficult to survive without reasonable preparations and trustworthy people."},
 }
 var locationarray = ['wimborn', 'gorn', 'frostford']
 
@@ -819,8 +814,6 @@ func _on_slavefinetune_pressed():
 func _on_slaveconfirm_pressed():
 	#Racebonus
 	get_tree().change_scene("res://files/Mansion.scn")
-	#var tempplayer = inst2dict(globals.player)
-	#globals.player = dict2inst(tempplayer)
 	globals.player.relatives.father = 0
 	globals.player.relatives.mother = 0
 	globals.player.ability.append('escape')
@@ -852,14 +845,14 @@ func _on_slaveconfirm_pressed():
 	#backgroundbonus
 	var tempnode = load("res://files/scripts/items.gd").new()
 	if background == 'mercenary':
-		for i in ['armorleather','weaponsword']:
+		for i in ['armorleather','armorleather','weaponsword','weaponsword']:
 			var tempitem = tempnode.createunstackable(i)
 			globals.state.unstackables[str(tempitem.id)] = tempitem
 	elif background == 'farmer':
-		globals.resources.gold += 200
-		globals.resources.food += 200
+		globals.resources.gold += 250
+		globals.resources.food += 250
 	elif background == 'noble':
-		globals.resources.gold += 200
+		globals.resources.gold += 300
 		for i in ['clothmaid','clothmaid']:
 			var tempitem = tempnode.createunstackable(i)
 			globals.state.unstackables[str(tempitem.id)] = tempitem
@@ -908,7 +901,7 @@ func _on_slaveconfirm_pressed():
 		for i in globals.state.portals.values():
 			if i.code != currentloc:
 				i.enabled = true
-		globals.resources.upgradepoints = 20
+		globals.resources.upgradepoints = 30
 		globals.resources.gold += 5000
 		globals.resources.food += 500
 		globals.resources.mana += 100
@@ -939,9 +932,9 @@ var hobbydescription = {
 
 
 var backgrounddict = {
-mercenary = {code = 'mercenary', name = "Mercenary", descript = "After spending your early days as a recruit and soldier for the local governor, you eventually left for better opportunities and new experience. After spending few years being a sellsword with limited opportunities, given lack of local conflicts, the news about your inheritance reached your ears and you decided, that at the very least new career option should be less of a hassle. \n\n[color=aqua]Start with a Leather Armor and a Sword[/color]"},
-farmer = {code = 'farmer', name = "Farmer", descript = "Your childhood has been spent on the family farm. After your father died, there was little option but to take his place and start taking care of it. Upon hearing news of your newfound inheritance, you being fed up with the rural routine and sold your possessions, and moved onto your new life. \n\n[color=aqua]Start with extra 200 gold and 200 food. [/color]"},
-noble = {code = 'noble', name = "Aristocrat", descript = "You were born a member of small and fairly poor aristocrat family. Despite having a relatively reasonable life, your home estate was constantly in danger from your overly ambitious relatives and strong neighbours. After you have found out about your inheritance, you decided to leave everything to your older brother and, with what small possessions you've kept, moved to find out if you can pick up a new opportunity entirely on your own. \n\n[color=aqua]Start with extra 200 gold and 2 Maid Uniforms.[/color] "},
+mercenary = {code = 'mercenary', name = "Mercenary", descript = "After spending your early days as a recruit and soldier for the local governor, you eventually left for better opportunities and new experience. After spending few years being a sellsword with limited opportunities, given lack of local conflicts, the news about your inheritance reached your ears and you decided, that at the very least new career option should be less of a hassle. \n\n[color=aqua]Start with 2 Leather Armors and 2 Swords[/color]"},
+farmer = {code = 'farmer', name = "Farmer", descript = "Your childhood has been spent on the family farm. After your father died, there was little option but to take his place and start taking care of it. Upon hearing news of your newfound inheritance, you being fed up with the rural routine and sold your possessions, and moved onto your new life. \n\n[color=aqua]Start with extra 250 gold and 250 food. [/color]"},
+noble = {code = 'noble', name = "Aristocrat", descript = "You were born a member of small and fairly poor aristocrat family. Despite having a relatively reasonable life, your home estate was constantly in danger from your overly ambitious relatives and strong neighbours. After you have found out about your inheritance, you decided to leave everything to your older brother and, with what small possessions you've kept, moved to find out if you can pick up a new opportunity entirely on your own. \n\n[color=aqua]Start with extra 300 gold and 2 Maid Uniforms.[/color] "},
 mage = {code = 'mage', name = "Researcher", descript = "Despite being born in a poor family, you've always shown a profound interest in complex subjects such as alchemy and magic. Thankfully, you've managed to enroll into small local school which gave you a significant opportunities by sharing their resources. After news about your inheritance reached you, it was a chance you couldn't let slip: you quickly packed your most valuable tools and moved out. \n\n[color=aqua]Start with an Alchemy Room and a Heal spell. [/color]"},
 }
 

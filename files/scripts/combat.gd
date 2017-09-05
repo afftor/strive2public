@@ -681,10 +681,13 @@ func hitchance(attacker, target):
 		hit = 'precise'
 	elif hitchance >= -5 && rand_range(0,100) < (hitchance+8) * 9:
 		hit = 'hit'
-	elif hitchance >= -10 && rand_range(0,100) > 75:
+	elif (hitchance >= -10 && rand_range(0,100) > 75):
 		hit = 'glance'
 	else:
-		hit = 'miss'
+		if rand_range(0,100) <= 5:
+			hit = 'glance'
+		else:
+			hit = 'miss'
 	return hit
 
 func powercompare(attackpower, targetpower):
@@ -873,10 +876,13 @@ func victory():
 	get_node("win").set_hidden(true)
 	for i in range(0, enemygroup.size()):
 		if enemygroup[i].state == 'escaped':
-			deads.append(i)
-	deads.invert()
-	for i in deads:
-		currentenemies.remove(i)
+			currentenemies[i].state = 'escaped'
+		else:
+			currentenemies[i].state = 'defeated'
+			#deads.append(i)
+#	deads.invert()
+#	for i in deads:
+#		currentenemies.remove(i)
 	get_tree().get_current_scene().get_node("explorationnode").enemygroup.units = currentenemies
 	clearpanels()
 	set_hidden(true)

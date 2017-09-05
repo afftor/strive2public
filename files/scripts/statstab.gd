@@ -27,29 +27,6 @@ func _on_training_pressed():
 	_on_skillname_item_selected(get_node("trainingpanel/skillname").get_selected())
 
 
-
-func _on_trainingstats_pressed():
-	var array = ['str_cur', 'agi_cur', 'maf_cur', 'end_cur']
-	var array2 = ['Strength', 'Agility', 'Magic', 'Endurance']
-	get_node("trainingstatspanel").set_hidden(false)
-	if slave.level.skillpoints <= 0:
-		get_node("trainingstatspanel/statconfirm").set_disabled(true)
-		get_node("trainingstatspanel/statconfirm").set_tooltip('No skillpoints available')
-	else:
-		get_node("trainingstatspanel/statconfirm").set_disabled(false)
-		get_node("trainingstatspanel/statconfirm").set_tooltip('')
-	get_node("trainingstatspanel/statoptionbutton").clear()
-	var counter = 0
-	for i in array:
-		var temp = i.replace('_cur', '_max')
-		if slave.stats[i] < slave.stats[temp]:
-			get_node("trainingstatspanel/statoptionbutton").add_item(array2[counter])
-		counter += 1
-	if get_node("trainingstatspanel/statoptionbutton").get_item_count() <= 0:
-		get_node("trainingstatspanel/statconfirm").set_disabled(true)
-
-
-
 func alphabeticalsortbycode(first, second):
 	if first.code > second.code:
 		return false
@@ -84,7 +61,7 @@ func _on_trainingabils_pressed():
 func chooseability(ability):
 	var text = ''
 	var confirmbutton = get_node("trainingabilspanel/abilityconfirm")
-	var dict = {'stats.str_cur': 'Strength', 'stats.agi_cur' : 'Agility', 'stats.maf_cur': 'Magic', 'level.value': 'Level'}
+	var dict = {'stats.str_cur': 'Strength', 'stats.agi_cur' : 'Agility', 'stats.maf_cur': 'Magic', 'level': 'Level'}
 	for i in get_node("trainingabilspanel/ScrollContainer/VBoxContainer").get_children():
 		if i.get_text() != ability.name:
 			i.set_pressed(false)
@@ -127,9 +104,6 @@ func chooseability(ability):
 	else:
 		text += '\n\n[color=green]Price to learn: ' + str(ability.price) + ' gold.[/color]' 
 	
-	if slave.level.skillpoints < 1:
-		confirmbutton.set_disabled(true)
-		text += slave.dictionary('\n$name has available skillpoints to learn this ability. ') 
 	
 	if ability.has('requiredspell') == true:
 		if globals.spelldict[ability.requiredspell].learned == false:
@@ -147,7 +121,7 @@ func _on_statconfirm_pressed():
 	var text = 's'+globals.decapitalize(get_node("trainingstatspanel/statoptionbutton").get_item_text(get_node("trainingstatspanel/statoptionbutton").get_selected()).substr(0, 3))
 	if text == 'smag':
 		text = 'smaf'
-	slave.level.skillpoints -= 1
+	slave.skillpoints -= 1
 	slave[text] += 1
 	get_node("trainingstatspanel").set_hidden(true)
 	get_parent()._on_slave_tab_visibility_changed()
@@ -170,7 +144,6 @@ func _on_abilityconfirm_pressed():
 		return
 	slave.ability.append(abil.code)
 	globals.resources.gold -= abil.price
-	slave.level.skillpoints -= 1
 	get_tree().get_current_scene().popup(slave.dictionary('$name has learned '+ abil.name))
 	_on_trainingabils_pressed()
 	get_node("trainingabilspanel").update()
@@ -186,43 +159,6 @@ func _on_trainskillpoints_pressed():
 
 
 
-
-
-func _on_spspin_value_changed( value ):
-	var text = ''
-	#var price = str(((100+slave.level.skillpointsbought*50) + value*50)*(((100+slave.level.skillpointsbought*50) + value*50)+50)/2)
-	var price = str((((1+slave.level.skillpointsbought+value)*(value+slave.level.skillpointsbought))*50+200*value)/2 -50*slave.level.skillpointsbought)
-	var days = str(value * 2)
-	text = 'Price: ' + price + '; Required Time: ' + days + ' days.' 
-	if value == 0:
-		text = ''
-	
-	get_node("trainingskillpointspanel/sptext").set_bbcode(text)
-
-#var start = slave.skillpointsbought + value
-#var firstpointprice = ((((1+slave.level.skillpointsbought) + value)*(value-lave.level.skillpointsbought))*50)/2
- 
-
-
-
-
-func _on_spconfirm_pressed():
-	var value = get_node("trainingskillpointspanel/spspin").get_value()
-	var price = (((1+slave.level.skillpointsbought+value)*(value+slave.level.skillpointsbought))*50+200*value)/2 - 50*slave.level.skillpointsbought
-	var days = value * 2
-	
-	if globals.resources.gold < price:
-		get_tree().get_current_scene().popup("You don't have enough gold.")
-	elif value == 0:
-		pass
-	else:
-		globals.resources.gold -= price
-		slave.away.duration = days
-		slave.away.at = 'training'
-		slave.level.skillpointsbought += value
-		slave.level.skillpoints += value
-		get_node("trainingskillpointspanel").set_hidden(true)
-		get_tree().get_current_scene().rebuild_slave_list()
 
 
 

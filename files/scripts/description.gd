@@ -226,7 +226,6 @@ static func getFeatures(slave):
 	var sametattoo = true
 	for i in slave.tattoo.values():
 		if slave.tattoo.face != i || slave.tattoo.face == 'none':
-			print(i)
 			sametattoo = false
 			break
 	if sametattoo == true:
@@ -429,7 +428,7 @@ static func getSlaveStatus(slave):
 	elif slave.stress <= 40:
 		text = text + '[color=#adff2f]$name looks slightly down and tired.[/color] '
 	elif slave.stress <= 60:
-		text = text + '[color=yellow] $name looks somewhat depressed.[/color] '
+		text = text + '[color=yellow]$name looks somewhat depressed.[/color] '
 	elif slave.stress <= 80:
 		text = text + '[color=#FFA500]$name looks really stressed.[/color] '
 	else:

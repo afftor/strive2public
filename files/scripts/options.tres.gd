@@ -120,8 +120,7 @@ func _on_cheatpasswordenter_pressed():
 		globals.state.supporter = true
 
 func _on_cheats_pressed():
-	get_node("TabContainer/Supporter section/cheatpanel").set_hidden(false)
-	get_node("TabContainer/Supporter section/cheatpanel").set_as_toplevel(true)
+	get_node("TabContainer/Supporter section/cheatpanel").popup()
 
 func _on_close_pressed():
 	get_node("TabContainer/Supporter section/cheatpanel").set_hidden(true)
@@ -251,6 +250,7 @@ func _on_soundslider_value_changed( value ):
 	get_node("TabContainer/Settings/soundslider/Label3").set_text("Music volume: " +str(value))
 	get_node("TabContainer/Settings/soundslider").set_val(value)
 	if get_tree().get_current_scene().find_node("music"):
+		get_tree().get_current_scene().get_node("music").set_paused(false)
 		get_tree().get_current_scene().get_node("music").set_volume(value/50)
 
 
@@ -300,3 +300,12 @@ func _on_aliseoption_item_selected( ID ):
 
 func _on_addupgradepoint_pressed():
 	globals.resources.upgradepoints += 1
+
+
+func _on_unlockgallery_pressed():
+	for i in globals.charactergallery.values():
+		i.unlocked = true
+		i.nakedunlocked = true
+		for k in i.scenes:
+			k.unlocked = true
+

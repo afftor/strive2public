@@ -190,10 +190,10 @@ oblivionpot = {
 	code = 'oblivionpot',
 	name = 'Oblivion Potion',
 	icon = load("res://files/images/items/oblivionpot.png"),
-	description = "The drinker of this potion experiences a form of targeted amnesia, retaining their personality but losing learned skills.",
+	description = "The drinker of this potion experiences a form of targeted amnesia, retaining their personality but clearing their fixations.\n\n[color=aqua]Resets level-up requirement.[/color]",
 	effect = 'oblivionpoteffect',
 	recipe = 'recipeoblivionpot',
-	cost = 500,
+	cost = 300,
 	type = 'potion',
 	toxicity = 50,
 	unlocked = false,
@@ -271,7 +271,7 @@ beautypot = {
 	description = "Clears the complexion and smoothes unsightly contours. Temporal effect. Administer with care. ",
 	effect = 'beautyeffect',
 	recipe = '',
-	cost = 75,
+	cost = 50,
 	type = 'potion',
 	toxicity = 10,
 	unlocked = false,
@@ -427,7 +427,7 @@ clothkimono = {
 	name = 'Kimono',
 	icon = load("res://files/images/items/clothkimono.png"),
 	description = "Brightly colored foreign clothes which are pretty popular for certain people.",
-	effect = [{type = 'onequip', effect = 'appeal', effectvalue = 10, descript = "Slightly increases beauty"}],
+	effect = [{type = 'onequip', effect = 'beauty', effectvalue = 10, descript = "Slightly increases beauty"}],
 	recipe = '',
 	reqs = null,
 	cost = 150,
@@ -552,7 +552,7 @@ underwearlacy = {
 underwearboxers = {
 	code = 'underwearboxers',
 	name = 'Silk Boxers',
-	icon = null,
+	icon = load("res://files/images/items/underwearboxers.png"),
 	description = "Fancy and comfortable male underwear available for people with moderate income.\n[color=green]Increases slave's luxury[/color]",
 	effect = [],
 	recipe = '',
@@ -622,7 +622,7 @@ armorplate = {
 armorrobe = {
 	code = 'armorrobe',
 	name = "Wizard's Robe",
-	icon = null,
+	icon = load("res://files/images/items/armorrobe.png"),
 	description = "Despite what might appear as a clunky piece of clothing, combat robes allow the wearer to hold and hide various items and potions for quick and unexpected use and don't restrict movement. Outer fabric is easily torn to prevent grabbing and tuckling and can be quickly repaired with magic later. ",
 	effect = [{type = 'onequip', effect = 'armor', effectvalue = 4, descript = "+4 Armor"},{type = 'onequip', effect = 'maf', effectvalue = 1, descript = "+1 Magic Affinity"}],
 	recipe = '',
@@ -692,7 +692,7 @@ accgoldring = {
 accslavecollar = {
 	code = 'accslavecollar',
 	name = 'A Leather Slave Collar',
-	icon = null,
+	icon = load("res://files/images/items/collar.png"),
 	description = "This leather collar is designed to fit tightly around the neck. It has rings to which bindings can be attached.\n",
 	effect = [{type = 'onendday', effect = 'slavecollareffect', descript = "Increases Obedience by the end of a day, also reduces the chance for a slave to escape"}],
 	recipe = '',
@@ -706,7 +706,7 @@ accslavecollar = {
 acchandcuffs = {
 	code = 'acchandcuffs',
 	name = 'A Pair Of Handcuffs',
-	icon = null,
+	icon = load("res://files/images/items/handcuffs.png"),
 	description = "These handcuffs are lightly padded but robust enough to secure even the most troublesome slave.\n",
 	effect = [{type = 'onendday', effect = 'handcuffeffect', descript = "Increases Obedience by the end of a day"}],
 	recipe = '',
@@ -974,13 +974,10 @@ func lactationpoteffect():
 func oblivionpoteffect():
 	var text = ''
 	if slave == globals.player:
-		text = slave.dictionary('$name drinks the oblivion potion, forgetting all $his learned skills as a result ')
+		text = slave.dictionary('$name drinks the oblivion potion, forgetting all $his fixations. ')
+		slave.level.reqs.clear()
 	else:
-		text = slave.dictionary('You drink the oblivion potion, forgetting all your learned skills as a result. ')
-	for i in slave.skills:
-		while slave.skills[i].value > 19:
-			slave.skills[i].value -= 20
-			slave.level.skillpoints += 1
+		text = slave.dictionary('You drink the oblivion potion, but it seems to not have any effect on you. ')
 	return text
 
 func misscariageeffect():
@@ -1209,7 +1206,7 @@ taintedessenceing = 1
 
 var recipeoblivionpot = {
 amnesiapot = 1,
-magicessenceing = 2,
+magicessenceing = 1,
 fluidsubstanceing = 2
 }
 

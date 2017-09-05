@@ -118,7 +118,9 @@ static func newslave(race, age, sex, origins = 'slave'):
 	work = 'rest',
 	ability = ['attack','protect'],
 	abilityactive = ['attack','protect'],
-	level = {xp=0, value=1, skillpoints = 1, skillpointsbought = 0},
+	level = 1,
+	xp = 0,
+	skillpoints = 2,
 	sleep = 'communal',
 	hairstyle = globals.assets.getRandomHairStyle(slave),
 	}
@@ -150,10 +152,6 @@ static func newslave(race, age, sex, origins = 'slave'):
 	slave.origins = ''
 	get_caste(slave, origins)
 	getsexactions(slave)
-#	var temp = ['cour_base', 'conf_base', 'wit_base', 'charm_base', 'str_base', 'agi_base', 'maf_base', 'end_base']
-#	for i in temp:
-#		temp2 = i.replace('_base', '_cur')
-#		slave.stats[temp2] = slave.stats[i]
 	slave.stats.health_max = 35 + slave.stats.end_cur*25
 	slave.health = 100
 	slave.memory = slave.origins
@@ -188,23 +186,24 @@ static func get_caste(slave, caste):
 		slave.charm -= rand_range(10,30)
 		slave.beautybase = rand_range(5,40)
 		slave.stats.obed_mod = 25
-		if rand_range(0,10) > 6:
-			spin = 1
+		if rand_range(0,10) >= 9:
+			slave.level += 1
 	elif caste == 'poor':
 		slave.cour -= rand_range(5,15)
 		slave.conf -= rand_range(5,15)
 		slave.wit -= rand_range(5,15)
 		slave.charm += rand_range(-5,15)
 		slave.beautybase = rand_range(10,50)
-		if rand_range(0,10) > 4:
-			spin = 2
+		if rand_range(0,10) >= 8:
+			slave.level += round(rand_range(0,2))
 	elif caste == 'commoner':
 		slave.cour += rand_range(-5,15)
 		slave.conf += rand_range(-5,15)
 		slave.wit += rand_range(-5,15)
 		slave.charm += rand_range(-5,20)
 		slave.beautybase = rand_range(25,65)
-		spin = 3
+		if rand_range(0,10) >= 7:
+			slave.level += round(rand_range(0,2))
 	elif caste == 'rich':
 		slave.cour += rand_range(5,20)
 		slave.conf += rand_range(5,25)
@@ -212,7 +211,8 @@ static func get_caste(slave, caste):
 		slave.charm += rand_range(-5,15)
 		slave.beautybase = rand_range(35,75)
 		slave.stats.obed_mod = -20
-		spin = 4
+		if rand_range(0,10) >= 5:
+			slave.level += round(rand_range(0,3))
 	elif caste == 'noble':
 		slave.cour += rand_range(10,30)
 		slave.conf += rand_range(10,30)
@@ -220,14 +220,19 @@ static func get_caste(slave, caste):
 		slave.charm += rand_range(10,30)
 		slave.beautybase = rand_range(45,95)
 		slave.stats.obed_mod = -40
-		spin = 5
+		if rand_range(0,10) >= 4:
+			slave.level += round(rand_range(0,3))
+	
+	slave.skillpoints += (slave.level-1)*3
+	spin = slave.skillpoints
+	array = ['sstr','sagi','smaf','send']
 	while spin > 0:
-		array = ['sstr','sagi','smaf','send']
-		
-		if rand_range(0,100) < 85:
-			
-			slave[array[rand_range(0, array.size())]] += 1
-			spin -= 1
+		var temp = array[rand_range(0, array.size())]
+		if rand_range(0,100) < 50 && slave[temp] < slave.stats[globals.maxstatdict[temp]]:
+			slave[temp] += 1
+			slave.skillpoints -= 1
+		spin -= 1
+	
 	slave.add_trait(globals.origins.traits('any'))
 	if slave.traits.has("Fickle") == true:
 		slave.sexuals.unlocks.append("swing")

@@ -9,7 +9,6 @@ var testslaveorigin = ['slave','poor','commoner','rich','noble']
 var currentslave = 0 setget currentslave_set
 var selectedslave = -1
 var texture = null
-var gameloaded = false
 
 signal animfinished
 
@@ -25,6 +24,8 @@ func _input(event):
 			anythingvisible = true
 			break
 	if event.is_echo() == true || event.is_pressed() == false || anythingvisible:
+		if event.is_action_pressed("escape") == true && get_node("tutorialnode").is_visible() == true:
+			get_node("tutorialnode").close()
 		return
 	if event.is_action_pressed("escape") == true && get_node("Navigation/menu").is_visible() == true:
 		if get_node("FinishDayPanel").is_hidden() == false:
@@ -36,6 +37,7 @@ func _input(event):
 			if get_node("menucontrol/menupanel/SavePanel").is_hidden() == false:
 				get_node("menucontrol/menupanel/SavePanel").set_hidden(true)
 			_on_closemenu_pressed()
+	
 	if event.is_action_pressed("F") && get_node("Navigation/end").is_visible():
 		_on_end_pressed()
 	elif event.is_action_pressed("Q") && get_node("buttonpanel").is_visible():
@@ -85,9 +87,15 @@ func _ready():
 		globals.player.ability.append('acidspit')
 		globals.player.abilityactive.append('escape')
 		globals.player.abilityactive.append('acidspit')
-		globals.player.level.skillpoints = 5
-		globals.player.level.value = 10
+		globals.player.skillpoints = 5
+		globals.player.level = 10
 		globals.state.supporter = true
+		for i in globals.charactergallery.values():
+			i.unlocked = true
+			i.nakedunlocked = true
+			for k in i.scenes:
+				k.unlocked = true
+		globals.charactergallery.fairy.unlocked = true
 		_on_new_slave_button_pressed()
 	rebuild_slave_list()
 	get_node("itemnode").main = get_tree().get_current_scene()
@@ -114,10 +122,73 @@ func _ready():
 	
 	if globals.showalisegreet == true:
 		alisegreet()
-	if globals.rules.gameloaded == false:
+	if globals.gameloaded == false && globals.developmode == false:
 		_on_buttonpanel_mouse_enter()
 		get_node("buttonpanel/leavenode").set_hidden(true)
 	#OS.set_window_fullscreen(true)
+	
+
+
+
+
+
+
+func _on_new_slave_button_pressed():
+	globals.resources.day = 2
+	for i in globals.state.tutorial:
+		globals.state.tutorial[i] = true
+	music_set('mansion')
+	var slave = globals.slavegen.newslave(testslaverace[rand_range(0,testslaverace.size())], testslaveage, testslavegender, testslaveorigin[rand_range(0,testslaveorigin.size())])
+	slave.obed += 200
+	slave.loyal += 100
+	slave.sexuals.affection = 200
+	slave.spec = 'tamer'
+	#slave.sexuals.unlocked = true
+	#for i in get_node("MainScreen/slave_tab/sexual").sexbuttons:
+	#	slave.sexuals.actions[i] = 0
+	slave.lust = 100
+	slave.tattoo.face = 'nature'
+	slave.attention = 70
+	slave.xp = 100
+	for i in ['conf','cour','charm','wit']:
+		slave[i] = 100
+	#slave.sexuals.unlocks.append('group')
+	#slave.sexuals.unlocks.append('swing')
+	slave.ability.append('debilitate')
+	for i in globals.state.portals.values():
+		i.enabled = true
+	for i in globals.spelldict.values():
+		i.learned = true
+	for i in globals.itemdict.values():
+		i.unlocked = true
+		if !i.type in ['gear','dummy']:
+			i.amount += 10
+	globals.slaves = slave
+	slave.stats.health_curr = 20
+	globals.state.reputation.wimborn = 50
+	globals.player.ability.append("mindread")
+	globals.player.abilityactive.append("mindread")
+	globals.player.ability.append('heal')
+	#globals.player.stats.maf_cur = 3
+	globals.state.branding = 2
+	globals.resources.gold += 100000
+	globals.resources.food += 1000
+	globals.resources.mana += 50
+	globals.player.energy = 100
+	globals.state.reputation.frostford = 30
+	globals.resources.upgradepoints += 100
+	for i in ['armorchain','weaponclaymore','clothpet','clothninja']:
+		var tmpitem = get_node("itemnode").createunstackable(i)
+		globals.state.unstackables[str(tmpitem.id)] = tmpitem
+	globals.state.sidequests.brothel = 2
+	globals.state.sidequests.chloe = 8
+	globals.state.rank = 3
+	globals.state.mainquest = 2
+	globals.state.farm = 3
+	globals.state.mansionupgrades.mansionlab = 1
+	globals.state.mansionupgrades.mansionalchemy = 1
+
+
 
 func mansion():
 	_on_mansion_pressed()
@@ -174,7 +245,7 @@ func _on_assignbutton_pressed():
 		text = 'You will be accompanied by:\n'
 	for i in globals.state.playergroup:
 		group = globals.state.findslave(i)
-		text = text + group.name_long() + ', ' + group.race +', Level: ' +  str(group.level.value) + ', Health: '+str(round(group.health)) + ", Energy: "+ str(round(group.energy))+  '\n'
+		text = text + group.name_long() + ', ' + group.race +', Level: ' +  str(group.level) + ', Health: '+str(round(group.health)) + ", Energy: "+ str(round(group.energy))+  '\n'
 	get_node("groupselectnode/grouppanel/grouplabel").set_bbcode(text)
 
 func addtogroup(slave, button):
@@ -190,68 +261,6 @@ func _on_closegroup_pressed():
 	_on_mansion_pressed()
 
 
-func _on_new_slave_button_pressed():
-	globals.resources.day = 2
-	for i in globals.state.tutorial:
-		globals.state.tutorial[i] = true
-	music_set('mansion')
-	var slave = globals.slavegen.newslave(testslaverace[rand_range(0,testslaverace.size())], testslaveage, testslavegender, testslaveorigin[rand_range(0,testslaveorigin.size())])
-	slave.obed += 200
-	slave.loyal += 100
-	slave.sexuals.affection = 200
-	slave.spec = 'tamer'
-	slave.sexuals.unlocked = true
-	#for i in get_node("MainScreen/slave_tab/sexual").sexbuttons:
-	#	slave.sexuals.actions[i] = 0
-	slave.lust = 100
-	slave.sstr = 5
-	slave.sagi = 5
-	slave.smaf = 5
-	slave.send = 10
-	slave.tattoo.face = 'nature'
-	slave.attention = 70
-	slave.level.value = 10
-	for i in ['conf','cour','charm','wit']:
-		slave[i] = 100
-	#slave.sexuals.unlocks.append('group')
-	#slave.sexuals.unlocks.append('swing')
-	slave.level.skillpointsbought = 1
-	slave.ability.append('debilitate')
-	for i in globals.state.portals.values():
-		i.enabled = true
-	for i in slave.skills:
-		slave.skills[i].value = 100
-	for i in globals.spelldict.values():
-		i.learned = true
-	for i in globals.itemdict.values():
-		i.unlocked = true
-		if !i.type in ['gear','dummy']:
-			i.amount += 10
-	globals.slaves = slave
-	slave.stats.health_curr = 20
-	globals.state.reputation.wimborn = 50
-	globals.player.ability.append("mindread")
-	globals.player.abilityactive.append("mindread")
-	globals.player.ability.append('heal')
-	globals.player.stats.maf_cur = 3
-	globals.player.level.value = 10
-	globals.player.level.skillpoints = 10
-	globals.state.branding = 2
-	globals.resources.gold += 100000
-	globals.resources.food += 1000
-	globals.resources.mana += 5
-	globals.player.energy = 100
-	globals.state.reputation.frostford = 30
-	for i in ['armorchain','weaponclaymore','clothpet','clothninja']:
-		var tmpitem = get_node("itemnode").createunstackable(i)
-		globals.state.unstackables[str(tmpitem.id)] = tmpitem
-	globals.state.sidequests.brothel = 2
-	globals.state.sidequests.emily = 14
-	globals.state.rank = 3
-	globals.state.mainquest = 33
-	globals.state.farm = 3
-	globals.state.mansionupgrades.mansionlab = 1
-	globals.state.mansionupgrades.mansionalchemy = 0
 
 func getridof():
 	if globals.state.companion == currentslave:
@@ -375,9 +384,6 @@ func openslavetab(slave):
 	get_node("MainScreen/slave_tab").set_hidden(true)
 	get_node("MainScreen/slave_tab").set_hidden(false)
 
-func updateslaveinfo(slave):
-	pass
-
 func _on_prisonbutton_pressed():
 	showprisoners = !showprisoners
 	rebuild_slave_list()
@@ -455,7 +461,6 @@ func _on_end_pressed():
 		if slave.away.duration == 0:
 			if slave.sleep != 'jail' && slave.sleep != 'farm':
 				if slave.work in ['rest','forage','hunt','cooking','library','nurse','maid','storewimborn','artistwimborn','assistwimborn','whorewimborn','escortwimborn','fucktoywimborn', 'lumberer', 'ffprostitution','guardian', 'research', 'slavecatcher']:
-					#print(slave.work)
 					if slave.work != 'rest' && slave.energy < 30:
 						text = "$name had no energy to fulfill $his duty and had to take a rest. \n"
 						slave.health = 10
@@ -703,26 +708,8 @@ func _on_end_pressed():
 				if slave.effects.has('captured') == true:
 					slave.add_effect(globals.effectdict.captured, true)
 				slave.health = -rand_range(0,slave.stats.health_max/6)
-			if slave.level.skillpoints == -1:
-				slave.level.skillpoints = 0
-			if slave.level.xp >= 100:
-				slave.level.xp -= 100
-				slave.level.value += 1
-				if slave.level.value < 6:
-					slave.level.skillpoints += 1
-					text0.set_bbcode(text0.get_bbcode() + slave.dictionary("[color=green]$name has earned a skillpoint.[/color] \n"))
-				elif slave.level.value >= 6 && int(slave.level.value)%2 == 0:
-					slave.level.skillpoints += 1
-					text0.set_bbcode(text0.get_bbcode() + slave.dictionary("[color=green]$name has earned a skillpoint.[/color] \n"))
-				elif slave.level.value >= 15 && int(slave.level.value)%3 == 0.0:
-					slave.level.skillpoints += 1
-					text0.set_bbcode(text0.get_bbcode() + slave.dictionary("[color=green]$name has earned a skillpoint.[/color] \n"))
-				elif slave.level.value >= 23 && int(slave.level.value)%4 == 0.0:
-					slave.level.skillpoints += 1
-					text0.set_bbcode(text0.get_bbcode() + slave.dictionary("[color=green]$name has earned a skillpoint.[/color] \n"))
-				elif slave.level.value >= 35 && int(slave.level.value)%5 == 0.0:
-					slave.level.skillpoints += 1
-					text0.set_bbcode(text0.get_bbcode() + slave.dictionary("[color=green]$name has earned a skillpoint.[/color] \n"))
+			if slave.skillpoints == -1:
+				slave.skillpoints = 0
 			if slave.attention < 150 && slave.sleep != 'your':
 				slave.attention += rand_range(5,7)
 			if slave.preg.duration > 0:
@@ -793,7 +780,7 @@ func _on_end_pressed():
 			headgirlconf = 100
 		for i in globals.slaves:
 			if i != headgirl && i.traits.has('Loner') == false && i.away.duration < 1 && i.sleep != 'jail' && i.sleep != 'farm':
-				headgirl.level.xp += 3
+				headgirl.xp += 3
 				if i.obed < 65 && globals.state.headgirlbehavior == 'strict':
 					var obedbase = i.obed
 					i.obed += (-(i.cour/15) + headgirlconf/3)
@@ -813,7 +800,7 @@ func _on_end_pressed():
 			jailerconf = 100
 		for slave in globals.slaves:
 			if slave.sleep == 'jail':
-				jailer.level.xp += 5
+				jailer.xp += 5
 				slave.health = round(jailer.wit/10)
 				slave.obed += round(jailer.charm/8)
 				if slave.effects.has('captured') == true && jailerconf-30 >= rand_range(0,100):
@@ -877,8 +864,6 @@ func _on_end_pressed():
 		if globals.guildslaves[i].size() < 6 && rand_range(0,100) > 25:
 			get_node("outside").newslaveinguild(1, i)
 	
-	if globals.state.sidequests.dolin == 10 && int(globals.resources.day)%3 == 0.0:
-		globals.state.sidequests.dolin = 11
 	
 	if globals.state.sebastianorder.duration > 0:
 		globals.state.sebastianorder.duration -= 1
@@ -920,10 +905,10 @@ func _on_end_pressed():
 	if int(globals.resources.day)%5 == 0.0:
 		rebuildrepeatablequests()
 	
-	if globals.player.level.xp >= 100:
-		globals.player.level.xp -= 100
-		globals.player.level.value += 1
-		globals.player.level.skillpoints += 1
+	if globals.player.xp >= 100:
+		globals.player.xp -= 100
+		globals.player.value += 1
+		globals.player.skillpoints += 1
 		text0.set_bbcode(text0.get_bbcode() + '[color=green]You have leveled up and earned an additional skillpoint. [/color]\n')
 	
 	if globals.player.preg.duration > 10:
@@ -935,17 +920,17 @@ func _on_end_pressed():
 	#####         Results
 	if start_gold < globals.resources.gold:
 		results = 'good'
-		text = 'Your residents earned ' + str(globals.resources.gold - start_gold) + ' gold by the end of day. \n'
+		text = 'Your residents earned [color=yellow]' + str(globals.resources.gold - start_gold) + '[/color] gold by the end of day. \n'
 	elif start_gold == globals.resources.gold:
 		results = 'med'
 		text = "By the end of day your gold reserve didn't change. "
 	else:
 		results = 'bad'
-		text = "By the end of day your gold reserve shrunk by " + str(start_gold - globals.resources.gold) + " pieces. "
+		text = "By the end of day your gold reserve shrunk by [color=yellow]" + str(start_gold - globals.resources.gold) + "[/color] pieces. "
 	if start_food > globals.resources.food:
-		text = text + 'Your food storage shrank by ' + str(start_food - globals.resources.food) + ' units of food.\n'
+		text = text + 'Your food storage shrank by [color=aqua]' + str(start_food - globals.resources.food) + '[/color] units of food.\n'
 	else:
-		text = text + 'Your food storage grew by ' + str(globals.resources.food - start_food) + ' units of food.\n'
+		text = text + 'Your food storage grew by [color=aqua]' + str(globals.resources.food - start_food) + '[/color] units of food.\n'
 	text0.set_bbcode(text0.get_bbcode() + text)
 	if deads_array.size() > 0:
 		results = 'worst'
@@ -955,7 +940,7 @@ func _on_end_pressed():
 				globals.state.companion = -1
 			globals.slaves.remove(i.number)
 			text0.set_bbcode(text0.get_bbcode() + i.reason)
-	text0.set_bbcode(text0.get_bbcode()+str(round(gold_consumption))+' gold was used for various tasks.\n'  )
+	text0.set_bbcode(text0.get_bbcode()+ "[color=yellow]" +str(round(gold_consumption))+'[/color] gold was used for various tasks.\n'  )
 	get_node("FinishDayPanel/FinishDayScreen").set_current_tab(0)
 	aliseresults = results
 	if lacksupply == true:
@@ -1101,8 +1086,8 @@ func forage(slave):
 	food = round(min(food, (slave.sstr+slave.send)*20+25))
 	if slave.spec == 'ranger':
 		food *= 1.25
-	text += '$He brought back '+ str(food) + ' units of food.\n'
-	slave.level.xp += food/5
+	text += '$He brought back [color=aqua]'+ str(food) + '[/color] units of food.\n'
+	slave.xp += food/5
 	var dict = {text = text, food = food}
 	
 	return dict
@@ -1118,10 +1103,10 @@ func hunt(slave):#agility, strength, endurance, courage
 	if slave.spec in ['ranger','trapper']:
 		food *= 1.25
 	globals.itemdict.supply.amount += round(food/12)
-	slave.level.xp += food/7
+	slave.xp += food/7
 	slave.cour += rand_range(0,2)
 	food = min(food, (slave.sstr+slave.send)*30+40)
-	text += "In the end $he brought " + str(round(food)) + " food and " + str(round(food/12)) + " supplies. \n"
+	text += "In the end $he brought [color=aqua]" + str(round(food)) + "[/color] food and [color=yellow]" + str(round(food/12)) + "[/color] supplies. \n"
 	if slave.smaf * 3 + 3 >= rand_range(0,100):
 		text += "$name has found beastial essence. \n"
 		globals.itemdict.bestialessenceing.amount += 1
@@ -1133,9 +1118,9 @@ func library(slave):
 	var text = "$name spends $his time studying in library.\n"
 	slave.wit += rand_range(1,3)
 	if slave.race == 'Gnome':
-		slave.level.xp += max((30 + 5*globals.state.mansionupgrades.mansionlibrary + slave.wit/12) - slave.level.value*3,0)
+		slave.xp += max((30 + 5*globals.state.mansionupgrades.mansionlibrary + slave.wit/12) - slave.level*3,0)
 	else:
-		slave.level.xp += max((15 + 5*globals.state.mansionupgrades.mansionlibrary + slave.wit/12) - slave.level.value*2,0)
+		slave.xp += max((15 + 5*globals.state.mansionupgrades.mansionlibrary + slave.wit/12) - slave.level*2,0)
 	
 	var dict = {text = text}
 	return dict
@@ -1150,7 +1135,7 @@ func nurse(slave):
 				i.health = slave.wit/25+slave.smaf*2
 			else:
 				i.health = slave.wit/35+slave.smaf*3
-			slave.level.xp += rand_range(1,3)
+			slave.xp += rand_range(1,3)
 	
 	var dict = {text = text}
 	return dict
@@ -1159,7 +1144,7 @@ func cooking(slave):
 	var text = ''
 	var gold = 0
 	var food = 0
-	slave.level.xp += globals.slaves.size()
+	slave.xp += globals.slaves.size()
 	if globals.resources.food < 200:
 		if globals.resources.gold >= 100:
 			text = '$name went to purchase groceries and bought 200 units of food.\n'
@@ -1175,8 +1160,8 @@ func cooking(slave):
 func lumberer(slave):
 	var text = "$name spent the day in the Frostford woods, cutting and chopping trees. \n"
 	var gold = max(slave.sstr*rand_range(4,8) + slave.send*rand_range(4,8),5)
-	slave.level.xp += gold/4
-	text += "In the end $he made " + str(round(gold)) + " gold\n"
+	slave.xp += gold/4
+	text += "In the end $he made [color=yellow]" + str(round(gold)) + "[/color] gold\n"
 	var dict = {text = text, gold = gold}
 	return dict
 
@@ -1200,7 +1185,7 @@ func ffprostitution(slave):
 	for i in jobactions:
 		if slave.sexuals.unlocks.has(i):
 			counter += 1
-	gold = rand_range(1,5) + slave.charm/4 + slave.send*15 + slave.face.beauty/5 + counter*5
+	gold = rand_range(1,5) + slave.charm/4 + slave.send*15 + slave.beauty/5 + counter*5
 	if slave.traits.has('Sex-crazed') == true:
 		slave.stress += -counter*4
 		gold = gold*1.2
@@ -1219,8 +1204,8 @@ func ffprostitution(slave):
 	if slave.spec == 'geisha':
 		gold = gold*1.25
 	gold = round(gold)
-	slave.level.xp += gold/5
-	text += "By the end of the day $he earned "+ str(gold) + " gold.\n"
+	slave.xp += gold/5
+	text += "By the end of the day $he earned [color=yellow]"+ str(gold) + "[/color] gold.\n"
 	
 	var dict = {text = text, gold = gold}
 	return dict
@@ -1228,8 +1213,8 @@ func ffprostitution(slave):
 func guardian(slave):
 	var text = "$name spent the day in Gorn, patrolling the city as part of the guard.\n"
 	var gold = max(slave.sstr*rand_range(5,10) + slave.cour/4,5)
-	slave.level.xp += gold/6
-	text += "In the end $he made " + str(round(gold)) + " gold\n"
+	slave.xp += gold/6
+	text += "In the end $he made [color=yellow]" + str(round(gold)) + "[/color] gold\n"
 	slave.loyal -= 1
 	var dict = {text = text, gold = gold}
 	return dict
@@ -1237,8 +1222,8 @@ func guardian(slave):
 func research(slave):
 	var text = "$name spent day by indulging $himself in magic experiments. \n"
 	var gold = max(slave.send*rand_range(6,12) + slave.smaf*rand_range(7,12),5)
-	slave.level.xp += gold/6
-	text += "In the end $he made " + str(round(gold)) + " gold\n"
+	slave.xp += gold/6
+	text += "In the end $he made [color=yellow]" + str(round(gold)) + "[/color] gold\n"
 	slave.stress += rand_range(15,30)
 	slave.health = -rand_range(2,4)
 	var dict = {text = text, gold = gold}
@@ -1247,8 +1232,8 @@ func research(slave):
 func slavecatcher(slave):
 	var text = "$name spent day helping Gorn's slavers to acquire and tranport slaves. \n"
 	var gold = slave.sstr*rand_range(5,10) + slave.sagi*rand_range(5,10) + slave.cour/4
-	slave.level.xp += gold/6
-	text += "In the end $he made " + str(round(gold)) + " gold\n"
+	slave.xp += gold/6
+	text += "In the end $he made [color=yellow]" + str(round(gold)) + "[/color] gold\n"
 	slave.stress += rand_range(5,15)
 	slave.loyal -= rand_range(1,3)
 	var dict = {text = text, gold = gold}
@@ -1282,10 +1267,10 @@ func storewimborn(slave):
 		gold = ((gold-supplysold*supplyprice)*0.5) + (supplysold*supplyprice)
 	globals.itemdict.supply.amount -= supplysold
 	if supplysold > 0:
-		text += "$He managed to sell " + str(supplysold) + " units of supplies. "
+		text += "$He managed to sell [color=yellow]" + str(supplysold) + "[/color] units of supplies. "
 	slave.metrics.goldearn += gold
 	gold = round(gold)
-	slave.level.xp += gold/4
+	slave.xp += gold/4
 	slave.stress += rand_range(5,10)
 	text = text + "$He earned "+str(gold)+" gold by the end of day.\n"
 	var dict = {text = text, gold = gold, supplies = -supplysold}
@@ -1298,9 +1283,9 @@ func assistwimborn(slave):
 	gold = rand_range(1,5) + slave.stats.maf_cur*7 + slave.wit/1.4 + min(globals.state.reputation.wimborn/1.5,50)
 	gold = round(gold)
 	slave.metrics.goldearn += gold
-	slave.level.xp += gold/5
+	slave.xp += gold/5
 	slave.stress += rand_range(5,10)
-	text = text + "$He earned "+str(gold)+" gold by the end of day.\n"
+	text = text + "$He earned [color=yellow]"+str(gold)+"[/color] gold by the end of day.\n"
 	var dict = {text = text, gold = gold}
 	return dict
 
@@ -1308,7 +1293,7 @@ func artistwimborn(slave):
 	var text
 	var gold
 	text ="$name worked in town as a public entertainer.\n"
-	gold = rand_range(1,5) + slave.cour/4 + slave.charm/3 + slave.sagi*15 + slave.face.beauty/3.5
+	gold = rand_range(1,5) + slave.cour/4 + slave.charm/3 + slave.sagi*15 + slave.beauty/3.5
 	if slave.race == 'Nereid':
 		gold = gold*1.25
 	if slave.traits.has('Pretty voice') == true:
@@ -1317,8 +1302,8 @@ func artistwimborn(slave):
 		gold = gold*0.7
 	gold = round(gold)
 	slave.stress += rand_range(10,15)
-	slave.level.xp += gold/7
-	text += "$He earned "+str(gold)+" gold by the end of day.\n"
+	slave.xp += gold/7
+	text += "$He earned [color=yellow]"+str(gold)+"[/color] gold by the end of day.\n"
 	var dict = {text = text, gold = gold}
 	return dict
 
@@ -1342,7 +1327,7 @@ func whorewimborn(slave):
 	for i in jobactions:
 		if slave.sexuals.unlocks.has(i):
 			counter += 1
-	gold = rand_range(1,5) + slave.charm/4 + slave.send*15 + slave.face.beauty/5 + counter*7
+	gold = rand_range(1,5) + slave.charm/4 + slave.send*15 + slave.beauty/5 + counter*7
 	if slave.traits.has('Sex-crazed') == true:
 		slave.stress += -counter*4
 		gold = gold*1.2
@@ -1373,8 +1358,8 @@ func whorewimborn(slave):
 	if slave.spec == 'geisha':
 		gold = gold*1.25
 	gold = round(gold)
-	slave.level.xp += gold/5
-	text += "By the end of the day $he earned "+ str(gold) + " gold.\n"
+	slave.xp += gold/5
+	text += "By the end of the day $he earned [color=yellow]"+ str(gold) + "[/color] gold.\n"
 	
 	var dict = {text = text, gold = gold}
 	return dict
@@ -1401,7 +1386,7 @@ func escortwimborn(slave):
 	slave.lust = rand_range(-10,-20)
 	if rand_range(1,10) > 7:
 		impregnation(slave)
-	gold = rand_range(15,35) + slave.charm/1.8 + slave.conf/3 + slave.face.beauty/3 + min(globals.state.reputation.wimborn,60)
+	gold = rand_range(15,35) + slave.charm/1.8 + slave.conf/3 + slave.beauty/3 + min(globals.state.reputation.wimborn,60)
 	if slave.traits.has('Pretty voice') == true:
 		gold = gold*1.2
 	elif slave.traits.has('Foul Mouth') == true:
@@ -1411,7 +1396,7 @@ func escortwimborn(slave):
 	if slave.spec == 'geisha':
 		gold = gold*1.25
 	gold = round(gold)
-	slave.level.xp += gold/6
+	slave.xp += gold/6
 	slave.metrics.randompartners += round(rand_range(1,2))
 	slave.metrics.sex += round(rand_range(1,2))
 	if slave.sexuals.unlocks.find('penetration') && slave.pussy.has == true:
@@ -1420,7 +1405,7 @@ func escortwimborn(slave):
 		slave.metrics.anal += round(rand_range(1,3))
 	if slave.sexuals.unlocks.find('oral') >= 0:
 		slave.metrics.oral += round(rand_range(0,2))
-	text += "By the end of the day $he earned "+ str(gold) + " gold.\n"
+	text += "By the end of the day $he earned [color=yellow]"+ str(gold) + "[/color] gold.\n"
 	
 	var dict = {text = text, gold = gold}
 	return dict
@@ -1445,7 +1430,7 @@ func fucktoywimborn(slave):
 	for i in jobactions:
 		if slave.sexuals.unlocks.has(i) :
 			counter += 1
-	gold = rand_range(5,10) + slave.cour/2.3 + slave.send*15 + slave.face.beauty/5 + counter*4
+	gold = rand_range(5,10) + slave.cour/2.3 + slave.send*15 + slave.beauty/5 + counter*4
 	if slave.traits.has('Sex-crazed') == true:
 		slave.stress += -counter*4
 		gold = gold*1.2
@@ -1490,15 +1475,15 @@ func fucktoywimborn(slave):
 	if slave.spec == 'nympho':
 		gold = gold*1.25
 	gold = round(gold)
-	slave.level.xp += gold/6
-	text += "By the end of the day $he earned " + str(gold) + " gold.\n"
+	slave.xp += gold/6
+	text += "By the end of the day $he earned [color=yellow]" + str(gold) + "[/color] gold.\n"
 	var dict = {text = text, gold = gold}
 	return dict
 
 func maid(slave):
 	var text = ""
 	var temp = 5.5 + (slave.sagi+slave.send)*6
-	slave.level.xp += temp/4
+	slave.xp += temp/4
 	globals.state.condition = temp
 	text = "$name spent the day cleaning around the mansion. \n"
 	var dict = {text = text}
@@ -1600,8 +1585,11 @@ func dialoguebuttons(array, destination, counter):
 	newbutton.set_hidden(false)
 	if typeof(array) == TYPE_DICTIONARY:
 		newbutton.set_text(array.text)
-		newbutton.connect("pressed", destination, array.function, [array.args])
-		if array.has('disabled'):
+		if array.has('args'):
+			newbutton.connect("pressed", destination, array.function, [array.args])
+		else:
+			newbutton.connect("pressed", destination, array.function)
+		if array.has('disabled') && array.disabled == true:
 			newbutton.set_disabled(true)
 		if array.has('tooltip'):
 			newbutton.set_tooltip(array.tooltip)
@@ -1773,6 +1761,8 @@ var backgrounddict = globals.backgrounds
 
 func background_set(text):
 	var player = get_node("screenchange/AnimationPlayer")
+	if player.is_playing() == true:
+		return
 	if OS.get_name() != "HTML5" && globals.rules.fadinganimation == true:
 		if get_node("TextureFrame").get_texture() == backgrounddict[text]:
 			player.play("wait")
@@ -1786,11 +1776,14 @@ func background_set(text):
 	get_node("TextureFrame").set_texture(texture)
 	if OS.get_name() != "HTML5" && globals.rules.fadinganimation == true:
 		player.play("removeblack")
+		#get_node("screenchange").set_hidden(true)
 
 var musicdict = globals.musicdict
 
 func music_set(text):
 	var music = get_node("music")
+	if music.is_paused() == true && globals.rules.musicvol > 0:
+		music.set_paused(false)
 	if globals.rules.musicvol == 0 || music.get_meta("currentsong") == text:
 		return
 	var path = ''
@@ -1883,7 +1876,7 @@ func _on_mansion_pressed():
 	else:
 		get_node("MainScreen/mansion/headgirl").set_hidden(true)
 		get_node("MainScreen/mansion/slavelist").set_hidden(true)
-	if globals.state.farm == 3:
+	if globals.state.farm >= 3:
 		get_node("buttonpanel/VBoxContainer/farm").set_disabled(false)
 	else:
 		get_node("buttonpanel/VBoxContainer/farm").set_disabled(true)
@@ -2004,28 +1997,14 @@ func _on_alchemy_pressed():
 
 var potselected
 
-func dolinalchemy(state=globals.state.sidequests.dolin):
-	globals.state.sidequests.dolin = state
-	if globals.state.sidequests.dolin == 17:
-		globals.itemdict.amnesiapot.amount -= 1
-	elif globals.state.sidequests.dolin == 18:
-		globals.itemdict.aphrodisiac.amount -= 1
-	close_dialogue()
-	_on_mansion_pressed()
-	popup('After half-hour you finish preparations and now can return back to Dolin.')
+func chloealchemy():
+	globals.events.chloealchemy()
 
 func _on_alchemypanel_visibility_changed():
 	if get_node("MainScreen/mansion/alchemypanel").is_visible() == false:
 		return
-	if globals.state.sidequests.dolin == 17 && globals.state.mansionupgrades.mansionalchemy >= 1:
-		var buttons = []
-		var text = 'As you prepare to make the required antidote, your experience says you can take advantage of the situation. Perhaps you could try adding some additional potion for differnt effect, providing you have them. '
-		buttons.append(['Make an antidote for Dolin','dolinalchemy',18])
-		if globals.itemdict.amnesiapot.amount >= 1:
-			buttons.append(['Mix antidote with amnesia potion','dolinalchemy',19])
-		if globals.itemdict.aphrodisiac.amount >= 1:
-			buttons.append(['Replace antidote with high grade stimulant','dolinalchemy',20])
-		dialogue(true, self, text, buttons)
+	if globals.state.sidequests.chloe == 8 && globals.state.mansionupgrades.mansionalchemy >= 1:
+		globals.events.chloealchemy()
 	potselected = ''
 	if get_node("MainScreen/mansion/alchemypanel").is_hidden() == true:
 		return
@@ -2208,13 +2187,13 @@ var mainquestdict = {
 '35':"Return to Theron.",
 '36': "You have finished currently available quest line. ",
 }
-var dolinquestdict = {
-'8':"Dolin from Shaliq wants you to get 25 mana and visit her to trade it for a spell.",
-'12':"Dolin seems to be missing from her hut. You should try looking for her in the woods.",
-'17':"Dolin asked you to brew antidote for her.",
-'18':"Return with potion to [color=green]Dolin in Shaliq[/color].",
-'19':"Return with potion to [color=green]Dolin in Shaliq[/color].",
-'20':"Return with potion to [color=green]Dolin in Shaliq[/color]."
+var chloequestdict = {
+'3':"Chloe from Shaliq wants you to get 25 mana and visit her to trade it for a spell.",
+'5':"Visit Chloe in the Shaliq.",
+'6':"Chloe seems to be missing from her hut. You should try looking for her in the woods.",
+'7':"Check on Chloe's condition in Shaliq. ",
+'8':"Chloe asked you to brew an antidote for her. ",
+'9':"Return with potion to [color=green]Chloe in Shaliq[/color].",
 }
 var caliquestdict = {
 '11':"Talk to Cali about her parents",
@@ -2264,8 +2243,8 @@ func _on_questnode_visibility_changed():
 		sidetext.set_bbcode(sidetext.get_bbcode() + "—To let your slaves work at prostitution, you'll have to bring [color=green]Elf slave[/color] to the brothel. \n\n")
 	if globals.state.farm == 2:
 		sidetext.set_bbcode(sidetext.get_bbcode()+ "—Sebastian proposed you to purchase to set up your own human farm for 1000 gold.\n\n")
-	if dolinquestdict.has(str(globals.state.sidequests.dolin)):
-		sidetext.set_bbcode(sidetext.get_bbcode() + "—"+ dolinquestdict[str(globals.state.sidequests.dolin)]+"\n\n")
+	if chloequestdict.has(str(globals.state.sidequests.chloe)):
+		sidetext.set_bbcode(sidetext.get_bbcode() + "—"+ chloequestdict[str(globals.state.sidequests.chloe)]+"\n\n")
 	if caliquestdict.has(str(globals.state.sidequests.cali)):
 		sidetext.set_bbcode(sidetext.get_bbcode() + "—"+ caliquestdict[str(globals.state.sidequests.cali)]+"\n\n")
 	if emilyquestdict.has(str(globals.state.sidequests.emily)):
@@ -2569,8 +2548,8 @@ func _on_selfbutton_pressed():
 	var text2 = ''
 	var slave = globals.player
 	slave.stats.health_max = 35 + slave.stats.end_cur*20
-	text += 'Level: ' + str(slave.level.value) + ', XP: ' + str(slave.level.xp) + ', Health: '+str(round(slave.stats.health_cur)) + '/' + str(slave.stats.health_max) +', Energy: ' +str(round(slave.stats.energy_cur)) + '/' + str(slave.stats.energy_max)  +  '. \n'
-	text += 'Unspent skillpoints: [color=yellow]' + str(slave.level.skillpoints) + '[/color]\n'
+	text += 'Level: ' + str(slave.level) + ', XP: ' + str(slave.xp) + ', Health: '+str(round(slave.stats.health_cur)) + '/' + str(slave.stats.health_max) +', Energy: ' +str(round(slave.stats.energy_cur)) + '/' + str(slave.stats.energy_max)  +  '. \n'
+	text += 'Unspent skillpoints: [color=yellow]' + str(slave.skillpoints) + '[/color]\n'
 	var dict = {
 	0: "You do not belong in an Order.",
 	1: "Neophyte",
@@ -2602,7 +2581,7 @@ func _on_selfbutton_pressed():
 			slave.imageportait = null
 	
 	
-	if globals.player.level.skillpoints <= 0:
+	if globals.player.skillpoints <= 0:
 		get_node("MainScreen/mansion/selfinspect/selfstatupgrade").set_disabled(true)
 		get_node("MainScreen/mansion/selfinspect/selfabilityupgrade").set_disabled(true)
 	else:
@@ -2640,48 +2619,48 @@ func _on_selfstatupgrade_pressed():
 	get_node("MainScreen/mansion/selfinspect/selfstatpanel").set_hidden(false)
 
 func _on_strup_pressed():
-	if globals.player.level.skillpoints >= 1 && globals.player.stats.str_cur < globals.player.stats.str_max:
-		globals.player.level.skillpoints -= 1
+	if globals.player.skillpoints >= 1 && globals.player.stats.str_cur < globals.player.stats.str_max:
+		globals.player.skillpoints -= 1
 		globals.player.sstr += 1
 		_on_selfbutton_pressed()
-		popup('Your Strength has increased')
+		popup('Your Strength has increased.')
 	elif globals.player.stats.str_cur >= globals.player.stats.str_max:
-		popup("Currently your Strength can't be increased any further")
+		popup("Currently your Strength can't be increased any further.")
 	else:
-		popup("You don't have any skillpoints left")
+		popup("You don't have any skillpoints left.")
 
 func _on_agiup_pressed():
-	if globals.player.level.skillpoints >= 1 && globals.player.stats.agi_cur < globals.player.stats.agi_max:
-		globals.player.level.skillpoints -= 1
+	if globals.player.skillpoints >= 1 && globals.player.stats.agi_cur < globals.player.stats.agi_max:
+		globals.player.skillpoints -= 1
 		globals.player.sagi += 1
 		_on_selfbutton_pressed()
-		popup('Your Agility has increased')
+		popup('Your Agility has increased.')
 	elif globals.player.stats.agi_cur >= globals.player.stats.agi_max:
-		popup("Currently your Agility can't be increased any further")
+		popup("Currently your Agility can't be increased any further.")
 	else:
-		popup("You don't have any skillpoints left")
+		popup("You don't have any skillpoints left.")
 
 func _on_mafup_pressed():
-	if globals.player.level.skillpoints >= 1 && globals.player.stats.maf_cur < globals.player.stats.maf_max:
-		globals.player.level.skillpoints -= 1
+	if globals.player.skillpoints >= 1 && globals.player.stats.maf_cur < globals.player.stats.maf_max:
+		globals.player.skillpoints -= 1
 		globals.player.smaf += 1
 		_on_selfbutton_pressed()
-		popup('Your Magic Affinity has increased')
+		popup('Your Magic Affinity has increased.')
 	elif globals.player.stats.maf_cur >= globals.player.stats.maf_max:
-		popup("Currently your Magic Affinity can't be increased any further")
+		popup("Currently your Magic Affinity can't be increased any further.")
 	else:
-		popup("You don't have any skillpoints left")
+		popup("You don't have any skillpoints left.")
 
 func _on_endup_pressed():
-	if globals.player.level.skillpoints >= 1 && globals.player.stats.end_cur < globals.player.stats.end_max:
-		globals.player.level.skillpoints -= 1
+	if globals.player.skillpoints >= 1 && globals.player.stats.end_cur < globals.player.stats.end_max:
+		globals.player.skillpoints -= 1
 		globals.player.send += 1
 		_on_selfbutton_pressed()
-		popup('Your Endurance has increased')
+		popup('Your Endurance has increased.')
 	elif globals.player.stats.end_cur >= globals.player.stats.end_max:
-		popup("Currently your Endurance can't be increased any further")
+		popup("Currently your Endurance can't be increased any further.")
 	else:
-		popup("You don't have any skillpoints left")
+		popup("You don't have any skillpoints left.")
 
 func _on_statclose_pressed():
 	get_node("MainScreen/mansion/selfinspect/selfstatpanel").set_hidden(true)
@@ -2714,7 +2693,7 @@ func _on_selfabilityupgrade_pressed():
 func selfabilityselect(ability):
 	var text = ''
 	var slave = globals.player
-	var dict = {'stats.str_cur': 'Strength', 'stats.agi_cur' : 'Agility', 'stats.maf_cur': 'Magic', 'level.value': 'Level'}
+	var dict = {'stats.str_cur': 'Strength', 'stats.agi_cur' : 'Agility', 'stats.maf_cur': 'Magic', 'level': 'Level'}
 	var confirmbutton = get_node("MainScreen/mansion/selfinspect/selfabilitypanel/abilitypurchase")
 	
 	for i in get_node("MainScreen/mansion/selfinspect/selfabilitypanel/ScrollContainer/VBoxContainer").get_children():
@@ -2744,6 +2723,8 @@ func selfabilityselect(ability):
 			text += '[color=red]'+dict[i] + ': ' + str(ability.reqs[i]) + '[/color], '
 		else:
 			text += '[color=green]'+dict[i] + ': ' + str(ability.reqs[i]) + '[/color], '
+		if globals.player.skillpoints < 1:
+			confirmbutton.set_disabled(true)
 	text = text.substr(0, text.length() - 2) + '.'
 	
 	confirmbutton.set_meta('abil', ability)
@@ -2760,7 +2741,7 @@ func selfabilityselect(ability):
 func _on_abilitypurchase_pressed():
 	var abil = get_node("MainScreen/mansion/selfinspect/selfabilitypanel/abilitypurchase").get_meta('abil')
 	globals.player.ability.append(abil.code)
-	globals.player.level.skillpoints -= 1
+	globals.player.skillpoints -= 1
 	popup('You have learned ' + abil.name+'. ')
 	_on_selfabilityupgrade_pressed()
 	_on_selfbutton_pressed()
@@ -3179,7 +3160,7 @@ func _on_startcombat_pressed():
 		for j in ['sstr','sagi','smaf','send','wit','cour','conf','charm','health']:
 			i[j] = 100
 	get_node("outside").gooutside()
-	get_node("explorationnode").zoneenter("frostfordoutskirts")
+	get_node("explorationnode").zoneenter("amberguardforest")
 	#get_node("combat").start_battle()
 
 func checkplayergroup():
@@ -3645,3 +3626,4 @@ func _on_ugrades_pressed():
 
 func _on_upgradesclose_pressed():
 	get_node("MainScreen/mansion/upgradespanel").set_hidden(true)
+
