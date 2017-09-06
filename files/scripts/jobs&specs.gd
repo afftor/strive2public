@@ -87,10 +87,12 @@ reqs = "slave.conf >= 50 && slave.charm >= 50 && slave.origins in ['commoner','r
 
 var leveluprequests = {
 weakitem = {reqs = 'false', speech = "you will need a [color=aqua]$item[/color] to unlock $his potential. ", descript = '$name needs a [color=aqua]$item[/color] to advance $his level.  ', execfunc = 'weakitem'},
+gearitem = {reqs = 'true', speech = "you will need a [color=aqua]$item[/color] to unlock $his potential. ", descript = '$name needs a [color=aqua]$item[/color] to advance $his level.  ', execfunc = 'gearitem'},
 ingreditem = {reqs = 'false', speech = "you will need a [color=aqua]$item[/color] to unlock $his potential. ", descript = '$name needs [color=aqua]$item[/color] to advance $his level. ', execfunc = 'ingreditem'},
 vacation = {reqs = 'false', speech = "you should provide $name with [color=aqua]3 free days[/color] to furtherly unlock $his potential.", descript = '$name needs a [color=aqua]vacation[/color] to advance $his level. ', execfunc = 'vacationshort'},
-relationship = {reqs = 'slave.sexuals.unlocked == false', speech = "you should unlock [color=aqua]intimacy[/color] with $name to unlock $his potential.", descript = "$name needs to have [color=aqua]intimacy unlocked[/color] to advance $his level. ", execfunc = 'startrelationship'},
-wincombat = {reqs = 'true', speech = "you should let $name to [color=aqua]win in a fight[/color] to unlock $his potential.", descript = "$name needs to [color=aqua]win in a fight[/color] to advance $his level. ", execfunc = 'wincombat'},
+#relationship = {reqs = 'slave.sexuals.unlocked == false', speech = "you should unlock [color=aqua]intimacy[/color] with $name to unlock $his potential.", descript = "$name needs to have [color=aqua]intimacy unlocked[/color] to advance $his level. ", execfunc = 'startrelationship'},
+wincombat = {reqs = 'false', speech = "you should let $name to [color=aqua]win in a fight[/color] to unlock $his potential.", descript = "$name needs to [color=aqua]win in a fight[/color] to advance $his level. ", execfunc = 'wincombat'},
+#improvegrade = {reqs = 'globals.originsarray.find(slave.origins) <= 3', speech = "you should raise $name's [color=aqua]grade[/color] to unlock $his potential.", descript = "$name needs to [color=aqua]raise $his grade[/color] to advance $his level. ", execfunc = 'raisegrade'},
 }
 
 var requestsbylevel = {
@@ -100,6 +102,7 @@ medium = [],
 
 
 var weakitemslist = ['aphrodisiac','hairdye', 'hairgrowthpot', 'stimulantpot', 'deterrentpot', 'beautypot']
+var gearitemslist = ['clothsundress','clothmaid','clothkimono','clothmiko','clothbutler','underwearlacy','underwearboxers','armorleather','armorchain','weapondagger','weaponsword','accslavecollar','acchandcuffs']
 var ingredlist = ['bestialessenceing', 'natureessenceing','taintedessenceing','magicessenceing','fluidsubstanceing']
 
 func vacation(slave):
@@ -113,6 +116,17 @@ func itemlevelup(slave):
 	globals.get_tree().get_current_scene().popup(slave.dictionary("Youg gift $name " + globals.itemdict[slave.levelupreqs.value].name + ". After returning a surprised look, $he whole-heartedly shows $his gratitude"))
 	slave.levelup()
 
+func gearlevelup(slave):
+	var item = slave.levelupreqs.value
+	var founditem = false
+	for i in globals.state.unstackables.values():
+		if i.code == item && i.owner == null:
+			globals.state.unstackables.erase(i.id)
+			founditem = true
+			break
+	if founditem == true:
+		slave.levelup()
+
 func vacationshort(slave):
 	var text = slave.dictionary(leveluprequests.vacation.speech)
 	slave.levelupreqs = {code = 'vacation', value = '3', speech = leveluprequests.vacation.speech, descript = slave.dictionary(leveluprequests.vacation.descript), button = slave.dictionary('Send $name to vacation'), effect = 'vacation', activate = 'fromtalk'}
@@ -125,6 +139,16 @@ func weakitem(slave):
 	var descript = slave.dictionary(leveluprequests.weakitem.descript).replace('$item', item.name)
 	slave.levelupreqs = {code = 'weakitem', value = item.code, speech = text, descript = descript , button = slave.dictionary('Provide $name with $item').replace('$item', item.name), effect = 'itemlevelup', activate = 'fromtalk'}
 	return text
+
+func gearitem(slave):
+	var item = globals.itemdict[gearitemslist[rand_range(0,gearitemslist.size())]]
+	var text = slave.dictionary(leveluprequests.gearitem.speech)
+	text = text.replace('$item', item.name)
+	var descript = slave.dictionary(leveluprequests.gearitem.descript).replace('$item', item.name)
+	slave.levelupreqs = {code = 'gearitem', value = item.code, speech = text, descript = descript , button = slave.dictionary('Provide $name with $item').replace('$item', item.name), effect = 'gearlevelup', activate = 'fromtalk'}
+	return text
+
+
 
 func ingreditem(slave):
 	var ingnumber = 1
@@ -155,6 +179,11 @@ func startrelationship(slave):
 func wincombat(slave):
 	var text = slave.dictionary(leveluprequests.wincombat.speech)
 	slave.levelupreqs = {code = 'wincombat', value = '0', speech = leveluprequests.wincombat.speech, descript = slave.dictionary(leveluprequests.wincombat.descript), effect = 'wincombat', activate = 'action'}
+	return text
+
+func raisegrade(slave):
+	var text = slave.dictionary(leveluprequests.improvegrade.speech)
+	slave.levelupreqs = {code = 'improvegrade', value = '0', speech = leveluprequests.improvegrade.speech, descript = slave.dictionary(leveluprequests.improvegrade.descript), effect = 'improvegrade', activate = 'action'}
 	return text
 
 func getrequest(slave):

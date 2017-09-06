@@ -237,7 +237,11 @@ var ChloeAphrodisiac = "As you pass the disguised bottle to the Chloe, she looks
 var ChloeBrothel = "You lead whats left of gnome girl to the local brothel. After some haggling, you make a deal for 500 gold, and leave her in the custody of the owner. It seems that her new occupation fits her animal instincts, making any further involvement of yours pointless."
 var ChloeTakeSelf = "Sex-crazed Chloe becomes your servant."
 var ChloeVisit = "Chloe happily greets you as you visit her and you spend some relaxed time together. It seems she grew very fond of you."
+var ChloeVisit2 = "During another visit, Chloe seems unusually happy. Your time together slowly grows into sex. As you lay together, she affectively offer to join your household. "
+var ChloeVisitAccept = "With a happy look Chloe packs her items and moves to your mansion."
 var ChloeEmpty = "This place is empty now. There's no point to return here anymore."
+
+
 ###Ayneris
 
 var AynerisMeet1 = "As you travel on one of the footpaths, you sense the presence of a group of people nearby. Cautiously moving forward, you come across a group of armed elves, lead by a young, luxuriously dressed woman. Perhaps, too young, to be in command of such a group. Upon spotting you she instantly responds and yells to her guards.\n\n[color=yellow]— You! You’re the trespasser our peasants reported. You'll pay for disgrace you caused to them. Get him![/color]\n\nMany elven regions still utilize a feudal structure and it is likely that the girl is a member of a noble family responsible for this area. Despite your attempts to explain your presence and that they are mistaken, her squad is already moving to attack, leaving you little choice but to fight back."

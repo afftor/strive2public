@@ -81,7 +81,7 @@ func selectchar(button):
 		eventlist.add_child(newbutton)
 	if eventlist.get_children().size() == 1:
 		var label = Label.new()
-		label.set_text("No scenes exist")
+		label.set_text("No scenes found")
 		eventlist.add_child(label)
 
 func sceneselected(scene):

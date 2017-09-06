@@ -1858,11 +1858,32 @@ func chloevillage(stage = 0):
 		sprite = [['chloehappy2', 'pos1']]
 		globals.slaves = chloe
 	elif stage == 8:
-		if globals.state.decisions.find('chloecure') >= 0:
-			text = textnode.ChloeVisit
+		if globals.state.decisions.find('chloecure') >= 0 && globals.state.decisions.find("chloeleft") < 0:
+			if globals.resources.day == chloevisit:
+				text = "You have already visited Chloe today."
+			else:
+				if rand_range(0,10) >= 6.6:
+					state = false
+					sprite = [['chloenakedhappy', 'pos1']]
+					buttons.append({text = "Take Chloe's Offer",function = 'chloevillage',args = 9})
+					buttons.append({text = "Refuse Chloe's Offer",function = 'chloevillage',args = 0})
+					text = textnode.ChloeVisit2
+					globals.resources.mana += 10
+				else:
+					text = textnode.ChloeVisit
+				chloevisit = globals.resources.day
 		else:
+			sprite = []
 			text = textnode.ChloeEmpty
+	elif stage == 9:
+		text = textnode.ChloeVisitAccept
+		var slave = chloemake()
+		slave.loyal = 35
+		globals.slaves = slave
+		globals.state.decisions.append('chloeleft')
 	globals.get_tree().get_current_scene().dialogue(state,self,text,buttons,sprite)
+
+var chloevisit = 0
 
 func chloemissing():
 	globals.state.sidequests.chloe = 5

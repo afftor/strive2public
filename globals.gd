@@ -495,9 +495,9 @@ class slave:
 	var customdesc = ''
 	var piercing = {}
 	var level = 0
-	var xp = 0
+	var xp = 0 setget xp_set
 	var skillpoints = 0
-	var levelupreqs = {}
+	var levelupreqs = {} setget levelupreqs_set
 	var sleep = ''
 	var punish = {expect = false, strength = 0}
 	var praise = 0
@@ -623,6 +623,9 @@ class slave:
 		if globals.get_tree().get_current_scene().has_node("infotext") && globals.slaves.find(self) >= 0 && away.at != 'hidden':
 			globals.get_tree().get_current_scene().infotext(text)
 	
+	func levelupreqs_set(value):
+		levelupreqs = value
+	
 	func levelup():
 		levelupreqs.clear()
 		level += 1
@@ -631,6 +634,9 @@ class slave:
 		sexuals.affection += round(rand_range(5,10))
 		if self != globals.player:
 			globals.get_tree().get_current_scene().infotext(dictionary("[color=green]$name has advanced to Level " + str(level)+ '[/color]'))
+	
+	func xp_set(value):
+		xp = min(value,100)
 	
 	
 	func cleartraits():
@@ -663,6 +669,7 @@ class slave:
 					beautybase = beautybase + effect[i]
 				elif i == 'beautytemp':
 					beautytemp = beautytemp + effect[i]
+	
 	
 	func beauty_get():
 		return beautybase + beautytemp

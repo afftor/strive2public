@@ -785,6 +785,8 @@ func _on_serviceconfirm_pressed():
 	elif operation.code == 'uprise':
 		globals.resources.gold -= operation.price * (globals.originsarray.find(slave.origins)+1)
 		slave.origins = globals.originsarray[globals.originsarray.find(slave.origins)+1]
+		if slave.levelupreqs.has('code') && slave.levelupreqs.code == 'improvegrade':
+			slave.levelup()
 		slave.away.duration = 1 + globals.originsarray.find(slave.origins)
 	elif operation.code == 'spec':
 		globals.resources.gold -= 500
@@ -820,7 +822,7 @@ haircut = {
 code = 'haircut',
 name = 'Cut Hair',
 number = 1,
-reqs = "globals.currentslave.hairlength != 'ear'",
+reqs = "slave.hairlength != 'ear'",
 description = "[color=yellow]— Need a hair trimming? We have barberer just for that![/color]",
 price = 25,
 confirm = "You leave $name in the custody of guild's barber. Later $he returns with shorter hair."
@@ -829,7 +831,7 @@ abortion = {
 code = 'abortion',
 name = 'Commit Abortion',
 number = 2,
-reqs = "globals.currentslave.preg.duration >= 5",
+reqs = "slave.preg.duration >= 5",
 description = "[color=yellow]— Oh, quite often babies are not very desirable by both slaves and their masters. We can take care of it right here and guarantee no serious health issues afterwards![/color] ",
 price = 75,
 confirm = "You leave $name in the custody of guild's specialists. As $his pregnancy ends, you can notice how $name looks considerably more stressed."
@@ -838,7 +840,7 @@ sterilize = {
 code = 'sterilize',
 name = 'Sterilize',
 number = 2,
-reqs = "globals.currentslave.preg.has_womb == true && globals.currentslave.preg.duration == 0",
+reqs = "slave.preg.has_womb == true && globals.currentslave.preg.duration == 0",
 description = "[color=yellow]— Ain't it a good alternative to daily expenses for contraception to just sterilize your $childs to prevent any possible future complications? We guarantee decent health after operation is over![/color]\n\n[color=red]This operation is difficult to reverse![/color]",
 price = 125,
 confirm = "After the operation $name becomes sterile. $He won't be able to carry any more children. "
@@ -847,7 +849,7 @@ nurture = {
 code = 'nurture',
 name = 'Nurture',
 number = 3,
-reqs = "globals.currentslave.traits.has('Regressed') == true",
+reqs = "slave.traits.has('Regressed') == true",
 description = "[color=yellow]— It seems your $child could use some proper upbringing! In current state we can train $him to become way more suited for your needs![/color]\n\n[color=green]This option will neutralize Regressed trait.[/color]",
 price = 150,
 confirm = "You leave $name in the custody of guild trainers, who will train $him among other slaves and prepare for your domain."
@@ -856,7 +858,7 @@ uprise = {
 code = 'uprise',
 name = 'Elevate',
 number = 4,
-reqs = "globals.currentslave.origins != 'noble'",
+reqs = "slave.origins != 'noble'",
 description = "[color=yellow]— Sometimes you wish your old time servant was more capable? With our training technics we can help them to get better, not just as a tool, but as an individual!  [/color]\n\n[color=green]This option will raise slave's grade, but also will make them more demanding. [/color]",
 price = 100,
 confirm = "You leave $name in the custody of guild trainers, who will help $him raising $his self-esteem. ",
@@ -865,7 +867,7 @@ subjugate = {
 code = 'subjugate',
 name = 'Demote',
 number = 5,
-reqs = "globals.currentslave.origins != 'slave'",
+reqs = "slave.origins != 'slave'",
 description = "[color=yellow]— Tad bit of discipline and we can make your pet less haughty! Perfect for those arrogant individuals with unreasonable demands. [/color]\n\n[color=red]This option will lower slave's grade. [/color]",
 price = 50,
 confirm = "You leave $name in the custody of guild trainers, who will accustom $him to the less luxurious life. ",

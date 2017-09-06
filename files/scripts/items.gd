@@ -495,7 +495,7 @@ clothchain = {
 clothbutler = {
 	code = 'clothbutler',
 	name = 'Butlers Uniform',
-	icon = null,
+	icon = load("res://files/images/items/clothbutler.png"),
 	description = "This is the uniform of a butler, a well fitted suit comprising of a double-breasted coat, waistcoat and trousers, along with a small black tie.",
 	effect = [{type = 'onendday', effect = 'butleruniformeffect', descript = "Increases Obedience by the end of a day"}],
 	recipe = '',
@@ -924,7 +924,7 @@ func youthingpot():
 			if rand_range(1,10) > 5 && slave.ass != 'flat':
 				slave.ass = globals.sizearray[globals.sizearray.find(slave.ass)-1]
 				text = text + "$name's butt shrinks in size. "
-			if rand_range(1,10) > 5 && slave.ass != 'flat':
+			if rand_range(1,10) > 5 && slave.tits.size != 'flat':
 				slave.tits.size = globals.sizearray[globals.sizearray.find(slave.tits.size)-1]
 				text = text + "$name's tits shrink in size. "
 		if slave.penis.number > 0:

@@ -424,8 +424,6 @@ visible_characters = -1
 
 [node name="selectitem" type="Popup" parent="."]
 
-editor/display_folded = true
-visibility/visible = false
 anchor/left = 3
 anchor/top = 3
 anchor/right = 3

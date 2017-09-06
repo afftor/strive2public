@@ -1117,11 +1117,12 @@ func hunt(slave):#agility, strength, endurance, courage
 func library(slave):
 	var text = "$name spends $his time studying in library.\n"
 	slave.wit += rand_range(1,3)
+	print(slave.xp)
 	if slave.race == 'Gnome':
-		slave.xp += max((30 + 5*globals.state.mansionupgrades.mansionlibrary + slave.wit/12) - slave.level*3,0)
+		slave.xp += max((30 + 5*globals.state.mansionupgrades.mansionlibrary + slave.wit/12) - (slave.level-1)*8,0)
 	else:
-		slave.xp += max((15 + 5*globals.state.mansionupgrades.mansionlibrary + slave.wit/12) - slave.level*2,0)
-	
+		slave.xp += max((15 + 5*globals.state.mansionupgrades.mansionlibrary + slave.wit/12) - (slave.level-1)*8,0)
+	print(slave.xp)
 	var dict = {text = text}
 	return dict
 
