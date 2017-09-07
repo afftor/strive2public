@@ -1561,7 +1561,7 @@ func calimake():
 	calitemp.surname = ''
 	calitemp.tits.size = 'flat'
 	calitemp.ass = 'small'
-	calitemp.beauty = 55
+	calitemp.beautybase = 55
 	calitemp.hairlength = 'shoulder'
 	calitemp.height = 'short'
 	calitemp.haircolor = 'gray'
@@ -1741,7 +1741,7 @@ func emily(state = 1):
 		emily.surname = 'Hale'
 		emily.tits.size = 'small'
 		emily.ass = 'small'
-		emily.beauty = 33
+		emily.beautybase = 33
 		emily.hairlength = 'neck'
 		emily.height = 'average'
 		emily.haircolor = 'brown'

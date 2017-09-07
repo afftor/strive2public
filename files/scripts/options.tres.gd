@@ -137,7 +137,7 @@ func _on_cheatpanel_visibility_changed(slave = null):
 		get_node("TabContainer/Supporter section/cheatpanel/addskillpoints").set_disabled(true)
 		get_node("TabContainer/Supporter section/cheatpanel/addlevel").set_disabled(true)
 	else:
-		get_node("TabContainer/Supporter section/cheatpanel/selectedslavelabel").set_text('Selected slave - '+slave.name + '\nObedience - '+str(slave.obed)+'\nLust - '+str(slave.lust)+'\nLoyalty - '+str(slave.loyal) + '\nAffection - '+str(slave.sexuals.affection)+'\nStress - '+str(slave.stress) + '\nSkillpoints - ' + str(slave.level.skillpoints) )
+		get_node("TabContainer/Supporter section/cheatpanel/selectedslavelabel").set_text('Selected slave - '+slave.name + '\nObedience - '+str(slave.obed)+'\nLust - '+str(slave.lust)+'\nLoyalty - '+str(slave.loyal) + '\nAffection - '+str(slave.sexuals.affection)+'\nStress - '+str(slave.stress) + '\nSkillpoints - ' + str(slave.skillpoints) )
 		selectedslave = slave
 		get_node("TabContainer/Supporter section/cheatpanel/maxobed").set_disabled(false)
 		get_node("TabContainer/Supporter section/cheatpanel/maxlust").set_disabled(false)
@@ -204,17 +204,17 @@ func _on_nostress_pressed():
 
 
 func _on_addskillpoints_pressed():
-	selectedslave.level.skillpoints += 1
+	selectedslave.skillpoints += 1
 	_on_cheatpanel_visibility_changed(selectedslave)
 
 
 func _on_addlevel_pressed():
-	selectedslave.level.value += 1
+	selectedslave.level += 1
 
 
 func _on_levelup_pressed():
 	if globals.player != null:
-		globals.player.level.skillpoints += 1
+		globals.player.skillpoints += 1
 
 
 func _on_custommouse_pressed():

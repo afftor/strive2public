@@ -57,7 +57,7 @@ func gornpalaceivran(stage):
 		ivran = globals.slavegen.newslave('Dark Elf', 'adult', 'female', 'rich')
 		ivran.name = 'Ivran'
 		ivran.surname = ''
-		ivran.beauty = 75
+		ivran.beautybase = 75
 		ivran.haircolor = 'brown'
 		ivran.hairlength = 'shoulder'
 		ivran.hairstyle = 'straight'
@@ -77,8 +77,6 @@ func gornpalaceivran(stage):
 		ivran.stress = 60
 		ivran.unique = 'Ivran'
 		ivran.cleartraits()
-		for i in ivran.skills.values():
-			i.value = 0
 		globals.get_tree().get_current_scene()._on_mansion_pressed()
 		buttons = [['Continue','ivranname']]
 		state = false
@@ -476,7 +474,7 @@ func zoemake():
 	var slave = globals.slavegen.newslave('Beastkin Wolf', 'teen', 'female', 'noble')
 	slave.name = 'Zoe'
 	slave.surname = ''
-	slave.beauty = 45
+	slave.beautybase = 45
 	slave.haircolor = 'brown'
 	slave.hairlength = 'shoulder'
 	slave.hairstyle = 'straight'
@@ -857,7 +855,7 @@ func calibanditcampchoice(choice):
 	var slave = globals.slavegen.newslave('Human', 'teen', 'female', 'commoner')
 	slave.name = 'Tia'
 	slave.surname = 'Fallton'
-	slave.beauty = 75
+	slave.beautybase = 75
 	slave.haircolor = 'brown'
 	slave.hairlength = 'waist'
 	slave.hairstyle = 'straight'
@@ -873,8 +871,6 @@ func calibanditcampchoice(choice):
 	slave.stats.charm_base = 82
 	slave.height = 'short'
 	slave.cleartraits()
-	for i in slave.skills.values():
-		i.value = 0
 	if choice == 1:
 		texttemp = textnode.CaliReturnGirl
 		globals.state.sidequests.cali = 21
@@ -1388,7 +1384,7 @@ func maketisha():
 	slave.name = 'Tisha'
 	slave.surname = 'Hale'
 	slave.unique = 'Tisha'
-	slave.beauty = 80
+	slave.beautybase = 80
 	slave.haircolor = 'auburn'
 	slave.hairlength = 'waist'
 	slave.hairstyle = 'braid'

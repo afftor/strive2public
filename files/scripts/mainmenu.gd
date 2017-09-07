@@ -832,7 +832,7 @@ func _on_slaveconfirm_pressed():
 	elif globals.player.race == 'Demon':
 		for i in globals.state.reputation.values():
 			i -= 10
-		globals.player.level.skillpoints += 1
+		globals.player.skillpoints += 1
 	elif globals.player.race == 'Taurus':
 		globals.player.stats.end_cur += 1
 	elif globals.player.race.find("Beastkin") >= 0:

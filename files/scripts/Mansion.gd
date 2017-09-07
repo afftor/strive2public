@@ -179,9 +179,9 @@ func _on_new_slave_button_pressed():
 		var tmpitem = get_node("itemnode").createunstackable(i)
 		globals.state.unstackables[str(tmpitem.id)] = tmpitem
 	globals.state.sidequests.brothel = 2
-	globals.state.sidequests.chloe = 8
+	globals.state.sidequests.cali = 19
 	globals.state.rank = 3
-	globals.state.mainquest = 2
+	globals.state.mainquest = 1
 	globals.state.farm = 3
 	globals.state.mansionupgrades.mansionlab = 1
 	globals.state.mansionupgrades.mansionalchemy = 1
@@ -2148,7 +2148,7 @@ func _on_questsclosebutton_pressed():
 
 var mainquestdict = {
 '0' : "You should try joining Mage Order in town to get access to better stuff and start your career.",
-'1' : "Old chancellor at Mage Order wants me to bring him a girl before I can join. She must be: \nFemale;\nHuman; \nAverage look or better; \nHigh obedience; \n\nI can probably take a look at slaver's guild or explore outsides. ",
+'1' : "Old chancellor at Mage Order wants me to bring him a girl before I can join. She must be: \nFemale;\nHuman; \nAverage look (40) or better; \nHigh obedience; \n\nI can probably take a look at slaver's guild or explore outsides. ",
 '2' : "Visit Mage Order again and seek for further promotions.",
 '3' : "Melissa from Mage Order wants you to bring them captured Fairy. ",
 '3.1' : "Melissa from Mage Order wants you to bring them captured Fairy, I should be able to find them in far forests around Wimborn. ",

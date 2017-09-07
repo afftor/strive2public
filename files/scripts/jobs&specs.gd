@@ -108,7 +108,7 @@ var gearitemslist = ['clothsundress','clothmaid','clothkimono','clothmiko','clot
 var ingredlist = ['bestialessenceing', 'natureessenceing','taintedessenceing','magicessenceing','fluidsubstanceing']
 
 func vacation(slave):
-	slave.away.duration = slave.levelupreqs.value
+	slave.away.duration = int(slave.levelupreqs.value)
 	globals.get_tree().get_current_scene()._on_mansion_pressed()
 	globals.get_tree().get_current_scene().popup(slave.dictionary("You've sent $name on vacation, boosting $his mood with sudden reward. "))
 	slave.levelup()
@@ -160,7 +160,7 @@ func multitem(slave):
 		item = globals.itemdict[i]
 		itemnumber = round(rand_range(1,3))
 		itemtext += item.name + ': ' + str(itemnumber) + ", "
-		array2.append({code = item.code, number = itemnumber})
+		array2.append({item.code : itemnumber})
 		
 	
 	var text = slave.dictionary(leveluprequests.multitem.speech)
@@ -172,11 +172,15 @@ func multitem(slave):
 func multitemlevelup(slave):
 	var hasitems = true
 	for i in slave.levelupreqs.value:
-		if globals.itemdict[i.code].amount < i.number:
-			hasitems = false
+		for k in i:
+			if globals.itemdict[k].amount < i[k]:
+				hasitems = false
 	if hasitems == false:
 		globals.get_tree().get_current_scene().popup("Sadly, you don't have all required items in your possessions. ")
 	else:
+		for i in slave.levelupreqs.value:
+			for k in i:
+				globals.itemdict[k].amount -= i[k]
 		globals.get_tree().get_current_scene().popup(slave.dictionary("You gift $name assortment of variable items. After returning a surprised look, $he whole-heartedly shows $his gratitude"))
 		slave.levelup()
 
@@ -211,7 +215,7 @@ func ingreditem(slave):
 	temptext = temptext.substr(0, temptext.length() -2)+ ' '
 	text = slave.dictionary(leveluprequests.ingreditem.speech.replace('$item', temptext)) 
 	var descript = slave.dictionary(leveluprequests.ingreditem.descript).replace('$item', temptext)
-	slave.levelupreqs = {code = 'ingreditem', value = item.code, speech = text, descript = descript , button = slave.dictionary('Provide $name with $item').replace('$item', temptext), effect = 'ingredlevelup', activate = 'fromtalk'}
+	slave.levelupreqs = {code = 'ingreditem', value = [finalitems], speech = text, descript = descript , button = slave.dictionary('Provide $name with $item').replace('$item', temptext), effect = 'multitemlevelup', activate = 'fromtalk'}
 	return text
 
 func startrelationship(slave):
