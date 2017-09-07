@@ -86,18 +86,20 @@ reqs = "slave.conf >= 50 && slave.charm >= 50 && slave.origins in ['commoner','r
 }
 
 var leveluprequests = {
-weakitem = {reqs = 'false', speech = "you will need a [color=aqua]$item[/color] to unlock $his potential. ", descript = '$name needs a [color=aqua]$item[/color] to advance $his level.  ', execfunc = 'weakitem'},
+weakitem = {reqs = 'true', speech = "you will need a [color=aqua]$item[/color] to unlock $his potential. ", descript = '$name needs a [color=aqua]$item[/color] to advance $his level.  ', execfunc = 'weakitem'},
+multitem = {reqs = 'true', speech = "you will need a [color=aqua]$item[/color] to unlock $his potential. ", descript = '$name needs a [color=aqua]$item[/color] to advance $his level.  ', execfunc = 'multitem'},
 gearitem = {reqs = 'true', speech = "you will need a [color=aqua]$item[/color] to unlock $his potential. ", descript = '$name needs a [color=aqua]$item[/color] to advance $his level.  ', execfunc = 'gearitem'},
-ingreditem = {reqs = 'false', speech = "you will need a [color=aqua]$item[/color] to unlock $his potential. ", descript = '$name needs [color=aqua]$item[/color] to advance $his level. ', execfunc = 'ingreditem'},
-vacation = {reqs = 'false', speech = "you should provide $name with [color=aqua]3 free days[/color] to furtherly unlock $his potential.", descript = '$name needs a [color=aqua]vacation[/color] to advance $his level. ', execfunc = 'vacationshort'},
-#relationship = {reqs = 'slave.sexuals.unlocked == false', speech = "you should unlock [color=aqua]intimacy[/color] with $name to unlock $his potential.", descript = "$name needs to have [color=aqua]intimacy unlocked[/color] to advance $his level. ", execfunc = 'startrelationship'},
-wincombat = {reqs = 'false', speech = "you should let $name to [color=aqua]win in a fight[/color] to unlock $his potential.", descript = "$name needs to [color=aqua]win in a fight[/color] to advance $his level. ", execfunc = 'wincombat'},
-#improvegrade = {reqs = 'globals.originsarray.find(slave.origins) <= 3', speech = "you should raise $name's [color=aqua]grade[/color] to unlock $his potential.", descript = "$name needs to [color=aqua]raise $his grade[/color] to advance $his level. ", execfunc = 'raisegrade'},
+ingreditem = {reqs = 'true', speech = "you will need a [color=aqua]$item[/color] to unlock $his potential. ", descript = '$name needs [color=aqua]$item[/color] to advance $his level. ', execfunc = 'ingreditem'},
+vacation = {reqs = 'true', speech = "you should provide $name with [color=aqua]3 free days[/color] to furtherly unlock $his potential.", descript = '$name needs a [color=aqua]vacation[/color] to advance $his level. ', execfunc = 'vacationshort'},
+relationship = {reqs = 'slave.sexuals.unlocked == false', speech = "you should unlock [color=aqua]intimacy[/color] with $name to unlock $his potential.", descript = "$name needs to have [color=aqua]intimacy unlocked[/color] to advance $his level. ", execfunc = 'startrelationship'},
+wincombat = {reqs = 'true', speech = "you should let $name to [color=aqua]win in a fight[/color] to unlock $his potential.", descript = "$name needs to [color=aqua]win in a fight[/color] to advance $his level. ", execfunc = 'wincombat'},
+improvegrade = {reqs = 'globals.originsarray.find(slave.origins) <= 3', speech = "you should raise $name's [color=aqua]grade[/color] to unlock $his potential.", descript = "$name needs to [color=aqua]raise $his grade[/color] to advance $his level. ", execfunc = 'raisegrade'},
+specialization = {reqs = 'slave.spec == null', speech = "you should let $name's [color=aqua]to learn specialization[/color] to unlock $his potential.", descript = "$name needs to [color=aqua]learn specialization[/color] to advance $his level. ", execfunc = 'getspec'},
 }
 
 var requestsbylevel = {
-easy = ['weakitem', 'ingreditem', 'vacation', 'relationship'],
-medium = [],
+easy = ['weakitem', 'ingreditem', 'vacation', 'relationship', 'wincombat', 'improvegrade'],
+medium = ['multitem','specialization','gearitem','improvegrade'],
 }
 
 
@@ -113,7 +115,7 @@ func vacation(slave):
 
 func itemlevelup(slave):
 	globals.itemdict[slave.levelupreqs.value].amount -= 1
-	globals.get_tree().get_current_scene().popup(slave.dictionary("Youg gift $name " + globals.itemdict[slave.levelupreqs.value].name + ". After returning a surprised look, $he whole-heartedly shows $his gratitude"))
+	globals.get_tree().get_current_scene().popup(slave.dictionary("You gift $name " + globals.itemdict[slave.levelupreqs.value].name + ". After returning a surprised look, $he whole-heartedly shows $his gratitude"))
 	slave.levelup()
 
 func gearlevelup(slave):
@@ -126,6 +128,9 @@ func gearlevelup(slave):
 			break
 	if founditem == true:
 		slave.levelup()
+		globals.get_tree().get_current_scene().popup(slave.dictionary("Youg gift $name " + globals.itemdict[slave.levelupreqs.value].name + ". After returning a surprised look, $he whole-heartedly shows $his gratitude"))
+	else:
+		globals.get_tree().get_current_scene().popup("Sadly, there's no unused [color=aqua]" + globals.itemdict[slave.levelupreqs.value].name + "[/color] in your possessions. ")
 
 func vacationshort(slave):
 	var text = slave.dictionary(leveluprequests.vacation.speech)
@@ -140,6 +145,41 @@ func weakitem(slave):
 	slave.levelupreqs = {code = 'weakitem', value = item.code, speech = text, descript = descript , button = slave.dictionary('Provide $name with $item').replace('$item', item.name), effect = 'itemlevelup', activate = 'fromtalk'}
 	return text
 
+func multitem(slave):
+	var array = []
+	var count = 2
+	var item
+	var itemnumber
+	var itemtext = ''
+	var array2 = []
+	for i in ingredlist:
+		array.append(i)
+	while count < array.size():
+		array.remove(rand_range(0,array.size()))
+	for i in array:
+		item = globals.itemdict[i]
+		itemnumber = round(rand_range(1,3))
+		itemtext += item.name + ': ' + str(itemnumber) + ", "
+		array2.append({code = item.code, number = itemnumber})
+		
+	
+	var text = slave.dictionary(leveluprequests.multitem.speech)
+	text = text.replace('$item', itemtext)
+	var descript = slave.dictionary(leveluprequests.multitem.descript).replace('$item', itemtext)
+	slave.levelupreqs = {code = 'multitem', value = array2, speech = text, descript = descript , button = slave.dictionary('Provide $name with necessary items'), effect = 'multitemlevelup', activate = 'fromtalk'}
+	return text
+
+func multitemlevelup(slave):
+	var hasitems = true
+	for i in slave.levelupreqs.value:
+		if globals.itemdict[i.code].amount < i.number:
+			hasitems = false
+	if hasitems == false:
+		globals.get_tree().get_current_scene().popup("Sadly, you don't have all required items in your possessions. ")
+	else:
+		globals.get_tree().get_current_scene().popup(slave.dictionary("You gift $name assortment of variable items. After returning a surprised look, $he whole-heartedly shows $his gratitude"))
+		slave.levelup()
+
 func gearitem(slave):
 	var item = globals.itemdict[gearitemslist[rand_range(0,gearitemslist.size())]]
 	var text = slave.dictionary(leveluprequests.gearitem.speech)
@@ -148,7 +188,10 @@ func gearitem(slave):
 	slave.levelupreqs = {code = 'gearitem', value = item.code, speech = text, descript = descript , button = slave.dictionary('Provide $name with $item').replace('$item', item.name), effect = 'gearlevelup', activate = 'fromtalk'}
 	return text
 
-
+func getspec(slave):
+	var text = slave.dictionary(leveluprequests.specialization.speech)
+	slave.levelupreqs = {code = 'specialization', value = '0', speech = leveluprequests.specialization.speech, descript = slave.dictionary(leveluprequests.specialization.descript), effect = 'specialization', activate = 'action'}
+	return text
 
 func ingreditem(slave):
 	var ingnumber = 1
@@ -188,9 +231,14 @@ func raisegrade(slave):
 
 func getrequest(slave):
 	var array = []
-	for i in leveluprequests.values():
-		if globals.evaluate(i.reqs) == true:
-			array.append(i)
+	if slave.level in [1,2]:
+		for i in requestsbylevel.easy:
+			if globals.evaluate(leveluprequests[i].reqs) == true:
+				array.append(leveluprequests[i])
+	else:
+		for i in requestsbylevel.medium:
+			if globals.evaluate(leveluprequests[i].reqs) == true:
+				array.append(leveluprequests[i])
 	var request = array[rand_range(0, array.size())]
 	var text = call(request.execfunc, slave)
 	return text

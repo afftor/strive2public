@@ -87,8 +87,6 @@ func _ready():
 		globals.player.ability.append('acidspit')
 		globals.player.abilityactive.append('escape')
 		globals.player.abilityactive.append('acidspit')
-		globals.player.skillpoints = 5
-		globals.player.level = 10
 		globals.state.supporter = true
 		for i in globals.charactergallery.values():
 			i.unlocked = true
@@ -142,7 +140,6 @@ func _on_new_slave_button_pressed():
 	slave.obed += 200
 	slave.loyal += 100
 	slave.sexuals.affection = 200
-	slave.spec = 'tamer'
 	#slave.sexuals.unlocked = true
 	#for i in get_node("MainScreen/slave_tab/sexual").sexbuttons:
 	#	slave.sexuals.actions[i] = 0
@@ -175,6 +172,7 @@ func _on_new_slave_button_pressed():
 	globals.resources.food += 1000
 	globals.resources.mana += 50
 	globals.player.energy = 100
+	globals.player.xp += 50
 	globals.state.reputation.frostford = 30
 	globals.resources.upgradepoints += 100
 	for i in ['armorchain','weaponclaymore','clothpet','clothninja']:
@@ -294,7 +292,10 @@ func rebuild_slave_list():
 			node.set_meta('id', slave.id)
 			node.set_meta('pos', size)
 			slavelist.add_child(node)
-			node.find_node('name').set_text(slave.name_long())
+			var text = slave.name_long()
+			if slave.xp >= 100:
+				text = text + "(+)"
+			node.find_node('name').set_text(text)
 			node.get_node('slavename/name').connect('pressed', self, 'openslavetab', [slave])
 			node.find_node('health').set_normal_texture(slave.health_icon())
 			node.find_node('healthvalue').set_text(str(round(slave.health)))
@@ -1117,12 +1118,10 @@ func hunt(slave):#agility, strength, endurance, courage
 func library(slave):
 	var text = "$name spends $his time studying in library.\n"
 	slave.wit += rand_range(1,3)
-	print(slave.xp)
 	if slave.race == 'Gnome':
 		slave.xp += max((30 + 5*globals.state.mansionupgrades.mansionlibrary + slave.wit/12) - (slave.level-1)*8,0)
 	else:
 		slave.xp += max((15 + 5*globals.state.mansionupgrades.mansionlibrary + slave.wit/12) - (slave.level-1)*8,0)
-	print(slave.xp)
 	var dict = {text = text}
 	return dict
 
@@ -2548,9 +2547,6 @@ func _on_selfbutton_pressed():
 	var text = '[center]Personal Achievments[/center]\n'
 	var text2 = ''
 	var slave = globals.player
-	slave.stats.health_max = 35 + slave.stats.end_cur*20
-	text += 'Level: ' + str(slave.level) + ', XP: ' + str(slave.xp) + ', Health: '+str(round(slave.stats.health_cur)) + '/' + str(slave.stats.health_max) +', Energy: ' +str(round(slave.stats.energy_cur)) + '/' + str(slave.stats.energy_max)  +  '. \n'
-	text += 'Unspent skillpoints: [color=yellow]' + str(slave.skillpoints) + '[/color]\n'
 	var dict = {
 	0: "You do not belong in an Order.",
 	1: "Neophyte",
@@ -2559,7 +2555,6 @@ func _on_selfbutton_pressed():
 	4: "Adept",
 	5: "Master",
 	6: "Grand Archmage"}
-	text += 'Strength: ' + str(slave.sstr) + '/' + str(slave.stats.str_max) + '\n' + 'Agility: ' + str(slave.sagi) + '/' + str(slave.stats.agi_max) + '\n' +  'Magic Affinity: ' + str(slave.smaf) + '/' + str(slave.stats.maf_max) + '\n' + 'Endurance: ' + str(slave.send) + '/' + str(slave.stats.end_max) + '\n'
 	text += 'Combat Abilities: '
 	for i in slave.ability:
 		var ability = globals.abilities.abilitydict[i]
@@ -2574,7 +2569,9 @@ func _on_selfbutton_pressed():
 		text += i.capitalize() + " - "+ reputationword(globals.state.reputation[i]) + ", "
 	text += "\nYour mage order rank: " + dict[int(globals.state.rank)]
 	get_node("MainScreen/mansion/selfinspect/mainstatlabel").set_bbcode(text)
-	
+	get_node("MainScreen/mansion/selfinspect/statspanel").slave = globals.player
+	get_node("MainScreen/mansion/selfinspect/statspanel").mode = 'full'
+	get_node("MainScreen/mansion/selfinspect/statspanel").show()
 	if slave.imageportait != null:
 		if File.new().file_exists(slave.imageportait) == true:
 			get_node("MainScreen/mansion/selfinspect/portaittexture").set_texture(load(slave.imageportait))
@@ -2724,8 +2721,6 @@ func selfabilityselect(ability):
 			text += '[color=red]'+dict[i] + ': ' + str(ability.reqs[i]) + '[/color], '
 		else:
 			text += '[color=green]'+dict[i] + ': ' + str(ability.reqs[i]) + '[/color], '
-		if globals.player.skillpoints < 1:
-			confirmbutton.set_disabled(true)
 	text = text.substr(0, text.length() - 2) + '.'
 	
 	confirmbutton.set_meta('abil', ability)
@@ -2742,7 +2737,6 @@ func selfabilityselect(ability):
 func _on_abilitypurchase_pressed():
 	var abil = get_node("MainScreen/mansion/selfinspect/selfabilitypanel/abilitypurchase").get_meta('abil')
 	globals.player.ability.append(abil.code)
-	globals.player.skillpoints -= 1
 	popup('You have learned ' + abil.name+'. ')
 	_on_selfabilityupgrade_pressed()
 	_on_selfbutton_pressed()

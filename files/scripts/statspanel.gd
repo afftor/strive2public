@@ -36,7 +36,7 @@ func show():
 			text += "/" + str(min(slave.stats[globals.maxstatdict[i]], slave.originvalue[slave.origins]))
 		self[i].set_text(text)
 	for i in mentals:
-		if mode == 'slavebase':
+		if mode == 'slavebase' || slave == globals.player:
 			i.get_parent().set_hidden(true)
 		else:
 			i.get_parent().set_hidden(false)
@@ -55,9 +55,12 @@ func show():
 	get_node("traittext").set_bbcode(slave.dictionary(text))
 	if mode == 'full':
 		text = "Health : " + str(round(slave.health)) + '/' + str(round(slave.stats.health_max)) + '\nEnergy : ' + str(round(slave.energy)) + '/' + str(round(slave.stats.energy_max)) + '\nLevel : '+str(slave.level) + '\nAttribute Points : '+str(slave.skillpoints)
+		if slave == globals.player:
+			text = slave.dictionary('$name $surname\nRace: ') + slave.dictionary(' $race\n').capitalize() + text
 	else:
 		text =  'Level : '+str(slave.level) + '\nAvailable Attribute Points : '+str(slave.skillpoints)
 	get_node("leveltext").set_bbcode(text)
+	get_node("levelprogress/Label").set_text("Experience: " + str(slave.xp) + '%')
 	get_node("levelprogress").set_val(slave.xp)
 	for i in ['send','smaf','sstr','sagi']:
 		if slave.skillpoints >= 1 && (globals.slaves.find(slave) >= 0||globals.player == slave) && slave[i] < slave.stats[globals.maxstatdict[i]]:

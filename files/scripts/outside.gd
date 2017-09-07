@@ -726,6 +726,8 @@ func operationselected(operation):
 			array.append(i)
 		array.sort_custom(globals, 'sortbyname')
 		get_node("slaveservicepanel/speccontainer").set_hidden(false)
+		if slave.levelupreqs.has('code') && slave.levelupreqs.code == 'specialization':
+			slave.levelup()
 		for i in array:
 			var newbutton = get_node("slaveservicepanel/speccontainer/VBoxContainer/Button").duplicate()
 			get_node("slaveservicepanel/speccontainer/VBoxContainer").add_child(newbutton)
@@ -1246,7 +1248,7 @@ shaliqshop = {code = 'shaliqshop', name = "Village's Trader", items = ['hairdye'
 gornmarket = {code = 'gornmarket', name = "Gorn's Market", items = ['food', 'supply','teleportwimborn','teleportfrostford','magicessenceing',"armorleather",'armorchain','weaponclaymore','clothbedlah','accslavecollar','acchandcuffs'], selling = true},
 frostfordmarket = {code = 'frostfordmarket', name = "Frostford's Market", items = ['supply','teleportwimborn','teleportgorn', 'basicsolutioning','bestialessenceing','clothpet', 'weaponsword','accgoldring'], selling = true},
 aydashop = {code = 'aydashop', name = "Gorn's Alchemist", items = ['regressionpot', 'beautypot', 'hairdye', 'basicsolutioning','bestialessenceing','taintedessenceing','fluidsubstanceing'], selling = false},
-amberguardmarket = {code = 'amberguardmarket', name = "Amberguard's Market", items = ['teleportamberguard','beautypot','bestialessenceing','magicessenceing','fluidsubstanceing','armorelvenchain'], selling = true},
+amberguardmarket = {code = 'amberguardmarket', name = "Amberguard's Market", items = ['teleportamberguard','beautypot','bestialessenceing','magicessenceing','fluidsubstanceing','armorelvenchain','armorrobe'], selling = true},
 }
 var currentshop
 var selecteditem

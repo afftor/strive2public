@@ -73,9 +73,9 @@ slavechar = [
 {text = "The Physical stats are way more important when regarding combat. They are pretty self-explanatory.  We can talk about them later if you need more explanation.", choice = 'slave'}
 ],
 slavelevel = [
-{sprite = 'norhap', text = "It seems, your servant has reached enough experience to advance to next level. That's great as they will earn new [color=yellow]Attribute Points[/color]."},
-{text = "But first you'll have to figure out what's holding them back. For that, talk to them and discover what they require. This might be anything, fights, gifts, love..."},
-{text = "Once you satisfy that need, they will increase their level and will start to accumulate more experience. "},
+{sprite = 'norhap', text = "It seems, your servant has achieved enough experience to advance to next the level. That's great as they will earn new [color=aqua]Attribute Points[/color]."},
+{text = "But first you'll have to figure out what's holding them back from progressing further. For that, talk to them and discover what they require. This might be anything, fights, gifts, love..."},
+{text = "Once you have satisfy that need, they will increase their level and will start to accumulate more experience. "},
 {text = "Higher levels require harder conditions to be met before your servants can advance. However, it's also possible to change the condition to a new random one with some alchemy. ", choice = 'slave'},
 ],
 slavecond = [

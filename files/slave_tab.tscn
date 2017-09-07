@@ -474,8 +474,8 @@ margin/bottom = 149.0
 
 [node name="Label" parent="stats/statspanel/levelprogress"]
 
-margin/left = 60.0
-margin/right = 133.0
+margin/left = 57.0
+margin/right = 152.0
 margin/bottom = -1.0
 
 [node name="status_panel" type="Panel" parent="stats"]
@@ -2146,8 +2146,8 @@ lines_skipped = 0
 max_lines_visible = -1
 
 [node name="contraception" type="CheckBox" parent="regulations/rules" groups=[
-"slaverules",
 "prisondisable",
+"slaverules",
 ]]
 
 anchor/left = 1
@@ -2174,8 +2174,8 @@ flat = false
 align = 0
 
 [node name="aphrodisiac" type="CheckBox" parent="regulations/rules" groups=[
-"slaverules",
 "prisondisable",
+"slaverules",
 ]]
 
 anchor/left = 1
@@ -2310,8 +2310,8 @@ flat = false
 align = 0
 
 [node name="betterfood" type="CheckBox" parent="regulations/rules" groups=[
-"slaverules",
 "prisondisable",
+"slaverules",
 ]]
 
 anchor/left = 1
@@ -2338,8 +2338,8 @@ flat = false
 align = 0
 
 [node name="personalbath" type="CheckBox" parent="regulations/rules" groups=[
-"slaverules",
 "prisondisable",
+"slaverules",
 ]]
 
 anchor/left = 1
@@ -2366,8 +2366,8 @@ flat = false
 align = 0
 
 [node name="cosmetics" type="CheckBox" parent="regulations/rules" groups=[
-"slaverules",
 "prisondisable",
+"slaverules",
 ]]
 
 anchor/left = 1
@@ -2394,8 +2394,8 @@ flat = false
 align = 0
 
 [node name="pocketmoney" type="CheckBox" parent="regulations/rules" groups=[
-"slaverules",
 "prisondisable",
+"slaverules",
 ]]
 
 anchor/left = 1
@@ -3560,8 +3560,8 @@ text = "Tattoo"
 flat = false
 
 [node name="praise" type="Button" parent="actions" groups=[
-"actions",
 "prisondisable",
+"actions",
 ]]
 
 anchor/left = 3
@@ -3608,8 +3608,8 @@ text = "Talk"
 flat = false
 
 [node name="berate" type="Button" parent="actions" groups=[
-"actions",
 "prisondisable",
+"actions",
 ]]
 
 anchor/left = 3
@@ -3632,8 +3632,8 @@ text = "Berate"
 flat = false
 
 [node name="gift" type="Button" parent="actions" groups=[
-"actions",
 "prisondisable",
+"actions",
 ]]
 
 anchor/left = 3
@@ -3657,8 +3657,8 @@ text = "Gift"
 flat = false
 
 [node name="sex" type="Button" parent="actions" groups=[
-"actions",
 "prisondisable",
+"actions",
 ]]
 
 anchor/left = 3
@@ -3905,8 +3905,8 @@ If 'Public' is checked, other servants will also be watching and it will severe 
 visible_characters = -1
 
 [node name="tickling" type="Button" parent="actions/punishroom/Popup/Panel" groups=[
-"sexpunish",
 "actions",
+"sexpunish",
 ]]
 
 focus/ignore_mouse = false
@@ -3925,8 +3925,8 @@ text = "Tickling"
 flat = false
 
 [node name="spanking" type="Button" parent="actions/punishroom/Popup/Panel" groups=[
-"sexpunish",
 "actions",
+"sexpunish",
 ]]
 
 focus/ignore_mouse = false
@@ -3945,8 +3945,8 @@ text = "Spanking"
 flat = false
 
 [node name="whipping" type="Button" parent="actions/punishroom/Popup/Panel" groups=[
-"sexpunish",
 "actions",
+"sexpunish",
 ]]
 
 focus/ignore_mouse = false
@@ -3965,8 +3965,8 @@ text = "Whipping"
 flat = false
 
 [node name="hotwax" type="Button" parent="actions/punishroom/Popup/Panel" groups=[
-"sexpunish",
 "actions",
+"sexpunish",
 ]]
 
 focus/ignore_mouse = false
@@ -3985,8 +3985,8 @@ text = "Hot Wax"
 flat = false
 
 [node name="woodenhorse" type="Button" parent="actions/punishroom/Popup/Panel" groups=[
-"sexpunish",
 "actions",
+"sexpunish",
 ]]
 
 focus/ignore_mouse = false

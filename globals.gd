@@ -5,7 +5,7 @@ var itemdict = {}
 var spelldict = {}
 var effectdict = {}
 var guildslaves = {wimborn = [], gorn = [], frostford = []}
-var gameversion = 4471
+var gameversion = 4480
 var state = progress.new()
 var developmode = false
 var gameloaded = false
@@ -375,7 +375,7 @@ class progress:
 	var reputation = {wimborn = 0, frostford = 0, gorn = 0} setget reputation_set
 	var dailyeventcountdown = 0
 	var dailyeventprevious = 0
-	var currentversion = 4470
+	var currentversion = 4480
 	var unstackables = {}
 	var supplykeep = 10
 	var tutorial = {basics = false, slave = false, alchemy = false, jail = false, lab = false, farm = false, outside = false, combat = false}
@@ -495,7 +495,8 @@ class slave:
 	var customdesc = ''
 	var piercing = {}
 	var level = 0
-	var xp = 0 setget xp_set
+	var xp = 0 setget xp_set, xp_get
+	var realxp = 0
 	var skillpoints = 0
 	var levelupreqs = {} setget levelupreqs_set
 	var sleep = ''
@@ -630,13 +631,23 @@ class slave:
 		levelupreqs.clear()
 		level += 1
 		skillpoints += 3
-		xp = 0
+		realxp = 0
 		sexuals.affection += round(rand_range(5,10))
 		if self != globals.player:
-			globals.get_tree().get_current_scene().infotext(dictionary("[color=green]$name has advanced to Level " + str(level)+ '[/color]'))
+			globals.get_tree().get_current_scene().infotext(dictionary("$name has advanced to Level [color=aqua]" + str(level)+ '[/color]!'))
+		else:
+			globals.get_tree().get_current_scene().infotext(dictionary("You have advanced to Level [color=aqua]" + str(level)+ '[/color]'))
 	
 	func xp_set(value):
-		xp = min(value,100)
+		var difference = realxp - value
+		realxp -= difference/max(level,1)
+		realxp = round(max(min(realxp, 100),0))
+		if realxp >= 100 && self == globals.player:
+			levelup()
+	
+	
+	func xp_get():
+		return realxp
 	
 	
 	func cleartraits():
@@ -1406,6 +1417,11 @@ func repairsave():
 			i.origins = 'commoner'
 		if i.origins == 'royal':
 			i.origins = 'noble'
+		if typeof(i.level) == TYPE_DICTIONARY:
+			var dict = i.level
+			i.level = dict.value
+			i.skillpoints = dict.skillpoints
+			i.xp = dict.xp
 		i.rules = {'silence':false, 'pet':false, 'contraception':false, 'aphrodisiac':false, 'masturbation':false, 'nudity':false, 'betterfood':false, 'personalbath':false,'cosmetics':false,'pocketmoney':false} 
 		if i.gear.has('clothes'):
 			i.gear = {costume = 'clothcommon', underwear = 'underwearplain', armor = null, weapon = null, accessory = null}

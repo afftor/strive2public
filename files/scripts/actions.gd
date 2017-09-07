@@ -434,6 +434,7 @@ func levelreqs():
 func levelup(command):
 	globals.jobs.call(command, slave)
 	globals.get_tree().get_current_scene().close_dialogue()
+	get_parent()._on_slave_tab_visibility_changed()
 
 #Piercing
 

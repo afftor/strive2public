@@ -557,6 +557,7 @@ visible_characters = -1
 
 [node name="levelprogress" type="TextureProgress" parent="."]
 
+hint/tooltip = "At 100% you can talk to servant to advance their level"
 focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
@@ -584,10 +585,10 @@ focus/ignore_mouse = true
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 0
-margin/left = 77.0
-margin/top = -17.0
-margin/right = 146.0
-margin/bottom = -3.0
+margin/left = 59.0
+margin/top = -15.0
+margin/right = 150.0
+margin/bottom = -1.0
 text = "Experience"
 align = 1
 percent_visible = 1.0

@@ -82,7 +82,7 @@ costenergy = 3,
 costmana = 0,
 costother = '',
 attributes = ['damage', 'debuff'],
-reqs = {'level.value' : 4, 'stats.agi_cur' : 1}
+reqs = {'level' : 1, 'stats.agi_cur' : 1}
 },
 protect = {
 name = 'Protect',
@@ -125,7 +125,7 @@ costenergy = 0,
 costmana = 10,
 costother = '',
 attributes = [],
-reqs = {'level.value' : 3, 'stats.maf_cur' : 1}
+reqs = {'level' : 1, 'stats.maf_cur' : 1}
 },
 sedation = {
 name = 'Sedation',
@@ -147,7 +147,7 @@ costenergy = 0,
 costmana = 10,
 costother = '',
 attributes = [],
-reqs = {'level.value' : 4, 'stats.maf_cur' : 1}
+reqs = {'level' : 2, 'stats.maf_cur' : 1}
 },
 barrier = {
 name = 'Barrier',
@@ -169,7 +169,7 @@ costenergy = 0,
 costmana = 12,
 costother = '',
 attributes = ['buff'],
-reqs = {'level.value' : 4, 'stats.maf_cur' : 2}
+reqs = {'level' : 2, 'stats.maf_cur' : 2}
 },
 shackle = {
 name = 'Shackle',
@@ -189,7 +189,7 @@ costenergy = 0,
 costmana = 10,
 costother = '',
 attributes = ['debuff'],
-reqs = {'level.value' : 5, 'stats.maf_cur' : 2}
+reqs = {'level' : 3, 'stats.maf_cur' : 2}
 },
 acidspit = {
 name = 'Acid Spit',
@@ -208,7 +208,7 @@ costenergy = 0,
 costmana = 5,
 costother = '',
 attributes = ['damage','debuff'],
-reqs = {'level.value' : 6, 'stats.maf_cur' : 4}
+reqs = {'level' : 4, 'stats.maf_cur' : 4}
 },
 heavystike = {
 name = 'Heavy Strike',
@@ -229,7 +229,7 @@ costenergy = 0,
 costmana = 0,
 costother = '',
 attributes = ['damage'],
-reqs = {'level.value' : 8, 'stats.str_cur' : 2}
+reqs = {'level' : 3, 'stats.str_cur' : 2}
 },
 aimedstrike = {
 name = 'Aimed Strike',
@@ -250,7 +250,7 @@ costenergy = 0,
 costmana = 0,
 costother = '',
 attributes = ['damage','physpen'],
-reqs = {'level.value' : 7, 'stats.agi_cur' : 2}
+reqs = {'level' : 2, 'stats.agi_cur' : 2}
 },
 leechingstrike = {
 name = 'Leeching Strike',
@@ -271,7 +271,7 @@ costenergy = 0,
 costmana = 0,
 costother = '',
 attributes = ['damage', 'lifesteal'],
-reqs = {'level.value' : 7, 'stats.agi_cur' : 3, 'stats.maf_cur' : 2}
+reqs = {'level' : 4, 'stats.agi_cur' : 3, 'stats.maf_cur' : 2}
 },
 mindread = {
 name = 'Mind reading',

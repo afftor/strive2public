@@ -1044,7 +1044,6 @@ visible_characters = -1
 
 [node name="slaveguildquestpanel" type="Control" parent="."]
 
-editor/display_folded = true
 visibility/visible = false
 anchor/right = 1
 anchor/bottom = 1
@@ -1059,7 +1058,6 @@ margin/bottom = 23.0
 
 [node name="ScrollContainer" type="ScrollContainer" parent="slaveguildquestpanel"]
 
-editor/display_folded = true
 anchor/bottom = 1
 focus/ignore_mouse = false
 focus/stop_mouse = true
@@ -1111,7 +1109,7 @@ size_flags/vertical = 0
 margin/left = 16.0
 margin/top = 10.0
 margin/right = 263.0
-margin/bottom = 49.0
+margin/bottom = 64.0
 custom_fonts/normal_font = ExtResource( 4 )
 custom_colors/default_color = Color( 0, 0, 0, 1 )
 bbcode/enabled = true
@@ -1125,9 +1123,9 @@ focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 0
 margin/left = 178.0
-margin/top = 47.0
+margin/top = 54.0
 margin/right = 260.0
-margin/bottom = 67.0
+margin/bottom = 74.0
 custom_fonts/font = ExtResource( 4 )
 text = "150 gold"
 percent_visible = 1.0
@@ -1141,10 +1139,11 @@ focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 0
 margin/left = 10.0
-margin/top = 50.0
+margin/top = 55.0
 margin/right = 92.0
-margin/bottom = 70.0
+margin/bottom = 75.0
 custom_fonts/font = ExtResource( 4 )
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
 text = "1"
 align = 1
 percent_visible = 1.0
