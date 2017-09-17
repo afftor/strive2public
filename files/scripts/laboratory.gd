@@ -209,6 +209,7 @@ scales = {price = {mana = 100, gold = 250}, items = {natureessenceing = 2, magic
 hearing = {price = {mana = 50, gold = 150}, items = {bestialessenceing = 1, magicessenceing = 1}, time = 4},
 "str" : {price = {mana = 75, gold = 200}, items = {bestialessenceing = 2, magicessenceing = 2}, time = 5},
 "agi" : {price = {mana = 75, gold = 200}, items = {bestialessenceing = 2, natureessenceing = 2}, time = 5},
+"beauty" : {price = {mana = 50, gold = 300}, items = {magicessenceing = 2, natureessenceing = 2, beautypot = 1}, time = 5},
 },}
 var eyecolor = {
 type = 'cosmetics',
@@ -382,6 +383,13 @@ func labbuttonselected(string):
 				get_node("labmodpanel/ScrollContainer1/secondarymodlist").add_child(newbutton)
 				newbutton.connect("pressed",self,'genetalia', [dict[string],'agi'])
 				newbutton.set_meta('effect', 'agi')
+			if slave.mods.has('augmentbeauty') == false:
+				newbutton = get_node("labmodpanel/ScrollContainer1/secondarymodlist/buttontemp").duplicate()
+				newbutton.set_hidden(false)
+				newbutton.set_text('Improve appearance')
+				get_node("labmodpanel/ScrollContainer1/secondarymodlist").add_child(newbutton)
+				newbutton.connect("pressed",self,'genetalia', [dict[string],'beauty'])
+				newbutton.set_meta('effect', 'beauty')
 		return
 
 	for i in dict[string].options:
@@ -525,6 +533,8 @@ func genetalia(dict, action):
 		text = "Due to magical augmentation, $name's muscles will have more room for growth. (increases maximum strength by 2) \n\nRequirements:"
 	elif modification.code == 'mod' && action == 'agi':
 		text = "Due to magical augmentation, $name's flexibility will have more room for growth. (increases maximum agility by 2) \n\nRequirements:"
+	elif modification.code == 'mod' && action == 'beauty':
+		text = "$name's visual appearance will be improved by correcting flaws and problematic parts. (inceases basic beauty, can only be used once per servant) \n\nRequirements:"
 	
 	
 	
@@ -642,6 +652,12 @@ func _on_labconfirm_pressed():
 			slave.add_effect(globals.effectdict.augmentagi)
 		elif result == 'hearing':
 			slave.mods['augmenthearing'] = 'augmenthearing'
+		elif result == 'beauty':
+			slave.mods['augmentbeauty'] = 'augmentbeauty'
+			if slave.beautybase < 60:
+				slave.beautybase += 30
+			else:
+				slave.beautybase += 20
 	if operation.type == 'custom':
 		slave.away.duration = operation.data[result].time
 		slave.away.at = 'lab'

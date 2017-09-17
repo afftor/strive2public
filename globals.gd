@@ -4,8 +4,8 @@ extends Node
 var itemdict = {}
 var spelldict = {}
 var effectdict = {}
-var guildslaves = {wimborn = [], gorn = [], frostford = []}
-var gameversion = 4480
+var guildslaves = {wimborn = [], gorn = [], frostford = [], umbra = []}
+var gameversion = 5000
 var state = progress.new()
 var developmode = false
 var gameloaded = false
@@ -75,6 +75,8 @@ chloehappy2 = load("res://files/images/chloe/chloehappy2.png"),
 chloeshy2 = load("res://files/images/chloe/chloeshy2.png"),
 chloenakedshy = load("res://files/images/chloe/chloenakedshy.png"),
 chloeneutral2 = load("res://files/images/chloe/chloeneutral2.png"),
+aydanormal = load("res://files/images/aydanormal.png"),
+aydanormal2 = load("res://files/images/aydanormal2.png"),
 }
 
 var musicdict = {
@@ -89,7 +91,7 @@ mansion5 = load("res://files/music/Chill_Openness.ogg"),
 wimborn = load("res://files/music/Latinish.ogg"),
 gorn = load("res://files/music/Mystery_Bazaar.ogg"),
 explore = load("res://files/music/Journey_of_Solitude.ogg"),
-maintheme = load("res://files/music/Heights.ogg"),
+maintheme = load("res://files/music/menutheme.ogg"),
 }
 var backgrounds = {
 mansion = load("res://files/backgrounds/mansion.png"),
@@ -220,7 +222,7 @@ noadults = false,
 slaverguildallraces = false,
 custommouse = true,
 fontsize = 14,
-musicvol = 2,
+musicvol = 1,
 receiving = true,
 fullscreen = false,
 oldresize = false,
@@ -357,12 +359,12 @@ class progress:
 	var mainquest = 0
 	var rank = 0
 	var password = ''
-	var sidequests = {emily = 0, brothel = 0, cali = 0, chloe = 0, ayda = 0, ivran = '', yris = 0, zoe = 0, ayneris = 0}
+	var sidequests = {emily = 0, brothel = 0, cali = 0, chloe = 0, ayda = 0, ivran = '', yris = 0, zoe = 0, ayneris = 0, sebastianumbra = 0}
 	var repeatables = {wimbornslaveguild = [], frostfordslaveguild = [], gornslaveguild = []}
 	var babylist = []
 	var companion = -1
 	var headgirlbehavior = 'none'
-	var portals = {wimborn = {'enabled' : false, 'code' : 'wimborn'}, gorn = {'enabled':false, 'code' : 'gorn'}, frostford = {'enabled':false, 'code' : 'frostford'}, shaliq = {'enabled':false, 'code':'shaliq'}, amberguard = {'enabled':false, 'code':'amberguard'}}
+	var portals = {wimborn = {'enabled' : false, 'code' : 'wimborn'}, gorn = {'enabled':false, 'code' : 'gorn'}, frostford = {'enabled':false, 'code' : 'frostford'}, shaliq = {'enabled':false, 'code':'shaliq'}, amberguard = {'enabled':false, 'code':'amberguard'}, umbra = {'enabled':false, 'code':'umbra'}}
 	var sebastianorder = {race = 'none', taken = false, duration = 0}
 	var sebastianslave
 	var sandbox = false
@@ -372,7 +374,7 @@ class progress:
 	var timedevents = {}
 	var customcursor = "res://files/buttons/kursor1.png"
 	var upcomingevents = []
-	var reputation = {wimborn = 0, frostford = 0, gorn = 0} setget reputation_set
+	var reputation = {wimborn = 0, frostford = 0, gorn = 0, amberguard = 0} setget reputation_set
 	var dailyeventcountdown = 0
 	var dailyeventprevious = 0
 	var currentversion = 4480
@@ -404,13 +406,14 @@ class progress:
 	mansionparlor = 0,
 	}
 	
-	var ghostrep = {wimborn = 0, frostford = 0, gorn = 0}
+	var ghostrep = {wimborn = 0, frostford = 0, gorn = 0, amberguard = 0}
 	
 	
 	func reputation_set(value):
 		var text = ''
 		for i in value:
 			if ghostrep[i] != value[i]:
+				value[i] = min(max(value[i], -50),50)
 				if ghostrep[i] > value[i]:
 					text += "[color=red]Reputation with " + i.capitalize() + " has worsened![/color]"
 				else:
@@ -640,7 +643,7 @@ class slave:
 	
 	func xp_set(value):
 		var difference = realxp - value
-		realxp -= difference/max(level,1)
+		realxp -= max(difference/max(level,1),1)
 		realxp = round(max(min(realxp, 100),0))
 		if realxp >= 100 && self == globals.player:
 			levelup()
@@ -816,16 +819,16 @@ class slave:
 		stats.dom_cur = min(max(value, stats.dom_min), stats.dom_max)
 	
 	func str_set(value):
-		stats.str_cur = min(value, stats.str_max)
+		stats.str_cur = min(value-stats.str_mod, stats.str_max)
 	
 	func agi_set(value):
-		stats.agi_cur = min(value, stats.agi_max)
+		stats.agi_cur = min(value-stats.agi_mod, stats.agi_max)
 	
 	func maf_set(value):
-		stats.maf_cur = min(value, stats.maf_max)
+		stats.maf_cur = min(value-stats.maf_mod, stats.maf_max)
 	
 	func end_set(value):
-		stats.end_cur = min(value, stats.end_max)
+		stats.end_cur = min(value-stats.end_mod, stats.end_max)
 		self.health = self.health
 	
 	func beautybase_set(value):
@@ -1063,7 +1066,7 @@ class slave:
 			luxury = luxury/2
 		return luxury
 	
-	func calculateprice():
+	func calculateprice(alternative = false):
 		var price = 0
 		price = beautybase*2.5 + beautytemp*1.5
 		price += (level-1)*50
@@ -1102,7 +1105,7 @@ class slave:
 			price = price*2
 		if traits.has('Uncivilized') == true:
 			price = price/1.5
-		if effects.has('captured') == true:
+		if effects.has('captured') == true && alternative == false:
 			price = price/2
 		if price < 0:
 			price = 5
@@ -1325,6 +1328,8 @@ func load_game(filename):
 	state = dict2inst(currentline.state)
 	var statetemp = progress.new()
 	for i in statetemp.reputation:
+		if state.ghostrep.has(i) == false:
+			state.ghostrep[i] = statetemp.reputation[i]
 		if state.reputation.has(i) == false:
 			state.reputation[i] = statetemp.reputation[i]
 	for i in state.itemlist:
@@ -1462,7 +1467,7 @@ func dir_contents(target = "user://saves"):
 var currentslave
 var currentsexslave
 
-func evaluate(input):
+func evaluate(input): #used to read strings as conditions when needed
 	var script = GDScript.new()
 	script.set_source_code("var slave\nfunc eval():\n\treturn " + input)
 	script.reload()
@@ -1471,3 +1476,21 @@ func evaluate(input):
 	obj.slave = currentslave
 	return obj.eval()
 
+func weightedrandom(array): #array must be made out of dictionaries with {value = name, weight = number} Number is relative to other elements which may appear
+	var total = 0
+	var counter = 0
+	for i in array:
+		if typeof(i) == TYPE_DICTIONARY:
+			total += i.weight
+		else:
+			total += i[1]
+	var random = rand_range(0,total)
+	for i in array:
+		if typeof(i) == TYPE_DICTIONARY:
+			if counter + i.weight >= random:
+				return i.value
+			counter += i.weight
+		else:
+			if counter + i[1] >= random:
+				return i[0]
+			counter += i[1]

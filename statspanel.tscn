@@ -84,7 +84,6 @@ max_lines_visible = -1
 
 [node name="sstr" type="TextureFrame" parent="."]
 
-editor/display_folded = true
 anchor/left = 3
 anchor/right = 3
 focus/ignore_mouse = true
@@ -98,21 +97,19 @@ margin/bottom = 71.0
 texture = ExtResource( 2 )
 stretch_mode = 0
 
-[node name="Label" type="Label" parent="sstr"]
+[node name="Label" type="RichTextLabel" parent="sstr"]
 
 focus/ignore_mouse = true
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 0
 margin/left = 29.0
-margin/top = 5.0
-margin/right = 53.0
-margin/bottom = 21.0
-text = "0/4"
-align = 2
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
+margin/top = 2.0
+margin/right = 101.0
+margin/bottom = 22.0
+bbcode/enabled = true
+bbcode/bbcode = "100/100"
+visible_characters = -1
 
 [node name="Control" type="Control" parent="sstr"]
 
@@ -145,7 +142,6 @@ flat = false
 
 [node name="sagi" type="TextureFrame" parent="."]
 
-editor/display_folded = true
 anchor/left = 3
 anchor/right = 3
 focus/ignore_mouse = true
@@ -159,21 +155,19 @@ margin/bottom = 100.0
 texture = ExtResource( 5 )
 stretch_mode = 0
 
-[node name="Label" type="Label" parent="sagi"]
+[node name="Label" type="RichTextLabel" parent="sagi"]
 
 focus/ignore_mouse = true
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 0
 margin/left = 29.0
-margin/top = 5.0
-margin/right = 53.0
-margin/bottom = 21.0
-text = "0/4"
-align = 2
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
+margin/top = 2.0
+margin/right = 101.0
+margin/bottom = 22.0
+bbcode/enabled = true
+bbcode/bbcode = "100/100"
+visible_characters = -1
 
 [node name="Control" type="Control" parent="sagi"]
 
@@ -206,7 +200,6 @@ flat = false
 
 [node name="smaf" type="TextureFrame" parent="."]
 
-editor/display_folded = true
 anchor/left = 3
 anchor/right = 3
 focus/ignore_mouse = true
@@ -220,21 +213,19 @@ margin/bottom = 129.0
 texture = ExtResource( 6 )
 stretch_mode = 0
 
-[node name="Label" type="Label" parent="smaf"]
+[node name="Label" type="RichTextLabel" parent="smaf"]
 
 focus/ignore_mouse = true
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 0
 margin/left = 29.0
-margin/top = 5.0
-margin/right = 53.0
-margin/bottom = 21.0
-text = "0/4"
-align = 2
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
+margin/top = 2.0
+margin/right = 101.0
+margin/bottom = 22.0
+bbcode/enabled = true
+bbcode/bbcode = "100/100"
+visible_characters = -1
 
 [node name="Control" type="Control" parent="smaf"]
 
@@ -267,7 +258,6 @@ flat = false
 
 [node name="send" type="TextureFrame" parent="."]
 
-editor/display_folded = true
 anchor/left = 3
 anchor/right = 3
 focus/ignore_mouse = true
@@ -281,21 +271,19 @@ margin/bottom = 158.0
 texture = ExtResource( 7 )
 stretch_mode = 0
 
-[node name="Label" type="Label" parent="send"]
+[node name="Label" type="RichTextLabel" parent="send"]
 
 focus/ignore_mouse = true
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 0
 margin/left = 29.0
-margin/top = 5.0
-margin/right = 53.0
-margin/bottom = 21.0
-text = "0/4"
-align = 2
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
+margin/top = 2.0
+margin/right = 101.0
+margin/bottom = 22.0
+bbcode/enabled = true
+bbcode/bbcode = "100/100"
+visible_characters = -1
 
 [node name="Control" type="Control" parent="send"]
 
@@ -346,7 +334,6 @@ max_lines_visible = -1
 
 [node name="cour" type="TextureFrame" parent="."]
 
-editor/display_folded = true
 anchor/left = 3
 anchor/right = 3
 focus/ignore_mouse = true
@@ -360,20 +347,19 @@ margin/bottom = 71.0
 texture = ExtResource( 8 )
 stretch_mode = 0
 
-[node name="Label" type="Label" parent="cour"]
+[node name="Label" type="RichTextLabel" parent="cour"]
 
 focus/ignore_mouse = true
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 0
 margin/left = 29.0
-margin/top = 5.0
-margin/right = 69.0
-margin/bottom = 21.0
-text = "1"
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
+margin/top = 2.0
+margin/right = 101.0
+margin/bottom = 22.0
+bbcode/enabled = true
+bbcode/bbcode = "100/100"
+visible_characters = -1
 
 [node name="Control" type="Control" parent="cour"]
 
@@ -388,7 +374,6 @@ margin/bottom = 27.0
 
 [node name="conf" type="TextureFrame" parent="."]
 
-editor/display_folded = true
 anchor/left = 3
 anchor/right = 3
 focus/ignore_mouse = true
@@ -402,20 +387,19 @@ margin/bottom = 100.0
 texture = ExtResource( 9 )
 stretch_mode = 0
 
-[node name="Label" type="Label" parent="conf"]
+[node name="Label" type="RichTextLabel" parent="conf"]
 
 focus/ignore_mouse = true
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 0
 margin/left = 29.0
-margin/top = 5.0
-margin/right = 69.0
-margin/bottom = 21.0
-text = "1"
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
+margin/top = 2.0
+margin/right = 101.0
+margin/bottom = 22.0
+bbcode/enabled = true
+bbcode/bbcode = "100/100"
+visible_characters = -1
 
 [node name="Control" type="Control" parent="conf"]
 
@@ -430,7 +414,6 @@ margin/bottom = 27.0
 
 [node name="wit" type="TextureFrame" parent="."]
 
-editor/display_folded = true
 anchor/left = 3
 anchor/right = 3
 focus/ignore_mouse = true
@@ -444,20 +427,19 @@ margin/bottom = 126.0
 texture = ExtResource( 10 )
 stretch_mode = 0
 
-[node name="Label" type="Label" parent="wit"]
+[node name="Label" type="RichTextLabel" parent="wit"]
 
 focus/ignore_mouse = true
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 0
 margin/left = 29.0
-margin/top = 5.0
-margin/right = 69.0
-margin/bottom = 21.0
-text = "1"
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
+margin/top = 2.0
+margin/right = 101.0
+margin/bottom = 22.0
+bbcode/enabled = true
+bbcode/bbcode = "100/100"
+visible_characters = -1
 
 [node name="Control" type="Control" parent="wit"]
 
@@ -472,7 +454,6 @@ margin/bottom = 27.0
 
 [node name="charm" type="TextureFrame" parent="."]
 
-editor/display_folded = true
 anchor/left = 3
 anchor/right = 3
 focus/ignore_mouse = true
@@ -486,20 +467,19 @@ margin/bottom = 151.0
 texture = ExtResource( 11 )
 stretch_mode = 0
 
-[node name="Label" type="Label" parent="charm"]
+[node name="Label" type="RichTextLabel" parent="charm"]
 
 focus/ignore_mouse = true
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 0
 margin/left = 29.0
-margin/top = 5.0
-margin/right = 69.0
-margin/bottom = 21.0
-text = "1"
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
+margin/top = 2.0
+margin/right = 101.0
+margin/bottom = 22.0
+bbcode/enabled = true
+bbcode/bbcode = "100/100"
+visible_characters = -1
 
 [node name="Control" type="Control" parent="charm"]
 

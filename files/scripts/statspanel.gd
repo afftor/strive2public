@@ -28,13 +28,21 @@ func statup(stat):
 	show()
 
 func show():
-	var text
+	var text = ''
 	var mentals = [cour, conf, wit, charm]
 	for i in globals.statsdict:
-		text = str(slave[i])
+		text = ''
+		if i in ['sstr','sagi','smaf','send']:
+			if slave.stats[globals.maxstatdict[i].replace("_max",'_mod')] >= 1:
+				text = "[color=green]"
+			elif slave.stats[globals.maxstatdict[i].replace("_max",'_mod')] < 0:
+				text = "[color=red]"
+		text += str(slave[i]) 
 		if mode in ['full','slaveadv']:
-			text += "/" + str(min(slave.stats[globals.maxstatdict[i]], slave.originvalue[slave.origins]))
-		self[i].set_text(text)
+			if text.find('color') >= 0:
+				text += "[/color]"
+			text += "/" +str(min(slave.stats[globals.maxstatdict[i]], slave.originvalue[slave.origins]))
+		self[i].set_bbcode(text)
 	for i in mentals:
 		if mode == 'slavebase' || slave == globals.player:
 			i.get_parent().set_hidden(true)
@@ -63,7 +71,7 @@ func show():
 	get_node("levelprogress/Label").set_text("Experience: " + str(slave.xp) + '%')
 	get_node("levelprogress").set_val(slave.xp)
 	for i in ['send','smaf','sstr','sagi']:
-		if slave.skillpoints >= 1 && (globals.slaves.find(slave) >= 0||globals.player == slave) && slave[i] < slave.stats[globals.maxstatdict[i]]:
+		if slave.skillpoints >= 1 && (globals.slaves.find(slave) >= 0||globals.player == slave) && slave.stats[globals.maxstatdict[i].replace('_max','_cur')] < slave.stats[globals.maxstatdict[i]]:
 			get_node(i+'/Button').set_hidden(false)
 		else:
 			get_node(i+'/Button').set_hidden(true)

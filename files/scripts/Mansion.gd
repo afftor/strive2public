@@ -139,6 +139,7 @@ func _on_new_slave_button_pressed():
 	var slave = globals.slavegen.newslave(testslaverace[rand_range(0,testslaverace.size())], testslaveage, testslavegender, testslaveorigin[rand_range(0,testslaveorigin.size())])
 	slave.obed += 200
 	slave.loyal += 100
+	slave.xp += 100000
 	slave.sexuals.affection = 200
 	#slave.sexuals.unlocked = true
 	#for i in get_node("MainScreen/slave_tab/sexual").sexbuttons:
@@ -146,7 +147,7 @@ func _on_new_slave_button_pressed():
 	slave.lust = 100
 	slave.tattoo.face = 'nature'
 	slave.attention = 70
-	slave.xp = 100
+	slave.skillpoints = 100
 	for i in ['conf','cour','charm','wit']:
 		slave[i] = 100
 	#slave.sexuals.unlocks.append('group')
@@ -162,7 +163,7 @@ func _on_new_slave_button_pressed():
 			i.amount += 10
 	globals.slaves = slave
 	slave.stats.health_curr = 20
-	globals.state.reputation.wimborn = 50
+	globals.state.reputation.wimborn = -30
 	globals.player.ability.append("mindread")
 	globals.player.abilityactive.append("mindread")
 	globals.player.ability.append('heal')
@@ -173,19 +174,17 @@ func _on_new_slave_button_pressed():
 	globals.resources.mana += 50
 	globals.player.energy = 100
 	globals.player.xp += 50
-	globals.state.reputation.frostford = 30
 	globals.resources.upgradepoints += 100
-	for i in ['armorchain','weaponclaymore','clothpet','clothninja']:
+	for i in ['armorchain','weaponclaymore','clothpet','clothninja','clothmiko']:
 		var tmpitem = get_node("itemnode").createunstackable(i)
 		globals.state.unstackables[str(tmpitem.id)] = tmpitem
 	globals.state.sidequests.brothel = 2
-	globals.state.sidequests.cali = 19
+	globals.state.sidequests.cali = 14
 	globals.state.rank = 3
-	globals.state.mainquest = 1
+	globals.state.mainquest = 16
 	globals.state.farm = 3
 	globals.state.mansionupgrades.mansionlab = 1
 	globals.state.mansionupgrades.mansionalchemy = 1
-
 
 
 func mansion():
@@ -461,13 +460,16 @@ func _on_end_pressed():
 		text = ''
 		if slave.away.duration == 0:
 			if slave.sleep != 'jail' && slave.sleep != 'farm':
-				if slave.work in ['rest','forage','hunt','cooking','library','nurse','maid','storewimborn','artistwimborn','assistwimborn','whorewimborn','escortwimborn','fucktoywimborn', 'lumberer', 'ffprostitution','guardian', 'research', 'slavecatcher']:
+				if slave.work in ['rest','forage','hunt','cooking','library','nurse','maid','storewimborn','artistwimborn','assistwimborn','whorewimborn','escortwimborn','fucktoywimborn', 'lumberer', 'ffprostitution','guardian', 'research', 'slavecatcher','fucktoy']:
 					if slave.work != 'rest' && slave.energy < 30:
 						text = "$name had no energy to fulfill $his duty and had to take a rest. \n"
 						slave.health = 10
 						slave.stress -= 20
 					else:
 						workdict = call(slave.work, slave)
+						if workdict.has('dead') && workdict.dead == true:
+							deads_array.append({number = count, reason = workdict.text})
+							continue
 						if slave.traits.has("Clumsy") && get_node("MainScreen/slave_tab").jobdict[slave.work].tags.find("physical"):
 							if workdict.has('gold'):
 								workdict.gold *= 0.7
@@ -494,13 +496,12 @@ func _on_end_pressed():
 							slave.metrics.foodearn += workdict.food
 			text1.set_bbcode(text1.get_bbcode()+slave.dictionary(text))
 			######## Counting food
-			slave.stats.health_max = 35 + slave.stats.end_cur*20
 			if globals.resources.food >= 5:
 				slave.loyal += rand_range(0,1)
 				slave.stress += rand_range(-5,-10)
 				if slave.race == 'Fairy':
 					slave.stress += rand_range(-10,-15)
-				slave.health = rand_range(8,12)
+				slave.health = rand_range(2,5)
 				slave.obed += slave.loyal/5 - (slave.cour+slave.conf)/10
 				if chef != null:
 					var consumption = -10 + (chef.sagi + (chef.wit/20)/2)
@@ -556,15 +557,15 @@ func _on_end_pressed():
 			slave.lust = round(rand_range(3,8))
 			if slave.sleep == 'communal' && globals.count_sleepers()['communal'] > globals.state.mansionupgrades.mansioncommunal:
 				slave.stress += rand_range(5,15)
-				slave.health = -rand_range(1,10)
+				slave.health = -rand_range(1,5)
 				text2.set_bbcode(text2.get_bbcode() + slave.dictionary('$name suffers from communal room being overcrowded.\n'))
 			elif slave.sleep == 'communal':
 				slave.stress += -rand_range(5,10)
-				slave.health = rand_range(1,10)
+				slave.health = rand_range(1,3)
 				slave.energy = rand_range(20,30)+ slave.stats.end_cur*6
 			elif slave.sleep == 'personal':
 				slave.stress += rand_range(-10,-15)
-				slave.health = rand_range(10,15)
+				slave.health = rand_range(2,6)
 				slave.energy = rand_range(40,50)+ slave.stats.end_cur*6
 				text2.set_bbcode(text2.get_bbcode() + slave.dictionary('$name sleeps in a private room, which helps $him heal faster and provides some stress relief.\n'))
 				if slave.lust >= 50 && slave.rules.masturbation == false && slave.tags.find('nosex') < 0:
@@ -616,13 +617,13 @@ func _on_end_pressed():
 			if slave.traits.has("Clingy") && slave.attention > 75 && rand_range(0,2) > 1:
 				slave.obed -= rand_range(10,30)
 				slave.loyal -= rand_range(1,5)
-				text0.set_bbcode(text0.get_bbcode() + slave.dictionary("[color=yellow]$name is annoying by you paying no attention to $him. [/color]\n"))
+				text0.set_bbcode(text0.get_bbcode() + slave.dictionary("[color=yellow]$name is annoyed by you paying no attention to $him. [/color]\n"))
 			if slave.traits.has('Pliable') == true:
 				if slave.sexuals.affection >= 90:
 					slave.trait_remove('Pliable')
 					slave.add_trait(globals.origins.trait('Devoted'))
 					text0.set_bbcode(text0.get_bbcode() + slave.dictionary('[color=green]$name has become Devoted. $His willpower strengthened.[/color]\n'))
-				elif slave.sexuals.actions.size() >= 10:
+				elif slave.sexuals.actions.size() >= 12:
 					slave.trait_remove('Pliable')
 					slave.add_trait(globals.origins.trait('Slutty'))
 					text0.set_bbcode(text0.get_bbcode() + slave.dictionary('[color=green]$name has become Slutty. $His willpower strengthened.[/color]\n'))
@@ -702,10 +703,10 @@ func _on_end_pressed():
 				text0.set_bbcode(text0.get_bbcode() + slave.dictionary("$name complained "+globals.fastif(headgirl == null, "to you, ", "to your headgirl, ")+"that $he's having it too hard and hoped to get some rest.\n"))
 			if slave.stress >= 100 && slave.cour+slave.conf+slave.wit+slave.charm > 50:
 				text0.set_bbcode(text0.get_bbcode() + slave.dictionary("[color=red]$name had a severe mental breakdown due to high stress.[/color] \n"))
-				slave.cour += -rand_range(0,slave.cour/4)
-				slave.conf += -rand_range(0,slave.conf/4)
-				slave.wit += -rand_range(0,slave.wit/4)
-				slave.charm += -rand_range(0,slave.charm/4)
+				slave.cour += -rand_range(5,slave.cour/4)
+				slave.conf += -rand_range(5,slave.conf/4)
+				slave.wit += -rand_range(5,slave.wit/4)
+				slave.charm += -rand_range(5,slave.charm/4)
 				if slave.effects.has('captured') == true:
 					slave.add_effect(globals.effectdict.captured, true)
 				slave.health = -rand_range(0,slave.stats.health_max/6)
@@ -715,7 +716,7 @@ func _on_end_pressed():
 				slave.attention += rand_range(5,7)
 			if slave.preg.duration > 0:
 				slave.preg.duration += 1
-				if slave.health < 30 && rand_range(0,100) > slave.health*2:
+				if slave.health < 20 && rand_range(0,100) > slave.health*2:
 					text0.set_bbcode(text0.get_bbcode()+slave.dictionary('[color=red]Due to poor health condition, $name had a miscarriage and lost $his child.[/color]\n'))
 					slave.preg.baby = null
 					slave.preg.duration = 0
@@ -940,7 +941,7 @@ func _on_end_pressed():
 			if globals.slaves[i.number].work == 'companion':
 				globals.state.companion = -1
 			globals.slaves.remove(i.number)
-			text0.set_bbcode(text0.get_bbcode() + i.reason)
+			text0.set_bbcode(text0.get_bbcode() + i.reason + '\n')
 	text0.set_bbcode(text0.get_bbcode()+ "[color=yellow]" +str(round(gold_consumption))+'[/color] gold was used for various tasks.\n'  )
 	get_node("FinishDayPanel/FinishDayScreen").set_current_tab(0)
 	aliseresults = results
@@ -1220,14 +1221,81 @@ func guardian(slave):
 	return dict
 
 func research(slave):
-	var text = "$name spent day by indulging $himself in magic experiments. \n"
-	var gold = max(slave.send*rand_range(6,12) + slave.smaf*rand_range(7,12),5)
-	slave.xp += gold/6
-	text += "In the end $he made [color=yellow]" + str(round(gold)) + "[/color] gold\n"
-	slave.stress += rand_range(15,30)
-	slave.health = -rand_range(2,4)
+	var text = "$name spent day by being used in magic experiments. \n"
+	var gold = 25*(globals.originsarray.find(slave.origins)+1) + 20*slave.level + rand_range(0,10)
+	var array = []
+	var dead = false
+	text += "In the end $he earned [color=yellow]" + str(round(gold)) + "[/color] gold\n"
+	slave.obed += rand_range(15,25)
+	if rand_range(0,100) >= 40:
+		slave.health = -slave.health/3
+	if rand_range(0,100) < 30:
+		array = ['conf','cour','wit','charm']
+		slave[array[rand_range(0,array.size())]] -= rand_range(15,25)
+		text += "[color=red]$name's mental health has been damaged. [/color]"
+	if rand_range(0,100) < 20 && slave.send >= 1:
+		slave.send -= 1
+		text += "[color=red]$name's physical health has been damaged. [/color]"
+	if slave.wit >= 65 && slave.cour >= 65 && rand_range(0,100) <= 15:
+		text = "[color=red]$name has managed to break free from place of $his employment and hasn't returned to mansion. [/color]"
+		dead = true
+	slave.stress += rand_range(10,25)
+	if rand_range(35,50) > slave.health && rand_range(0,100) < 15:
+		slave.health = -200
+		dead = true
+		text = "[color=red]Due to life-threatening experiments $name has deceased.[/color]"
+	var dict = {text = slave.dictionary(text), gold = gold, dead = dead}
+	return dict
+
+func fucktoy(slave):
+	var gold = 0
+	var text
+	slave.metrics.brothel += 1
+	text = "$name sent to Umbra to be used as a Fucktoy.\n"
+	var jobactions = ['oral','anal','vaginal','fetish','fetish2','toy','group']
+	if slave.pussy.virgin == true:
+		slave.sexuals.actions.pussy = 1
+		slave.pussy.virgin = false
+		slave.pussy.first = 'brothel'
+		slave.health = -5
+		slave.stress += 10
+		slave.loyal += rand_range(-2,-4)
+		text += "$His virginity was taken by one of the customers.\n"
+	if rand_range(1,10) > 2:
+		impregnation(slave)
+	var counter = 0
+	for i in jobactions:
+		if slave.sexuals.unlocks.has(i) :
+			counter += 1
+	for i in globals.state.reputation:
+		if globals.state.reputation[i] < 0:
+			gold += abs(globals.state.reputation[i])
+	gold += rand_range(5,10)
+	if slave.traits.has('Sex-crazed') == true:
+		slave.stress -= counter*3
+	slave.metrics.sex += round(rand_range(3,6))
+	slave.metrics.randompartners += round(rand_range(2,5))
+	if slave.sexuals.unlocks.find('penetration') >= 0 && slave.pussy.has == true:
+		slave.metrics.vag += round(rand_range(2,5))
+	if slave.sexuals.unlocks.find('anal') >= 0:
+		slave.metrics.anal += round(rand_range(2,5))
+	if slave.sexuals.unlocks.find('oral') >= 0:
+		slave.metrics.oral += round(rand_range(1,4))
+	if slave.sexuals.unlocks.find('orgy') >= 0:
+		slave.metrics.orgy += round(rand_range(1,3))
+	gold = round(gold)
+	if slave.wit >= 25:
+		slave.loyal -= 8
+	if slave.conf >= 25:
+		slave.stress += 15
+	if slave.effects.has('captured'):
+		slave.effects.captured.duration -= 3
+	slave.obed += 20
+	slave.dom -= rand_range(4,8)
+	text += "By the end of the day $he earned [color=yellow]" + str(gold) + "[/color] gold.\n"
 	var dict = {text = text, gold = gold}
 	return dict
+
 
 func slavecatcher(slave):
 	var text = "$name spent day helping Gorn's slavers to acquire and tranport slaves. \n"
@@ -1414,7 +1482,7 @@ func fucktoywimborn(slave):
 	var gold
 	var text
 	slave.metrics.brothel += 1
-	text = "$name departed to work as an exclusive fucktoy.\n"
+	text = "$name departed to work as an exotic whore.\n"
 	var jobactions = ['oral','anal','vaginal','fetish','fetish2','toy','group']
 	if slave.pussy.virgin == true:
 		slave.sexuals.actions.pussy = 1
@@ -1844,7 +1912,7 @@ func _on_mansion_pressed():
 	else:
 		text += '[color=green]'
 	text += str(globals.state.mansionupgrades.mansioncommunal) + '[/color] beds in communal room\n'
-	text += 'You have ' + globals.fastif(sleepers.personal >= globals.state.mansionupgrades.mansionpersonal, '[color=red]', '[color=green]') + str(globals.state.mansionupgrades.mansionpersonal) + '[/color] ' + globals.fastif(globals.state.mansionupgrades.mansionpersonal > 1, 'personal rooms', 'personal room')+ ' available for living\nYour bed can fit ' +globals.fastif(sleepers['your_bed'] >= globals.state.mansionupgrades.mansionbed, '[color=red]', '[color=green]') + str(globals.state.mansionupgrades.mansionbed) + '[/color] ' +  globals.fastif(globals.state.mansionupgrades.mansionpersonal > 1, 'persons', 'person')+' besides you.\n\nYour jail can hold up to ' +globals.fastif(sleepers.jail >= globals.state.mansionupgrades.jailcapacity, '[color=red]', '[color=green]') + str(globals.state.mansionupgrades.jailcapacity) +' [/color] prisoners. \n\n'
+	text += 'You have ' + globals.fastif(sleepers.personal >= globals.state.mansionupgrades.mansionpersonal, '[color=red]', '[color=green]') + str(globals.state.mansionupgrades.mansionpersonal) + '[/color] ' + globals.fastif(globals.state.mansionupgrades.mansionpersonal > 1, 'personal rooms', 'personal room')+ ' available for living\nYour bed can fit ' +globals.fastif(sleepers['your_bed'] >= globals.state.mansionupgrades.mansionbed, '[color=red]', '[color=green]') + str(globals.state.mansionupgrades.mansionbed) + '[/color] ' +  globals.fastif(globals.state.mansionupgrades.mansionpersonal > 1, 'persons', 'person')+' besides you.\n\nYour jail can hold up to ' +globals.fastif(sleepers.jail >= globals.state.mansionupgrades.jailcapacity, '[color=red]', '[color=green]') + str(globals.state.mansionupgrades.jailcapacity) +'[/color] prisoners. \n\n'
 	if globals.state.condition <= 20:
 		text += 'Mansion is [color=red]in a complete mess[/color].\n\n'
 	elif globals.state.condition <= 40:

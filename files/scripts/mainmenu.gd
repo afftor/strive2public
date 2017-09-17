@@ -29,7 +29,6 @@ func _ready():
 	text.erase(text.length()-2, 2)
 	text += "\n\nIcons: http://game-icons.net \n'Mystery Bazaar', 'Corruption' by Kevin MacLeod (incompetech.com)\nLicensed under Creative Commons: By Attribution 3.0 License\nhttp://creativecommons.org/licenses/by/3.0/"
 	get_node("TextureFrame/creditpanel/RichTextLabel").set_bbcode(text)
-	music()
 	if globals.rules.fullscreen == true:
 		OS.set_window_fullscreen(true)
 	if globals.rules.oldresize == true:
@@ -54,6 +53,7 @@ func music():
 func _on_warningconfirm_pressed():
 	get_node("TextureFrame").set_hidden(false)
 	get_node("Container/warning").set_hidden(true)
+	music()
 
 func _on_warningcancel_pressed():
 	_on_exit_pressed()

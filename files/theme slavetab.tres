@@ -148,7 +148,7 @@ draw_center = true
 
 default_font = ExtResource( 8 )
 Button/colors/font_color = Color( 0.535156, 0.535156, 0.535156, 1 )
-Button/colors/font_color_disabled = Color( 1, 1, 1, 1 )
+Button/colors/font_color_disabled = Color( 0.144531, 0.142275, 0.142273, 1 )
 Button/colors/font_color_hover = Color( 0.941176, 0.941176, 0.941176, 1 )
 Button/colors/font_color_pressed = Color( 1, 1, 1, 1 )
 Button/constants/hseparation = 2

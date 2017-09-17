@@ -127,8 +127,8 @@ func gornwaitday():
 func gornayda():
 	var text = ''
 	var state = true
-	var sprite
 	var buttons = []
+	outside.setcharacter('aydanormal')
 	if globals.state.mainquest == 15 && !globals.state.sidequests.ivran in ['tobealtered','potionreceived']:
 		text = textnode.MainQuestGornAydaIvran
 		state = false
@@ -153,6 +153,8 @@ func gornayda():
 		buttons.append({name = "Ask about the found ointment", function = "gornaydatalk", args = 3})
 	if state == true:
 		buttons.append({name = "Leave", function = 'leaveayda'})
+	outside.get_node("charactersprite").set_hidden(false)
+	outside.setcharacter('aydanormal')
 	outside.maintext.set_bbcode(globals.player.dictionary(text))
 	outside.buildbuttons(buttons, self)
 
@@ -164,9 +166,8 @@ func aydashop():
 
 func gornaydatalk(stage = 0):
 	var text = ''
-	var sprite
 	var buttons = []
-	
+	outside.setcharacter('aydanormal2')
 	if stage == 1:
 		text = textnode.GornAydaTalk
 		globals.state.sidequests.ayda = 2
@@ -325,7 +326,7 @@ func frostforddryad():
 	var sprite
 	var state = true
 	var buttons = []
-	if globals.state.mainquest == 28.1:
+	if str(globals.state.mainquest) == '28.1':
 		text = textnode.MainQuestFrostfordForest
 		globals.state.mainquest = 29
 	elif globals.state.mainquest == 30:

@@ -124,6 +124,9 @@ func _ready():
 	if globals.guildslaves.frostford.size() < 2:
 		var rand = round(rand_range(4,6))
 		newslaveinguild(rand, 'frostford')
+	if globals.guildslaves.umbra.size() < 4:
+		var rand = round(rand_range(4,6))
+		newslaveinguild(rand, 'umbra')
 
 func _input(event):
 	if main.get_node("screenchange/AnimationPlayer").is_playing() == true && main.get_node("screenchange").is_visible():
@@ -155,35 +158,36 @@ func _input(event):
 
 func newslaveinguild(number, town = 'wimborn'):
 	while number > 0:
-		#wimborn
 		var racearray
 		var race
 		var origin
 		var originpool 
 		if town == 'wimborn':
-			racearray = [[globals.wimbornraces[rand_range(0,globals.wimbornraces.size())],15],['Drow', 20],['Dark Elf', 30],['Elf', 40],['Human', 100]]
+			racearray = [[globals.wimbornraces[rand_range(0,globals.wimbornraces.size())],1],['Drow', 1],['Dark Elf', 1.5],['Elf', 2],['Human', 6]]
 		elif town == 'gorn':
-			racearray = [[globals.gornraces[rand_range(0,globals.gornraces.size())],15],['Centaur', 10],['Human', 30],['Goblin', 50],['Orc', 100]]
+			racearray = [[globals.gornraces[rand_range(0,globals.gornraces.size())],1],['Centaur', 1],['Human', 2],['Goblin', 2],['Orc', 5]]
 		elif town == 'frostford':
-			racearray = [[globals.frostfordraces[rand_range(0,globals.frostfordraces.size())],20],['Human', 40],['Halfkin Wolf', 60],['Beastkin Wolf', 100]]
+			racearray = [[globals.frostfordraces[rand_range(0,globals.frostfordraces.size())],1],['Human', 1.5],['Halfkin Wolf', 3],['Beastkin Wolf', 5]]
+		elif town == 'umbra':
+			racearray = [[globals.allracesarray[rand_range(0,globals.allracesarray.size())],1]]
 		if globals.rules.slaverguildallraces == true && globals.state.sandbox == true:
 			originpool = ['slave','poor','commoner','rich','noble']
 			origin = originpool[rand_range(0,originpool.size())]
 			race = globals.allracesarray[rand_range(0,globals.allracesarray.size())]
 		else:
-			var rand = rand_range(0,100)
-			for i in racearray:
-				if i[1] > rand:
-					race = i[0]
-					break
-			rand = rand_range(0,100)
-			originpool = [['rich',5],['commoner',20],['poor',60],['slave',100]]
-			for i in originpool:
-				if i[1] > rand:
-					origin = i[0]
-					break
+			race = globals.weightedrandom(racearray)
+			if town == 'umbra':
+				originpool = [['noble', 1],{value = 'rich', weight = 2},{value = 'commoner', weight = 3},{value = 'poor', weight = 3},{value = 'slave',weight = 1}]
+			else:
+				originpool = [{value = 'rich', weight = 1},{value = 'commoner', weight = 3},{value = 'poor', weight = 6},{value = 'slave',weight = 6}]
+			origin = globals.weightedrandom(originpool)
 		var newslave = globals.slavegen.newslave(race, 'random', 'random', origin)
-		newslave.obed += 95
+		if town == 'umbra':
+			newslave.obed = rand_range(0,80)
+			if rand_range(0,100) >= 30:
+				newslave.add_effect(globals.effectdict.captured)
+		else:
+			newslave.obed += 95
 		newslave.fromguild = true
 		globals.guildslaves[town].append(newslave)
 		number -= 1
@@ -191,10 +195,10 @@ func newslaveinguild(number, town = 'wimborn'):
 
 func setcharacter(text):
 	get_node("charactersprite").set_texture(get_parent().spritedict[text])
-	#get_node("charactersprite").set_as_toplevel(true)
 
 func slaveguild(guild = 'wimborn'):
 	mindread = false
+	sellslavelocation = guild
 	if guild == 'wimborn':
 		slavearray = globals.guildslaves.wimborn
 		if get_node("charactersprite").is_visible() == false || get_node("charactersprite").get_texture() != load("res://files/images/fairy.png"):
@@ -205,11 +209,11 @@ func slaveguild(guild = 'wimborn'):
 			get_node("AnimationPlayer").play("spritemovefairy")
 		clearselection()
 		if globals.state.slaveguildvisited == 0:
-			maintext.set_bbcode(globals.player.dictionary("The first time you enter through the doors of the town's central building, you are mildly surprised to find it it very clean and bright inside. Arriving at the reception, a small cheerful fairy girl emerges from nearby to assist you. Her friendly and somewhat whimsical looks make you realize she must be one of the main receptionists hired to drag in potential clients. \n\n[color=yellow]— Welcome $sir! I do not believe I have see you here before, is this your first time?. You seem to be a respectable person! If you will allow me, I shall help you get familiar with our establishment!\n\n— From our facilities here we can provide our clients with many affordable and obedient staff members. Yes, the possession of another person is allowed as long as you have the rights. Despite overall humanity progression, it is still very far from providing sufficient food and living conditions for everyone. By selling themselves into others custody, many find a way to survive, cover their debts or help their family. \n\n— Sometimes we deal with, so called, 'prisoners of war', to help them to adapt to life in our care. Don't you find this is way more humane giving them a new chance, instead of outright slaughtering them?\n\n— This is where we come in. place and ensure, that your deal is secured. Slaves give up a huge part of their freedom. We take care to teach them to act appropriately, so you may be sure their initial behaviour will be acceptable.  To strengthen your ownership we will gladly help brand your purchase.\n\n— After slave becomes your property, you are free to employ them as you see fit, but keep in mind, that inhumane treatment may cause you quite a few problems. We strongly advise against unnecessary deaths and mutilations, nor we do support people harshly abusing their privileges over others. \n\n— Lastly, if you have possession of someone, you no longer have a need for and wish to part with, we can surely offer you something!\n\n— I hope, my explanation was helpful, $sir! Let me know if there's something else I can assist you with![/color]"))
+			maintext.set_bbcode(globals.player.dictionary("The first time you enter through the doors of the town's central building, you are mildly surprised to find it it very clean and bright inside. Arriving at the reception, a small cheerful fairy girl emerges from nearby to assist you. Her friendly and somewhat whimsical looks make you realize she must be one of the main receptionists hired to drag in potential clients. \n\n[color=yellow]— Welcome $sir! I do not believe I have see you here before, is this your first time? I'm Maple. You seem to be a respectable person! If you will allow me, I shall help you get familiar with our establishment!\n\n— From our facilities here we can provide our clients with many affordable and obedient staff members. Yes, the possession of another person is allowed as long as you have the rights. Despite overall humanity progression, it is still very far from providing sufficient food and living conditions for everyone. By selling themselves into others custody, many find a way to survive, cover their debts or help their family. \n\n— Sometimes we deal with, so called, 'prisoners of war', to help them to adapt to life in our care. Don't you find this is way more humane giving them a new chance, instead of outright slaughtering them?\n\n— This is where we come in. place and ensure, that your deal is secured. Slaves give up a huge part of their freedom. We take care to teach them to act appropriately, so you may be sure their initial behaviour will be acceptable.  To strengthen your ownership we will gladly help brand your purchase.\n\n— After slave becomes your property, you are free to employ them as you see fit, but keep in mind, that inhumane treatment may cause you quite a few problems. We strongly advise against unnecessary deaths and mutilations, nor we do support people harshly abusing their privileges over others. \n\n— Lastly, if you have possession of someone, you no longer have a need for and wish to part with, we can surely offer you something!\n\n— I hope, my explanation was helpful, $sir! Let me know if there's something else I can assist you with![/color]"))
 			globals.state.slaveguildvisited = 1
 			globals.charactergallery.fairy.unlocked = true
 		else:
-			maintext.set_bbcode(globals.player.dictionary("You enter through the guild’s doors, and are greeted once again by the busy sights and sounds of customers, slaves, and workers shuffling around at blistering speeds. You give a polite bow to one of the receptionists and grab a pen to sign in. In few moments your short acquaintance appears before you.\n\n[color=yellow]— Ah, my pleasure, $name, how can I help you today?[/color] "))
+			maintext.set_bbcode(globals.player.dictionary("You enter through the guild’s doors, and are greeted once again by the busy sights and sounds of customers, slaves, and workers shuffling around at blistering speeds. You give a polite bow to one of the receptionists and grab a pen to sign in. In few moments Maple appears before you.\n\n[color=yellow]— Ah, my pleasure, $name, how can I help you today?[/color] "))
 		var array = [{name = 'See slaves for sale', function = 'slaveguildslaves'}, {name = 'Offer your servants',function = 'slaveguildsells'}, {name = 'See custom requests', function = 'slaveguildquests'},{name = 'Services for Slaves',function = 'slaveservice'},{name = 'Leave', function = 'town'}]
 		if globals.state.mainquest == 3:
 			array.insert(3, {name = "Ask about fairies", function = 'slaveguildfairy'})
@@ -251,11 +255,12 @@ var selectedslave
 var selectedslaveprice
 var slavearray
 var mindread = false
+var sellslavelocation
 
 func slaveguildslaves():
 	get_node("slavebuypanel").set_hidden(false)
 	var slavelist = get_node("slavebuypanel/slavebuypanel/ScrollContainer/VBoxContainer")
-	var slavebutton =  get_node("slavebuypanel/slavebuypanel/ScrollContainer/VBoxContainer/slavebutton")
+	var slavebutton = get_node("slavebuypanel/slavebuypanel/ScrollContainer/VBoxContainer/slavebutton")
 	for i in slavelist.get_children():
 		if i != slavebutton:
 			i.set_hidden(true)
@@ -270,7 +275,7 @@ func slaveguildslaves():
 		newbutton.get_node('price').set_text(str(round(max(slave.calculateprice()*0.8,50)))+ ' gold')
 		newbutton.set_meta('slave', slave)
 		newbutton.connect('pressed',self,'selectslavebuy',[slave])
-	maintext.set_bbcode('')
+	maintext.set_bbcode('You get a simple catalogue with currently present slaves available for purchase.')
 	get_node("slavebuypanel/statspanel").set_hidden(true)
 	clearbuttons()
 
@@ -283,16 +288,14 @@ func selectslavebuy(slave):
 		else:
 			i.set_pressed(false)
 	var text = ''
-	if slave.origins == 'slave':
-		text = "Former slaves are pretty affordable and really easy to deal with! I bet you'll like this one! "
-	if slave.pussy.virgin == true && text != '':
-		text = text + "And also, $he's still a virgin! What would you think about becoming $his first?"
-	elif slave.pussy.virgin == true:
-		text = text + "This $child is still a virgin. "
-	if text == '':
-		text = "Healthy and really Obedient! "
-	text = text +"\n\n— [color=yellow]"+str(selectedslaveprice)+ " gold[/color], and $he's all yours.[/color] "
-	get_node("slavebuypanel/slavedescription").set_bbcode(slave.description_small() + '\n\n[color=#ff5df8]— '+ slave.dictionary(text))
+	if slave.effects.has('captured') == true:
+		text += "During the examination $name only returned bold, angry look, showing $his [color=red]rebellious[/color] attitude. \n\n"
+	elif slave.obed < 40:
+		text += "$name reacts to commands [color=red]poorly[/color] and does not seem to hold any enthusiasm about $his position. Perhaps $he will need an additional training...\n\n"
+	if slave.pussy.virgin == true:
+		text += "After a gesture, $name reveals to you $his [color=aqua]virgin[/color] pussy. \n\n"
+	text += "As you finish inspection, you are being reminded, that you can purchase $him for mere [color=yellow]"+str(selectedslaveprice)+ " gold[/color].[/color] "
+	maintext.set_bbcode(slave.description_small() + '\n\n[color=#ff5df8]'+ slave.dictionary(text))
 	if globals.resources.gold < selectedslaveprice:
 		get_node("slavebuypanel/purchasebutton").set_disabled(true)
 	else:
@@ -317,25 +320,24 @@ func _on_mindreadbutton_pressed():
 	selectslavebuy(selectedslave)
 
 
-func selectslavesell(slave):
-	selectedslaveprice = (round(max(slave.calculateprice()*0.6,10)))
+func selectslavesell(slave = null, type = 'guild'):
+	if type == 'guild':
+		selectedslaveprice = (round(max(slave.calculateprice()*0.6,10)))
+	elif type == 'sebastian':
+		selectedslaveprice = (round(max(slave.calculateprice(true)*0.45, 10)))
+	elif type == 'umbra':
+		selectedslaveprice = (round(max(slave.calculateprice(true)*0.6, 20)))
 	selectedslave = slave
 	var text = ''
-	if selectedslaveprice >= 300:
-		text = "— Wow, that's one handy exemplar. My superiors say, they are ready to pay [color=yellow]"+str(selectedslaveprice) + selectedslave.dictionary(" gold[/color] for $him. ")
-	elif selectedslaveprice >= 150:
-		text = "— Looks decent, we'll pay you [color=yellow]"+str(selectedslaveprice)+ " gold[/color] for this one."
-	elif selectedslaveprice >= 50:
-		text = "— Not bad, we can afford to spend [color=yellow]"+str(selectedslaveprice)+ selectedslave.dictionary(" gold[/color] for $him.")
-	else:
-		text = "— This one... is not of terribly great value to us, however we are still ready to pay you [color=yellow]"+ str(selectedslaveprice)+ selectedslave.dictionary(" gold[/color] for $him.")
-	if selectedslave.obed >= 90 && selectedslave.fromguild == false && selectedslave.effects.has('captured') == false:
-		text += slave.dictionary("\n\n[color=aqua]You will get upgrade points from selling this slave depending on $his grade.[/color]")
-	elif selectedslave.fromguild == true:
+	text = 'After some time, you get an offer to sell this servant for [color=yellow]' + str(selectedslaveprice) + ' gold[/color]. '
+	if selectedslave.fromguild == true:
 		text += slave.dictionary("\n\n[color=red]You won't get any upgrade points from selling this slave as $he has been recently registered in the census.[/color]")
+	elif type != 'guild' || (selectedslave.obed >= 90 && selectedslave.fromguild == false && selectedslave.effects.has('captured') == false):
+		text += slave.dictionary("\n\n[color=aqua]You will get upgrade points from selling this slave here depending on $his grade.[/color]")
 	else:
 		text += slave.dictionary("\n\n[color=red]You won't get any upgrade points from selling this slave currently $he's too rebellious.[/color]")
-	get_node("slavesellpanel/slavedescription").set_bbcode(text)
+	#get_node("slavesellpanel/slavedescription").set_bbcode(text)
+	maintext.set_bbcode(text)
 	get_node("slavesellpanel/slavesellbutton").set_disabled(false)
 	
 	for i in get_node("slavesellpanel/ScrollContainer/VBoxContainer").get_children():
@@ -349,9 +351,10 @@ func selectslavesell(slave):
 func _on_slavelistcancel_pressed():
 	get_node("slavebuypanel").set_hidden(true)
 	clearselection()
-	slaveguild(location)
-	if location == 'wimborn':
-		get_node("outsidetextbox").set_bbcode("[color=yellow]— Anything else you are interested in? [/color]")
+	if location != 'umbra':
+		slaveguild(location)
+	else:
+		get_parent().get_node("explorationnode").zoneenter('umbra')
 
 func _on_purchasebutton_pressed():
 	globals.resources.gold -= selectedslaveprice
@@ -360,31 +363,54 @@ func _on_purchasebutton_pressed():
 	main.popup('You pay ' + str(selectedslaveprice) + selectedslave.dictionary(" gold for $name. With that, guild's helper brands $him for you and $he's sent to your mansion. "))
 	selectedslave.brand = 'basic'
 	slaveguildslaves()
-	get_node("slavebuypanel/slavedescription").set_bbcode(globals.player.dictionary("A finest choice, $sir. Anyone else caught your attention?"))
+	maintext.set_bbcode(globals.player.dictionary("A finest choice, $sir. Anyone else caught your attention?"))
 	clearselection('buy')
 
 
 
 func _on_slavesellbutton_pressed():
 	var upgradefromslave = false
+	var text = ''
 	globals.resources.gold += selectedslaveprice
 	if selectedslave.obed >= 90 && selectedslave.fromguild == false && selectedslave.effects.has('captured') == false:
 		upgradefromslave = true
 		globals.resources.upgradepoints += globals.originsarray.find(selectedslave.origins)+1
-		
-	globals.guildslaves[location].append(selectedslave)
+	elif sellslavelocation in ['sebastian','umbra'] && selectedslave.fromguild == false:
+		upgradefromslave = true
+		globals.resources.upgradepoints += globals.originsarray.find(selectedslave.origins)+1
+		if selectedslave.fromguild == false && (selectedslave.obed < 90 || selectedslave.effects.has('captured') == true):
+			var reputationloss = [['wimborn',1],['gorn',1],['frostford',1],['amberguard',1]]
+			if selectedslave.race in ['Elf','Dark Elf','Drow']:
+				reputationloss[3][1] += 12
+			elif selectedslave.race.find('Beastkin') >= 0 ||  selectedslave.race.find('Halfkin') >= 0:
+				reputationloss[2][1] += 8
+			elif selectedslave.race in ['Orc','Goblin','Centaur']:
+				reputationloss[2][1] += 10
+			globals.state.reputation[globals.weightedrandom(reputationloss)] -= 4
+			text += "[color=yellow]Your reputation has suffered from this deal. [/color]\n"
+	if globals.guildslaves.has(location):
+		globals.guildslaves[location].append(selectedslave)
 	globals.slaves.remove(globals.slaves.find(selectedslave))
 	selectedslave.fromguild = true
-	main.popup(selectedslave.dictionary('You sell $name for ') + str(selectedslaveprice) + selectedslave.dictionary(" gold. $He's taken away and put on sale for other customers. "))
+	text += selectedslave.dictionary('You sell $name for ') + str(selectedslaveprice) + selectedslave.dictionary(" gold.")
+	if sellslavelocation != 'sebastian':
+		text += "$He's taken away and put on sale for other customers. "
 	main.rebuild_slave_list()
 	slaveguildsells()
 	clearselection('sell')
+	maintext.set_bbcode(text)
 
 
 func slaveguildsells():
-	maintext.set_bbcode('')
-	clearbuttons()
+	sellslavelist('guild')
+
+func sellslavelist(type = 'guild'):
+	var text = 'Select a person you wish to sell. '
+	if type == 'guild':
+		text += "You will receive Mansion Upgrade points if slave haven't been registered before and is not rebellious."
+	maintext.set_bbcode(text)
 	get_node("slavesellpanel").set_hidden(false)
+	clearbuttons()
 	var slavelist = get_node("slavesellpanel/ScrollContainer/VBoxContainer")
 	var slavebutton = get_node("slavesellpanel/ScrollContainer/VBoxContainer/slavebutton")
 	for i in slavelist.get_children():
@@ -397,29 +423,38 @@ func slaveguildsells():
 			slavelist.add_child(newbutton)
 			newbutton.set_hidden(false)
 			newbutton.get_node('name').set_text(slave.dictionary('$name, ')+ slave.race + ', '+ slave.sex + ', ' + slave.age + ', ' + slave.work)
-			newbutton.get_node('price').set_text(str(max(round(slave.calculateprice()*0.6),10))+ ' gold')
+			if type == 'guild':
+				newbutton.get_node('price').set_text(str(max(round(slave.calculateprice()*0.6),10))+ ' gold')
+			elif type == 'sebastian':
+				newbutton.get_node('price').set_text(str(max(round(slave.calculateprice(true)*0.45),10))+ ' gold')
+			elif type == 'umbra':
+				newbutton.get_node('price').set_text(str(max(round(slave.calculateprice(true)*0.6),20))+ ' gold')
+			if type in ['sebastian','umbra']:
+				maintext.set_bbcode("[color=aqua]Selling slaves here will still provide upgrade points even if they are rebellious, but will lower your reputation. [/color]")
 			newbutton.set_meta('slave', slave)
-			newbutton.connect('pressed',self,'selectslavesell',[slave])
+			newbutton.connect('pressed',self,'selectslavesell',[slave, type])
 
 
 func _on_slavesellcancel_pressed():
 	get_node("slavesellpanel").set_hidden(true)
 	clearselection()
-	slaveguild(location)
-	if location == 'wimborn':
-		get_node("outsidetextbox").set_bbcode("[color=yellow]— Anything else you are interested in? [/color]")
-
+	if sellslavelocation in ['gorn','wimborn','frostford']:
+		slaveguild(sellslavelocation)
+	elif sellslavelocation == 'sebastian':
+		sebastian()
+	elif sellslavelocation == 'umbra':
+		get_parent().get_node("explorationnode").zoneenter('umbra')
 
 func clearselection(temp = ''):
 	selectedslave = ''
 	selectedslaveprice = 0
 	maintext.set_bbcode('')
-	get_node("slavebuypanel/slavedescription").set_bbcode('[color=yellow]— We have the finest choice of fresh obedient merchandise. Who would you like to see?[/color]')
-	get_node("slavesellpanel/slavedescription").set_bbcode("[color=yellow]— Oh, you have someone, you would like to part with? That's fine, but don't expect us to pay you full price. We are just humble retailers after all. If you want better price, you should find a buyer yourself. [/color]")
+	#get_node("slavebuypanel/slavedescription").set_bbcode('[color=yellow]— We have the finest choice of fresh obedient merchandise. Who would you like to see?[/color]')
+	#get_node("slavesellpanel/slavedescription").set_bbcode("[color=yellow]— Oh, you have someone, you would like to part with? That's fine, but don't expect us to pay you full price. We are just humble retailers after all. If you want better price, you should find a buyer yourself. [/color]")
 	if temp == 'buy':
-		get_node("slavebuypanel/slavedescription").set_bbcode('[color=yellow]— A fine purchase! Would you like to see another one?[/color]')
+		maintext.set_bbcode('[color=yellow]Your newly purchased slave has been sent to your mansion. [/color]')
 	elif temp == 'sell':
-		get_node("slavesellpanel/slavedescription").set_bbcode("[color=yellow]— It's been pleasure! Do you have any more uneeded personas to trade?[/color]")
+		maintext.set_bbcode("[color=yellow]You receive a nice purse of gold for your freshly selled servant. [/color]")
 	get_node("slavebuypanel/purchasebutton").set_disabled(true)
 	get_node("slavesellpanel/slavesellbutton").set_disabled(true)
 	for i in get_node("slavebuypanel/slavebuypanel/ScrollContainer/VBoxContainer").get_children():
@@ -437,7 +472,7 @@ func slaveguildquests():
 	get_node("slaveguildquestpanel/questaccept").set_disabled(true)
 	get_node("slaveguildquestpanel/questcancel").set_hidden(true)
 	maintext.set_bbcode('')
-	text = '[color=yellow]— Looking for some part time job? Sure, take a look at the request board![/color]'
+	text = "You walk to the Slaver Guild's request board.\n\n[color=yellow]Completing repeatable missions will earn you Mansion Upgrade points. [/color]"
 	get_node("slaveguildquestpanel").set_hidden(false)
 	var list = get_node("slaveguildquestpanel/ScrollContainer/VBoxContainer")
 	var button = get_node("slaveguildquestpanel/ScrollContainer/VBoxContainer/questbutton")
@@ -488,17 +523,14 @@ func slaveguildquests():
 		newbutton.get_node("difficulty").set_text(i.difficulty.capitalize())
 		newbutton.get_node("difficulty").set('custom_colors/font_color', fontcolor)
 		newbutton.connect("pressed",self,'questbuttonpressed',[i])
-	get_node("slaveguildquestpanel/questdescription").set_bbcode(text)
+	maintext.set_bbcode(text)
 
 func _on_questhide_pressed():
 	get_node("slaveguildquestpanel").set_hidden(true)
 	slaveguild(location)
-	if location == 'wimborn':
-		get_node("outsidetextbox").set_bbcode("[color=yellow]— Anything else you are interested in? [/color]")
-
 
 func questbuttonpressed(quest):
-	get_node("slaveguildquestpanel/questdescription").set_bbcode(slavequesttext(quest))
+	maintext.set_bbcode(slavequesttext(quest))
 
 func _on_questcancel_pressed():
 	main.yesnopopup("Cancel this quest?", 'removequest', self)
@@ -670,7 +702,7 @@ func serviceselected(slave = null):
 		slaveserviceselected = null
 		get_node("slaveservicepanel/selectslavebutton").set_text('Select Slave')
 		get_node("slaveservicepanel/serviceconfirm").set_disabled(true)
-		get_node("slaveservicepanel/servicedescription").set_bbcode('[color=yellow]— If you need some help with your slaves, we offer a broad selection of useful services! Just let me know what bothers you.[/color]')
+		maintext.set_bbcode('Slave service allows you to perform many special, important operations with your servants. Select servant, then choose desired action. \n\n[color=yellow]This will cost money and likely withdraw servant for a time. Choose operation for further information.[/color]')
 	else:
 		slaveserviceselected = slave
 		get_node("slaveservicepanel/selectslavebutton").set_text('Deselect')
@@ -751,7 +783,7 @@ func operationselected(operation):
 				get_node("slaveservicepanel/hairlengthbutton").add_item(i.capitalize()+' length')
 	else:
 		get_node("slaveservicepanel/hairlengthbutton").set_hidden(true)
-	get_node("slaveservicepanel/servicedescription").set_bbcode(text)
+	maintext.set_bbcode(text)
 
 
 func _on_serviceconfirm_pressed():
@@ -802,8 +834,6 @@ func _on_serviceconfirm_pressed():
 func _on_slaveservicecancel_pressed():
 	get_node("slaveservicepanel").set_hidden(true)
 	slaveguild(location)
-	if location == 'wimborn':
-		get_node("outsidetextbox").set_bbcode("[color=yellow]— Anything else you are interested in? [/color]")
 
 func specchosen(button):
 	for i in get_tree().get_nodes_in_group('specsbutton'):
@@ -811,7 +841,7 @@ func specchosen(button):
 			i.set_pressed(false)
 	var spec = button.get_meta('spec') 
 	var text = "[center]" + spec.name + '[/center]\n' + spec.descript + "\nBonus: [color=aqua]" + spec.descriptbonus + "[/color]\n\nRequirements: [color=yellow]" + spec.descriptreqs + "[/color]\n\nCost: 500 gold.\nDuration: 5 days."
-	get_node("slaveservicepanel/servicedescription").set_bbcode(text)
+	maintext.set_bbcode(text)
 	globals.currentslave = slaveserviceselected
 	if globals.resources.gold >= 500 && globals.evaluate(spec.reqs) == true:
 		get_node("slaveservicepanel/serviceconfirm").set_disabled(false)
@@ -825,7 +855,7 @@ code = 'haircut',
 name = 'Cut Hair',
 number = 1,
 reqs = "slave.hairlength != 'ear'",
-description = "[color=yellow]— Need a hair trimming? We have barberer just for that![/color]",
+description = "[color=yellow]Simplest procedure to trim your servant's hair. [/color]",
 price = 25,
 confirm = "You leave $name in the custody of guild's barber. Later $he returns with shorter hair."
 },
@@ -834,7 +864,7 @@ code = 'abortion',
 name = 'Commit Abortion',
 number = 2,
 reqs = "slave.preg.duration >= 5",
-description = "[color=yellow]— Oh, quite often babies are not very desirable by both slaves and their masters. We can take care of it right here and guarantee no serious health issues afterwards![/color] ",
+description = "[color=yellow]Stops pregnancy. [/color] ",
 price = 75,
 confirm = "You leave $name in the custody of guild's specialists. As $his pregnancy ends, you can notice how $name looks considerably more stressed."
 },
@@ -843,7 +873,7 @@ code = 'sterilize',
 name = 'Sterilize',
 number = 2,
 reqs = "slave.preg.has_womb == true && globals.currentslave.preg.duration == 0",
-description = "[color=yellow]— Ain't it a good alternative to daily expenses for contraception to just sterilize your $childs to prevent any possible future complications? We guarantee decent health after operation is over![/color]\n\n[color=red]This operation is difficult to reverse![/color]",
+description = "[color=yellow]Prevents new pregnancies. [/color]\n\n[color=red]This operation is difficult to reverse![/color]",
 price = 125,
 confirm = "After the operation $name becomes sterile. $He won't be able to carry any more children. "
 },
@@ -852,7 +882,7 @@ code = 'nurture',
 name = 'Nurture',
 number = 3,
 reqs = "slave.traits.has('Regressed') == true",
-description = "[color=yellow]— It seems your $child could use some proper upbringing! In current state we can train $him to become way more suited for your needs![/color]\n\n[color=green]This option will neutralize Regressed trait.[/color]",
+description = "[color=yellow]This option will neutralize Regressed trait.[/color]",
 price = 150,
 confirm = "You leave $name in the custody of guild trainers, who will train $him among other slaves and prepare for your domain."
 },
@@ -861,7 +891,7 @@ code = 'uprise',
 name = 'Elevate',
 number = 4,
 reqs = "slave.origins != 'noble'",
-description = "[color=yellow]— Sometimes you wish your old time servant was more capable? With our training technics we can help them to get better, not just as a tool, but as an individual!  [/color]\n\n[color=green]This option will raise slave's grade, but also will make them more demanding. [/color]",
+description = "[color=yellow]This option will raise servant's grade, but also will make them more demanding. [/color]",
 price = 100,
 confirm = "You leave $name in the custody of guild trainers, who will help $him raising $his self-esteem. ",
 },
@@ -870,7 +900,7 @@ code = 'subjugate',
 name = 'Demote',
 number = 5,
 reqs = "slave.origins != 'slave'",
-description = "[color=yellow]— Tad bit of discipline and we can make your pet less haughty! Perfect for those arrogant individuals with unreasonable demands. [/color]\n\n[color=red]This option will lower slave's grade. [/color]",
+description = "[color=yellow]This option will lower servant's grade. [/color]",
 price = 50,
 confirm = "You leave $name in the custody of guild trainers, who will accustom $him to the less luxurious life. ",
 },
@@ -879,7 +909,7 @@ code = "spec",
 name = "Specialization",
 number = 6,
 reqs = 'true',
-description = "[color=yellow]— Specializations are a great way to make your servants possess new abilities and skills! As long as they meet the requirements at least... \n\nWe surely can change thier specialization as well![/color]",
+description = "[color=yellow]Teach servant a new specialization. Only one specialization can be learned per servant. [/color]",
 price = 500,
 confirm = "You leave $name in the custody of guild trainers, who will teach $him a new specialization."
 }
@@ -1249,6 +1279,7 @@ gornmarket = {code = 'gornmarket', name = "Gorn's Market", items = ['food', 'sup
 frostfordmarket = {code = 'frostfordmarket', name = "Frostford's Market", items = ['supply','teleportwimborn','teleportgorn', 'basicsolutioning','bestialessenceing','clothpet', 'weaponsword','accgoldring'], selling = true},
 aydashop = {code = 'aydashop', name = "Gorn's Alchemist", items = ['regressionpot', 'beautypot', 'hairdye', 'basicsolutioning','bestialessenceing','taintedessenceing','fluidsubstanceing'], selling = false},
 amberguardmarket = {code = 'amberguardmarket', name = "Amberguard's Market", items = ['teleportamberguard','beautypot','bestialessenceing','magicessenceing','fluidsubstanceing','armorelvenchain','armorrobe'], selling = true},
+sebastian = {code = 'sebastianshop', name = "Sebastian", items = ['teleportumbra'], selling = false}
 }
 var currentshop
 var selecteditem
@@ -1408,7 +1439,7 @@ func selectshopitem(tempitem, unstuck = null):
 			text += "\n\n[color=green]Effects: [/color]"
 			for i in item.effect:
 				text += '\n' + i.descript
-	if item.code in ["supply",'teleportwimborn','teleportgorn','teleportfrostford','teleportamberguard']:
+	if item.code in ["supply",'teleportwimborn','teleportgorn','teleportfrostford','teleportamberguard','teleportumbra']:
 		get_node("shoppanel/itempanel/iconbig").set_hidden(false)
 		get_node("shoppanel/itempanel/iconbig").set_texture(item.icon)
 	get_node("shoppanel/itempanel/itemdescript").set_bbcode(text)
@@ -1580,9 +1611,10 @@ func calimake():
 	cali = calitemp
 
 func sebastian():
-	get_node("AnimationPlayer").play("show")
-	get_node("charactersprite").set_hidden(false)
-	setcharacter('sebastian')
+	if get_node("charactersprite").get_texture() != get_parent().spritedict['sebastian'] || get_node("charactersprite").is_hidden() == true :
+		get_node("AnimationPlayer").play("show")
+		get_node("charactersprite").set_hidden(false)
+		setcharacter('sebastian')
 	var array = [{name = 'Return',function = 'market'}]
 	if globals.state.mainquest == 5:
 		globals.state.mainquest = 6
@@ -1612,13 +1644,37 @@ func sebastian():
 	elif globals.state.farm == 2:
 		array.insert(0, {name = 'Consult on farm purchase', function = 'sebastianfarm'})
 	if globals.state.sidequests.cali == 15 && globals.state.sidequests.calibarsex != 'sebastian':
-		array.insert(0, {name = 'Ask Sebastian about mercenary', function = 'sebastiancaliquest'})
+		array.insert(0, {name = 'Ask Sebastian about mercenary', function = 'sebastianquest', args = 0})
+	if globals.state.mainquest >= 7:
+		if globals.state.sidequests.has('sebastianumbra'):
+			if globals.state.sidequests.sebastianumbra == 0:
+				array.insert(0, {name = 'Ask Sebastian about his sources', function = 'sebastianquest', args = 1})
+			if globals.state.sidequests.sebastianumbra == 1:
+				array.insert(0, {name = "Purchase", function = 'sebastianquest', args = 2})
+			if globals.state.sidequests.sebastianumbra >= 1:
+				array.insert(0, {name = 'Sell slaves', function = 'sebastianquest', args = 3})
 	buildbuttons(array)
 
-func sebastiancaliquest():
-	globals.state.sidequests.calibarsex = 'sebastian'
-	main.dialogue(true,self,questtext.CaliBarAskSebastian)
-	sebastian()
+func sebastianquest(stage = 0):
+	if stage == 0:
+		globals.state.sidequests.calibarsex = 'sebastian'
+		sebastian()
+		maintext.set_bbcode(questtext.CaliBarAskSebastian)
+	elif stage == 1:
+		globals.state.sidequests.sebastianumbra = 1
+		sebastian()
+		maintext.set_bbcode(globals.player.dictionary(questtext.sebastianumbra))
+	elif stage == 2:
+		shopinitiate('sebastian')
+		sebastian()
+	elif stage == 3:
+		sellslavelist('sebastian')
+		sellslavelocation = 'sebastian'
+	elif stage == 4:
+		globals.state.sidequests.sebastianumbra = 2
+		sebastian()
+		maintext.set_bbcode(globals.player.dictionary(questtext.sebastianumbra2))
+	#sebastian()
 
 func sebastianorder():
 	if globals.state.sebastianorder.taken == false:
@@ -1674,7 +1730,7 @@ func _on_sebastianconfirm_pressed():
 
 func _on_sebastiancancel_pressed():
 	get_node("sebastiannode").set_hidden(true)
-	market()
+	sebastian()
 
 func sebastianfarm():
 	var array = [{name = 'Return', function = 'market'}]
@@ -1682,7 +1738,7 @@ func sebastianfarm():
 		maintext.set_bbcode("— Do you know about farms? No, not the rural kind. You can use girls to make milk. Truthfully speaking, I have some of the necessary gear on my hands. So, if you ever consider starting your own small business, I'll gladly sell it to you.\n\n— You would need some space for that first though. I actually can help you with all that, for 1000 gold I'll get you builders and all basic equipment you will need to set your farm up. Let me know if you are interested. ")
 		globals.state.farm = 2
 	elif globals.state.farm == 2:
-		maintext.set_bbcode("— You are done with your preparations? Great, great! Now I'll pass you the rest of necessary equipment for 300 gold.")
+		maintext.set_bbcode("— You are done with your preparations? Great, great! Now I'll pass you the rest of necessary equipment for 1000 gold.")
 		if globals.resources.gold >= 1000:
 			array.insert(0,{name = 'Purchase farm equipment', function = 'sebastianfarmpurchase'})
 	buildbuttons(array)

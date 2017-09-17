@@ -52,7 +52,7 @@ unlocked = false, name = 'Guild Fairy', descript = chardescript.fairy, sprite = 
 scenes = []
 },
 ayda = {
-unlocked = false, name = 'Ayda', descript = chardescript.ayda, sprite = 'null', naked = 'null', nakedunlocked = false,
+unlocked = false, name = 'Ayda', descript = chardescript.ayda, sprite = 'aydanormal', naked = 'null', nakedunlocked = false,
 scenes = []
 },
 } setget charactergallery_set
@@ -60,4 +60,5 @@ scenes = []
 func charactergallery_set(value):
 	charactergallery = value
 	globals.overwritesettings()
-	
+
+

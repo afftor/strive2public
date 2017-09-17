@@ -82,6 +82,18 @@ teleportamberguard = {
 	amount = 0,
 	unlocked = true,
 },
+teleportumbra = {
+	code = 'teleportumbra',
+	name = 'Teleportation Stone: Umbra',
+	icon = load("res://files/images/items/teleportumbra.png"),
+	description = "A waypoint stone made by skilled Arcanesmith which allows personal transportation to specific faraway places when integrated into specifically designed mechanisms. \n\n[color=yellow]Unlocks teleportation to Umbra.[/color] ",
+	effect = "teleportunlock",
+	recipe = '',
+	cost = 500,
+	type = 'dummy',
+	amount = 0,
+	unlocked = true,
+},
 aphrodisiac = {
 	code = 'aphrodisiac',
 	name = 'Aphrodisiac',
@@ -1297,4 +1309,8 @@ func foodpurchase():
 func teleportunlock(item):
 	globals.resources.gold -= item.cost
 	globals.state.portals[item.code.replace('teleport','')].enabled = true
-	globals.get_tree().get_current_scene().popup("Unlocked portal to the " + item.code.replace('teleport','').capitalize() + '.')
+	if item.code != 'teleportumbra':
+		globals.get_tree().get_current_scene().popup("Unlocked portal to the " + item.code.replace('teleport','').capitalize() + '.')
+	else:
+		globals.get_tree().get_current_scene().get_node("outside").sebastianquest(4)
+		globals.get_tree().get_current_scene().get_node("outside").shopclose()

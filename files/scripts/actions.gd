@@ -590,13 +590,14 @@ func _on_applybutton_pressed():
 	counttattoos()
 	slave.tattoo[selectedpart] = tattootheme
 	var tattooDict = {currentlevel = slavetattoos[slave.tattoo[selectedpart]]}
-	if tattoolevels[tattootheme].has(tattooDict.currentlevel-1):
+	if tattoolevels[tattootheme].has(tattooDict.currentlevel-1) && tattoolevels[tattootheme].has(tattooDict.currentlevel):
 		slave.add_effect(globals.effectdict[tattoolevels[tattootheme][tattooDict.currentlevel-1].effect],true)
 	if tattoolevels[tattootheme].has(tattooDict.currentlevel):
 		slave.add_effect(globals.effectdict[tattoolevels[tattootheme][tattooDict.currentlevel].effect])
 	for i in get_node("tattoopanel/VBoxContainer").get_children():
 		if i.get_name() == selectedpart:
 			choosetattooarea(i)
+	get_parent()._on_slave_tab_visibility_changed()
 
 func _on_tattoo_pressed():
 	get_node("tattoopanel").popup()

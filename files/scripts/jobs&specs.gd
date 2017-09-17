@@ -127,8 +127,8 @@ func gearlevelup(slave):
 			founditem = true
 			break
 	if founditem == true:
-		slave.levelup()
 		globals.get_tree().get_current_scene().popup(slave.dictionary("Youg gift $name " + globals.itemdict[slave.levelupreqs.value].name + ". After returning a surprised look, $he whole-heartedly shows $his gratitude"))
+		slave.levelup()
 	else:
 		globals.get_tree().get_current_scene().popup("Sadly, there's no unused [color=aqua]" + globals.itemdict[slave.levelupreqs.value].name + "[/color] in your possessions. ")
 

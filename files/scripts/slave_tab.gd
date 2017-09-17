@@ -607,7 +607,7 @@ order = 11,
 tags = ['sex', 'wimborn', 'social'],
 },fucktoywimborn = {
 code = 'fucktoywimborn',
-name = "W - Fucktoy",
+name = "W - Exotic Whore",
 type = 'sexual',
 description = "$name will be used by the most deviant men in brothel. \n\n[color=yellow]Efficiency grows with Courage, Endurance, Beauty, and advanced sex actions. \n\nRequires unlocked advanced sex actions for sufficient performance. [/color]",
 workline = "$name will be earning money by offering $his body for all sorts of deviant plays.",
@@ -616,6 +616,17 @@ unlockreqs = 'globals.state.sidequests.brothel >= 2',
 maxnumber = 0,
 order = 12,
 tags = ['sex', 'wimborn', 'social'],
+},fucktoy = {
+code = 'fucktoy',
+name = "U - Fucktoy",
+type = 'sexual',
+description = "$name will be subjugated and abused by all sorts of criminals at Umbra without $his consent. \n\n[color=yellow]Builds obedience in exchange for mental degeneration. Income is based on your negative reputation. [/color]",
+workline = "$name will be subjugated and abused by all sorts of criminals at Umbra without $his consent. ",
+reqs = "true",
+unlockreqs = 'globals.state.portals.umbra.enabled == true',
+maxnumber = 0,
+order = 12,
+tags = ['sex', 'umbra'],
 },storewimborn = {
 code = 'storewimborn',
 name = "W - Market",
@@ -684,15 +695,15 @@ order = 9,
 tags = ['gorn','social'],
 },research = {
 code = 'research',
-name = "G - Research Subject",
+name = "U - Research Subject",
 type = 'social',
-description = "$name will be selling $his body for use in magic experiments by local scientists. \n\n[color=yellow]\n\nEfficiency grows with Endurance and Magic Affinity.[/color]",
-workline = "$name will be selling $his body for use in magic experiments at Gorn.",
+description = "$name will be used in harsh experiments in Umbra. \n\n[color=yellow]\n\nWill earn a lot of money, but quickly deteriorate physical and mental health.[/color] \n[color=red]Possess number of risks leading to bad events up to losing a servant. [/color]",
+workline = "$name will be used in harsh experiments in Umbra.",
 reqs = "true",
-unlockreqs = 'true',
+unlockreqs = 'globals.state.portals.umbra.enabled == true',
 maxnumber = 0,
 order = 9,
-tags = ['gorn'],
+tags = ['umbra'],
 },slavecatcher = {
 code = 'slavecatcher',
 name = "G - Slave Catcher",
@@ -792,7 +803,7 @@ func joblist():
 			if globals.evaluate(i.reqs) == false:
 				newbutton.set_disabled(true)
 				newbutton.set_tooltip(slave.dictionary("$name is not suited for this work"))
-			if i.tags.find('sex') >= 0:
+			if i.tags.find('sex') >= 0 && i.code != 'fucktoy':
 				if !globals.currentslave.bodyshape in ['humanoid', 'bestial', 'shortstack']:
 					newbutton.set_disabled(true)
 					newbutton.set_tooltip(slave.dictionary("This occupation only allows humanoid slaves. "))

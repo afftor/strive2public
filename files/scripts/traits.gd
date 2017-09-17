@@ -135,7 +135,39 @@ var traits = {
       "mental"
     ],
     "conflict": [
-      ""
+      "Lesbian"
+    ]
+  },
+  "Lesbian": {
+    "name": "Lesbian",
+    "description": "$name is only expecting to have same-sex affairs. \n\n[color=aqua]Same-sex encounters have no penalty, opposite sex actions are unpreferred. [/color]",
+    "effect": {
+      
+    },
+    "tags": [
+      "sexual",
+      "mental",
+      "secondary"
+    ],
+    "conflict": [
+      "Bisexual",
+      "Gay"
+    ]
+  },
+  "Gay": {
+    "name": "Gay",
+    "description": "$name is only expecting to have same-sex affairs. \n\n[color=aqua]Same-sex encounters have no penalty, opposite sex actions are unpreferred. [/color]",
+    "effect": {
+      
+    },
+    "tags": [
+      "sexual",
+      "mental",
+      "secondary"
+    ],
+    "conflict": [
+      "Bisexual",
+      "Lesbian"
     ]
   },
   "Monogamous": {
@@ -200,8 +232,8 @@ var traits = {
     "effect": {
       "code": "frail",
       "conf_max": -25,
-      "agi_max": -3,
-      "str_max": -3
+      "agi_max": -1,
+      "str_max": -2
     },
     "tags": [
       "physical",
