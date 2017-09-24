@@ -30,7 +30,7 @@ func _on_actions_visibility_changed():
 	var tab = get_parent().tab
 	var text
 	player = globals.player
-	slave = globals.slaves[get_tree().get_current_scene().currentslave]
+	slave = globals.currentslave
 	var dict = {}
 	for i in get_tree().get_nodes_in_group('actions'):
 		if i.get_meta("cost") > globals.player.energy :
@@ -40,26 +40,7 @@ func _on_actions_visibility_changed():
 			i.set_disabled(false)
 			i.set_tooltip('')
 	get_node("punishroom/Popup/Panel/punishtext").set_bbcode(slave.dictionary(get_node("punishroom/Popup/Panel/punishtext").get_bbcode()))
-	if tab == 'prison':
-		return
-	if slave.hairlength == 'ear':
-		get_node("cuthair").set_disabled(true)
-		get_node("cuthair").set_tooltip(slave.dictionary("$name's hair cannot get any shorter."))
-	else:
-		get_node("cuthair").set_disabled(false)
-		get_node("cuthair").set_tooltip('')
-	get_node("hairstyle").set_text(slave.hairstyle)
-	get_node("cuthair/Label").set_text(slave.dictionary("$name's hair length - "+slave.hairlength))
-	if globals.state.mansionupgrades.mansionparlor >= 1:
-		get_node("tattoo").set_disabled(false)
-		get_node("piercing").set_disabled(false)
-		get_node("tattoo").set_tooltip("")
-		get_node("piercing").set_tooltip("")
-	else:
-		get_node("tattoo").set_disabled(true)
-		get_node("piercing").set_disabled(true)
-		get_node("tattoo").set_tooltip("Unlock Beauty Parlor to access Tattoo options. ")
-		get_node("piercing").set_tooltip("Unlock Beauty Parlor to access Piercing options. ")
+
 	if globals.resources.gold >= 15 && globals.player.energy >= 10:
 		get_node("gift").set_disabled(false)
 	else:
@@ -311,6 +292,7 @@ func _on_getridof_pressed():
 
 
 func _on_hairstyle_item_selected( ID ):
+	slave = globals.currentslave
 	var hairstyles = ['straight','ponytail', 'twintails', 'braid', 'two braids', 'bun']
 	slave.hairstyle = hairstyles[ID]
 	get_parent()._on_slave_tab_visibility_changed()
@@ -327,6 +309,7 @@ func _on_useitem_pressed():
 
 #########################
 func _on_castspell_pressed():
+	slave = globals.currentslave
 	get_node("selectspellpanel").set_hidden(false)
 	get_node("selectspellpanel/spellusedescription").set_bbcode('')
 	var spelllist = get_node("selectspellpanel/ScrollContainer/selectspelllist")
@@ -351,6 +334,7 @@ func _on_castspell_pressed():
 var spellselected
 
 func spellbuttonpressed(spell):
+	get_node("selectspellpanel").popup()
 	spellselected = spell
 	var description = get_node("selectspellpanel/spellusedescription")
 	var spelllist = get_node("selectspellpanel/ScrollContainer/selectspelllist")
@@ -387,7 +371,7 @@ func _on_talk_pressed():
 	if slave.unique == 'Cali' && globals.state.sidequests.cali in [12,13,22]:
 		globals.events.calitalk0()
 		return
-	if slave.unique in ['Cali','Tisha','Emily', 'Chloe']:
+	if slave.unique in ['Cali','Tisha','Emily', 'Chloe','Maple']:
 		if slave.obed >= 80 && slave.stress < 50:
 			sprite = [[nakedspritesdict[slave.unique].clothcons, 'pos1', 'opac']]
 		else:
@@ -416,6 +400,7 @@ func _on_talk_pressed():
 			text = text + "— Uhm... would you like to give me some private attention? — $name gives you a deep lusting look. \n"
 	if slave.name == "Tamamo" && slave.race.find("Fox") >= 0:
 		text += "— One tail is not what I used to, but at least it's just as fluffy as you'd expect. "
+	#var text = globals.slavedialogues.gettalkreply(slave)
 	if slave.xp >= 100 && slave.levelupreqs.has('code') == false:
 		buttons.append({text = slave.dictionary("Investigate $name's potential"), function = 'levelreqs'})
 	elif slave.levelupreqs.has('code'):
@@ -452,7 +437,7 @@ penis = {name = 'penis', options = ['ring', 'stud'], requirement = 'lewdness, pe
 }
 
 func _on_piercing_pressed():
-	get_node("piercingpanel").set_hidden(false)
+	get_node("piercingpanel").popup()
 	for i in get_node("piercingpanel/ScrollContainer/VBoxContainer").get_children():
 		if i != get_node("piercingpanel/ScrollContainer/VBoxContainer/piercingline"):
 			i.set_hidden(true)

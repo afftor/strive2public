@@ -47,9 +47,9 @@ melissa = {
 unlocked = false, name = 'Melissa', descript = chardescript.melissa, sprite = 'melissafriendly', naked = 'null', nakedunlocked = false, 
 scenes = []
 },
-fairy = {
-unlocked = false, name = 'Guild Fairy', descript = chardescript.fairy, sprite = 'fairy', naked = 'null', nakedunlocked = false,
-scenes = []
+maple = {
+unlocked = false, name = 'Maple', descript = chardescript.fairy, sprite = 'fairy', naked = 'fairynaked', nakedunlocked = false,
+scenes = [{code = 'mapleflirt', name = 'Risky Affair', unlocked = false, text = 'Build relationship sooner'},{code = 'mapleflirt2', name = 'Repeating Affair', unlocked = false, text = 'Foregone conclusion'}]
 },
 ayda = {
 unlocked = false, name = 'Ayda', descript = chardescript.ayda, sprite = 'aydanormal', naked = 'null', nakedunlocked = false,

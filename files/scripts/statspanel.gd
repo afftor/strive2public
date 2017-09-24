@@ -62,12 +62,12 @@ func show():
 		text = text.substr(0, text.length() - 2) + '.'
 	get_node("traittext").set_bbcode(slave.dictionary(text))
 	if mode == 'full':
-		text = "Health : " + str(round(slave.health)) + '/' + str(round(slave.stats.health_max)) + '\nEnergy : ' + str(round(slave.energy)) + '/' + str(round(slave.stats.energy_max)) + '\nLevel : '+str(slave.level) + '\nAttribute Points : '+str(slave.skillpoints)
+		text = "[url=race][color=aqua]"+ slave.race + "[/color][/url]\nHealth : " + str(round(slave.health)) + '/' + str(round(slave.stats.health_max)) + '\nEnergy : ' + str(round(slave.energy)) + '/' + str(round(slave.stats.energy_max)) + '\nLevel : '+str(slave.level) + '\nAttribute Points : '+str(slave.skillpoints)
 		if slave == globals.player:
 			text = slave.dictionary('$name $surname\nRace: ') + slave.dictionary(' $race\n').capitalize() + text
 	else:
 		text =  'Level : '+str(slave.level) + '\nAvailable Attribute Points : '+str(slave.skillpoints)
-	get_node("leveltext").set_bbcode(text)
+	get_node("leveltext").set_bbcode(slave.dictionary(text))
 	get_node("levelprogress/Label").set_text("Experience: " + str(slave.xp) + '%')
 	get_node("levelprogress").set_val(slave.xp)
 	for i in ['send','smaf','sstr','sagi']:
@@ -92,3 +92,7 @@ func _on_traittext_meta_clicked( meta ):
 
 func _on_traittext_mouse_exit():
 	globals.hidetooltip()
+
+
+func _on_leveltext_meta_clicked( meta ):
+	get_tree().get_current_scene().showracedescript(slave)

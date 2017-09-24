@@ -4,6 +4,7 @@ extends TabContainer
 var slave
 var desc = load('res://files/scripts/description.gd')
 var tab
+var jobdict = globals.jobs.jobdict
 
 func _ready():
 	set_process_input(true)
@@ -11,11 +12,11 @@ func _ready():
 		i.connect("pressed", self, 'rulecheck', [i])
 
 func _input(event):
-	if get_tree().get_current_scene().get_node("screenchange/AnimationPlayer").is_playing() == true && get_tree().get_current_scene().get_node("screenchange/AnimationPlayer").get_current_animation() == "fadetoblack" || get_node("regulations/clothes&relatives&customs/nicknamepanel").is_visible() || get_node("inspect/portait/Panel").is_visible():
+	if get_tree().get_current_scene().get_node("screenchange/AnimationPlayer").is_playing() == true && get_tree().get_current_scene().get_node("screenchange/AnimationPlayer").get_current_animation() == "fadetoblack" || get_node("customization/clothes&relatives&customs/nicknamepanel").is_visible() || get_node("inspect/portait/Panel").is_visible():
 		return
 	if event.type == 1:
 		var dict = {49 : 1, 50 : 2, 51 : 3, 52 : 4,53 : 5,54 : 6,55 : 7,56 : 8,}
-		if event.scancode in [KEY_1,KEY_2,KEY_3,KEY_4,KEY_5, KEY_6]:
+		if event.scancode in [KEY_1,KEY_2,KEY_3,KEY_4,KEY_5]:
 			var key = dict[event.scancode]
 			if event.is_action_pressed(str(key)) == true && self.is_visible() == true && get_tree().get_current_scene().get_node("dialogue").is_hidden() == true:
 				set_current_tab(key-1)
@@ -41,6 +42,7 @@ func _on_slave_tab_visibility_changed():
 	namelabel.set_hidden(false)
 	globals.currentslave = slave
 	get_node("stats/statspanel").slave = slave
+	get_node("actions").slave = slave
 	get_node("stats/statspanel").mode = 'full'
 	get_node("stats/statspanel").show()
 	namelabel.set_text(slave.name_short())
@@ -51,38 +53,32 @@ func _on_slave_tab_visibility_changed():
 	text = desc.getSlaveStatus(slave)
 	get_node("inspect/statustext").set_bbcode(text)
 	find_node('origins').set_text(slave.origins.capitalize())
-	for i in get_node("inspect/traits/traitlist").get_children():
-		if i != get_node("inspect/traits/traitlist/Label"):
+	for i in get_node("stats/traits/traitlist").get_children():
+		if i != get_node("stats/traits/traitlist/Label"):
 			i.free()
 	for i in slave.traits.values():
-		label = get_node("inspect/traits/traitlist/Label").duplicate()
-		get_node("inspect/traits/traitlist").add_child(label)
+		label = get_node("stats/traits/traitlist/Label").duplicate()
+		get_node("stats/traits/traitlist").add_child(label)
 		label.set_hidden(false)
 		label.set_text(i.name)
-		label.set_name(i.name)
-		label.set_ignore_mouse(false)
-		label.connect("mouse_enter", self, 'traittooltip', [label])
+		label.connect("mouse_enter", self, 'traittooltip', [i])
 		label.connect("mouse_exit", self, 'traittooltiphide')
-	var text = 'Learned abilities: '
+	for i in get_node("stats/abilities/abilitylist").get_children():
+		if i != get_node("stats/abilities/abilitylist/Label"):
+			i.set_hidden(true)
+			i.free()
 	for i in slave.ability:
 		var abil = globals.abilities.abilitydict[i]
-		if abil.learnable == true:
-			text += abil.name + ', '
-	if text.length() > 20:
-		text = text.substr(0, text.length() -2) + '. '
-	else:
-		text += 'None.'
+		if !abil.learnable:
+			continue
+		label = get_node("stats/abilities/abilitylist/Label").duplicate()
+		get_node("stats/abilities/abilitylist").add_child(label)
+		label.set_hidden(false)
+		label.set_text(abil.name)
+		label.connect("mouse_enter", self, 'abilitytooltip', [abil])
+		label.connect("mouse_exit", self, 'traittooltiphide')
 	get_node("stats/abilinfo").set_bbcode(text)
-	get_node("stats/statslabel").set_bbcode('Strength: '+str(slave.sstr) + '/' + str(slave.stats.str_max) + '\nAgility: '+str(slave.sagi) + '/' + str(slave.stats.agi_max) + '\nMagic: '+str(slave.smaf) + '/' + str(slave.stats.maf_max) + '\nEndurance: '+str(slave.send) + '/' + str(slave.stats.end_max)  )
-	find_node('courprog').set_value(slave.stats.cour_base)
-	find_node('courval').set_text(str(floor(slave.stats.cour_base))+'/'+str(min(slave.stats.cour_max, slave.originvalue[slave.origins])))
-	find_node('confprog').set_value(slave.stats.conf_base)
-	find_node('confval').set_text(str(floor(slave.stats.conf_base))+'/'+str(min(slave.stats.conf_max, slave.originvalue[slave.origins])))
-	find_node('witprog').set_value(slave.stats.wit_base)
-	find_node('witval').set_text(str(floor(slave.stats.wit_base))+'/'+str(min(slave.stats.wit_max, slave.originvalue[slave.origins])))
-	find_node('charmprog').set_value(slave.stats.charm_base)
-	find_node('charmval').set_text(str(floor(slave.stats.charm_base))+'/'+str(min(slave.stats.charm_max, slave.originvalue[slave.origins])))
-	for i in get_node("regulations/rules").get_children():
+	for i in get_node("customization/rules").get_children():
 		if i.is_in_group('advrules'):
 			if slave.brand == 'advanced':
 				i.set_hidden(false)
@@ -93,8 +89,8 @@ func _on_slave_tab_visibility_changed():
 	for i in get_tree().get_nodes_in_group("slaverules"):
 		if slave.rules.has(i.get_name()):
 			i.set_pressed(slave.rules[i.get_name()])
-	get_node("regulations/clothes&relatives&customs/workbutton").set_text(jobdict[slave.work].name)
-	get_node("regulations/clothes&relatives&customs/brandbutton/").set_text(slave.brand.capitalize())
+	get_node("stats/workbutton").set_text(jobdict[slave.work].name)
+	get_node("customization/clothes&relatives&customs/brandbutton/").set_text(slave.brand.capitalize())
 	if globals.state.branding == 0:
 		find_node('brandbutton').set_disabled(true)
 	else:
@@ -102,22 +98,57 @@ func _on_slave_tab_visibility_changed():
 	text = "Health : " + str(round(slave.health)) + '/' + str(round(slave.stats.health_max)) + '\nEnergy : ' + str(round(slave.energy)) + '/' + str(round(slave.stats.energy_max)) + '\nLevel : '+str(slave.level) + '\nExp : '+str(round(slave.xp))+'\nSkillpoints : '+str(slave.skillpoints)
 	get_node("stats/levelinfo").set_bbcode(text)
 	if slave.spec == null:
-		get_node("stats/spec").set_text("Specialization: None")
+		get_node("stats/spec").set_text("None")
 	else:
-		get_node("stats/spec").set_text("Specialization: " + globals.jobs.specs[slave.spec].name)
+		get_node("stats/spec").set_text(globals.jobs.specs[slave.spec].name)
 	for i in get_tree().get_nodes_in_group('prisondisable'):
 		if tab == 'prison':
 			i.set_hidden(true)
 		else:
 			i.set_hidden(false)
-	buildmetrics()
+	get_node("customization/hairstyle").set_text(slave.hairstyle)
+	if tab == 'prison':
+		return
+	if globals.state.mansionupgrades.mansionparlor >= 1:
+		get_node("customization/tattoo").set_disabled(false)
+		get_node("customization/piercing").set_disabled(false)
+		get_node("customization/tattoo").set_tooltip("")
+		get_node("customization/piercing").set_tooltip("")
+	else:
+		get_node("customization/tattoo").set_disabled(true)
+		get_node("customization/piercing").set_disabled(true)
+		get_node("customization/tattoo").set_tooltip("Unlock Beauty Parlor to access Tattoo options. ")
+		get_node("customization/piercing").set_tooltip("Unlock Beauty Parlor to access Piercing options. ")
 	if globals.state.tutorial.slave == false:
 		globals.state.tutorial.slave = true
 		get_tree().get_current_scene().get_node("tutorialnode").slaveinitiate()
-	
+
+
+func traittooltip(trait):
+	globals.showtooltip(slave.dictionary(trait.description))
+
+func abilitytooltip(ability):
+	globals.showtooltip(ability.description)
+
+func traittooltiphide():
+	globals.hidetooltip()
+
+func _on_childhood_mouse_exit():
+	globals.hidetooltip()
+
+
+func joblist():
+	get_tree().get_current_scene().get_node("joblist").joblist()
+
+func _on_statistics_pressed():
+	buildmetrics()
+
+func _on_statsclose_pressed():
+	get_node("stats/statistics/Popup").set_hidden(true)
 
 func buildmetrics():
 	var text = ""
+	get_node("stats/statistics/Popup").popup()
 	text += "[center]Personal achievments[/center]\n"
 	text += "In your possession: " + str(slave.metrics.ownership) + " day"+globals.fastif(slave.metrics.ownership == 1, '','s')+";\n"
 	text += "Spent in jail: " + str(slave.metrics.jail) + " day"+globals.fastif(slave.metrics.jail == 1, '','s')+";\n"
@@ -130,7 +161,7 @@ func buildmetrics():
 	text += "Used items: " + str(slave.metrics.item) + " time"+globals.fastif(slave.metrics.item == 1, '','s')+";\n"
 	text += "Affected by spells: " + str(slave.metrics.spell) + " time"+globals.fastif(slave.metrics.spell == 1, '','s')+";\n"
 	text += "Modified in lab: " + str(slave.metrics.mods) + " time"+globals.fastif(slave.metrics.mods == 1, '','s')+";\n"
-	get_node("statistics/statstext").set_bbcode(text)
+	get_node("stats/statistics/Popup/statstext").set_bbcode(text)
 	text = "[center]Sexual achievments[/center]\n"
 	text += "Had intimacy: " + str(slave.metrics.sex) + " time"+globals.fastif(slave.metrics.sex == 1, '','s')+";\n"
 	text += "Which ended in orgasm: " + str(slave.metrics.orgasm) + " time"+globals.fastif(slave.metrics.orgasm == 1, '','s')+";\n"
@@ -146,7 +177,7 @@ func buildmetrics():
 		text += "Gave birth: " + str(slave.metrics.birth) + " time"+globals.fastif(slave.metrics.birth == 1, '','s')+";\n"
 	text += "Participated in threesomes: " + str(slave.metrics.threesome) + " time"+globals.fastif(slave.metrics.threesome == 1, '','s')+";\n"
 	text += "Participated in orgies: " + str(slave.metrics.orgy) + " time"+globals.fastif(slave.metrics.orgy == 1, '','s')+";\n"
-	get_node("statistics/statssextext").set_bbcode(text)
+	get_node("stats/statistics/Popup/statssextext").set_bbcode(text)
 
 func setdescriptpos():
 	if slave.imageportait != null:
@@ -183,15 +214,15 @@ func makeselectbuttons():
 	#clothlist()
 	#underwearlist()
 	if slave.work == 'companion':
-		get_node("regulations/clothes&relatives&customs/workbutton").set_text('Companion')
+		get_node("stats/workbutton").set_text('Companion')
 	elif slave.work == 'jailer':
-		get_node("regulations/clothes&relatives&customs/workbutton").set_text('Jailer')
+		get_node("stats/workbutton").set_text('Jailer')
 	elif slave.work == 'headgirl':
-		get_node("regulations/clothes&relatives&customs/workbutton").set_text('Headgirl')
+		get_node("stats/workbutton").set_text('Headgirl')
 	elif slave.work == 'farmmanager':
-		get_node("regulations/clothes&relatives&customs/workbutton").set_text('Farm Manager')
+		get_node("stats/workbutton").set_text('Farm Manager')
 	elif slave.work == 'labassist':
-		get_node("regulations/clothes&relatives&customs/workbutton").set_text('Lab Assistant')
+		get_node("stats/workbutton").set_text('Lab Assistant')
 	
 
 
@@ -208,23 +239,8 @@ func _on_childhood_mouse_enter():
 	text += '\n\n' + globals.dictionary.getOriginDescription(slave)
 	descripttext.set_as_toplevel(false)
 	globals.showtooltip(text)
-	#find_node('tooltip').set_hidden(false)
-	#get_node("inspect/tooltip/tooltiptext").set_bbcode(text)
-
-func traittooltip(node):
-	var slave = globals.slaves[get_tree().get_current_scene().currentslave]
-	find_node('tooltip').set_hidden(false)
-	descripttext.set_as_toplevel(false)
-	for i in slave.traits.values():
-		if i.name == node.get_name():
-			get_node("inspect/tooltip/tooltiptext").set_bbcode(slave.dictionary(i.description))
 
 
-func traittooltiphide():
-	find_node('tooltip').set_hidden(true)
-
-func _on_childhood_mouse_exit():
-	globals.hidetooltip()
 
 func _on_courfield_mouse_enter():
 	find_node('courval').set_hidden(false)
@@ -337,13 +353,13 @@ func _on_SelectButtonUnderwear_button_selected( value ):
 ###########Brand popup window
 
 func _on_brandbutton_pressed():
-	var confirm = get_node("regulations/clothes&relatives&customs/brandbutton/brandpopup/confirm")
+	var confirm = get_node("customization/clothes&relatives&customs/brandbutton/brandpopup/confirm")
 	confirm.set_hidden(true)
 	find_node('brandingtext').set_hidden(true)
 	find_node('enhbrandingtext').set_hidden(true)
 	find_node('brandremovetext').set_hidden(true)
 	find_node('remove').set_hidden(true)
-	get_node("regulations/clothes&relatives&customs/brandbutton/brandpopup").popup()
+	get_node("customization/clothes&relatives&customs/brandbutton/brandpopup").popup()
 	if slave.brand == 'basic' || slave.brand == 'advanced':
 		find_node('brandremovetext').set_hidden(false)
 		if globals.resources.mana >= 5:
@@ -504,373 +520,6 @@ func underwearlist():
 	
 	clothoptions.create_select_button(array)
 
-var jobdict = {
-rest = {
-code = 'rest',
-name = "Rest",
-type = 'basic',
-description = "$name will rest for today",
-workline = "$name will be taking a rest for today.",
-reqs = 'true',
-unlockreqs = 'true',
-maxnumber = 0,
-order = 1,
-tags = ['mansion'],
-},forage = {
-code = 'forage',
-name = 'Forage',
-type = 'basic',
-description = "$name will be looking around for edible berries and fungi.\n\n[color=yellow]Efficiency grows with Wit. Penalty affected by Courage. Strength and Endurance affect carrying weight. [/color]",
-workline = '$name will be foraging at the nearby woods.',
-reqs = 'true',
-unlockreqs = 'true',
-maxnumber = 0,
-order = 2,
-tags = ['wild','physical'],
-},hunt = {
-code = 'hunt',
-name = "Hunt",
-type = 'basic',
-description = '$name will try hunting wild animals.\n\n[color=yellow]Efficiency grows Agility and Endurance. Penalty affected by Courage. Strength and Endurance affect carrying weight. [/color]',
-workline = '$name will be hunting at the nearby woods.',
-reqs = 'true',
-unlockreqs = 'true',
-maxnumber = 0,
-order = 3,
-tags = ['wild','physical'],
-},library = {
-code = 'library',
-name = "Library",
-type = 'basic',
-description = '$name will manage the library and study.\n\n[color=yellow]Provides experience based on Wit and Library level.\nEffeciency decreases with level.[/color]',
-workline = "$name will be studying at the library.",
-reqs = 'true',
-unlockreqs = 'true',
-maxnumber = 0,
-order = 6,
-tags = ['mansion'],
-},cooking = {
-code = 'cooking',
-name = "Cooking",
-type = 'basic',
-description = '$name will cook for the other residents and buy food from market when it runs short.\n\n[color=yellow]Requires grade of a [color=aqua]Poor[/color] or higher. \n\nEfficiency grows with Agility and Wit. [/color]',
-workline = "$name will be cooking for residents.",
-reqs = 'globals.originsarray.find(globals.currentslave.origins) >= 1',
-unlockreqs = 'true',
-maxnumber = 1,
-order = 5,
-tags = ['mansion','physical'],
-},maid = {
-code = 'maid',
-name = "Cleaning",
-type = 'basic',
-description = '$name will dedicate $his time to tidying your mansion. \n\n[color=yellow]Efficiency grows with Agility and Endurance.[/color]',
-workline = "$name will spend $his day dedicated to cleaning your mansion.",
-reqs = 'true',
-unlockreqs = 'true',
-maxnumber = 0,
-order = 4,
-tags = ['mansion','physical'],
-},nurse = {
-code = 'nurse',
-name = "Nurse",
-type = 'basic',
-description = '$name will helps residents maintain and recover their health.\n\n[color=yellow]Efficiency grows with Wit and Magic Affinity.[/color]',
-workline = "$name will be watching over residents' health.",
-reqs = 'true',
-unlockreqs = 'true',
-maxnumber = 1,
-order = 7,
-tags = ['mansion'],
-},whorewimborn = {
-code = 'whorewimborn',
-name = "W - Prostitution",
-type = 'sexual',
-description = "$name will be assigned to town's brothel as a common whore.\n\n[color=yellow]Efficiency grows with Charm, Endurance, Beauty and basic sexual actions. \n\nRequires unlocked sex actions for sufficient performance.[/color]",
-workline = "$name will whore $himself at the brothel.",
-reqs = "true",
-unlockreqs = 'globals.state.sidequests.brothel >= 2',
-maxnumber = 0,
-order = 10,
-tags = ['sex', 'wimborn', 'social'],
-},
-escortwimborn = {
-code = 'escortwimborn',
-name = "W - Escort",
-type = 'sexual',
-description = "$name will be assigned to town's brothel as a high class whore for rich men. \n\n[color=yellow]Requires grade of a [color=aqua]Commoner[/color] or higher. \n\nEfficiency grows with Charm, Confidence, Beauty and your reputation. [/color]",
-workline = "$name will be earning money by escorting rich people.",
-reqs = "globals.originsarray.find(globals.currentslave.origins) >= 2",
-unlockreqs = 'globals.state.sidequests.brothel >= 2',
-maxnumber = 0,
-order = 11,
-tags = ['sex', 'wimborn', 'social'],
-},fucktoywimborn = {
-code = 'fucktoywimborn',
-name = "W - Exotic Whore",
-type = 'sexual',
-description = "$name will be used by the most deviant men in brothel. \n\n[color=yellow]Efficiency grows with Courage, Endurance, Beauty, and advanced sex actions. \n\nRequires unlocked advanced sex actions for sufficient performance. [/color]",
-workline = "$name will be earning money by offering $his body for all sorts of deviant plays.",
-reqs = "true",
-unlockreqs = 'globals.state.sidequests.brothel >= 2',
-maxnumber = 0,
-order = 12,
-tags = ['sex', 'wimborn', 'social'],
-},fucktoy = {
-code = 'fucktoy',
-name = "U - Fucktoy",
-type = 'sexual',
-description = "$name will be subjugated and abused by all sorts of criminals at Umbra without $his consent. \n\n[color=yellow]Builds obedience in exchange for mental degeneration. Income is based on your negative reputation. [/color]",
-workline = "$name will be subjugated and abused by all sorts of criminals at Umbra without $his consent. ",
-reqs = "true",
-unlockreqs = 'globals.state.portals.umbra.enabled == true',
-maxnumber = 0,
-order = 12,
-tags = ['sex', 'umbra'],
-},storewimborn = {
-code = 'storewimborn',
-name = "W - Market",
-type = 'social',
-description = "$name will attempt to sell excessive supplies (above 10) or will try to make some profit by speculating with cheap products. \n\n[color=yellow]Efficiency grows with Charm, Wit and Grade. [/color]",
-workline = "$name will be working at town's market.",
-reqs = 'true',
-unlockreqs = 'true',
-maxnumber = 0,
-order = 8,
-tags = ['wimborn','vocal', 'social','physical'],
-},assistwimborn = {
-code = 'assistwimborn',
-name = "W - Mage Order Assistant",
-type = 'social',
-description = "$name will work as a staff member on various guild assignments. \n\n[color=yellow]Requires grade of a [color=aqua]Commoner[/color] or higher. \n\nEfficiency grows with Magic Affinity, Wits and your reputation.[/color]",
-workline = "$name will be working at Mage's Order.",
-reqs = "globals.originsarray.find(globals.currentslave.origins) >= 2 && globals.currentslave.traits.has('Mute') == false ",
-unlockreqs = 'globals.state.rank >= 2',
-maxnumber = 0,
-order = 10,
-tags = ['wimborn','social','physical'],
-},artistwimborn = {
-code = 'artistwimborn',
-name = "W - Public Entertainer",
-type = 'social',
-description = "$name will earn money by doing dances, shows and other stage performances. \n\n[color=yellow]Requires grade of a [color=aqua]Commoner[/color] or higher. \n\nEfficiency grows with Charm, Courage, Agility and beauty.[/color]",
-workline = "$name will be working as public entertainer.",
-reqs = "globals.originsarray.find(globals.currentslave.origins) >= 2 && globals.currentslave.traits.has('Mute') == false",
-unlockreqs = 'true',
-maxnumber = 0,
-order = 9,
-tags = ['wimborn','vocal','social'],
-},lumberer = {
-code = 'lumberer',
-name = "F - Lumberer",
-type = 'social',
-description = "$name will be cutting down trees near Frostford for a woodcutting establishment. [color=yellow]\n\nEfficiency grows with Strength and Endurance.[/color]",
-workline = "$name will be cutting down trees near Frostford.",
-reqs = "true",
-unlockreqs = 'true',
-maxnumber = 0,
-order = 9,
-tags = ['frostford','physical'],
-},ffprostitution = {
-code = 'ffprostitution',
-name = "F - Prostitution",
-type = 'sexual',
-description = "$name will be serving lone customers with $his body at Frostford. \n\n[color=yellow]\n\nEfficiency grows with Charm and beauty.[/color]",
-workline = "$name will be serving lone customers with $his body at Frostford.",
-reqs = "globals.currentslave.tags.find('nosex') < 0",
-unlockreqs = 'true',
-maxnumber = 0,
-order = 9,
-tags = ['sex','frostford','social'],
-},guardian = {
-code = 'guardian',
-name = "G - Guardian",
-type = 'social',
-description = "$name will be patrolling streets with Gorn's city guard. \n\n[color=yellow]Requires grade of a [color=aqua]Poor[/color] or higher. \n\nEfficiency grows with Strength, Courage.[/color]",
-workline = "$name will be patrolling streets with Gorn's city guard.",
-reqs = "globals.originsarray.find(globals.currentslave.origins) >= 1 && globals.currentslave.traits.has('Mute') == false && globals.currentslave.traits.has('Mute') == false ",
-unlockreqs = 'true',
-maxnumber = 0,
-order = 9,
-tags = ['gorn','social'],
-},research = {
-code = 'research',
-name = "U - Research Subject",
-type = 'social',
-description = "$name will be used in harsh experiments in Umbra. \n\n[color=yellow]\n\nWill earn a lot of money, but quickly deteriorate physical and mental health.[/color] \n[color=red]Possess number of risks leading to bad events up to losing a servant. [/color]",
-workline = "$name will be used in harsh experiments in Umbra.",
-reqs = "true",
-unlockreqs = 'globals.state.portals.umbra.enabled == true',
-maxnumber = 0,
-order = 9,
-tags = ['umbra'],
-},slavecatcher = {
-code = 'slavecatcher',
-name = "G - Slave Catcher",
-type = 'social',
-description = "$name will be joining slaver parties and help catching and transporting slaves. \n\n[color=yellow]Requires grade of a [color=aqua]Poor[/color] or higher. \n\nEfficiency grows with Agility, Strength and Courage.[/color]",
-workline = "$name will be joining slaver parties and help catching and transporting slaves at Gorn.",
-reqs = "globals.originsarray.find(globals.currentslave.origins) >= 1",
-unlockreqs = 'true',
-maxnumber = 0,
-order = 9,
-tags = ['gorn','social','physical'],
-},headgirl = {
-code = 'headgirl',
-name = "Headgirl",
-type = 'social',
-description = "$name will watch over other servants improving their behavior. \n\n[color=yellow]Requires grade of a [color=aqua]Rich[/color] or higher. ",
-workline = "$name will be directing and consulting other residents.",
-reqs = "globals.originsarray.find(globals.currentslave.origins) >= 3 && globals.currentslave.traits.has('Mute') == false ",
-unlockreqs = 'globals.slaves.size() >= 8',
-maxnumber = 1,
-order = 12,
-tags = ['mansion','management'],
-},jailer = {
-code = 'jailer',
-name = "Jailer",
-type = 'social',
-description = "$name will be feeding and watching over your prisoners.\n\n[color=yellow]Requires grade of a [color=aqua]Poor[/color] or higher. ",
-workline = "$name will be managing prisoners.",
-reqs = 'globals.originsarray.find(globals.currentslave.origins) >= 1',
-unlockreqs = 'true',
-maxnumber = 1,
-order = 12,
-tags = ['mansion','management'],
-},farmmanager = {
-code = 'farmmanager',
-name = "Farm Manager",
-type = 'basic',
-description = "$name will be managing your farm and slaves assigned to it. \n\n[color=yellow]Requires grade of a [color=aqua]Commoner[/color] or higher. ",
-workline = "$name will be looking over your farm and collect its' income.",
-reqs = 'globals.originsarray.find(globals.currentslave.origins) >= 2',
-unlockreqs = 'globals.state.farm >= 3',
-maxnumber = 1,
-order = 13,
-tags = ['mansion','management'],
-},labassist = {
-code = 'labassist',
-name = "Laboratory Assistant",
-type = 'basic',
-description = "$name will be helping out and managing your laboratory operations.\n\n[color=yellow]Requires grade of a [color=aqua]Commoner[/color] or higher. ",
-workline = "$name will be assisting you at the laboratory.",
-reqs = 'globals.originsarray.find(globals.currentslave.origins) >= 2',
-unlockreqs = 'globals.state.mansionupgrades.mansionlab >= 1',
-maxnumber = 1,
-order = 14,
-tags = ['mansion'],
-},
-
-}
-
-func sortjobs(first,second):
-	if first.order < second.order:
-		return true
-	else:
-		return false
-
-func joblist():
-	var array = []
-	var dict = {
-	basic = get_node("regulations/joblist/normaljobs/VBoxContainer"),
-	social = get_node("regulations/joblist/socialjobs/VBoxContainer"),
-	sexual = get_node("regulations/joblist/sexjobs/VBoxContainer"),
-	}
-	for i in dict.values():
-		for k in i.get_children():
-			if k != get_node("regulations/joblist/normaljobs/VBoxContainer/Button"):
-				k.set_hidden(true)
-				k.queue_free()
-	
-	get_node("regulations/joblist").popup()
-	for i in jobdict.values():
-		array.append(i)
-	array.sort_custom(self, 'sortjobs')
-	for i in array:
-		if globals.evaluate(i.unlockreqs) == true:
-			var newbutton = get_node("regulations/joblist/normaljobs/VBoxContainer/Button").duplicate()
-			var locked
-			for k in globals.state.portals.values():
-				if i.tags.find(k.code) >= 0 && k.enabled == false && globals.state.location != k.code:
-					locked = true
-			if locked == true:
-				continue
-			newbutton.set_hidden(false)
-			newbutton.set_text(i.name)
-			dict[i.type].add_child(newbutton)
-			if slave.work == i.code:
-				newbutton.set('custom_colors/font_color', Color(0,1,0,1))
-			if globals.evaluate(i.reqs) == false:
-				newbutton.set_disabled(true)
-				newbutton.set_tooltip(slave.dictionary("$name is not suited for this work"))
-			if i.tags.find('sex') >= 0 && i.code != 'fucktoy':
-				if !globals.currentslave.bodyshape in ['humanoid', 'bestial', 'shortstack']:
-					newbutton.set_disabled(true)
-					newbutton.set_tooltip(slave.dictionary("This occupation only allows humanoid slaves. "))
-				elif slave.tags.find('nosex') >= 0:
-					newbutton.set_disabled(true)
-					newbutton.set_tooltip(slave.dictionary("$name refuses to participate in sexual activities at this moment. "))
-				elif slave.traits.has("Monogamous") || slave.traits.has("Prude"):
-					newbutton.set_disabled(true)
-					newbutton.set_tooltip(slave.dictionary("$name refuses to whore $himself."))
-			if i.tags.find('social') >= 0:
-				if slave.traits.has('Uncivilized') || slave.traits.has('Regressed'):
-					newbutton.set_disabled(true)
-					newbutton.set_tooltip(slave.dictionary("$name is not suited to work in social circles. "))
-			if i.tags.find("management") >= 0:
-				if slave.traits.has("Passive"):
-					newbutton.set_disabled(true)
-					newbutton.set_tooltip(slave.dictionary("$name is not suited for leading roles. "))
-					
-		
-			if i.maxnumber >= 1:
-				var counter = 0
-				for slave in globals.slaves:
-					if slave.work == i.code:
-						counter += 1
-				if counter >= i.maxnumber:
-					newbutton.set_disabled(true)
-					newbutton.set_tooltip("You can't assign anymore people to this occupation")
-			newbutton.set_meta("job", i)
-			newbutton.connect('pressed', self, 'choosejob', [newbutton])
-			newbutton.connect("mouse_enter",self,'jobtooltipshow',[newbutton])
-			newbutton.connect("mouse_exit",self,'jobtooltiphide')
-
-func choosejob(button):
-	slave.work = button.get_meta('job').code
-	_on_jobcancel_pressed()
-	_on_slave_tab_visibility_changed()
-	if get_tree().get_current_scene().get_node("slavelist").is_visible():
-		get_tree().get_current_scene().slavelist()
-
-func jobtooltipshow(button):
-	var job = button.get_meta('job')
-	var pos = button.get_pos()
-	pos.x = pos.x + 150
-	pos.y = pos.y - 10
-	get_node("regulations/joblist/jobtooltippanel").set_hidden(false)
-	get_node("regulations/joblist/jobtooltippanel/tooltiptext").set_bbcode(slave.dictionary(job.description))
-	#get_node("regulations/joblist/jobtooltippanel").set_global_pos(pos)
-
-
-func jobtooltiphide():
-	get_node("regulations/joblist/jobtooltippanel").set_hidden(true)
-
-func _on_jobcancel_pressed():
-	get_node("regulations/joblist").set_hidden(true)
-
-
-func _on_workbutton_button_selected( value ):
-	if slave.work == 'companion':
-		globals.state.companion = -1
-	elif slave.work == 'labassist':
-		globals.state.labassist = -1
-	if value == 'headgirl':
-		for i in globals.slaves:
-			if i.work == 'headgirl':
-				i.work = 'rest'
-	slave.work = value
-	regulationdescription()
 
 
 func _on_impregnate_pressed():
@@ -882,13 +531,13 @@ func _on_slavedescript_meta_clicked( meta ):
 
 
 func _on_relativesbutton_pressed():
-	get_node("regulations/clothes&relatives&customs/relativespanel").set_hidden(false)
+	get_node("customization/clothes&relatives&customs/relativespanel").set_hidden(false)
 	var mother = slave.relatives.mother
 	var father = slave.relatives.father
 	var id = slave.id
-	var parentslist = get_node("regulations/clothes&relatives&customs/relativespanel/parentscontainer/parentscontainer")
-	var siblingslist = get_node("regulations/clothes&relatives&customs/relativespanel/siblingscontainer/siblingscontainer")
-	var childrenlist = get_node("regulations/clothes&relatives&customs/relativespanel/childrencontainer/childrencontainer")
+	var parentslist = get_node("customization/clothes&relatives&customs/relativespanel/parentscontainer/parentscontainer")
+	var siblingslist = get_node("customization/clothes&relatives&customs/relativespanel/siblingscontainer/siblingscontainer")
+	var childrenlist = get_node("customization/clothes&relatives&customs/relativespanel/childrencontainer/childrencontainer")
 	var newlabel
 	for i in parentslist.get_children():
 		if i != parentslist.get_node('Label'):
@@ -970,7 +619,7 @@ func _on_relativesbutton_pressed():
 
 
 func _on_relativesclose_pressed():
-	get_node("regulations/clothes&relatives&customs/relativespanel").set_hidden(true)
+	get_node("customization/clothes&relatives&customs/relativespanel").set_hidden(true)
 
 var portaitsbuilt = false
 var portraitspath = "user://portraits/"
@@ -1096,11 +745,11 @@ func _on_openfolder_pressed():
 
 
 func _on_nickname_pressed():
-	get_node("regulations/clothes&relatives&customs/nicknamepanel").popup()
+	get_node("customization/clothes&relatives&customs/nicknamepanel").popup()
 
 func _on_nickaccept_pressed():
-	get_node("regulations/clothes&relatives&customs/nicknamepanel").set_hidden(true)
-	slave.nickname = get_node("regulations/clothes&relatives&customs/nicknamepanel/nickline").get_text()
+	get_node("customization/clothes&relatives&customs/nicknamepanel").set_hidden(true)
+	slave.nickname = get_node("customization/clothes&relatives&customs/nicknamepanel/nickline").get_text()
 	get_tree().get_current_scene().rebuild_slave_list()
 	_on_slave_tab_visibility_changed()
 
@@ -1108,13 +757,13 @@ func _on_nickaccept_pressed():
 
 
 func _on_description_pressed():
-	get_node("regulations/clothes&relatives&customs/descriptpopup").popup()
-	get_node("regulations/clothes&relatives&customs/descriptpopup/TextEdit").set_text(slave.customdesc)
+	get_node("customization/clothes&relatives&customs/descriptpopup").popup()
+	get_node("customization/clothes&relatives&customs/descriptpopup/TextEdit").set_text(slave.customdesc)
 
 
 func _on_confirmdescript_pressed():
-	slave.customdesc = get_node("regulations/clothes&relatives&customs/descriptpopup/TextEdit").get_text()
-	get_node("regulations/clothes&relatives&customs/descriptpopup").set_hidden(true)
+	slave.customdesc = get_node("customization/clothes&relatives&customs/descriptpopup/TextEdit").get_text()
+	get_node("customization/clothes&relatives&customs/descriptpopup").set_hidden(true)
 	_on_slave_tab_visibility_changed()
 
 
@@ -1125,15 +774,16 @@ func _on_gear_pressed():
 
 func _on_spec_mouse_enter():
 	var text 
-	get_node("stats/tooltip1").set_hidden(false)
 	if slave.spec == null:
 		text = "Specialization can provide special abilities and effects and can be trained at Slave's Guild. "
 	else:
 		var spec = globals.jobs.specs[slave.spec]
 		text = "[center]" + spec.name + '[/center]\n'+ spec.descript + "\n[color=aqua]" +  spec.descriptbonus + '[/color]'
-	get_node("stats/tooltip1/tooltiptext").set_bbcode(text)
+	globals.showtooltip(text)
 
 
 
 func _on_spec_mouse_exit():
-	get_node("stats/tooltip1").set_hidden(true)
+	globals.hidetooltip()
+
+

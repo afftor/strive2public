@@ -706,7 +706,7 @@ accslavecollar = {
 	name = 'A Leather Slave Collar',
 	icon = load("res://files/images/items/collar.png"),
 	description = "This leather collar is designed to fit tightly around the neck. It has rings to which bindings can be attached.\n",
-	effect = [{type = 'onendday', effect = 'slavecollareffect', descript = "Increases Obedience by the end of a day, also reduces the chance for a slave to escape"}],
+	effect = [{type = 'onendday', effect = 'slavecollareffect', descript = "Increases Obedience by the end of a day. "}],
 	recipe = '',
 	reqs = null,
 	cost = 150,
@@ -720,10 +720,10 @@ acchandcuffs = {
 	name = 'A Pair Of Handcuffs',
 	icon = load("res://files/images/items/handcuffs.png"),
 	description = "These handcuffs are lightly padded but robust enough to secure even the most troublesome slave.\n",
-	effect = [{type = 'onendday', effect = 'handcuffeffect', descript = "Increases Obedience by the end of a day"}],
+	effect = [{type = 'onendday', effect = 'handcuffeffect', descript = "Increases Obedience by the end of a day and prevents escapes. "}],
 	recipe = '',
 	reqs = null,
-	cost = 150,
+	cost = 250,
 	type = 'gear',
 	subtype = 'accessory',
 	amount = 0,
@@ -838,10 +838,6 @@ func handcuffeffect(slave):
 			slave.stress += rand_range(5,10)
 			slave.dom += rand_range(-1,-3)
 	return text
-
-#			elif slave.gear.clothes.code == 'bedlah':
-#				text2.set_bbcode(text2.get_bbcode() + slave.dictionary("$name's revealing clothes cause $him to become more open to dirty things.\n"))
-
 
 
 func createunstackable(itemcode):

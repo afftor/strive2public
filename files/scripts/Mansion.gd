@@ -9,6 +9,7 @@ var testslaveorigin = ['slave','poor','commoner','rich','noble']
 var currentslave = 0 setget currentslave_set
 var selectedslave = -1
 var texture = null
+onready var slavepanel = get_node("MainScreen/slave_tab")
 
 signal animfinished
 
@@ -93,7 +94,7 @@ func _ready():
 			i.nakedunlocked = true
 			for k in i.scenes:
 				k.unlocked = true
-		globals.charactergallery.fairy.unlocked = true
+		globals.charactergallery.maple.unlocked = true
 		_on_new_slave_button_pressed()
 	rebuild_slave_list()
 	get_node("itemnode").main = get_tree().get_current_scene()
@@ -139,7 +140,7 @@ func _on_new_slave_button_pressed():
 	var slave = globals.slavegen.newslave(testslaverace[rand_range(0,testslaverace.size())], testslaveage, testslavegender, testslaveorigin[rand_range(0,testslaveorigin.size())])
 	slave.obed += 200
 	slave.loyal += 100
-	slave.xp += 100000
+	slave.xp += 0
 	slave.sexuals.affection = 200
 	#slave.sexuals.unlocked = true
 	#for i in get_node("MainScreen/slave_tab/sexual").sexbuttons:
@@ -163,7 +164,8 @@ func _on_new_slave_button_pressed():
 			i.amount += 10
 	globals.slaves = slave
 	slave.stats.health_curr = 20
-	globals.state.reputation.wimborn = -30
+	globals.state.reputation.wimborn = 40
+	globals.state.sidequests.maple = 1
 	globals.player.ability.append("mindread")
 	globals.player.abilityactive.append("mindread")
 	globals.player.ability.append('heal')
@@ -179,12 +181,13 @@ func _on_new_slave_button_pressed():
 		var tmpitem = get_node("itemnode").createunstackable(i)
 		globals.state.unstackables[str(tmpitem.id)] = tmpitem
 	globals.state.sidequests.brothel = 2
-	globals.state.sidequests.cali = 14
+	globals.state.sidequests.maple = 6
 	globals.state.rank = 3
 	globals.state.mainquest = 16
 	globals.state.farm = 3
 	globals.state.mansionupgrades.mansionlab = 1
 	globals.state.mansionupgrades.mansionalchemy = 1
+	globals.state.mansionupgrades.mansionparlor = 1
 
 
 func mansion():
@@ -518,12 +521,12 @@ func _on_end_pressed():
 				if slave.health < 1:
 					text = slave.dictionary('[color=red]$name has died of starvation.[/color]\n')
 					deads_array.append({number = count, reason = text})
-			if slave.obed < 25 && slave.cour >= 50 && slave.rules.silence == false && slave.traits.has('Mute') == false && slave.sleep != 'jail' && slave.sleep != 'farm' && rand_range(0,1) > 0.5:
+			if slave.obed < 25 && slave.cour >= 50 && slave.rules.silence == false && slave.traits.has('Mute') == false && slave.sleep != 'jail' && slave.sleep != 'farm' && slave.brand != 'advanced'&& rand_range(0,1) > 0.5:
 				text0.set_bbcode(text0.get_bbcode()+slave.dictionary('$name dares to openly show $his disrespect towards you and instigates other servants. \n'))
 				for ii in globals.slaves:
 					if ii != slave && ii.loyal < 30 && ii.traits.has('Loner') == false:
 						ii.obed += -(slave.charm/3)
-			if slave.obed < 50 && slave.loyal < 25 && slave.sleep != 'jail'&& slave.sleep != 'farm':
+			if slave.obed < 50 && slave.loyal < 25 && slave.sleep != 'jail'&& slave.sleep != 'farm'&& slave.brand != 'advanced':
 				if rand_range(0,3) < 1 && globals.resources.gold > 34:
 					text0.set_bbcode(text0.get_bbcode()+slave.dictionary('You notice that some of your food is gone.\n'))
 					globals.resources.food -= -rand_range(35,70)
@@ -539,8 +542,7 @@ func _on_end_pressed():
 				else:
 					escape = slave.cour/4+slave.stress/4
 					stay = slave.loyal*2+slave.obed+slave.wit/5
-				if handcuffs == true:
-					escape /= 2
+				
 				if globals.state.mansionupgrades.mansionkennels == 1:
 					escape *= 0.8
 				if escape > stay:
@@ -548,10 +550,6 @@ func _on_end_pressed():
 						var temptext = slave.dictionary('[color=red]$name has escaped during the night![/color]\n')
 						deads_array.append({number = count, reason = temptext})
 					else:
-						var temptext = slave.dictionary('[color=red]Despite being handcuffed $name has escaped during the night![/color]\n')
-						deads_array.append({number = count, reason = temptext})
-				if handcuffs == true:
-					if escape < stay && escape*2 > stay:
 						text0.set_bbcode(text0.get_bbcode()+slave.dictionary('[color=red]$name attempted to escape during the night but being handcuffed slowed them down and they were quickly discovered![/color]\n'))
 			#sleep conditions
 			slave.lust = round(rand_range(3,8))
@@ -3427,8 +3425,7 @@ func sleepselect(item, button):
 
 func selectjob(slave):
 	globals.currentslave = slave
-	get_node("MainScreen/slave_tab").slave = slave
-	get_node("MainScreen/slave_tab").joblist()
+	joblist()
 
 func openslave(slave):
 	currentslave = globals.slaves.find(slave)
@@ -3437,7 +3434,8 @@ func openslave(slave):
 	get_node("MainScreen/slave_tab").set_hidden(false)
 	get_node("slavelist").set_hidden(true)
 
-
+func joblist():
+	get_node("joblist").joblist()
 
 func _on_listclose_pressed():
 	get_node("slavelist").set_hidden(true)

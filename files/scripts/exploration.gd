@@ -216,7 +216,7 @@ reqs = "true",
 combat = false,
 code = 'umbra',
 name = 'Umbra',
-description = "You are in the middle of vast enclosed cave. Below the ceiling resides a magical dim light source, providing slightly more illumination than at full moon night. Shabby buildings around the cave's walls have multiple people moving in and out. Most people resemble bandits and criminals, but occassinally you can spot riches with bodyguards. Despite slightly worring atmosphere, there seems to be no open danger or fight-seeking individuals. ",
+description = "You are in the middle of vast enclosed cave. Below the ceiling resides a magical dim light source, providing slightly more illumination than at full moon night. Shabby buildings around the cave's walls have multiple people moving in and out. Most people resemble bandits and criminals, but occassinally you can spot riches with bodyguards. Despite slightly worring atmosphere, there seems to be no open danger or fight-seeking individuals.  ",
 enemies = [],
 encounters = [],
 length = 0,
@@ -1038,7 +1038,7 @@ func _on_confirmwinning_pressed(secondary = false):
 					text += defeated.units[i].dictionary("You have left $race $child alone.\n")
 				else:
 					text += defeated.units[i].dictionary("You have released $race $child and set $him free.\n")
-					globals.state.reputation[location] += rand_range(2,3)
+					globals.state.reputation[location] += rand_range(1,2)
 					if rand_range(0,100) < 25 + globals.state.reputation[location]/3 && reward == false:
 						reward = true
 						rewardslave = defeated.units[i]
@@ -1601,13 +1601,19 @@ func shaliqshop():
 	outside.shopinitiate('shaliqshop')
 
 func umbra():
+	if globals.state.umbrafirstvisit == true:
+		globals.state.umbrafirstvisit = false
+		outside.maintext.set_bbcode(outside.maintext.get_bbcode() + "\n\n" + globals.questtext.UmbraFirstVisit)
 	var array = []
 	outside.location = 'umbra'
-	array.append({name = "Visit Black Market", function = 'shaliqshop'})
+	array.append({name = "Visit Black Market", function = 'umbrashop'})
 	array.append({name = "Buy Slaves", function = 'umbrabuyslaves'})
 	array.append({name = "Sell Servants", function = 'umbrasellslaves'})
 	array.append({name = "Return to Mansion", function = 'mansionreturn'})
 	outside.buildbuttons(array,self)
+
+func umbrashop():
+	outside.shopinitiate('blackmarket')
 
 func umbrabuyslaves():
 	outside.mindread = false

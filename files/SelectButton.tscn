@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=1]
+[gd_scene load_steps=5 format=1]
 
 [ext_resource path="res://mainfont.tres" type="DynamicFont" id=1]
 [ext_resource path="res://files/scripts/SelectButton.gd" type="Script" id=2]
@@ -15,23 +15,6 @@ margin/left = 4.0
 margin/right = 4.0
 margin/top = 4.0
 margin/bottom = 4.0
-expand_margin/left = 0.0
-expand_margin/right = 0.0
-expand_margin/top = 0.0
-expand_margin/bottom = 0.0
-draw_center = true
-
-[sub_resource type="StyleBoxTexture" id=2]
-
-content_margin/left = -1.0
-content_margin/right = -1.0
-content_margin/top = -1.0
-content_margin/bottom = -1.0
-texture = ExtResource( 3 )
-margin/left = 10.0
-margin/right = 10.0
-margin/top = 10.0
-margin/bottom = 10.0
 expand_margin/left = 0.0
 expand_margin/right = 0.0
 expand_margin/top = 0.0
@@ -57,7 +40,9 @@ text = "0"
 flat = false
 script/script = ExtResource( 2 )
 
-[node name="Popup" type="Popup" parent="." groups=[ "selectpanels" ]]
+[node name="Popup" type="Popup" parent="." groups=[
+"selectpanels",
+]]
 
 visibility/visible = false
 anchor/left = 3
@@ -74,7 +59,9 @@ margin/right = -14.5
 margin/bottom = -42.5
 popup/exclusive = false
 
-[node name="Panel" type="PanelContainer" parent="Popup" groups=[ "selectpanels" ]]
+[node name="Panel" type="PanelContainer" parent="Popup" groups=[
+"selectpanels",
+]]
 
 anchor/right = 1
 anchor/bottom = 1
@@ -113,33 +100,8 @@ margin/right = 0.0
 margin/bottom = 0.0
 alignment = 0
 
-[node name="tooltip" type="Panel" parent="Popup"]
-
-focus/ignore_mouse = false
-focus/stop_mouse = true
-size_flags/horizontal = 2
-size_flags/vertical = 2
-margin/left = 556.0
-margin/top = -123.0
-margin/right = 947.0
-margin/bottom = 295.0
-custom_styles/panel = SubResource( 2 )
-
-[node name="selecttooltip" type="RichTextLabel" parent="Popup/tooltip"]
-
-focus/ignore_mouse = false
-focus/stop_mouse = true
-size_flags/horizontal = 2
-size_flags/vertical = 2
-margin/left = 12.0
-margin/top = 13.0
-margin/right = 380.0
-margin/bottom = 404.0
-custom_fonts/normal_font = ExtResource( 1 )
-bbcode/enabled = true
-bbcode/bbcode = ""
-visible_characters = -1
-
 [connection signal="pressed" from="." to="." method="_on_SelectButton_pressed"]
+
+[connection signal="popup_hide" from="Popup" to="." method="_on_Popup_popup_hide"]
 
 

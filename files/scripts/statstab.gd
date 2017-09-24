@@ -35,7 +35,7 @@ func alphabeticalsortbycode(first, second):
 
 
 func _on_trainingabils_pressed():
-	get_node("trainingabilspanel").set_hidden(false)
+	get_node("trainingabilspanel").popup()
 	for i in get_node("trainingabilspanel/ScrollContainer/VBoxContainer").get_children():
 		if i != get_node("trainingabilspanel/ScrollContainer/VBoxContainer/Button"):
 			i.set_hidden(false)
@@ -117,20 +117,6 @@ func levelfirst(first, second):
 	else:
 		return false
 
-func _on_statconfirm_pressed():
-	var text = 's'+globals.decapitalize(get_node("trainingstatspanel/statoptionbutton").get_item_text(get_node("trainingstatspanel/statoptionbutton").get_selected()).substr(0, 3))
-	if text == 'smag':
-		text = 'smaf'
-	slave.skillpoints -= 1
-	slave[text] += 1
-	get_node("trainingstatspanel").set_hidden(true)
-	get_parent()._on_slave_tab_visibility_changed()
-	slave.stats.health_max = 35 + slave.stats.end_cur*25
-	get_tree().get_current_scene().popup(slave.name + "'s " +get_node("trainingstatspanel/statoptionbutton").get_item_text(get_node("trainingstatspanel/statoptionbutton").get_selected()) + ' has increased.' )
-
-
-func _on_statcancel_pressed():
-	get_node("trainingstatspanel").set_hidden(true)
 
 func _on_abilcancel_pressed():
 	get_node("trainingabilspanel").set_hidden(true)
@@ -146,6 +132,7 @@ func _on_abilityconfirm_pressed():
 	globals.resources.gold -= abil.price
 	get_tree().get_current_scene().popup(slave.dictionary('$name has learned '+ abil.name))
 	_on_trainingabils_pressed()
+	get_parent()._on_slave_tab_visibility_changed()
 	get_node("trainingabilspanel").update()
 
 

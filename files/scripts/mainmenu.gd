@@ -173,6 +173,8 @@ func _on_startrandom_pressed():
 		globals.state.portals.amberguard.enabled = true
 		globals.itemdict.youthingpot.unlocked = true
 		globals.itemdict.maturingpot.unlocked = true
+		globals.state.sidequests.sebastianumbra = 2
+		globals.state.portals.umbra.enabled = true
 
 
 func _on_cancelsaveload_pressed():
@@ -818,6 +820,7 @@ func _on_slaveconfirm_pressed():
 	globals.player.relatives.mother = 0
 	globals.player.ability.append('escape')
 	globals.player.abilityactive.append('escape')
+	globals.player.beautybase = 40
 	globals.resources.energy = 100
 	globals.resources.day = 1
 	globals.guildslaves.wimborn = []
@@ -910,8 +913,11 @@ func _on_slaveconfirm_pressed():
 		globals.state.sidequests.brothel = 2
 		globals.state.branding = 2
 		globals.state.farm = 4
+		globals.state.portals.amberguard.enabled = true
 		globals.itemdict.youthingpot.unlocked = true
 		globals.itemdict.maturingpot.unlocked = true
+		globals.state.sidequests.sebastianumbra = 2
+		globals.state.portals.umbra.enabled = true
 	
 	globals.player.gear.costume = 'clothcommon'
 	globals.player.gear.underwear = 'underwearplain'

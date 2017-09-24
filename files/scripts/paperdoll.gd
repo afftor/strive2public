@@ -99,26 +99,19 @@ func selectitemforslot(item):
 	if typeof(item) == TYPE_STRING:
 		if item == 'underwearplain':
 			if slave.gear.underwear != null && slave.gear.underwear != 'underwearplain':
-				globals.state.unstackables[slave.gear.underwear].owner = null
+				unequip(globals.state.unstackables[slave.gear.underwear])
 			slave.gear.underwear = 'underwearplain'
 		elif item == 'clothcommon':
 			if slave.gear.costume != null && slave.gear.costume != 'clothcommon':
-				globals.state.unstackables[slave.gear.costume].owner = null
+				unequip(globals.state.unstackables[slave.gear.costume])
 			slave.gear.costume = 'clothcommon'
 		get_node("selectitem").set_hidden(true)
 		showup()
 		return
 	if slave.gear[item.type] != null && !slave.gear[item.type] in ['clothcommon','underwearplain']:
 		tempitem = globals.state.unstackables[slave.gear[item.type]]
-		tempitem.owner = null
-		for i in tempitem.effects:
-			if i.type == 'onequip':
-				get_tree().get_current_scene().get_node("itemnode").call(i.effect, -i.effectvalue)
-	for i in item.effects:
-		if i.type == 'onequip':
-				get_tree().get_current_scene().get_node("itemnode").call(i.effect, i.effectvalue)
-	item.owner = slave.id
-	slave.gear[item.type] = item.id
+		unequip(tempitem)
+	equip(item)
 	get_node("selectitem").set_hidden(true)
 	showup()
 	
@@ -130,13 +123,23 @@ func _on_remove_pressed():
 	var tempitem
 	if !slave.gear[slot] in ['clothcommon', 'underwearplain']:
 		tempitem = globals.state.unstackables[slave.gear[slot]]
-		tempitem.owner = null
-		for i in tempitem.effects:
-			if i.type == 'onequip':
-				get_tree().get_current_scene().get_node("itemnode").call(i.effect, -i.effectvalue)
+		unequip(tempitem)
 	slave.gear[slot] = null
 	get_node("selectitem").set_hidden(true)
 	showup()
+
+func equip(item):
+	for i in item.effects:
+		if i.type == 'onequip':
+				get_tree().get_current_scene().get_node("itemnode").call(i.effect, i.effectvalue)
+	item.owner = slave.id
+	slave.gear[item.type] = item.id
+
+func unequip(item):
+	item.owner = null
+	for i in item.effects:
+		if i.type == 'onequip':
+			get_tree().get_current_scene().get_node("itemnode").call(i.effect, -i.effectvalue)
 
 func paperdolltooltip(button):
 	var item 

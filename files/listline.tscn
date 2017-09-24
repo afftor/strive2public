@@ -232,7 +232,7 @@ params/stretch_mode = 0
 
 [node name="regulations" type="TextureButton" parent="actionbuttons"]
 
-hint/tooltip = "Rules and regulations"
+hint/tooltip = "Customization"
 focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2

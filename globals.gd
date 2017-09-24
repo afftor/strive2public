@@ -27,6 +27,7 @@ var dailyevents = load("res://files/scripts/dailyevents.gd").new()
 var jobs = load("res://files/scripts/jobs&specs.gd").new()
 var mansionupgrades = load("res://files/scripts/mansionupgrades.gd").new()
 var gallery = load("res://files/scripts/gallery.gd").new()
+var slavedialogues = load("res://files/scripts/slavedialogues.gd").new()
 var questtext = events.textnode
 var slaves = [] setget slaves_set
 var starting_pc_races = ['Human', 'Elf', 'Dark Elf', 'Orc', 'Demon', 'Beastkin Cat', 'Beastkin Wolf', 'Beastkin Fox', 'Halfkin Cat', 'Halfkin Wolf', 'Halfkin Fox', 'Taurus']
@@ -43,7 +44,8 @@ var clothes = load("res://files/scripts/clothes.gd").costumelist()
 var underwear = load("res://files/scripts/clothes.gd").underwearlist()
 
 var spritedict = {
-fairy = load("res://files/images/fairy.png"),
+fairy = load("res://files/images/maple/maple.png"),
+fairynaked = load("res://files/images/maple/maplenaked.png"),
 melissafriendly = load("res://files/images/melissafriendly.png"),
 melissaneutral = load("res://files/images/melissaneutral.png"),
 melissaworried = load("res://files/images/melissaworried.png"),
@@ -354,12 +356,13 @@ class progress:
 	var apiary = 0
 	var branding = 0
 	var slaveguildvisited = 0
+	var umbrafirstvisit = true
 	var itemlist = {}
 	var spelllist = {}
 	var mainquest = 0
 	var rank = 0
 	var password = ''
-	var sidequests = {emily = 0, brothel = 0, cali = 0, chloe = 0, ayda = 0, ivran = '', yris = 0, zoe = 0, ayneris = 0, sebastianumbra = 0}
+	var sidequests = {emily = 0, brothel = 0, cali = 0, chloe = 0, ayda = 0, ivran = '', yris = 0, zoe = 0, ayneris = 0, sebastianumbra = 0, maple = 0}
 	var repeatables = {wimbornslaveguild = [], frostfordslaveguild = [], gornslaveguild = []}
 	var babylist = []
 	var companion = -1
@@ -642,8 +645,8 @@ class slave:
 			globals.get_tree().get_current_scene().infotext(dictionary("You have advanced to Level [color=aqua]" + str(level)+ '[/color]'))
 	
 	func xp_set(value):
-		var difference = realxp - value
-		realxp -= max(difference/max(level,1),1)
+		var difference = value - realxp
+		realxp += max(difference/max(level,1),1)
 		realxp = round(max(min(realxp, 100),0))
 		if realxp >= 100 && self == globals.player:
 			levelup()
@@ -1444,6 +1447,9 @@ func repairsave():
 		for i in state.portals:
 			portaldict[i] = {enabled = true, code = i}
 		state.portals = portaldict
+	for i in progress.new().portals:
+		if state.portals.has(i) == false:
+			state.portals[i] = progress.new().portals[i]
 	if !state.mansionupgrades.has('mansionparlor'):
 		state.mansionupgrades.mansionparlor = 0
 	state.currentversion = gameversion

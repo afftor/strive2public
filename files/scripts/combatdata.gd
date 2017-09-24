@@ -179,7 +179,7 @@ agepool = [['child',20],['teen',60], ['adult', 100]],
 sex = ['any'],
 faction = 'stranger',
 },
-banditcampcaptured= {
+banditcampcaptured = {
 race = ['any'],
 originspool = [{value = 'noble', weight = 2},{value = 'rich', weight = 5},{value = 'commoner', weight = 8},{value = 'poor', weight = 10}],
 agepool = [{value = 'child', weight = 2},{value = 'teen', weight = 3}, {value = 'adult', weight = 3}],

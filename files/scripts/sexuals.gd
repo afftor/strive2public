@@ -286,6 +286,7 @@ var nakedspritesdict = {
 	Tisha = {cons = 'tishanakedhappy', rape = 'tishanakedneutral', clothcons = 'tishahappy', clothrape = 'tishaneutral'},
 	Emily = {cons = 'emilynakedhappy', rape = 'emilynakedneutral', clothcons = 'emily2happy', clothrape = 'emily2worried'},
 	Chloe = {cons = 'chloenakedhappy', rape = 'chloenakedneutral', clothcons = 'chloehappy2', clothrape = 'chloeneutral2'},
+	Maple = {cons = 'fairynaked', rape = 'fairynaked', clothcons = 'fairy', clothrape = 'fairy'},
 	}
 
 func sexinitiate(secondtime = false):
@@ -501,7 +502,7 @@ func sexinitiate(secondtime = false):
 	
 	
 	for i in [slave, partner]:
-		if i.unique in ['Cali','Tisha','Emily', 'Chloe']:
+		if i.unique in ['Cali','Tisha','Emily', 'Chloe','Maple']:
 			var sprite
 			var pos 
 			if action.code == 'kiss':

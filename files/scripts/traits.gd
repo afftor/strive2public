@@ -228,7 +228,7 @@ var traits = {
   },
   "Frail": {
     "name": "Frail",
-    "description": "$name's body is much less durable than most. $His physical potential is severely impaired. \n\n[color=aqua]Max Strength -3, Max Agi -3. [/color]",
+    "description": "$name's body is much less durable than most. $His physical potential is severely impaired. \n\n[color=aqua]Max Strength -2, Max Agi -1. [/color]",
     "effect": {
       "code": "frail",
       "conf_max": -25,

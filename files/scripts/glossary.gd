@@ -19,7 +19,7 @@ func buildglossary():
 	glossarylist.append(mansion)
 	
 	var servant = glossaryelement.new()
-	servant.text =  "On this tab you can observe, manage and interact with your chosen servant. From here you can see their appearance and personality and check on their mood and potential. Hover the mouse cursor over different stats to see more info. " 
+	servant.text = "On this tab you can observe, manage and interact with your chosen servant. From here you can see their appearance and personality and check on their mood and potential. Hover the mouse cursor over different stats to see more info. " 
 	servant.name = 'Servant Screen'
 	servant.code = 'servant'
 	glossarylist.append(servant)

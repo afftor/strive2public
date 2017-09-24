@@ -500,6 +500,9 @@ func zoemake():
 
 #Sidequests
 
+func mapletimepass():
+	globals.state.sidequests.maple = 3
+
 func calievent1():
 	var cali = null
 	for i in globals.slaves:
@@ -855,7 +858,7 @@ func calibanditcampchoice(choice):
 	var texttemp
 	var slave = globals.slavegen.newslave('Human', 'teen', 'female', 'commoner')
 	slave.name = 'Tia'
-	slave.surname = 'Fallton'
+	slave.surname = ''
 	slave.beautybase = 75
 	slave.haircolor = 'brown'
 	slave.hairlength = 'waist'
@@ -1184,6 +1187,12 @@ func sexscene(value):
 		text = textnode.AynerisPunish1
 	elif value == "aynerissex":
 		text = textnode.AynerisPunish2
+	elif value == "mapleflirt":
+		sprite = [['fairy', 'pos1']]
+		text = textnode.MapleFlirt
+	elif value == "mapleflirt2":
+		sprite = [['fairynaked', 'pos1']]
+		text = textnode.MapleFlirt2
 	globals.get_tree().get_current_scene().dialogue(true,self,text,[],sprite)
 
 func emilymansion(stage = 0):

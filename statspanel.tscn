@@ -84,6 +84,7 @@ max_lines_visible = -1
 
 [node name="sstr" type="TextureFrame" parent="."]
 
+editor/display_folded = true
 anchor/left = 3
 anchor/right = 3
 focus/ignore_mouse = true
@@ -142,6 +143,7 @@ flat = false
 
 [node name="sagi" type="TextureFrame" parent="."]
 
+editor/display_folded = true
 anchor/left = 3
 anchor/right = 3
 focus/ignore_mouse = true
@@ -200,6 +202,7 @@ flat = false
 
 [node name="smaf" type="TextureFrame" parent="."]
 
+editor/display_folded = true
 anchor/left = 3
 anchor/right = 3
 focus/ignore_mouse = true
@@ -258,6 +261,7 @@ flat = false
 
 [node name="send" type="TextureFrame" parent="."]
 
+editor/display_folded = true
 anchor/left = 3
 anchor/right = 3
 focus/ignore_mouse = true
@@ -334,6 +338,7 @@ max_lines_visible = -1
 
 [node name="cour" type="TextureFrame" parent="."]
 
+editor/display_folded = true
 anchor/left = 3
 anchor/right = 3
 focus/ignore_mouse = true
@@ -374,6 +379,7 @@ margin/bottom = 27.0
 
 [node name="conf" type="TextureFrame" parent="."]
 
+editor/display_folded = true
 anchor/left = 3
 anchor/right = 3
 focus/ignore_mouse = true
@@ -414,6 +420,7 @@ margin/bottom = 27.0
 
 [node name="wit" type="TextureFrame" parent="."]
 
+editor/display_folded = true
 anchor/left = 3
 anchor/right = 3
 focus/ignore_mouse = true
@@ -454,6 +461,7 @@ margin/bottom = 27.0
 
 [node name="charm" type="TextureFrame" parent="."]
 
+editor/display_folded = true
 anchor/left = 3
 anchor/right = 3
 focus/ignore_mouse = true
@@ -574,6 +582,8 @@ align = 1
 percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
+
+[connection signal="meta_clicked" from="leveltext" to="." method="_on_leveltext_meta_clicked"]
 
 [connection signal="meta_clicked" from="traittext" to="." method="_on_traittext_meta_clicked"]
 
