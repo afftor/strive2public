@@ -1,23 +1,26 @@
-[gd_scene load_steps=33 format=1]
+[gd_scene load_steps=41 format=1]
 
 [ext_resource path="res://files/theme.tres" type="Theme" id=1]
 [ext_resource path="res://files/scripts/outside.gd" type="Script" id=2]
 [ext_resource path="res://files/buttons/explorebar2.png" type="Texture" id=3]
 [ext_resource path="res://files/buttons/explorebar.png" type="Texture" id=4]
-[ext_resource path="res://files/buttons/img-text-in.png" type="Texture" id=5]
+[ext_resource path="res://files/buttons/img-pl-vkladki.png" type="Texture" id=5]
 [ext_resource path="res://mainfont.tres" type="DynamicFont" id=6]
-[ext_resource path="res://files/buttons/img-pl-vkladki.png" type="Texture" id=7]
-[ext_resource path="res://files/buttons/btn-noact-oran.png" type="Texture" id=8]
-[ext_resource path="res://files/buttons/btn-hover-oran.png" type="Texture" id=9]
-[ext_resource path="res://files/buttons/btn-norm-oran.png" type="Texture" id=10]
-[ext_resource path="res://files/buttons/btn-act-oran.png" type="Texture" id=11]
-[ext_resource path="res://files/buttongrouptheme.tres" type="Theme" id=12]
-[ext_resource path="res://statspanel.tscn" type="PackedScene" id=13]
-[ext_resource path="res://files/buttons/statpanel.png" type="Texture" id=14]
-[ext_resource path="res://Roundo-Medium.otf" type="DynamicFontData" id=15]
-[ext_resource path="res://files/theme slavetab.tres" type="Theme" id=16]
+[ext_resource path="res://files/buttons/btn-noact-oran.png" type="Texture" id=7]
+[ext_resource path="res://files/buttons/btn-hover-oran.png" type="Texture" id=8]
+[ext_resource path="res://files/buttons/btn-norm-oran.png" type="Texture" id=9]
+[ext_resource path="res://files/buttons/btn-act-oran.png" type="Texture" id=10]
+[ext_resource path="res://files/buttons/img-text-in.png" type="Texture" id=11]
+[ext_resource path="res://files/buttons/menupanel.png" type="Texture" id=12]
+[ext_resource path="res://files/buttongrouptheme.tres" type="Theme" id=13]
+[ext_resource path="res://statspanel.tscn" type="PackedScene" id=14]
+[ext_resource path="res://files/buttons/statpanel.png" type="Texture" id=15]
+[ext_resource path="res://files/buttons/paneltransperent.png" type="Texture" id=16]
 [ext_resource path="res://files/buttons/itemactive.png" type="Texture" id=17]
-[ext_resource path="res://files/buttons/itemnormal.png" type="Texture" id=18]
+[ext_resource path="res://files/bigpanel.tres" type="StyleBox" id=18]
+[ext_resource path="res://Roundo-Medium.otf" type="DynamicFontData" id=19]
+[ext_resource path="res://files/theme slavetab.tres" type="Theme" id=20]
+[ext_resource path="res://files/buttons/itemnormal.png" type="Texture" id=21]
 
 [sub_resource type="StyleBoxTexture" id=1]
 
@@ -77,10 +80,10 @@ content_margin/right = -1.0
 content_margin/top = -1.0
 content_margin/bottom = -1.0
 texture = ExtResource( 7 )
-margin/left = 10.0
-margin/right = 10.0
-margin/top = 10.0
-margin/bottom = 10.0
+margin/left = 8.0
+margin/right = 8.0
+margin/top = 8.0
+margin/bottom = 8.0
 expand_margin/left = 0.0
 expand_margin/right = 0.0
 expand_margin/top = 0.0
@@ -138,24 +141,7 @@ expand_margin/top = 0.0
 expand_margin/bottom = 0.0
 draw_center = true
 
-[sub_resource type="StyleBoxTexture" id=8]
-
-content_margin/left = -1.0
-content_margin/right = -1.0
-content_margin/top = -1.0
-content_margin/bottom = -1.0
-texture = ExtResource( 11 )
-margin/left = 8.0
-margin/right = 8.0
-margin/top = 8.0
-margin/bottom = 8.0
-expand_margin/left = 0.0
-expand_margin/right = 0.0
-expand_margin/top = 0.0
-expand_margin/bottom = 0.0
-draw_center = true
-
-[sub_resource type="Theme" id=9]
+[sub_resource type="Theme" id=8]
 
 Button/colors/font_color = Color( 0.878431, 0.878431, 0.878431, 1 )
 Button/colors/font_color_disabled = Color( 0.226563, 0.226563, 0.226563, 1 )
@@ -163,11 +149,28 @@ Button/colors/font_color_hover = Color( 1, 1, 1, 1 )
 Button/colors/font_color_pressed = Color( 1, 1, 1, 1 )
 Button/constants/hseparation = 2
 Button/fonts/font = null
-Button/styles/disabled = SubResource( 5 )
+Button/styles/disabled = SubResource( 4 )
 Button/styles/focus = null
-Button/styles/hover = SubResource( 6 )
-Button/styles/normal = SubResource( 7 )
-Button/styles/pressed = SubResource( 8 )
+Button/styles/hover = SubResource( 5 )
+Button/styles/normal = SubResource( 6 )
+Button/styles/pressed = SubResource( 7 )
+
+[sub_resource type="StyleBoxTexture" id=9]
+
+content_margin/left = -1.0
+content_margin/right = -1.0
+content_margin/top = -1.0
+content_margin/bottom = -1.0
+texture = ExtResource( 11 )
+margin/left = 10.0
+margin/right = 10.0
+margin/top = 10.0
+margin/bottom = 10.0
+expand_margin/left = 0.0
+expand_margin/right = 0.0
+expand_margin/top = 0.0
+expand_margin/bottom = 0.0
+draw_center = true
 
 [sub_resource type="StyleBoxTexture" id=10]
 
@@ -175,7 +178,24 @@ content_margin/left = -1.0
 content_margin/right = -1.0
 content_margin/top = -1.0
 content_margin/bottom = -1.0
-texture = ExtResource( 14 )
+texture = ExtResource( 12 )
+margin/left = 10.0
+margin/right = 10.0
+margin/top = 10.0
+margin/bottom = 10.0
+expand_margin/left = 0.0
+expand_margin/right = 0.0
+expand_margin/top = 0.0
+expand_margin/bottom = 0.0
+draw_center = true
+
+[sub_resource type="StyleBoxTexture" id=11]
+
+content_margin/left = -1.0
+content_margin/right = -1.0
+content_margin/top = -1.0
+content_margin/bottom = -1.0
+texture = ExtResource( 15 )
 margin/left = 0.0
 margin/right = 0.0
 margin/top = 0.0
@@ -186,15 +206,83 @@ expand_margin/top = 0.0
 expand_margin/bottom = 0.0
 draw_center = true
 
-[sub_resource type="DynamicFont" id=11]
+[sub_resource type="StyleBoxTexture" id=12]
+
+content_margin/left = -1.0
+content_margin/right = -1.0
+content_margin/top = -1.0
+content_margin/bottom = -1.0
+texture = ExtResource( 16 )
+margin/left = 8.0
+margin/right = 8.0
+margin/top = 8.0
+margin/bottom = 8.0
+expand_margin/left = 0.0
+expand_margin/right = 0.0
+expand_margin/top = 0.0
+expand_margin/bottom = 0.0
+draw_center = true
+
+[sub_resource type="StyleBoxTexture" id=13]
+
+content_margin/left = -1.0
+content_margin/right = -1.0
+content_margin/top = -1.0
+content_margin/bottom = -1.0
+texture = ExtResource( 12 )
+margin/left = 0.0
+margin/right = 0.0
+margin/top = 0.0
+margin/bottom = 0.0
+expand_margin/left = 0.0
+expand_margin/right = 0.0
+expand_margin/top = 0.0
+expand_margin/bottom = 0.0
+draw_center = true
+
+[sub_resource type="StyleBoxTexture" id=14]
+
+content_margin/left = -1.0
+content_margin/right = -1.0
+content_margin/top = -1.0
+content_margin/bottom = -1.0
+texture = ExtResource( 3 )
+margin/left = 5.0
+margin/right = 5.0
+margin/top = 5.0
+margin/bottom = 5.0
+expand_margin/left = 0.0
+expand_margin/right = 0.0
+expand_margin/top = 0.0
+expand_margin/bottom = 0.0
+draw_center = true
+
+[sub_resource type="StyleBoxTexture" id=15]
+
+content_margin/left = -1.0
+content_margin/right = -1.0
+content_margin/top = -1.0
+content_margin/bottom = -1.0
+texture = ExtResource( 4 )
+margin/left = 3.0
+margin/right = 3.0
+margin/top = 3.0
+margin/bottom = 3.0
+expand_margin/left = 0.0
+expand_margin/right = 0.0
+expand_margin/top = 0.0
+expand_margin/bottom = 0.0
+draw_center = true
+
+[sub_resource type="DynamicFont" id=16]
 
 font/size = 20
 extra_spacing/top = 3
 font/use_mipmaps = false
 font/use_filter = true
-font/font = ExtResource( 15 )
+font/font = ExtResource( 19 )
 
-[sub_resource type="Animation" id=12]
+[sub_resource type="Animation" id=17]
 
 length = 0.3
 loop = false
@@ -220,7 +308,7 @@ tracks/1/keys = {
 "values": [ true ]
 }
 
-[sub_resource type="Animation" id=13]
+[sub_resource type="Animation" id=18]
 
 length = 0.3
 loop = false
@@ -276,9 +364,8 @@ tracks/4/keys = {
 "values": [ -246.0, -114.0 ]
 }
 
-[sub_resource type="Animation" id=14]
+[sub_resource type="Animation" id=19]
 
-resource/name = "spriteshow"
 length = 0.3
 loop = false
 step = 0.1
@@ -332,6 +419,7 @@ flat = false
 
 [node name="exploreprogress" type="ProgressBar" parent="."]
 
+editor/display_folded = true
 anchor/left = 1
 anchor/right = 1
 focus/ignore_mouse = false
@@ -386,6 +474,83 @@ margin/bottom = -114.0
 expand = true
 stretch_mode = 6
 
+[node name="textpanel" type="Panel" parent="."]
+
+anchor/right = 3
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 300.0
+margin/top = 4.0
+margin/right = -208.5
+margin/bottom = -1.0
+
+[node name="buttonpanel" type="Panel" parent="."]
+
+visibility/opacity = 0.7
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 2.0
+margin/top = 4.0
+margin/right = 305.0
+margin/bottom = -3.0
+custom_styles/panel = SubResource( 3 )
+
+[node name="outsidetextbox" type="RichTextLabel" parent="."]
+
+anchor/right = 3
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 314.0
+margin/top = 18.0
+margin/right = -193.5
+margin/bottom = 11.0
+custom_fonts/normal_font = ExtResource( 6 )
+bbcode/enabled = true
+bbcode/bbcode = ""
+visible_characters = -1
+
+[node name="outsidebuttoncontainer" type="VBoxContainer" parent="."]
+
+focus/ignore_mouse = false
+focus/stop_mouse = false
+size_flags/horizontal = 2
+size_flags/vertical = 2
+theme/theme = SubResource( 8 )
+margin/left = 16.0
+margin/top = 13.0
+margin/right = 288.0
+margin/bottom = 441.0
+alignment = 0
+
+[node name="buttontemplate" type="Button" parent="outsidebuttoncontainer"]
+
+visibility/visible = false
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 272.0
+margin/bottom = 32.0
+custom_fonts/font = ExtResource( 6 )
+custom_colors/font_color_disabled = Color( 1, 1, 1, 1 )
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Button 1"
+flat = false
+align = 0
+
 [node name="playergrouppanel" type="Panel" parent="."]
 
 anchor/top = 1
@@ -402,30 +567,29 @@ margin/bottom = -84.0
 
 [node name="VBoxContainer" type="HBoxContainer" parent="playergrouppanel"]
 
-editor/display_folded = true
 focus/ignore_mouse = false
 focus/stop_mouse = false
 size_flags/horizontal = 2
 size_flags/vertical = 2
 margin/left = 8.0
 margin/top = 12.0
-margin/right = 843.0
+margin/right = 980.0
 margin/bottom = 73.0
 alignment = 0
 
 [node name="Panel" type="Panel" parent="playergrouppanel/VBoxContainer"]
 
 visibility/visible = false
-rect/min_size = Vector2( 260, 60 )
+rect/min_size = Vector2( 240, 60 )
 focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
 margin/left = 0.0
 margin/top = 0.0
-margin/right = 260.0
+margin/right = 240.0
 margin/bottom = 61.0
-custom_styles/panel = SubResource( 3 )
+custom_styles/panel = SubResource( 9 )
 
 [node name="name" type="Label" parent="playergrouppanel/VBoxContainer/Panel"]
 
@@ -477,7 +641,6 @@ max_lines_visible = -1
 
 [node name="stress" type="Label" parent="playergrouppanel/VBoxContainer/Panel"]
 
-visibility/visible = false
 focus/ignore_mouse = true
 focus/stop_mouse = true
 size_flags/horizontal = 2
@@ -505,82 +668,135 @@ margin/bottom = 52.0
 expand = true
 stretch_mode = 6
 
-[node name="textpanel" type="Panel" parent="."]
+[node name="utilitypanel" type="PopupPanel" parent="playergrouppanel/VBoxContainer/Panel"]
 
-anchor/right = 3
-anchor/bottom = 1
+visibility/visible = false
+rect/min_size = Vector2( 230, 68 )
 focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
-margin/left = 300.0
-margin/top = 4.0
-margin/right = -208.5
-margin/bottom = -1.0
+margin/left = 0.0
+margin/top = -65.0
+margin/right = 238.0
+margin/bottom = 3.0
+custom_styles/panel = SubResource( 10 )
+popup/exclusive = false
 
-[node name="buttonpanel" type="Panel" parent="."]
-
-visibility/opacity = 0.7
-anchor/bottom = 1
-focus/ignore_mouse = false
-focus/stop_mouse = true
-size_flags/horizontal = 2
-size_flags/vertical = 2
-margin/left = 2.0
-margin/top = 4.0
-margin/right = 305.0
-margin/bottom = -3.0
-custom_styles/panel = SubResource( 4 )
-
-[node name="outsidetextbox" type="RichTextLabel" parent="."]
-
-anchor/right = 3
-anchor/bottom = 1
-focus/ignore_mouse = false
-focus/stop_mouse = true
-size_flags/horizontal = 2
-size_flags/vertical = 2
-margin/left = 314.0
-margin/top = 18.0
-margin/right = -193.5
-margin/bottom = 11.0
-custom_fonts/normal_font = ExtResource( 6 )
-bbcode/enabled = true
-bbcode/bbcode = ""
-visible_characters = -1
-
-[node name="outsidebuttoncontainer" type="VBoxContainer" parent="."]
+[node name="HBoxContainer" type="HBoxContainer" parent="playergrouppanel/VBoxContainer/Panel/utilitypanel"]
 
 focus/ignore_mouse = false
 focus/stop_mouse = false
 size_flags/horizontal = 2
 size_flags/vertical = 2
-theme/theme = SubResource( 9 )
-margin/left = 16.0
-margin/top = 13.0
-margin/right = 288.0
-margin/bottom = 441.0
+margin/left = 11.0
+margin/top = 9.0
+margin/right = 281.0
+margin/bottom = 59.0
 alignment = 0
 
-[node name="buttontemplate" type="Button" parent="outsidebuttoncontainer"]
+[node name="Button" type="TextureButton" parent="playergrouppanel/VBoxContainer/Panel/utilitypanel/HBoxContainer"]
 
 visibility/visible = false
+rect/min_size = Vector2( 50, 50 )
 focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
 margin/left = 0.0
 margin/top = 0.0
-margin/right = 272.0
-margin/bottom = 32.0
-custom_fonts/font = ExtResource( 6 )
-custom_colors/font_color_disabled = Color( 1, 1, 1, 1 )
+margin/right = 50.0
+margin/bottom = 50.0
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
-text = "Button 1"
+params/resize_mode = 0
+params/stretch_mode = 0
+
+[node name="icon" type="TextureFrame" parent="playergrouppanel/VBoxContainer/Panel/utilitypanel/HBoxContainer/Button"]
+
+anchor/right = 1
+anchor/bottom = 1
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 9.0
+margin/bottom = 12.0
+expand = true
+stretch_mode = 0
+
+[node name="amount" type="Label" parent="playergrouppanel/VBoxContainer/Panel/utilitypanel/HBoxContainer/Button"]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 23.0
+margin/top = 29.0
+margin/right = 46.0
+margin/bottom = 45.0
+align = 2
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="button" type="TextureButton" parent="playergrouppanel/VBoxContainer/Panel"]
+
+anchor/right = 1
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 6.0
+margin/top = 5.0
+margin/right = 6.0
+margin/bottom = 4.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+params/resize_mode = 0
+params/stretch_mode = 0
+
+[node name="details" type="Button" parent="playergrouppanel"]
+
+anchor/left = 1
+anchor/top = 1
+anchor/right = 1
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 90.0
+margin/top = 68.0
+margin/right = 11.0
+margin/bottom = 13.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Control"
 flat = false
-align = 0
+
+[node name="Label" type="Label" parent="playergrouppanel/details"]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 58.0
+margin/top = 33.0
+margin/right = 78.0
+margin/bottom = 49.0
+custom_colors/font_color = Color( 0.761719, 0.660181, 0.261841, 1 )
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+text = "B"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
 
 [node name="slavebuypanel" type="Control" parent="."]
 
@@ -644,7 +860,7 @@ focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
-theme/theme = ExtResource( 12 )
+theme/theme = ExtResource( 13 )
 margin/left = 0.0
 margin/top = 0.0
 margin/right = 265.0
@@ -800,14 +1016,14 @@ percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
 
-[node name="statspanel" parent="slavebuypanel" instance=ExtResource( 13 )]
+[node name="statspanel" parent="slavebuypanel" instance=ExtResource( 14 )]
 
 editor/display_folded = true
 margin/left = -785.5
 margin/top = 53.0
 margin/right = -1076.0
 margin/bottom = -447.0
-custom_styles/panel = SubResource( 10 )
+custom_styles/panel = SubResource( 11 )
 
 [node name="Label" parent="slavebuypanel/statspanel"]
 
@@ -878,8 +1094,447 @@ margin/bottom = 361.0
 
 visibility/visible = false
 
+[node name="playergroupdetails" type="PopupPanel" parent="."]
+
+visibility/visible = false
+anchor/left = 3
+anchor/top = 3
+anchor/right = 3
+anchor/bottom = 3
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 513.5
+margin/top = 230.0
+margin/right = -510.5
+margin/bottom = -252.0
+custom_styles/panel = SubResource( 12 )
+popup/exclusive = false
+
+[node name="Panel" type="Panel" parent="playergroupdetails"]
+
+anchor/left = 1
+anchor/right = 1
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 518.0
+margin/top = 22.0
+margin/right = 17.0
+margin/bottom = 78.0
+custom_styles/panel = SubResource( 13 )
+
+[node name="Panel1" type="Panel" parent="playergroupdetails"]
+
+anchor/top = 1
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 21.0
+margin/top = 237.0
+margin/right = 490.0
+margin/bottom = 68.0
+custom_styles/panel = SubResource( 13 )
+
+[node name="HSeparator" type="HSeparator" parent="playergroupdetails/Panel1"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 67.0
+margin/right = 464.0
+margin/bottom = 107.0
+
+[node name="slavecontainer" type="ScrollContainer" parent="playergroupdetails"]
+
+editor/display_folded = true
+anchor/right = 1
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 43.0
+margin/top = 58.0
+margin/right = 597.0
+margin/bottom = 250.0
+scroll/horizontal = false
+scroll/vertical = true
+
+[node name="HBoxContainer" type="VBoxContainer" parent="playergroupdetails/slavecontainer"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = false
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 0.0
+margin/bottom = 0.0
+alignment = 0
+
+[node name="Button" type="Button" parent="playergroupdetails/slavecontainer/HBoxContainer"]
+
+visibility/visible = false
+rect/min_size = Vector2( 350, 50 )
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 350.0
+margin/bottom = 50.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+flat = false
+clip_text = true
+
+[node name="itemcontainer" type="ScrollContainer" parent="playergroupdetails"]
+
+editor/display_folded = true
+anchor/left = 1
+anchor/right = 1
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 486.0
+margin/top = 45.0
+margin/right = 50.0
+margin/bottom = 298.0
+scroll/horizontal = false
+scroll/vertical = true
+
+[node name="VBoxContainer" type="GridContainer" parent="playergroupdetails/itemcontainer"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = false
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 0.0
+margin/bottom = 0.0
+columns = 8
+
+[node name="Button" type="TextureButton" parent="playergroupdetails/itemcontainer/VBoxContainer"]
+
+visibility/visible = false
+rect/min_size = Vector2( 40, 40 )
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 40.0
+margin/bottom = 40.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+textures/pressed = ExtResource( 17 )
+textures/hover = ExtResource( 17 )
+params/resize_mode = 1
+params/stretch_mode = 0
+
+[node name="icon" type="TextureFrame" parent="playergroupdetails/itemcontainer/VBoxContainer/Button"]
+
+anchor/right = 1
+anchor/bottom = 1
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 0.0
+margin/bottom = 0.0
+expand = true
+stretch_mode = 0
+
+[node name="amount" type="Label" parent="playergroupdetails/itemcontainer/VBoxContainer/Button"]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 23.0
+margin/top = 26.0
+margin/right = 38.0
+margin/bottom = 42.0
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="closegroup" type="Button" parent="playergroupdetails"]
+
+anchor/left = 3
+anchor/top = 1
+anchor/right = 3
+anchor/bottom = 1
+rect/min_size = Vector2( 70, 30 )
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 96.0
+margin/top = 64.0
+margin/right = -79.0
+margin/bottom = 22.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Close"
+flat = false
+
+[node name="itemdescript" type="RichTextLabel" parent="playergroupdetails"]
+
+anchor/left = 1
+anchor/right = 1
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 495.0
+margin/top = 213.0
+margin/right = 42.0
+margin/bottom = 107.0
+bbcode/enabled = true
+bbcode/bbcode = ""
+visible_characters = -1
+
+[node name="capturedslave" type="PopupPanel" parent="playergroupdetails"]
+
+editor/display_folded = true
+visibility/visible = false
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 225.0
+margin/top = 7.0
+margin/right = 734.0
+margin/bottom = 490.0
+custom_styles/panel = ExtResource( 18 )
+popup/exclusive = false
+
+[node name="RichTextLabel" type="RichTextLabel" parent="playergroupdetails/capturedslave"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 19.0
+margin/top = 30.0
+margin/right = 489.0
+margin/bottom = 378.0
+bbcode/enabled = true
+bbcode/bbcode = ""
+visible_characters = -1
+
+[node name="capturedclose" type="Button" parent="playergroupdetails/capturedslave"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 168.0
+margin/top = 428.0
+margin/right = 345.0
+margin/bottom = 467.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Close"
+flat = false
+
+[node name="capturedfree" type="Button" parent="playergroupdetails/capturedslave"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 191.0
+margin/top = 388.0
+margin/right = 326.0
+margin/bottom = 427.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Set Free"
+flat = false
+
+[node name="capturedmindread" type="Button" parent="playergroupdetails/capturedslave"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 351.0
+margin/top = 388.0
+margin/right = 486.0
+margin/bottom = 427.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Cast Mindread"
+flat = false
+
+[node name="capturedteleport" type="Button" parent="playergroupdetails/capturedslave"]
+
+hint/tooltip = "You need Teleportation Seal to quickly move capturee to the mansion"
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 24.0
+margin/top = 388.0
+margin/right = 159.0
+margin/bottom = 427.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Teleport"
+flat = false
+
+[node name="TextureProgress" type="ProgressBar" parent="playergroupdetails"]
+
+editor/display_folded = true
+anchor/left = 3
+anchor/top = 1
+anchor/right = 1
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = -124.0
+margin/top = 58.0
+margin/right = 26.0
+margin/bottom = 30.0
+custom_styles/fg = SubResource( 14 )
+custom_styles/bg = SubResource( 15 )
+range/min = 0.0
+range/max = 100.0
+range/step = 1.0
+range/page = 0.0
+range/value = 40.0
+range/exp_edit = false
+range/rounded = false
+percent/visible = false
+
+[node name="Label" type="Label" parent="playergroupdetails/TextureProgress"]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 86.0
+margin/top = 29.0
+margin/right = 243.0
+margin/bottom = 45.0
+align = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="Label" type="Label" parent="playergroupdetails"]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 89.0
+margin/top = 28.0
+margin/right = 361.0
+margin/bottom = 46.0
+text = "Captured Slaves"
+align = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="return" type="Button" parent="playergroupdetails"]
+
+editor/display_folded = true
+anchor/top = 1
+anchor/bottom = 1
+hint/tooltip = "Use public teleport to return your party to mansion"
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 292.0
+margin/top = 226.0
+margin/right = 470.0
+margin/bottom = 159.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Return to Mansion"
+flat = false
+
+[node name="RichTextLabel" type="RichTextLabel" parent="playergroupdetails/return"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = -255.0
+margin/top = 3.0
+margin/right = -27.0
+margin/bottom = 68.0
+bbcode/enabled = true
+bbcode/bbcode = "Use settlement's teleport to quickly return to mansion with all possessions. Price: 25 gold."
+visible_characters = -1
+
+[node name="quicksell" type="Button" parent="playergroupdetails"]
+
+editor/display_folded = true
+anchor/top = 1
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 292.0
+margin/top = 145.0
+margin/right = 470.0
+margin/bottom = 78.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Quicksell Captives"
+flat = false
+
+[node name="RichTextLabel1" type="RichTextLabel" parent="playergroupdetails/quicksell"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = -255.0
+margin/top = 2.0
+margin/right = -27.0
+margin/bottom = 67.0
+bbcode/enabled = true
+bbcode/bbcode = "Drop off captured slaves to local slaver guild for quick cash."
+visible_characters = -1
+
 [node name="slavesellpanel" type="Control" parent="."]
 
+editor/display_folded = true
 visibility/visible = false
 anchor/right = 1
 anchor/bottom = 1
@@ -926,7 +1581,7 @@ focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
-theme/theme = ExtResource( 12 )
+theme/theme = ExtResource( 13 )
 margin/left = 0.0
 margin/top = 0.0
 margin/right = 280.0
@@ -1028,6 +1683,7 @@ max_lines_visible = -1
 
 [node name="slaveguildquestpanel" type="Control" parent="."]
 
+editor/display_folded = true
 visibility/visible = false
 anchor/right = 1
 anchor/bottom = 1
@@ -1074,7 +1730,7 @@ focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
-theme/theme = ExtResource( 12 )
+theme/theme = ExtResource( 13 )
 margin/left = 0.0
 margin/top = 0.0
 margin/right = 275.0
@@ -1215,6 +1871,7 @@ max_lines_visible = -1
 
 [node name="slaveservicepanel" type="Control" parent="."]
 
+editor/display_folded = true
 visibility/visible = false
 anchor/right = 1
 anchor/bottom = 1
@@ -1274,7 +1931,7 @@ focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
-theme/theme = ExtResource( 12 )
+theme/theme = ExtResource( 13 )
 margin/left = 0.0
 margin/top = 0.0
 margin/right = 280.0
@@ -1342,7 +1999,7 @@ focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
-theme/theme = ExtResource( 12 )
+theme/theme = ExtResource( 13 )
 margin/left = 0.0
 margin/top = 0.0
 margin/right = 200.0
@@ -1517,7 +2174,7 @@ margin/left = 94.0
 margin/top = 217.5
 margin/right = -48.0
 margin/bottom = 194.5
-custom_fonts/font = SubResource( 11 )
+custom_fonts/font = SubResource( 16 )
 text = "Available spells"
 percent_visible = 1.0
 lines_skipped = 0
@@ -1561,7 +2218,7 @@ focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
-theme/theme = ExtResource( 12 )
+theme/theme = ExtResource( 13 )
 margin/left = 0.0
 margin/top = 0.0
 margin/right = 200.0
@@ -1671,7 +2328,7 @@ focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
-theme/theme = ExtResource( 16 )
+theme/theme = ExtResource( 20 )
 margin/left = 37.0
 margin/top = 63.0
 margin/right = 260.0
@@ -1815,7 +2472,7 @@ toggle_mode = true
 enabled_focus_mode = 2
 shortcut = null
 textures/pressed = ExtResource( 17 )
-textures/hover = ExtResource( 18 )
+textures/hover = ExtResource( 21 )
 params/resize_mode = 0
 params/stretch_mode = 0
 
@@ -2025,9 +2682,9 @@ flat = false
 playback/process_mode = 1
 playback/default_blend_time = 0.0
 root/root = NodePath("..")
-anims/show = SubResource( 12 )
-anims/spritemovefairy = SubResource( 13 )
-anims/spriteshow = SubResource( 14 )
+anims/show = SubResource( 17 )
+anims/spritemovefairy = SubResource( 18 )
+anims/spriteshow = SubResource( 19 )
 playback/active = true
 playback/speed = 1.0
 blend_times = [  ]
@@ -2035,11 +2692,27 @@ autoplay = "spritemovefairy"
 
 [connection signal="pressed" from="questlog" to="." method="_on_questlog_pressed"]
 
+[connection signal="pressed" from="playergrouppanel/details" to="." method="_on_details_pressed"]
+
 [connection signal="pressed" from="slavebuypanel/purchasebutton" to="." method="_on_purchasebutton_pressed"]
 
 [connection signal="pressed" from="slavebuypanel/mindreadbutton" to="." method="_on_mindreadbutton_pressed"]
 
 [connection signal="pressed" from="slavebuypanel/slavelistcancel" to="." method="_on_slavelistcancel_pressed"]
+
+[connection signal="pressed" from="playergroupdetails/closegroup" to="." method="_on_closegroup_pressed"]
+
+[connection signal="pressed" from="playergroupdetails/capturedslave/capturedclose" to="." method="_on_capturedclose_pressed"]
+
+[connection signal="pressed" from="playergroupdetails/capturedslave/capturedfree" to="." method="_on_capturedfree_pressed"]
+
+[connection signal="pressed" from="playergroupdetails/capturedslave/capturedmindread" to="." method="_on_capturedmindread_pressed"]
+
+[connection signal="pressed" from="playergroupdetails/capturedslave/capturedteleport" to="." method="_on_capturedteleport_pressed"]
+
+[connection signal="pressed" from="playergroupdetails/return" to="." method="_on_return_pressed"]
+
+[connection signal="pressed" from="playergroupdetails/quicksell" to="." method="_on_quicksell_pressed"]
 
 [connection signal="pressed" from="slavesellpanel/slavesellbutton" to="." method="_on_slavesellbutton_pressed"]
 

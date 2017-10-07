@@ -257,6 +257,7 @@ __meta__ = {
 
 [node name="grouppanel" type="Panel" parent="."]
 
+editor/display_folded = true
 anchor/top = 1
 anchor/right = 1
 anchor/bottom = 1
@@ -519,6 +520,7 @@ margin/bottom = 85.0
 
 [node name="enemypanel" type="Panel" parent="."]
 
+editor/display_folded = true
 anchor/right = 1
 focus/ignore_mouse = false
 focus/stop_mouse = true
@@ -755,6 +757,7 @@ flat = false
 
 [node name="abilitites" type="Button" parent="."]
 
+editor/display_folded = true
 anchor/left = 1
 anchor/top = 1
 anchor/right = 1
@@ -920,6 +923,7 @@ flat = false
 
 [node name="escapewarn" type="Panel" parent="."]
 
+editor/display_folded = true
 visibility/visible = false
 anchor/right = 1
 anchor/bottom = 1

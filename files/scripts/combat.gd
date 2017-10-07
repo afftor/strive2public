@@ -197,7 +197,6 @@ func start_battle():
 		else:
 			combatant.person = null
 		combatant.name = i.name
-		combatant.health = i.stats.health
 		combatant.healthmax = i.stats.health
 		combatant.speed = i.stats.speed
 		combatant.power = i.stats.power
@@ -213,6 +212,10 @@ func start_battle():
 		combatant.target = null
 		combatant.party = 'enemy'
 		combatant.button = null
+		if get_parent().get_node("explorationnode").deeperregion:
+			combatant.power = ceil(combatant.power * 1.25)
+			combatant.healthmax =  ceil(combatant.healthmax * 1.5)
+		combatant.health = combatant.healthmax
 		for ii in i.stats.abilities:
 			combatant.abilities.append(globals.abilities.abilitydict[ii])
 		enemygroup.append(combatant)
@@ -585,6 +588,8 @@ func actionexecute(actor, target, skill):
 				text = text + "$name's swift attack lands precisely at desirable spot. " 
 			if damage < 0:
 				damage = 0
+			if actor.energy <= 0:
+				damage = damage*0.66
 			if hit != 'miss' && hit != 'glance':
 				var power = powercompare(actor.power, target.power)
 				if power == 'overpower':
@@ -793,18 +798,23 @@ func resolution(text = ''):
 			i.state = 'defeated'
 			text += '\n[color=yellow]'+ i.name + ' has been defeated. [/color]'
 			if i.person != null:
-				if counter > 1 && i.effects.has('shackleeffect'):
+				var escapechance = (globals.originsarray.find(i.person.origin)+1)*15
+				if rand_range(0,100) < escapechance:
+					if counter > 1 && i.effects.has('shackleeffect'):
+						i.state = 'captured'
+						text += '\n[color=yellow]'+ i.name + ' has been defeated and subdued unable to escape. [/color]'
+					elif trapper == true && rand_range(0,100) <= 33:
+						i.state = 'captured'
+						text += '\n[color=yellow]'+ i.name + ' has attempted to escape, but walked right into ' + trappername + "'s trap and was quickly subdued by your group. [/color]"
+					elif counter == 1:
+						i.state = 'captured'
+						text += '\n[color=yellow]'+ i.name + ' has been defeated and surrounded by your group. [/color]'
+					elif counter > 1 && !i.effects.has('shackleeffect'):
+						capturesequence(i)
+						return
+				else:
 					i.state = 'captured'
-					text += '\n[color=yellow]'+ i.name + ' has been defeated and subdued unable to escape. [/color]'
-				elif trapper == true && rand_range(0,100) <= 33:
-					i.state = 'captured'
-					text += '\n[color=yellow]'+ i.name + ' has attempted to escape, but walked right into ' + trappername + "'s trap and was quickly subdued by your group. [/color]"
-				elif counter == 1:
-					i.state = 'captured'
-					text += '\n[color=yellow]'+ i.name + ' has been defeated and surrounded by your group. [/color]'
-				elif counter > 1 && !i.effects.has('shackleeffect'):
-					capturesequence(i)
-					return
+					text +=  '\n[color=yellow]'+ i.name + ' has been defeated and knocked out by your group. [/color]'
 	for i in playergroup:
 		if i.health <= 0:
 			text += '\n[color=red]'+ i.name + ' has fallen. [/color]'
@@ -1005,6 +1015,7 @@ func _on_use_pressed():
 
 
 func _on_autowin_pressed():
+	selectmode = null
 	set_process(false)
 	victory()
 

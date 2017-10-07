@@ -147,5 +147,5 @@ func purchasconfirm():
 	globals.state.mansionupgrades[upgrade.code] += 1
 	categoryselect(selectedcategory)
 	upgradeselected(upgrade)
-	#get_node("upgradepanel").set_hidden(true)
-	#show()
+	get_node("upgradepoints").set_text("Free upgrade points:"+str(globals.resources.upgradepoints))
+

@@ -5,11 +5,14 @@ var progress = 0.0
 var enemygroup
 var defeated = {}
 var currentzone
+var lastzone
 var awareness = 0
 var ambush = false
 var scout
 var launchonwin = null
 var combatdata = load("res://files/scripts/combatdata.gd").new()
+var deeperregion = false
+
 
 var enemygrouppools = combatdata.enemygrouppools
 var capturespool = combatdata.capturespool
@@ -17,6 +20,34 @@ var enemypool = combatdata.enemypool
 
 
 var zones = {
+wimbornoutskirts = {
+background = 'meadows',
+reqs = "true",
+combat = true,
+code = 'wimbornoutskirts',
+name = 'Wimborn Outskirts',
+description = "The rural road leads across green plains and various settlements. Bright scenery puts you at peace. ",
+enemies = [{value = 'slaverseasy', weight = 1},{value = 'peasant', weight = 2},{value = 'banditseasy', weight = 2},{value = 'thugseasy',weight = 3}],
+encounters = [],
+length = 5,
+exits = ['wimborn','forest', 'prairie'],
+tags = ['wimborn'],
+races = [{value = 'Taurus', weight = 1},{value = 'Elf', weight = 2},{value = 'Human', weight = 12}],
+},
+prairie = {
+background = 'highlands',
+reqs = "true",
+combat = true,
+code = 'prairie',
+name = 'Prairies',
+description = "Long trading route goes through the wide prairies. Rarely you can spot mixed settlements and lone estates. ",
+enemies = [{value = 'banditsmedium', weight = 2},{value = 'slaverseasy', weight = 1},{value = 'peasant', weight = 2},{value = 'banditseasy', weight = 4},{value = 'thugseasy',weight = 3},{value = 'wolveseasy', weight = 6}],
+encounters = [],
+length = 5,
+exits = ['wimbornoutskirts','gornoutskirts','sea'],
+tags = ['wimborn'],
+races = [{value = 'Elf', weight = 2},{value = 'Human', weight = 12}]
+},
 
 forest = {
 background = 'crossroads',
@@ -28,7 +59,7 @@ description = "You stand deep within this ancient forest. Giant trees tower abov
 enemies = [{value = 'thugseasy', weight = 1},{value = 'banditseasy', weight = 1}, {value = 'peasant', weight = 2}, {value ='solobear', weight = 1.5}, {value = 'wolveseasy', weight = 3}],
 encounters = [['chloeforest','globals.state.sidequests.chloe in [0,1]',10]],
 length = 5,
-exits = ['shaliq', 'wimbornoutskirts'],
+exits = ['shaliq', 'wimbornoutskirts', 'elvenforest'],
 tags = ['wimborn'],
 races = [{value = 'Elf', weight = 2}, {value = 'Beastkin Wolf', weight = 1},{value = 'Halfkin Bunny',weight = 1},{value = 'Beastkin Bunny', weight = 1},{value = 'Halfkin Wolf', weight = 1},{value = 'Human', weight = 10}]
 },
@@ -43,7 +74,7 @@ description = "This portion of the forest is located dangerously close to eleven
 enemies = [{value = 'fairy', weight = 1},{value = 'thugseasy', weight = 3},{value = 'solobear', weight = 3}, {value = 'peasantgroup', weight = 4}, {value = 'peasant', weight = 3},{value = 'elfguards',weight = 3},{value = 'banditseasy',weight = 3},{value = 'plantseasy', weight = 3},{value = 'wolveseasy', weight = 5}],
 encounters = [],
 length = 5,
-exits = ['wimbornoutskirts','amberguard'],
+exits = ['amberguard','forest'],
 tags = ['amberguard'],
 races = [{value = 'Dark Elf', weight = 3},{value = 'Drow', weight = 1},{value = 'Elf', weight = 10}]
 },
@@ -146,7 +177,7 @@ description = "This portion of the forest is deeply shadowed, and strange sounds
 enemies = [{value = 'dryad',weight = 2}, {value = 'solobear', weight = 1}, {value = 'fairy', weight = 2},{value = 'wolveshard', weight = 4},{value = 'plantseasy',weight = 5}, {value = 'wolveseasy', weight = 5}],
 encounters = [['chloegrove','globals.state.sidequests.chloe == 6',25],['snailevent','globals.state.mansionupgrades.farmhatchery >= 1 && globals.state.snails < 10',10]],
 length = 7,
-exits = ['wimbornoutskirts'],
+exits = ['forest','marsh'],
 tags = ['wimborn'],
 races = [{value = 'Fairy', weight = 3},{value = "Dryad", weight = 2}]
 },
@@ -161,7 +192,7 @@ description = "Dank bog lies at the border of the forest and swamps beyond. Noxi
 enemies = [{value = 'banditcamp',weight = 1},{value = 'monstergirl', weight = 1}, {value = 'oozesgroup', weight = 2}, {value = 'solospider', weight = 5}, {value = 'solobear', weight = 2}],
 encounters = [],
 length = 6,
-exits = ['frostfordoutskirts'],
+exits = ['frostfordoutskirts','grove'],
 tags = ['frostford'],
 races = [{value = 'Arachna', weight = 1},{value = 'Lamia', weight = 2},{value = 'Slime', weight = 2}, {value = 'Demon', weight = 5}]
 },
@@ -224,34 +255,7 @@ exits = ['umbra'],
 tags = [],
 },
 
-wimbornoutskirts = {
-background = 'meadows',
-reqs = "true",
-combat = false,
-code = 'wimbornoutskirts',
-name = 'Wimborn Outskirts',
-description = "You walk out of Wimborn and get far away from its walls until road brings you to the intersection. From here you may choose what area you would like to scout. ",
-enemies = [],
-encounters = [],
-length = 0,
-exits = ['wimbornoutskirts'],
-tags = [],
-},
 
-wimbornoutskirtsexplore = {
-background = 'meadows',
-reqs = "true",
-combat = true,
-code = 'wimbornoutskirtsexplore',
-name = 'Wimborn Outskirts',
-description = "The town's outskirts look spacy and green. ",
-enemies = [{value = 'banditsmedium', weight = 2},{value = 'slaverseasy', weight = 1},{value = 'peasant', weight = 2},{value = 'banditseasy', weight = 4},{value = 'thugseasy',weight = 3},{value = 'wolveseasy', weight = 6}],
-encounters = [],
-length = 5,
-exits = ['wimbornoutskirts'],
-tags = ['wimborn'],
-races = [{value = 'Beastkin Cat', weight = 1}, {value = 'Halfkin Cat', weight = 1},{value = 'Beastkin Tanuki', weight = 0.5}, {value = 'Halfkin Tanuki', weight = 0.5},{value = 'Elf', weight = 2},{value = 'Taurus', weight = 1},{value = 'Human', weight = 15}]
-},
 wimborn = {
 background = 'wimborn',
 reqs = "true",
@@ -296,56 +300,30 @@ tags = [],
 gornoutskirts = {
 background = 'highlands',
 reqs = "true",
-combat = false,
-code = 'gornoutskirts',
-name = 'Gorn Outskirts',
-description = "You walk out of Gorn and get far away from its walls until road brings you to the intersection. These arid areas lead to moutains and cave systems. You can feel sun getting hotter over your head.",
-enemies = [],
-encounters = [],
-length = 0,
-exits = ['gornoutskirts'],
-tags = [],
-},
-
-gornoutskirtsexplore = {
-background = 'highlands',
-reqs = "true",
 combat = true,
-code = 'gornoutskirtsexplore',
+code = 'gornoutskirts',
 name = 'Gorn Outskirts',
 description = "The town's outskirts look bright and green. ",
 enemies = [{value = 'slaverseasy', weight = 1},{value = 'peasant', weight = 1},{value = 'banditseasy', weight = 3},{value = 'thugseasy', weight = 3},{value = 'wolveseasy', weight = 5}],
 encounters = [],
 length = 5,
-exits = ['gornoutskirts'],
+exits = ['gorn','gornoutskirts'],
 tags = ['gorn'],
-races = [{value = 'Centaur', weight = 1},{value = 'Dark Elf', weight = 2},{value = 'Goblin', weight = 4},{value = 'Orc', weight = 12}]
+races = [{value = 'Centaur', weight = 1},{value = 'Goblin', weight = 4},{value = 'Orc', weight = 12}]
 },
+
 
 frostfordoutskirts = {
 background = 'borealforest',
 reqs = "true",
-combat = false,
+combat = true,
 code = 'frostfordoutskirts',
 name = 'Frostford Outskirts',
-description = "Main road quickly branches off at thick boreal forest. Even though Frostford is considerably dense in population, its periphery is far less inhabitable due to harsh climat. ",
-enemies = [],
-encounters = [],
-length = 0,
-exits = ['frostfordoutskirts']
-},
-
-frostfordoutskirtsexplore = {
-background = 'borealforest',
-reqs = "true",
-combat = true,
-code = 'frostfordoutskirtsexplore',
-name = 'Frostford Outskirts',
-description = "You make your way through semi-utilized forest paths paying attention to the surroundings. ",
+description = "Main road quickly branches off at thick boreal forest. Even though Frostford is considerably dense in population, its periphery is far less inhabitable due to harsh climat. You make your way through semi-utilized forest paths paying attention to the surroundings. ",
 enemies = [{value = 'banditsmedium', weight = 2},{value = 'travelersgroup', weight = 1.5},{value = 'peasant', weight = 2},{value = 'thugseasy', weight = 2},{value = 'solobear', weight = 4}],
 encounters = [],
 length = 5,
-exits = ['frostfordoutskirts','frostfordclearing'],
+exits = ['frostford','marsh','frostfordclearing'],
 tags = ['frostford'],
 races = [{value = 'Halfkin Fox', weight = 1},{value = 'Beastkin Fox', weight = 1},{value = 'Halfkin Cat', weight = 2},{value = 'Beastkin Cat', weight = 2},{value = 'Halfkin Wolf', weight = 6},{value = 'Beastkin Wolf', weight = 6},{value = 'Human', weight = 5}]
 },
@@ -392,6 +370,46 @@ tags = [],
 races = [],
 },
 
+#wimbornoutskirts = {
+#background = 'meadows',
+#reqs = "true",
+#combat = false,
+#code = 'wimbornoutskirts',
+#name = 'Wimborn Outskirts',
+#description = "From here you may choose what area you would like to scout. ",
+#enemies = [],
+#encounters = [],
+#length = 0,
+#exits = ['wimbornoutskirts'],
+#tags = [],
+#},
+
+#gornoutskirts = {
+#background = 'highlands',
+#reqs = "true",
+#combat = false,
+#code = 'gornoutskirts',
+#name = 'Gorn Outskirts',
+#description = "You walk out of Gorn and get far away from its walls until road brings you to the intersection. These arid areas lead to moutains and cave systems. You can feel sun getting hotter over your head.",
+#enemies = [],
+#encounters = [],
+#length = 0,
+#exits = ['gornoutskirts'],
+#tags = [],
+#},
+
+#frostfordoutskirts = {
+#background = 'borealforest',
+#reqs = "true",
+#combat = false,
+#code = 'frostfordoutskirts',
+#name = 'Frostford Outskirts',
+#description = "Main road quickly branches off at thick boreal forest. Even though Frostford is considerably dense in population, its periphery is far less inhabitable due to harsh climat. ",
+#enemies = [],
+#encounters = [],
+#length = 0,
+#exits = ['frostfordoutskirts']
+#},
 }
 
 var buttoncontainer
@@ -407,6 +425,11 @@ func event(eventname):
 	globals.events.call(eventname)
 
 func zoneenter(zone):
+	var text = ''
+	if lastzone == null:
+		lastzone = zones[zone].code
+	else:
+		lastzone = currentzone.code
 	zone = self.zones[zone]
 	main.background_set(zone.background)
 	if OS.get_name() != "HTML5" && globals.rules.fadinganimation == true:
@@ -425,11 +448,15 @@ func zoneenter(zone):
 		scout = globals.player
 	main.checkplayergroup()
 	outside.playergrouppanel()
-	outside.get_node('exploreprogress/locationname').set_text(zone.name)
+	text = zone.name
+	if deeperregion:
+		text += ' [Deep Area]'
+	outside.get_node('exploreprogress/locationname').set_text(text)
 	globals.get_tree().get_current_scene().get_node("outside/exploreprogress").set_val((progress/max(zone.length,1))*100)
 	currentzone = zone
 	outside.clearbuttons()
-	outside.maintext.set_bbcode('[center]'+ zone.name + '[/center]\n\n' + zone.description)
+	text = '[center]'+ zone.name + '[/center]' + globals.fastif(deeperregion == true, ' [Deep Area]', '')
+	outside.maintext.set_bbcode(text+ '\n\n'+ zone.description)
 	if zone.combat == false:
 		call(zone.exits[0])
 		return
@@ -442,7 +469,12 @@ func zoneenter(zone):
 			if globals.evaluate(temp.reqs) == true:
 				array.append({name = 'Move to ' + temp.name, function = 'zoneenter', args = temp.code})
 		progress = 0
-		array.insert(0,{name = 'Explore this area again', function = 'zoneenter', args = currentzone.code})
+		if deeperregion == false:
+			array.insert(0,{name = 'Move deeper into the region', function = 'deepzone', args = currentzone.code})
+			array.insert(0,{name = 'Explore this area again', function = 'zoneenter', args = currentzone.code})
+		else:
+			array.insert(0,{name = 'Return to the central region', function = 'zoneenter', args = currentzone.code})
+			array.insert(0,{name = 'Stay in the deeper region', function = 'deepzone', args = currentzone.code})
 		outside.buildbuttons(array, self)
 	else:
 		array.append({name = "Proceed through area", function = 'enemyencounter'})
@@ -469,62 +501,48 @@ func zoneenter(zone):
 	if zone.code == 'frostfordoutskirtsexplore' && globals.state.sidequests.zoe == 1 && progress >= 3:
 		globals.state.sidequests.zoe = 2
 		main.dialogue(true, self, globals.questtext.MainQuestFrostfordBeforeForestZoe, [], null)
-	var hasinjuries = false
-	for i in globals.state.playergroup:
-		var slave = globals.state.findslave(i)
-		if slave.health < slave.stats.health_max:
-			hasinjuries = true
-			continue
-	if globals.spelldict.heal.learned == true && (globals.player.health < globals.player.stats.health_max || hasinjuries == true) :
-		var tempdict = {name = "Use Heal to restore everyone's health", function = 'healeveryone', args = null}
-		if globals.resources.mana < 10:
-			tempdict.disabled = true
-			tempdict.tooltip = 'not enough mana'
-		array.append(tempdict)
-	if globals.spelldict.invigorate.learned == true && globals.state.playergroup.size() >= 1:
-		var tempdict = {name = "Cast Invigorate", function = 'castinvig', args = null}
-		if globals.resources.mana < 5:
-			tempdict.disabled = true
-			tempdict.tooltip = 'not enough mana'
-		array.append(tempdict)
-	if zone.tags.find('noreturn') < 0 || progress == 0:
-		array.append({name = "Return to Mansion", function = "mansionreturn"})
+	if progress == 0 && lastzone != zone.code:
+		array.append({name = "Return to " + zones[lastzone].name, function = "zoneenter", args = lastzone})
 	outside.buildbuttons(array, self)
+
+func deepzone(currentzonecode):
+	deeperregion = true
+	zoneenter(currentzonecode)
 
 func frostfordclearing():
 	event('frostforddryad')
 
-func healeveryone(args = null):
-	var slave
-	var manaused = 0
-	if globals.player.health < globals.player.stats.health_max:
-		globals.player.stats.health_cur = globals.player.stats.health_max
-		manaused += 10
-	for i in globals.state.playergroup:
-		slave = globals.state.findslave(i)
-		if slave.stats.health_cur < slave.stats.health_max:
-			slave.stats.health_cur = slave.stats.health_max
-			manaused += 5
-	manaused = min(manaused, globals.resources.mana)
-	globals.resources.mana -= manaused
-	if manaused > 0:
-		main.popup("You've patched up everyone by using " + str(manaused) +  " mana. ")
-	else:
-		main.popup("Nobody has injuries in your party. ")
-	outside.playergrouppanel()
 
-func castinvig(args = null):
-	main.selectslavelist(false, 'castinvigtarget', self, 'true', false, true)
-
-func castinvigtarget(slave):
-	get_tree().get_current_scene().get_node('spellnode').slave = slave
-	get_tree().get_current_scene().get_node('spellnode').invigorateeffect()
-	zoneenter(currentzone.code)
+#func healeveryone(args = null):
+#	var slave
+#	var manaused = 0
+#	if globals.player.health < globals.player.stats.health_max:
+#		globals.player.stats.health_cur = globals.player.stats.health_max
+#		manaused += 10
+#	for i in globals.state.playergroup:
+#		slave = globals.state.findslave(i)
+#		if slave.stats.health_cur < slave.stats.health_max:
+#			slave.stats.health_cur = slave.stats.health_max
+#			manaused += 5
+#	manaused = min(manaused, globals.resources.mana)
+#	globals.resources.mana -= manaused
+#	if manaused > 0:
+#		main.popup("You've patched up everyone by using " + str(manaused) +  " mana. ")
+#	else:
+#		main.popup("Nobody has injuries in your party. ")
+#	outside.playergrouppanel()
+#
+#func castinvig(args = null):
+#	main.selectslavelist(false, 'castinvigtarget', self, 'true', false, true)
+#
+#func castinvigtarget(slave):
+#	get_tree().get_current_scene().get_node('spellnode').slave = slave
+#	get_tree().get_current_scene().get_node('spellnode').invigorateeffect()
+#	zoneenter(currentzone.code)
 
 func areaskip():
 	progress = currentzone.length
 	zoneenter(currentzone.code)
-	
 
 func enemyencounter():
 	var enc
@@ -533,6 +551,7 @@ func enemyencounter():
 	var scoutawareness = -1
 	var patrol = 'none'
 	var text = ''
+	var enemyawareness
 	enemygroup = {}
 	outside.clearbuttons()
 	if globals.state.playergroup.size() > 0:
@@ -601,6 +620,8 @@ func enemyencounter():
 							break
 				age = globals.weightedrandom(i.captureagepool)
 				origins = globals.weightedrandom(i.captureoriginspool)
+				if deeperregion == true && globals.originsarray.find(origins) < 4 && rand_range(0,1) > 0.3:
+					origins = globals.originsarray[globals.originsarray.find(origins)+1]
 				var slavetemp = globals.slavegen.newslave(race, age, sex, origins)
 				enemygroup.units[counter].capture = slavetemp
 			counter += 1
@@ -637,8 +658,13 @@ func enemyencounter():
 				rand = rand_range(0,100)
 				age = globals.weightedrandom(slave.agepool)
 				origins = globals.weightedrandom(slave.originspool)
+				if deeperregion == true && globals.originsarray.find(origins) < 4 && rand_range(0,1) > 0.3:
+					origins = globals.originsarray[globals.originsarray.find(origins)+1]
 				slave = globals.slavegen.newslave(race, age, sex, origins)
 				enemygroup.captured.append(slave)
+	enemyawareness = enemygroup.awareness
+	if deeperregion == true:
+		enemyawareness *= 1.25
 	if patrol != 'none':
 		text = encounterdictionary(enemygroup.description) + "Your bad reputation around here will certainly lead to a difficult fight..."
 		encounterbuttons(patrol)
@@ -668,6 +694,8 @@ func buildenemies(enemyname = null):
 	enemygroup.units = []
 	for i in tempunits:
 		var count = round(rand_range(i[1], i[2]))
+		if deeperregion:
+			count = round(count * rand_range(1.2,1.6))
 		while count >= 1:
 			enemygroup.units.append(str2var(var2str(enemypool[i[0]])))
 			count -= 1
@@ -681,8 +709,8 @@ func encounterbuttons(state = null):
 			array.append({name = "Leave", function = "enemyleave"})
 		else:
 			array.append({name = "Fight",function = "enemyfight"})
-			if currentzone.tags.find('noreturn') < 0:
-				array.append({name = "Escape", function = "mansionreturn"})
+			#if currentzone.tags.find('noreturn') < 0:
+			#	array.append({name = "Escape", function = "enemyleave"})
 	elif state in ['patrolsmall', 'patrolbig']:
 		array.append({name = "Fight",function = "enemyfight"})
 		var dict = {}
@@ -820,12 +848,6 @@ func enemyleave():
 	for i in globals.state.playergroup:
 		var slave = globals.state.findslave(i)
 		slave.energy = -max(5-floor((slave.sagi+slave.send)/2),1)
-		if slave.energy <= 10:
-			globals.state.playergroup.erase(slave.id)
-			text += slave.name + " is too exhausted to continue and returns back to mansion. "
-		elif slave.stress >= 80:
-			globals.state.playergroup.erase(slave.id)
-			text += slave.name + " is too stressed to continue and returns back to mansion. "
 	zoneenter(currentzone.code)
 	if text != '':
 		outside.maintext.set_bbcode(outside.maintext.get_bbcode()+'\n[color=yellow]'+text+'[/color]')
@@ -838,6 +860,7 @@ func enemyfight():
 	main.get_node("combat").start_battle()
 
 var capturedtojail = 0
+var enemyloot = {stackables = {}, unstackables = []}
 
 func enemydefeated():
 	if launchonwin != null:
@@ -856,7 +879,7 @@ func enemydefeated():
 	var winpanel = main.get_node("explorationnode/winningpanel")
 	var goldearned = 0
 	var expearned = 0
-	var supplyearned = 0
+	enemyloot = {stackables = {}, unstackables = []}
 	for unit in enemygroup.units:
 		if unit.state == 'escaped':
 			expearned += unit.rewardexp*0.66
@@ -868,35 +891,38 @@ func enemydefeated():
 			defeated.faction.append(unit.faction)
 		for i in unit.rewardpool:
 			var chance = unit.rewardpool[i]
+			var bonus = 1
 			if ranger == true:
-				chance = chance*1.5
+				bonus += 0.5
+			if deeperregion:
+				bonus += 0.25
+			chance = chance*bonus
 			if rand_range(0,100) <= chance: 
 				if i == 'gold':
 					goldearned += round(rand_range(unit.rewardgold[0], unit.rewardgold[1]))
-				elif i == 'supply':
-					supplyearned += round(rand_range(unit.rewardsupply.low, unit.rewardsupply.high))
 				else:
 					var item = globals.itemdict[i]
-					text = text + '\nLooted ' + item.name + '.'
-					item.amount += 1
+					if item.type != 'gear':
+						if enemyloot.stackables.has(item.code):
+							enemyloot.stackables[item.code] += 1
+						else:
+							enemyloot.stackables[item.code] = 1
 		expearned += unit.rewardexp
+	if deeperregion:
+		expearned *= 1.2
 	expearned = round(expearned)
 	globals.resources.gold += goldearned
-	text += '\nYou have received a total sum of [color=yellow]' + str(round(goldearned)) +'[/color] pieces of gold and [color=aqua]' + str(expearned) + '[/color] experience points. '
-	if supplyearned > 0:
-		globals.itemdict.supply.amount += supplyearned
-		text += "\nYou have collected " + str(supplyearned) + " units of supplies from defeated enemies. \n"
+	text += '\nYou have received a total sum of [color=yellow]' + str(round(goldearned)) +'[/color] pieces of gold and [color=aqua]' + str(expearned) + '[/color] experience points. \n'
 	globals.player.xp += round(expearned/(globals.state.playergroup.size()+1))
 	for i in globals.state.playergroup:
 		var slave = globals.state.findslave(i)
 		slave.xp += round(expearned/(globals.state.playergroup.size()+1))
 		if slave.levelupreqs.has('code') && slave.levelupreqs.code == 'wincombat':
 			slave.levelup()
-			text += slave.dictionary("\n[color=green]Your decisive win inspired $name, and made $him unlock new potential. \n")
+			text += slave.dictionary("[color=green]Your decisive win inspired $name, and made $him unlock new potential. \n")
 		if slave.health > slave.stats.health_max/1.3:
 			slave.cour += rand_range(1,3)
 	
-	winpanel.get_node("defeatedmindread").set_hidden(true)
 	
 	if defeated.units.size() > 0:
 		text += 'Your group gathers defeated opponents in one place for you to decide what to do about them. \n'
@@ -922,69 +948,207 @@ func enemydefeated():
 		if defeated.names[i] == 'Captured':
 			defeated.units[i].obed += rand_range(10,20)
 			defeated.units[i].loyal += rand_range(5,15)
-		var newbutton = winpanel.get_node("ScrollContainer/VBoxContainer/Button").duplicate()
-		winpanel.get_node("ScrollContainer/VBoxContainer").add_child(newbutton)
-		newbutton.set_hidden(false)
-		newbutton.get_node("Label").set_text(defeated.names[i] + ' ' + defeated.units[i].sex+ ' ' + defeated.units[i].age + ' ' + defeated.units[i].race)
-		newbutton.connect("pressed", self, 'defeatedselected', [defeated.units[i]])
-		newbutton.get_node("choice").set_meta('slave', defeated.units[i])
-		newbutton.get_node("choice").add_to_group('winoption')
-		newbutton.get_node("choice").connect("item_selected",self, 'defeatedchoice', [defeated.units[i], newbutton.get_node("choice")])
-	checkjailbutton()
-	
+	buildcapturelist()
+	checkoptionsbutton()
+	if !enemyloot.stackables.empty() || enemyloot.unstackables.size() >= 1:
+		get_node("winningpanel/lootpanel").set_hidden(false)
+		builditemlists()
+	else:
+		get_node("winningpanel/lootpanel").set_hidden(true)
 	
 	if globals.state.sidequests.cali == 18 && defeated.names.find('Bandit') >= 0 && currentzone.code == 'forest':
 		main.popup("One of the defeated bandits in exchange for their life reveal location of their camp you've been in search for. ")
 		globals.state.sidequests.cali = 19
 
+func buildcapturelist():
+	var winpanel = main.get_node("explorationnode/winningpanel")
+	for i in get_node("winningpanel/ScrollContainer/VBoxContainer").get_children():
+		i.free() if i.get_name() != 'Button' else print()
+	for i in range(0, defeated.units.size()):
+		var newbutton = winpanel.get_node("ScrollContainer/VBoxContainer/Button").duplicate()
+		winpanel.get_node("ScrollContainer/VBoxContainer").add_child(newbutton)
+		newbutton.set_hidden(false)
+		newbutton.get_node("capture").connect("pressed",self,'captureslave', [defeated.units[i]])
+		if !globals.state.backpack.stackables.has('rope') || globals.state.backpack.stackables.rope < 1:
+			newbutton.get_node('capture').set_disabled(true)
+		newbutton.get_node("Label").set_text(defeated.names[i] + ' ' + defeated.units[i].sex+ ' ' + defeated.units[i].age + ' ' + defeated.units[i].race)
+		newbutton.connect("pressed", self, 'defeatedselected', [defeated.units[i]])
+		newbutton.get_node("choice").set_meta('slave', defeated.units[i])
+		newbutton.get_node("mindread").connect("pressed",self,'mindreadslave', [defeated.units[i]])
+		if globals.resources.mana < globals.spelldict.mindread.manacost && globals.spelldict.mindread.learned:
+			newbutton.get_node('mindread').set_disabled(true)
+		newbutton.get_node("choice").add_to_group('winoption')
+		newbutton.get_node("choice").connect("item_selected",self, 'defeatedchoice', [defeated.units[i], newbutton.get_node("choice")])
+
+func mindreadslave(slave):
+	globals.get_tree().get_current_scene().get_node("spellnode").slave = slave
+	globals.get_tree().get_current_scene().get_node("spellnode").mindreadeffect()
+	buildcapturelist()
+
+func captureslave(slave):
+	globals.state.backpack.stackables.rope -= 1
+	if globals.state.backpack.stackables.rope <= 0:
+		globals.state.backpack.stackables.erase('rope')
+	globals.state.capturedgroup.append(slave)
+	defeated.units.erase(slave)
+	buildcapturelist()
+	builditemlists()
+
+func builditemlists():
+	var newbutton
+	var tempitem
+	for i in get_node("winningpanel/lootpanel/backpack/VBoxContainer").get_children()+get_node("winningpanel/lootpanel/enemyloot/VBoxContainer").get_children():
+		if i.get_name() != "Button":
+			i.set_hidden(true)
+			i.queue_free()
+	for i in enemyloot.stackables:
+		tempitem = globals.itemdict[i]
+		newbutton = get_node("winningpanel/lootpanel/enemyloot/VBoxContainer/Button").duplicate()
+		get_node("winningpanel/lootpanel/enemyloot/VBoxContainer").add_child(newbutton)
+		newbutton.set_hidden(false)
+		newbutton.get_node("amount").set_text(str(enemyloot.stackables[i]))
+		if tempitem.icon != null:
+			newbutton.get_node("image").set_texture(tempitem.icon)
+		newbutton.connect("pressed",self,'moveitemtobackpack',[newbutton])
+		newbutton.set_meta("item", tempitem)
+		newbutton.connect("mouse_enter", self, 'itemtooltip', [tempitem])
+		newbutton.connect("mouse_exit", self, 'itemtooltiphide')
+	
+	for i in globals.state.backpack.stackables:
+		tempitem = globals.itemdict[i]
+		newbutton = get_node("winningpanel/lootpanel/backpack/VBoxContainer/Button").duplicate()
+		get_node("winningpanel/lootpanel/backpack/VBoxContainer").add_child(newbutton)
+		newbutton.set_hidden(false)
+		newbutton.get_node("amount").set_text(str(globals.state.backpack.stackables[i]))
+		if tempitem.icon != null:
+			newbutton.get_node("image").set_texture(tempitem.icon)
+		newbutton.connect("pressed",self,'moveitemtoenemy',[newbutton])
+		newbutton.set_meta("item", tempitem)
+		newbutton.connect("mouse_enter", self, 'itemtooltip', [tempitem])
+		newbutton.connect("mouse_exit", self, 'itemtooltiphide')
+	for i in globals.state.backpack.unstackables:
+		newbutton = get_node("winningpanel/lootpanel/backpack/VBoxContainer/Button").duplicate()
+		get_node("winningpanel/lootpanel/backpack/VBoxContainer").add_child(newbutton)
+		newbutton.set_hidden(false)
+		newbutton.get_node("amount").set_hidden(true)
+		if i.icon != null:
+			newbutton.get_node("image").set_texture(load(i.icon))
+		newbutton.connect("pressed",self,'moveitemtoenemy',[newbutton])
+		newbutton.set_meta("item", i)
+		newbutton.connect("mouse_enter", self, 'itemtooltip', [i])
+		newbutton.connect("mouse_exit", self, 'itemtooltiphide')
+	calculateweight()
+
+func calculateweight():
+	var slave
+	var tempitem
+	var currentweight = 0
+	var maxweight = 5 + globals.player.sstr*3
+	for i in globals.state.playergroup:
+		slave = globals.state.findslave(i)
+		maxweight += slave.sstr*3 + 3
+	for i in globals.state.backpack.stackables:
+		if globals.itemdict[i].has('weight'):
+			currentweight += globals.itemdict[i].weight * globals.state.backpack.stackables[i]
+	for i in globals.state.backpack.unstackables:
+		if i.has('weight'):
+			currentweight += i.weight
+	
+	get_node("winningpanel/lootpanel/weightmeter/Label").set_text("Weight: " + str(currentweight) + '/' + str(maxweight))
+	get_node("winningpanel/lootpanel/weightmeter/").set_val((currentweight*10/max(maxweight,1)*10))
+	if currentweight > maxweight:
+		get_node("winningpanel/confirmwinning").set_tooltip("Reduce carry weight before proceeding")
+		get_node("winningpanel/confirmwinning").set_disabled(true)
+	else:
+		get_node("winningpanel/confirmwinning").set_tooltip("")
+		get_node("winningpanel/confirmwinning").set_disabled(false)
+
+func moveitemtobackpack(button):
+	var item = button.get_meta('item')
+	if item.has('owner') == false:
+		enemyloot.stackables[item.code] -= 1
+		if enemyloot.stackables[item.code] <= 0:
+			enemyloot.stackables.erase(item.code)
+		if globals.state.backpack.stackables.has(item.code):
+			globals.state.backpack.stackables[item.code] += 1
+		else:
+			globals.state.backpack.stackables[item.code] = 1
+	else:
+		globals.state.backpack.unstackables.append(item)
+		enemyloot.unstackables.erase(item.id)
+	itemtooltiphide()
+	builditemlists()
+
+func moveitemtoenemy(button):
+	var item = button.get_meta('item')
+	if item.has('owner') == false:
+		if enemyloot.stackables.has(item.code):
+			enemyloot.stackables[item.code] += 1
+		else:
+			enemyloot.stackables[item.code] = 1
+		globals.state.backpack.stackables[item.code] -= 1
+		if globals.state.backpack.stackables[item.code] <= 0:
+			globals.state.backpack.stackables.erase(item.code)
+	else:
+		globals.state.unstackables[str(item.id)] = item
+		globals.state.backpack.unstackables.erase(item)
+	itemtooltiphide()
+	builditemlists()
+
+func itemtooltip(item):
+	var text = '[center]'+item.name + '[/center]\n' +item.description 
+	if item.has('weight'):
+		text += "\n\nWeight: [color=yellow]" + str(item.weight)+"[/color]"
+	globals.showtooltip(text)
+
+func itemtooltiphide():
+	globals.hidetooltip()
 
 
 func defeatedselected(slave):
-	var winpanel = main.get_node("explorationnode/winningpanel")
-	winpanel.get_node("defeateddescript").set_bbcode(slave.description_small(true))
-	if globals.spelldict.mindread.learned == true:
-		winpanel.get_node("defeatedmindread").set_hidden(false)
-		winpanel.get_node("defeateddescript").set_meta('slave', slave)
-		if globals.resources.mana >= globals.spelldict.mindread.manacost:
-			winpanel.get_node("defeatedmindread").set_disabled(false)
-		else:
-			winpanel.get_node("defeatedmindread").set_disabled(true)
-	else:
-		winpanel.get_node("defeatedmindread").set_hidden(true)
+	get_tree().get_current_scene().popup(slave.description_small(true))
+#	var winpanel = main.get_node("explorationnode/winningpanel")
+#	winpanel.get_node("defeateddescript").set_bbcode(slave.description_small(true))
+#	if globals.spelldict.mindread.learned == true:
+#		winpanel.get_node("defeatedmindread").set_hidden(false)
+#		winpanel.get_node("defeateddescript").set_meta('slave', slave)
+#		if globals.resources.mana >= globals.spelldict.mindread.manacost:
+#			winpanel.get_node("defeatedmindread").set_disabled(false)
+#		else:
+#			winpanel.get_node("defeatedmindread").set_disabled(true)
+#	else:
+#		winpanel.get_node("defeatedmindread").set_hidden(true)
 
 func defeatedchoice(ID, slave, node):
-	checkjailbutton()
+	checkoptionsbutton()
 	defeated.select[defeated.units.find(slave)] = ID
 
 
 
 
-func checkjailbutton():
+func checkoptionsbutton():
 	var counter = 0
 	var winpanel = main.get_node("explorationnode/winningpanel")
+	var text = ''
+	
 	for i in get_tree().get_nodes_in_group('winoption'):
-		if i.get_item_text(i.get_selected()) == 'Jail':
+		if i.get_item_text(i.get_selected()) == 'Capture':
 			counter += 1
-	winpanel.get_node("Label").set_text("Defeated and Captured | Jail cells left: " + str(globals.state.mansionupgrades.jailcapacity - (globals.count_sleepers().jail + counter)) )
-	if globals.state.mansionupgrades.jailcapacity <= globals.count_sleepers().jail + counter:
+	text = "Defeated and Captured | Free ropes left: "
+	text += str(globals.state.backpack.rope) if globals.state.backpack.has('rope') else '0'
+	winpanel.get_node("Label").set_text(text)
+	if globals.itemdict.rope.amount < counter:
 		for i in get_tree().get_nodes_in_group('winoption'):
-			i.set_item_disabled(2, true)
+			i.set_item_disabled(1, true)
 	else:
 		for i in get_tree().get_nodes_in_group('winoption'):
-			i.set_item_disabled(2, false)
-
-
-func _on_defeatedmindread_pressed():
-	var spell = globals.spelldict.mindread
-	var text = ''
-	var winpanel = main.get_node("explorationnode/winningpanel")
-	globals.get_tree().get_current_scene().get_node("spellnode").slave = winpanel.get_node("defeateddescript").get_meta('slave')
-	globals.get_tree().get_current_scene().get_node("spellnode").mindreadeffect()
-	defeatedselected(winpanel.get_node("defeateddescript").get_meta('slave'))
+			i.set_item_disabled(1, false)
 
 
 
-func _on_confirmwinning_pressed(secondary = false):
+
+
+func _on_confirmwinning_pressed(secondary = false): #0 leave, 1 capture, 2 rape, 3 kill
 	var text = ''
 	var selling = false
 	var sellyourself = false
@@ -992,84 +1156,42 @@ func _on_confirmwinning_pressed(secondary = false):
 	var orgyarray = []
 	var location
 	var reward = false
-	if currentzone.exits.find("wimbornoutskirts") >= 0:
+	if currentzone.tags.find("wimborn") >= 0:
 		location = 'wimborn'
-	elif currentzone.exits.find("frostfordoutskirts") >= 0:
+	elif currentzone.tags.find("frostford") >= 0:
 		location = 'frostford'
-	elif currentzone.exits.find("gornoutskirts") >= 0:
+	elif currentzone.tags.find("gorn") >= 0:
 		location = 'gorn'
-	elif currentzone.exits.find("amberguard") >= 0:
+	elif currentzone.tags.find("amberguard") >= 0:
 		location = 'amberguard'
-	for i in get_tree().get_nodes_in_group('winoption'):
-		if i.get_item_text(i.get_selected()) == 'Sell':
-			selling = true
-	if selling == true && secondary == false:
-		get_node("winningpanel/sellpanel").set_hidden(false)
-		get_node("winningpanel/sellpanel/selectlist").clear()
-		get_node("winningpanel/sellpanel/selectlist").add_item('Personal')
-		for i in globals.state.playergroup:
-			get_node("winningpanel/sellpanel/selectlist").add_item(globals.state.findslave(i).name)
-		return
-	else:
-		if selling == true:
-			if get_node("winningpanel/sellpanel/selectlist").get_selected() == 0:
-				sellyourself = true
+	for i in range(0, defeated.units.size()):
+		if defeated.faction[i] == 'stranger' && defeated.names[i] != "Captured":
+			globals.state.reputation[location] -= 1
+		if defeated.select[i] == 0:
+			if defeated.names[i] != 'Captured':
+				text += defeated.units[i].dictionary("You have left $race $child alone.\n")
 			else:
-				var sellslave = globals.state.findslave(globals.state.playergroup[get_node("winningpanel/sellpanel/selectlist").get_selected()-1])
-				globals.state.playergroup.remove(get_node("winningpanel/sellpanel/selectlist").get_selected()-1)
-				text += sellslave.name + ' left you to transit capturees to nearby slave market.\n'
-			for i in range(0, defeated.units.size()):
-				if defeated.select[i] == 1:
-					if defeated.faction[i] == 'stranger':
-						globals.state.reputation[location] -= 2
-					elif defeated.faction[i] == 'bandit':
-						globals.state.reputation[location] += 1
-					elif defeated.faction[i] == 'elf':
-						globals.state.reputation.amberguard -= 2
-					var rand = rand_range(5,10)
-					defeated.units[i].add_effect(globals.effectdict.captured)
-					text += defeated.names[i] + ' has been sold for ' + str(round(max(defeated.units[i].calculateprice()*0.3,rand))) + ' gold.\n'
-					globals.resources.gold += max(defeated.units[i].calculateprice()*0.3,rand)
-		for i in range(0, defeated.units.size()):
-			if defeated.faction[i] == 'stranger' && defeated.names[i] != "Captured":
+				text += defeated.units[i].dictionary("You have released $race $child and set $him free.\n")
+				globals.state.reputation[location] += rand_range(1,2)
+				if rand_range(0,100) < 25 + globals.state.reputation[location]/3 && reward == false:
+					reward = true
+					rewardslave = defeated.units[i]
+					rewardslavename = defeated.names[i]
+		elif defeated.select[i] == 1:
+			if !defeated.faction[i] in ['bandit','monster']:
+				globals.state.reputation[location] -= rand_range(0,1)
+			orgy = true
+			orgyarray.append(defeated.units[i])
+		elif defeated.select[i] == 2:
+			if !defeated.faction[i] in ['monster','bandit']:
+				globals.state.reputation[location] -= 3
+			elif defeated.faction[i] == 'bandit':
 				globals.state.reputation[location] -= 1
-			if defeated.select[i] == 0:
-				if defeated.names[i] != 'Captured':
-					text += defeated.units[i].dictionary("You have left $race $child alone.\n")
-				else:
-					text += defeated.units[i].dictionary("You have released $race $child and set $him free.\n")
-					globals.state.reputation[location] += rand_range(1,2)
-					if rand_range(0,100) < 25 + globals.state.reputation[location]/3 && reward == false:
-						reward = true
-						rewardslave = defeated.units[i]
-						rewardslavename = defeated.names[i]
-			elif defeated.select[i] == 2:
-				var slave = defeated.units[i]
-				if defeated.faction[i] == 'stranger':
-					globals.state.reputation[location] -= 1
-				elif defeated.faction[i] == 'elf':
-					globals.state.reputation.amberguard -= 1
-				text += defeated.names[i] + " has been sent to your jail. \n"
-				enemycapture(slave)
-			elif defeated.select[i] == 3:
-				if !defeated.faction[i] in ['monster','bandit']:
-					globals.state.reputation[location] -= 3
-				elif defeated.faction[i] == 'bandit':
-					globals.state.reputation[location] -= 1
-				if defeated.faction[i] == 'elf':
-					globals.state.reputation.amberguard -= 3
-				text += defeated.names[i] + " has been killed. \n"
-			elif defeated.select[i] == 4:
-				if !defeated.faction[i] in ['bandit','monster']:
-					globals.state.reputation[location] -= rand_range(0,1)
-				orgy = true
-				orgyarray.append(defeated.units[i])
-	if sellyourself == true:
-		get_node("winningpanel").set_hidden(true)
-		main._on_mansion_pressed()
-	else:
-		get_node("winningpanel").set_hidden(true)
-		enemyleave()
+			if defeated.faction[i] == 'elf':
+				globals.state.reputation.amberguard -= 3
+			text += defeated.names[i] + " has been killed. \n"
+	get_node("winningpanel").set_hidden(true)
+	enemyleave()
 	get_node("winningpanel/defeateddescript").set_bbcode('')
 	outside.playergrouppanel()
 	if orgy == true:
@@ -1118,11 +1240,11 @@ func capturereward():
 func capturedecide(stage): #1 - no reward, 2 - material, 3 - sex, 4 - join
 	var text = ""
 	var location
-	if currentzone.exits.find("wimbornoutskirts") >= 0:
+	if currentzone.tags.find("wimborn") >= 0:
 		location = 'wimborn'
-	elif currentzone.exits.find("frostfordoutskirts") >= 0:
+	elif currentzone.tags.find("frostford") >= 0:
 		location = 'frostford'
-	elif currentzone.exits.find("gornoutskirts") >= 0:
+	elif currentzone.tags.find("gorn") >= 0:
 		location = 'gorn'
 	
 	if stage == 1:
@@ -1590,7 +1712,8 @@ func shaliq():
 	array.append({name = "Visit Local Trader", function = 'shaliqshop'})
 	if globals.state.sidequests.chloe >= 1:
 		array.append({name = "Visit Chloe's house", function = "chloehouse"})
-	array.append({name = "Leave to the forest", function = 'zoneenter', args = 'forest'})
+	array.append({name = "Leave to the Forest", function = 'zoneenter', args = 'forest'})
+	array.append({name = "Leave to the Eerie Grove", function = 'zoneenter', args = 'grove'})
 	if globals.state.sidequests.chloe == 15:
 		globals.state.sidequests.chloe = 16
 		outside.maintext.set_bbcode("You lead Chloe back to her house and give her some time to rest and clean herself.")
@@ -1661,6 +1784,16 @@ func encounterdictionary(text):
 	string = string.replace('$scoutname', scout.dictionary('$name'))
 	return string
 
-
-
-
+func unloadgroup():
+	for i in globals.state.capturedgroup:
+		globals.slaves = i
+		if globals.count_sleepers().jail < globals.state.mansionupgrades.jailcapacity:
+			i.sleep = 'jail'
+			get_parent().infotext(i.dictionary("[color=green]$name has been moved to jail.[/color]"))
+		else:
+			get_parent().infotext(i.dictionary("[color=yellow]With no free cells in jail $name has been assigned to communal room.[/color]"))
+	for i in globals.state.backpack.stackables:
+		var item = globals.itemdict[i]
+		if item.type in ['ingredient']:
+			item.amount += globals.state.backpack.stackables[i]
+			globals.state.backpack.stackables.erase(i)

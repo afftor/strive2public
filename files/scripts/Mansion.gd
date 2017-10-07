@@ -124,7 +124,8 @@ func _ready():
 	if globals.gameloaded == false && globals.developmode == false:
 		_on_buttonpanel_mouse_enter()
 		get_node("buttonpanel/leavenode").set_hidden(true)
-	#OS.set_window_fullscreen(true)
+	
+	
 	
 
 
@@ -163,7 +164,7 @@ func _on_new_slave_button_pressed():
 		if !i.type in ['gear','dummy']:
 			i.amount += 10
 	globals.slaves = slave
-	slave.stats.health_curr = 20
+	slave.stats.health_cur = 5
 	globals.state.reputation.wimborn = 40
 	globals.state.sidequests.maple = 1
 	globals.player.ability.append("mindread")
@@ -173,21 +174,23 @@ func _on_new_slave_button_pressed():
 	globals.state.branding = 2
 	globals.resources.gold += 100000
 	globals.resources.food += 1000
-	globals.resources.mana += 50
+	globals.resources.mana += 5
 	globals.player.energy = 100
 	globals.player.xp += 50
 	globals.resources.upgradepoints += 100
 	for i in ['armorchain','weaponclaymore','clothpet','clothninja','clothmiko']:
 		var tmpitem = get_node("itemnode").createunstackable(i)
 		globals.state.unstackables[str(tmpitem.id)] = tmpitem
-	globals.state.sidequests.brothel = 2
+	globals.state.sidequests.brothel = 1
 	globals.state.sidequests.maple = 6
 	globals.state.rank = 3
-	globals.state.mainquest = 16
+	globals.state.mainquest = 0
 	globals.state.farm = 3
 	globals.state.mansionupgrades.mansionlab = 1
 	globals.state.mansionupgrades.mansionalchemy = 1
 	globals.state.mansionupgrades.mansionparlor = 1
+	globals.state.backpack.stackables.bandage = 1
+	globals.state.capturedgroup.append(globals.slavegen.newslave(testslaverace[rand_range(0,testslaverace.size())], testslaveage, testslavegender, testslaveorigin[rand_range(0,testslaveorigin.size())]))
 
 
 func mansion():
@@ -214,51 +217,8 @@ func portals():
 func leave():
 	get_node("outside")._on_leave_pressed()
 
-func _on_assignbutton_pressed():
-	var newbutton
-	var group
-	var text = ''
-	checkplayergroup()
-	_on_mansion_pressed()
-	if OS.get_name() != 'HTML5' && globals.rules.fadinganimation == true:
-		yield(self, 'animfinished')
-	get_node("groupselectnode").popup()
-	for i in get_node("groupselectnode/grouppanel/ScrollContainer/VBoxContainer").get_children():
-		if i != get_node("groupselectnode/grouppanel/ScrollContainer/VBoxContainer/Button"):
-			i.set_hidden(true)
-			i.queue_free()
-	for slave in globals.slaves:
-		if slave.away.at == 'hidden':
-			continue
-		newbutton = get_node("groupselectnode/grouppanel/ScrollContainer/VBoxContainer/Button").duplicate()
-		get_node("groupselectnode/grouppanel/ScrollContainer/VBoxContainer").add_child(newbutton)
-		newbutton.set_hidden(false)
-		newbutton.set_text(slave.name_long() + ' ' + slave.race)
-		if globals.state.playergroup.find(slave.id) >= 0:
-			newbutton.set_pressed(true)
-		elif globals.state.playergroup.size() >= 3 || slave.energy <= 10 || slave.stress >= 80 || slave.loyal + slave.obed < 90 || slave.sleep == 'jail' || slave.away.duration != 0:
-			newbutton.set_disabled(true)
-		newbutton.connect("pressed",self,'addtogroup',[slave, newbutton])
-	if globals.state.playergroup.size() <= 0:
-		text = 'You have no assigned followers'
-	else:
-		text = 'You will be accompanied by:\n'
-	for i in globals.state.playergroup:
-		group = globals.state.findslave(i)
-		text = text + group.name_long() + ', ' + group.race +', Level: ' +  str(group.level) + ', Health: '+str(round(group.health)) + ", Energy: "+ str(round(group.energy))+  '\n'
-	get_node("groupselectnode/grouppanel/grouplabel").set_bbcode(text)
-
-func addtogroup(slave, button):
-	if button.is_pressed == true:
-		globals.state.playergroup.append(slave.id)
-	else:
-		globals.state.playergroup.remove(globals.state.playergroup.find(slave.id))
-	_on_assignbutton_pressed()
-
-
-func _on_closegroup_pressed():
-	get_node("groupselectnode").set_hidden(true)
-	_on_mansion_pressed()
+func _on_combatgroup_pressed():
+	get_node("groupselectnode").show()
 
 
 
@@ -1012,10 +972,10 @@ func launchrandomevent():
 
 
 var alisesprite = {
-good = ['norhap','norwin',"poshap",'poswin','altwin','althap'],
-med = ["norneu",'posneu'],
-bad = ["norneu",'posneu'],
-worst = ["nornes"]
+good = ['happy1','happy2',"wink1",'wink2','side'],
+med = ["neutral",'side'],
+bad = ["neutral",'side'],
+worst = ["neutral"]
 }
 var alisetext = {
 good = ['Nice job! Income is currently on the rise!', 'Great work, $name, We are currently getting wealthier!', 'Things are doing well, $name!', 'If we keep gaining like this, could I get a vacation one day?', 'Another great day, high-five!', 'Remarkable work! Income outlook at this time is positive.', 'A well known artist once stated, "Making money is art and working is art and business is the best art."', 'They say money talks... what does yours say?', 'We are doing great!  Please keep this up $name!'],
@@ -1951,9 +1911,23 @@ func _on_mansion_pressed():
 	else:
 		get_node("buttonpanel/VBoxContainer/laboratory").set_disabled(true)
 	music_set('mansion')
-	rebuild_slave_list()
 	if globals.state.sidequests.emily == 3:
 		globals.events.emilymansion()
+	if globals.state.capturedgroup.size() > 0:
+		var array = []
+		var nojailcells = false
+		for i in globals.state.capturedgroup:
+			array.append(i)
+		for i in array:
+			globals.slaves = i
+			if globals.count_sleepers().jail < globals.state.mansionupgrades.jailcapacity:
+				i.sleep = 'jail'
+			else:
+				nojailcells = true
+			globals.state.capturedgroup.erase(i)
+		text = "You have assigned your captives to the mansion. " + globals.fastif(nojailcells, '[color=yellow]You are out of free jail cells and some captives were assigned to living room.[/color]', '')
+		popup(text)
+	rebuild_slave_list()
 
 #jail settings
 
@@ -3511,10 +3485,7 @@ func sortitems():
 			button.set_hidden(false)
 			button.get_node('number').set_hidden(true)
 			if i.icon != null:
-				if typeof(i.icon) == TYPE_STRING:
-					button.get_node("icon").set_texture(globals.itemdict[i.code].icon)
-				else:
-					button.get_node("icon").set_texture(i.icon)
+				button.get_node("icon").set_texture(load(i.icon))
 			else:
 				button.get_node("Label").set_text(i.name)
 				button.get_node("Label").set_hidden(false)
@@ -3542,10 +3513,7 @@ func itemselected(button):
 		get_node("inventory/Panel/applytoslave").set_text("Equip")
 		text = "[center]" + item.name + "[/center]\n\n" +"Type: " + item.type + "\n\n" + get_node("itemnode").itemlist[item.code].description
 		if item.icon != null:
-			if typeof(item.icon) == TYPE_STRING:
-				get_node("inventory/Panel/iconbig").set_texture(globals.itemdict[item.code].icon)
-			else:
-				get_node("inventory/Panel/iconbig").set_texture(item.icon)
+			get_node("inventory/Panel/iconbig").set_texture(load(item.icon))
 			get_node("inventory/Panel/iconbig").set_hidden(false)
 		else:
 			get_node("inventory/Panel/iconbig").set_hidden(true)
@@ -3674,8 +3642,6 @@ func _on_personal_pressed():
 	_on_selfbutton_pressed()
 
 
-func _on_combatgroup_pressed():
-	_on_assignbutton_pressed()
 
 func alisegreet():
 	get_node("tutorialnode").set_hidden(false)
@@ -3687,4 +3653,5 @@ func _on_ugrades_pressed():
 
 func _on_upgradesclose_pressed():
 	get_node("MainScreen/mansion/upgradespanel").set_hidden(true)
+
 

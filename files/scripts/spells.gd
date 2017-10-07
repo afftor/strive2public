@@ -213,7 +213,7 @@ func healeffect():
 	var text = ''
 	var spell = globals.spelldict.heal
 	globals.resources.mana -= spell.manacost
-	if slave.health < 80:
+	if slave.health < slave.stats.health_max:
 		slave.health = rand_range(20,30) + globals.player.smaf*5
 		text = "After you finish casting the spell, $name's wounds close up. "
 		if slave.loyal < 20:

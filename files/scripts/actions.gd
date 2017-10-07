@@ -355,6 +355,7 @@ func _on_spellcancelbutton_pressed():
 func _on_spellusebutton_pressed():
 	slave.metrics.spell += 1
 	var spellnode = get_tree().get_current_scene().get_node('spellnode')
+	spellnode.slave = slave
 	spellnode.call(spellselected.effect)
 	slave.attention = 0
 	get_node("selectspellpanel").set_hidden(true)

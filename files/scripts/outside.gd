@@ -9,6 +9,36 @@ onready var questtext = globals.questtext
 var location = ''
 var questgiveawayslave
 
+func _input(event):
+	if main.get_node("screenchange/AnimationPlayer").is_playing() == true && main.get_node("screenchange").is_visible():
+		return
+	var anythingvisible = false
+	for i in get_tree().get_nodes_in_group("blockoutsideinput"):
+		if i.is_visible() == true:
+			anythingvisible = true
+			break
+	if anythingvisible == true:
+		return
+	if event.type == 1:
+		var dict = {49 : 1, 50 : 2, 51 : 3, 52 : 4,53 : 5,54 : 6,55 : 7,56 : 8,}
+		if event.scancode in [KEY_1,KEY_2,KEY_3,KEY_4,KEY_5,KEY_6,KEY_7,KEY_8]:
+			var key = dict[event.scancode]
+			if event.is_action_pressed(str(key)) == true && get_node("outsidebuttoncontainer").get_children().size() >= key+1 && self.is_visible() == true && get_parent().get_node("dialogue").is_hidden() == true:
+				get_parent().get_node("chooseslavepopup").set_hidden(true)
+				get_node("outsidebuttoncontainer").get_child(key).emit_signal("pressed")
+			elif event.is_action_pressed(str(key)) == true && get_parent().get_node("dialogue").is_hidden() == false && get_parent().get_node("dialogue/popupbuttoncenter/popupbuttons").get_children().size() >= key+1:
+				if get_parent().get_node("dialogue/popupbuttoncenter/popupbuttons").get_child(key).is_disabled() == false:
+					get_parent().get_node("dialogue/popupbuttoncenter/popupbuttons").get_child(key).emit_signal("pressed")
+			elif event.is_action_pressed(str(key)) == true && get_parent().get_node("tutorialnode/response").is_hidden() == false && get_parent().get_node("tutorialnode/response/ScrollContainer/VBoxContainer").get_children().size() >= key+1:
+				if get_parent().get_node("tutorialnode/response/ScrollContainer/VBoxContainer").get_child(key).is_disabled() == false:
+					get_parent().get_node("tutorialnode/response/ScrollContainer/VBoxContainer").get_child(key).emit_signal("pressed")
+			elif event.is_action_pressed(str(key)) == true && get_parent().get_node("dailyevents").is_hidden() == false && get_parent().get_node("dailyevents/buttonpanel/ScrollContainer/VBoxContainer").get_children().size() >= key+1:
+				if get_parent().get_node("dailyevents/buttonpanel/ScrollContainer/VBoxContainer").get_child(key).is_disabled() == false:
+					get_parent().get_node("dailyevents/buttonpanel/ScrollContainer/VBoxContainer").get_child(key).emit_signal("pressed")
+		if event.is_action_pressed("B") && get_node("playergrouppanel/details").is_visible():
+			_on_details_pressed()
+
+
 func clearbuttons():
 	for i in buttoncontainer.get_children():
 		if i != button:
@@ -34,33 +64,22 @@ func buildbuttons(array, target = self):
 		counter += 1
 
 func _on_leave_pressed():
+	get_parent().get_node("explorationnode").currentzone = get_parent().get_node("explorationnode").zones[globals.state.location]
 	if globals.state.location == 'wimborn':
-		town()
-	else:
 		gooutside()
 		get_parent().get_node("explorationnode").zoneenter(globals.state.location)
 
 func playergrouppanel():
 	var charpanel
-	if main.get_node("Navigation").is_visible() == true:
-		main.get_node("Navigation").set_hidden(false)
+	var array = []
 	for i in get_node("playergrouppanel/VBoxContainer").get_children():
 		if i != get_node("playergrouppanel/VBoxContainer/Panel"):
 			i.set_hidden(true)
 			i.queue_free()
-	charpanel = get_node("playergrouppanel/VBoxContainer/Panel").duplicate()
-	get_node("playergrouppanel/VBoxContainer").add_child(charpanel)
-	charpanel.set_hidden(false)
-	if globals.player.imageportait != null:
-		if File.new().file_exists(globals.player.imageportait) == true:
-			charpanel.get_node("portait").set_texture(load(globals.player.imageportait))
-		else:
-			globals.player.imageportait = null
-	charpanel.get_node("name").set_text(globals.player.name_short())
-	charpanel.get_node("health").set_text('HP:' +str(round(globals.player.health)) + '/' + str(globals.player.stats.health_max))
-	charpanel.get_node("energy").set_text('EN:'+str(round(globals.player.energy)) + '/' + str(globals.player.stats.energy_max))
+	array.append(globals.player)
 	for i in globals.state.playergroup:
-		var slave = globals.state.findslave(i)
+		array.append(globals.state.findslave(i))
+	for slave in array:
 		charpanel = get_node("playergrouppanel/VBoxContainer/Panel").duplicate()
 		if slave.imageportait != null:
 			if File.new().file_exists(slave.imageportait) == true:
@@ -69,12 +88,91 @@ func playergrouppanel():
 				slave.imageportait = null
 		get_node("playergrouppanel/VBoxContainer").add_child(charpanel)
 		charpanel.set_hidden(false)
+		charpanel.set_meta("slave", slave)
 		charpanel.get_node("name").set_text(slave.name_short())
 		charpanel.get_node("stress").set_hidden(false)
+		charpanel.get_node("button").connect("pressed",self,'utilitypanel',[charpanel])
 		charpanel.get_node("stress").set_text("SR:" + str(round(slave.stress)))
 		charpanel.get_node("health").set_text('HP:' +str(round(slave.health)) + '/' + str(slave.stats.health_max))
 		charpanel.get_node("energy").set_text('EN:'+str(round(slave.energy)) + '/' + str(slave.stats.energy_max))
+		charpanel.get_node("utilitypanel").connect("popup_hide", globals, 'hidetooltip')
 
+
+func utilitypanel(panel):
+	panel.get_node("utilitypanel").popup()
+	panel.get_node('utilitypanel').set_pos(Vector2(panel.get_global_pos().x,panel.get_global_pos().y - 70))
+	for i in panel.get_node("utilitypanel/HBoxContainer").get_children():
+		if i.get_name() != 'Button':
+			i.set_hidden(true)
+			i.queue_free()
+	var newbutton
+	for i in ['bandage','teleportseal']:
+		newbutton = panel.get_node("utilitypanel/HBoxContainer/Button").duplicate()
+		panel.get_node("utilitypanel/HBoxContainer/").add_child(newbutton)
+		newbutton.set_hidden(false)
+		if globals.state.backpack.stackables.has(i) && globals.state.backpack.stackables[i] >= 1:
+			newbutton.set_disabled(false)
+			newbutton.get_node('amount').set_text(str(globals.state.backpack.stackables[i]))
+		else:
+			newbutton.set_disabled(true)
+			newbutton.get_node("amount").set_text('0')
+		newbutton.get_node('icon').set_texture(globals.itemdict[i].icon)
+		newbutton.connect("pressed", self, 'useitem', [globals.itemdict[i], panel.get_meta('slave')])
+		var text = '[center]' + globals.itemdict[i].name + '[/center]\n' + globals.itemdict[i].description
+		if i == 'teleportseal' && globals.player == panel.get_meta('slave'):
+			text += "\n\n[color=red]Your captured slaves will be freed and your party will take time to return home on their own. [/color]"
+		newbutton.connect("mouse_enter", globals, 'showtooltip', [text])
+		newbutton.connect("mouse_exit", globals, 'hidetooltip')
+	for i in ['heal','invigorate']:
+		if globals.player == panel.get_meta('slave') && i == 'invigorate':
+			return
+		newbutton = panel.get_node("utilitypanel/HBoxContainer/Button").duplicate()
+		panel.get_node("utilitypanel/HBoxContainer/").add_child(newbutton)
+		newbutton.set_hidden(false)
+		newbutton.get_node('amount').set_text(str(globals.spelldict[i].manacost))
+		newbutton.get_node('icon').set_texture(load("res://files/buttons/cast.png"))
+		if globals.spelldict[i].learned == true && globals.resources.mana >= globals.spelldict[i].manacost:
+			newbutton.get_node('amount').set('custom_colors/font_color', Color(0,1,0))
+		else:
+			newbutton.set_disabled(true)
+			newbutton.get_node('amount').set('custom_colors/font_color', Color(1,0,0))
+		newbutton.connect("pressed", self, 'usespell', [globals.spelldict[i], panel.get_meta('slave')])
+		var text = '[center]' + globals.spelldict[i].name + '[/center]' + '\n' + globals.spelldict[i].description + '\nMana cost: ' + str(globals.spelldict[i].manacost)
+		newbutton.connect("mouse_enter", globals, 'showtooltip', [text])
+		newbutton.connect("mouse_exit", globals, 'hidetooltip')
+
+func useitem(item, slave):
+	globals.state.backpack.stackables[item.code] -= 1
+	if globals.state.backpack.stackables[item.code] <= 1:
+		globals.state.backpack.stackables.erase(item.code)
+	if item.code == 'bandage':
+		if slave.effects.has('bandaged') == false:
+			get_parent().infotext(slave.dictionary("[color=green]Bandage used on $name.[/color]"))
+			slave.health = slave.stats.health_max/2.5
+			slave.add_effect(globals.effectdict.bandaged)
+		else:
+			get_parent().infotext(slave.dictionary("[color=green]Bandage used on $name with reduced efficiency.[/color]"))
+			slave.health = slave.stats.health_max/5
+	elif item.code == 'teleportseal':
+		if slave == globals.player:
+			get_parent().popup("After activating Teleportation Seal, you appear inside of your mansion, leaving your party behind. Hopefully they will find a way back in near time. ")
+			for i in globals.state.playergroup:
+				globals.state.findslave(i).away.duration = round(rand_range(1,3))
+			mansion()
+		else:
+			get_parent().popup(slave.dictionary("After activating Teleportation Seal, $name slowly dissipates in bright sparkles."))
+			globals.state.playergroup.erase(slave.id)
+	globals.hidetooltip()
+	playergrouppanel()
+
+func usespell(spell, slave):
+	get_tree().get_current_scene().get_node('spellnode').slave = slave
+	if spell.code == 'heal':
+		get_tree().get_current_scene().get_node('spellnode').healeffect()
+	elif spell.code == 'invigorate':
+		get_tree().get_current_scene().get_node('spellnode').invigorateeffect()
+	globals.hidetooltip()
+	playergrouppanel()
 
 func town():
 	gooutside()
@@ -86,7 +184,9 @@ func town():
 	location = 'wimborn'
 	get_node("exploreprogress/locationname").set_text("Wimborn")
 	maintext.set_bbcode("The Wimborn is a lively place at nearly all hours, as the cries of hawkers and shopkeepers vie with the songs of work crews for attention. Along the major roads, most of the buildings have been painted in a riot of colors to break up the monotony of grey-blue brick and plaster covered stone, with many of the storefronts sporting colorful awnings and signs to attract potential customers. Away from the bright colors and raucous noise of the market streets things tend to be restrained, the buildings more grey, and cries more a cause for worry.\n\nThe city is divided into a number of districts, but only a few areas are of interest to you at the moment. To the north are the Market District, and past that Auld Erellon which is the home of the Mage’s Guild and other government bodies. To the west is Red-Lantern and Riverside, where most of the city’s brothels and whorehouses might be found. To the south is the Guild District, where there is always some foreman looking for cheap but reliable labor.")
-	var array = [{name = "Visit the Mage's Order",function = 'mageorder'},{name = "Visit Slaver's Guild", function = 'slaveguild'},{name = "Visit Market District",function = 'market'},{name = "Visit Red Lantern District", function = 'backstreets'},{name = "Outskirts",function = 'outskirts'},{name = "Return to Mansion",function = 'mansion'}]
+	var array = [{name = "Visit the Mage's Order",function = 'mageorder'},{name = "Visit Slaver's Guild", function = 'slaveguild'},{name = "Visit Market District",function = 'market'},{name = "Visit Red Lantern District", function = 'backstreets'},{name = "Leave Town",function = 'outskirts'}]
+	if globals.state.location == 'wimborn':
+		array.append({name = "Return to Mansion",function = 'mansion'})
 	buildbuttons(array)
 
 func mansion():
@@ -128,32 +228,6 @@ func _ready():
 		var rand = round(rand_range(4,6))
 		newslaveinguild(rand, 'umbra')
 
-func _input(event):
-	if main.get_node("screenchange/AnimationPlayer").is_playing() == true && main.get_node("screenchange").is_visible():
-		return
-	var anythingvisible = false
-	for i in get_tree().get_nodes_in_group("blockoutsideinput"):
-		if i.is_visible() == true:
-			anythingvisible = true
-			break
-	if anythingvisible == true:
-		return
-	if event.type == 1:
-		var dict = {49 : 1, 50 : 2, 51 : 3, 52 : 4,53 : 5,54 : 6,55 : 7,56 : 8,}
-		if event.scancode in [KEY_1,KEY_2,KEY_3,KEY_4,KEY_5,KEY_6,KEY_7,KEY_8]:
-			var key = dict[event.scancode]
-			if event.is_action_pressed(str(key)) == true && get_node("outsidebuttoncontainer").get_children().size() >= key+1 && self.is_visible() == true && get_parent().get_node("dialogue").is_hidden() == true:
-				get_parent().get_node("chooseslavepopup").set_hidden(true)
-				get_node("outsidebuttoncontainer").get_child(key).emit_signal("pressed")
-			elif event.is_action_pressed(str(key)) == true && get_parent().get_node("dialogue").is_hidden() == false && get_parent().get_node("dialogue/popupbuttoncenter/popupbuttons").get_children().size() >= key+1:
-				if get_parent().get_node("dialogue/popupbuttoncenter/popupbuttons").get_child(key).is_disabled() == false:
-					get_parent().get_node("dialogue/popupbuttoncenter/popupbuttons").get_child(key).emit_signal("pressed")
-			elif event.is_action_pressed(str(key)) == true && get_parent().get_node("tutorialnode/response").is_hidden() == false && get_parent().get_node("tutorialnode/response/ScrollContainer/VBoxContainer").get_children().size() >= key+1:
-				if get_parent().get_node("tutorialnode/response/ScrollContainer/VBoxContainer").get_child(key).is_disabled() == false:
-					get_parent().get_node("tutorialnode/response/ScrollContainer/VBoxContainer").get_child(key).emit_signal("pressed")
-			elif event.is_action_pressed(str(key)) == true && get_parent().get_node("dailyevents").is_hidden() == false && get_parent().get_node("dailyevents/buttonpanel/ScrollContainer/VBoxContainer").get_children().size() >= key+1:
-				if get_parent().get_node("dailyevents/buttonpanel/ScrollContainer/VBoxContainer").get_child(key).is_disabled() == false:
-					get_parent().get_node("dailyevents/buttonpanel/ScrollContainer/VBoxContainer").get_child(key).emit_signal("pressed")
 
 
 func newslaveinguild(number, town = 'wimborn'):
@@ -1061,19 +1135,23 @@ func mageorderquest1(slave = null):
 	var sprites = null
 	questgiveawayslave = slave
 	if globals.state.mainquest == 0:
+		sprites = [['chancellor','pos1','opac']]
 		globals.state.mainquest = 1
 		text = ("After some time you find a chancellor: a senior member responsible for accepting new applicants. You give a small knock to announce your presence, and the old man looks up from his paperwork with a sneer. You begin to introduce yourself, but he raises a hand to stop you.\n\n— Yes, yes, I already know who you are. You’ve been a hot topic these past few days, a trend that shall die soon, I’m sure. Allow me to hazard a guess, now that you’ve inherited that senile fool’s mansion, you’re here to apply for membership, correct? Well, I’ll have you know that I have no intention of shaming this institution, nor disgracing myself, by admitting a nameless imbecile such as yourself. Leave now, there are more important matters for me to attend to.\n\nHe returns to his work and waves his hand to shoo you away, but you came here for a purpose, and refuse to leave without seeing it fulfilled. You argue the case for your membership for several minutes; the chancellor growing visibly more frustrated with your presence every second you remain. Before long, he’s had enough of your filibustering and slams a hand on his desk.\n\n— Bah! If you so desperately want to gain membership, then so be it! If you can fulfil a simple request I've not had time to deal with, I shall consider your membership. Now, listen carefully, I will not repeat myself!\n\n— I’ve been looking for a secretary; one who is attractive, knows how to serve, and human. I would go to the Slave Guild for this, but my duties here rarely permit me the time. Bring me a girl who meets my criteria, and I shall accept your membership. Now leave, before I force you to.\n\n[color=green]Your main quest has been updated. [/color]")
 	elif globals.state.mainquest == 1:
 		if questgiveawayslave == null:
+			sprites = [['chancellor','pos1','opac']]
 			text = "— Ah, you’ve returned, how very ‘wonderful’ of you. The arrangement has not been forgotten, provide me with what I want, and I’ll provide you with what you want."
 			buttons.append(['Select Slave', 'selectslaveforquest', 'mageorderquest1'])
 		else:
 			slave = questgiveawayslave
 			if slave.obed >= 90 && slave.race == 'Human' && slave.beauty >= 40 && slave.sex == 'female':
+				sprites = [['chancellor','pos1']]
 				text = "— Looks about right. Ready to part with her?"
 				buttons.append(['Give away ' + slave.name, 'givecompanion'])
 				buttons.append(['Select Slave', 'selectslaveforquest', 'mageorderquest1'])
 			else:
+				sprites = [['chancellor','pos1']]
 				text = questgiveawayslave.dictionary("— Who do you take me for? $He does not meet the requirements.")
 				buttons.append(['Select Slave', 'selectslaveforquest', 'mageorderquest1'])
 	elif globals.state.mainquest == 2:
@@ -1351,7 +1429,7 @@ func tishaquest():
 #################### Markets
 
 var shops = {
-wimbornmarket = {code = 'wimbornmarket', name = "Wimborn's Market", items =  ['food','supply','teleportgorn','teleportfrostford','basicsolutioning','hairdye', 'aphrodisiac' ,'beautypot', 'magicessenceing', 'natureessenceing','armorleather','armorchain','weapondagger','weaponsword','clothsundress','clothmaid','clothbutler','underwearlacy','underwearboxers'], selling = true},
+wimbornmarket = {code = 'wimbornmarket', sprite = 'merchant', name = "Wimborn's Market", items =  ['food','supply','teleportgorn','teleportfrostford','basicsolutioning','hairdye', 'aphrodisiac' ,'beautypot', 'magicessenceing', 'natureessenceing','armorleather','armorchain','weapondagger','weaponsword','clothsundress','clothmaid','clothbutler','underwearlacy','underwearboxers'], selling = true},
 shaliqshop = {code = 'shaliqshop', name = "Village's Trader", items = ['hairdye','beautypot','armorleather','clothmiko','clothkimono','clothninja'], selling = true},
 gornmarket = {code = 'gornmarket', name = "Gorn's Market", items = ['food', 'supply','teleportwimborn','teleportfrostford','magicessenceing',"armorleather",'armorchain','weaponclaymore','clothbedlah','accslavecollar','acchandcuffs'], selling = true},
 frostfordmarket = {code = 'frostfordmarket', name = "Frostford's Market", items = ['supply','teleportwimborn','teleportgorn', 'basicsolutioning','bestialessenceing','clothpet', 'weaponsword','accgoldring'], selling = true},
@@ -1397,6 +1475,9 @@ func shopinitiate(shopname):
 	get_node("shoppanel/itempanel").set_hidden(true)
 	get_node("shoppanel/Panel/buybutton").set_pressed(false)
 	get_node("shoppanel/Panel/sellbutton").set_pressed(false)
+	if currentshop.has('sprite'):
+		setcharacter('merchant')
+		get_node("AnimationPlayer").play("show")
 	if currentshop.selling == true:
 		get_node("shoppanel/Panel/sellbutton").set_hidden(false)
 	else:
@@ -1981,3 +2062,120 @@ func _on_questlog_pressed():
 	get_tree().get_current_scene()._on_questlog_pressed()
 
 
+
+
+func _on_details_pressed():
+	var newbutton
+	get_node("playergroupdetails").popup()
+	get_node("playergroupdetails/itemdescript").set_bbcode("")
+	for i in get_node("playergroupdetails/slavecontainer/HBoxContainer/").get_children() + get_node("playergroupdetails/itemcontainer/VBoxContainer").get_children():
+		if i.get_name() != 'Button':
+			i.set_hidden(true)
+			i.queue_free()
+	for i in globals.state.capturedgroup:
+		newbutton = get_node("playergroupdetails/slavecontainer/HBoxContainer/Button").duplicate()
+		get_node("playergroupdetails/slavecontainer/HBoxContainer/").add_child(newbutton)
+		newbutton.set_hidden(false)
+		newbutton.set_text(i.race + " " + i.sex.capitalize() + " " + i.age.capitalize() + ", Grade: " + i.origins.capitalize())
+		newbutton.connect("pressed",self,'selectcaptured',[i])
+	for i in globals.state.backpack.stackables:
+		var item = globals.itemdict[i]
+		newbutton = get_node("playergroupdetails/itemcontainer/VBoxContainer/Button").duplicate()
+		get_node("playergroupdetails/itemcontainer/VBoxContainer").add_child(newbutton)
+		newbutton.set_hidden(false)
+		newbutton.get_node("amount").set_text(str(globals.state.backpack.stackables[i]))
+		if item.icon != null:
+			newbutton.get_node("icon").set_texture(item.icon)
+		newbutton.connect("mouse_enter",self,'itemtooltip',[item])
+		newbutton.connect("pressed",self,'itembackpackdrop', [item])
+	calculateweight()
+	if !get_parent().get_node("explorationnode").currentzone.code in ['wimborn','gorn','frostford', 'amberguard']:
+		get_node("playergroupdetails/return").set_disabled(true)
+		get_node("playergroupdetails/return").set_tooltip("Can only be activated in big settlements. ")
+	elif globals.resources.gold <= 25:
+		get_node("playergroupdetails/return").set_disabled(true)
+		get_node("playergroupdetails/return").set_tooltip("Not enough gold.")
+	else:
+		get_node("playergroupdetails/return").set_disabled(false)
+		get_node("playergroupdetails/return").set_tooltip("")
+	if get_parent().get_node("explorationnode").currentzone.code in ['wimborn','gorn','frostford'] && globals.state.capturedgroup.size() > 0:
+		get_node("playergroupdetails/quicksell").set_disabled(false)
+		get_node("playergroupdetails/quicksell").set_tooltip("")
+	else:
+		get_node("playergroupdetails/quicksell").set_disabled(true)
+		get_node("playergroupdetails/quicksell").set_tooltip("Requires Slaver's guild present nearby. ")
+
+func itemtooltip(item):
+	get_node("playergroupdetails/itemdescript").set_bbcode('[center]' + item.name + '[/center]\n' + item.description + '\n\n[color=red]Click to discard')
+
+func itembackpackdrop(item):
+	globals.state.backpack.stackables[item.code] -= 1
+	get_tree().get_current_scene().infotext('[color=red]Discarded '+item.name + '.[/color]')
+	if globals.state.backpack.stackables[item.code] <= 0:
+		globals.state.backpack.stackables.erase(item.code)
+	_on_details_pressed()
+
+var captureeselected
+
+func selectcaptured(slave):
+	captureeselected = slave
+	get_node("playergroupdetails/capturedslave").popup()
+	get_node("playergroupdetails/capturedslave/RichTextLabel").set_bbcode(slave.description_small(true))
+	get_node("playergroupdetails/capturedslave/capturedteleport").set_disabled(!(globals.state.backpack.stackables.has("teleportseal") && globals.state.backpack.stackables.teleportseal >= 1))
+	
+	get_node("playergroupdetails/capturedslave/capturedmindread").set_disabled(globals.resources.mana < globals.spelldict.mindread.manacost)
+
+func calculateweight():
+	var weight = globals.state.calculateweight()
+	get_node("playergroupdetails/TextureProgress/Label").set_text("Weight: " + str(weight.currentweight) + '/' + str(weight.maxweight))
+	get_node("playergroupdetails/TextureProgress").set_val((weight.currentweight*10/max(weight.maxweight,1)*10))
+	
+
+
+func _on_closegroup_pressed():
+	get_node("playergroupdetails").set_hidden(true)
+
+
+func _on_capturedclose_pressed():
+	get_node("playergroupdetails/capturedslave").set_hidden(true)
+
+func _on_capturedfree_pressed():
+	get_node("playergroupdetails/capturedslave").set_hidden(true)
+	globals.state.capturedgroup.erase(captureeselected)
+	_on_details_pressed()
+	get_tree().get_current_scene().infotext('[color=yellow]You have released '+captureeselected.name + '.[/color]')
+
+func _on_capturedmindread_pressed():
+	get_node("playergroupdetails/capturedslave").set_hidden(true)
+	get_tree().get_current_scene().get_node("spellnode").slave = captureeselected
+	get_tree().get_current_scene().get_node("spellnode").mindreadeffect()
+
+func _on_capturedteleport_pressed():
+	globals.slaves = captureeselected
+	globals.state.backpack.stackables.teleportseal -= 1
+	if globals.state.backpack.stackables.teleportseal < 1:
+		globals.state.backpack.stackables.erase('teleportseal')
+	if globals.count_sleepers().jail < globals.state.mansionupgrades.jailcapacity:
+		captureeselected.sleep = 'jail'
+	get_node("playergroupdetails/capturedslave").set_hidden(true)
+	globals.state.capturedgroup.erase(captureeselected)
+	_on_details_pressed()
+
+func _on_quicksell_pressed():
+	var text = ''
+	var gold = 0
+	var array = []
+	for i in globals.state.capturedgroup:
+		array.append(i)
+	for i in array:
+		gold += round(max(i.calculateprice()*0.3,10))
+		globals.state.capturedgroup.erase(i)
+	main.popup('You furtively delivered your captives to the local slaver guild. This earned you [color=yellow]' + str(gold) + '[/color] gold. ')
+	globals.resources.gold += gold
+	_on_details_pressed()
+
+
+func _on_return_pressed():
+	globals.resources.gold -= 25
+	mansion()
+	get_node("playergroupdetails").set_hidden(true)

@@ -44,6 +44,8 @@ var clothes = load("res://files/scripts/clothes.gd").costumelist()
 var underwear = load("res://files/scripts/clothes.gd").underwearlist()
 
 var spritedict = {
+chancellor = load("res://files/images/chancellor.png"),
+merchant = load("res://files/images/merchant.png"),
 fairy = load("res://files/images/maple/maple.png"),
 fairynaked = load("res://files/images/maple/maplenaked.png"),
 melissafriendly = load("res://files/images/melissafriendly.png"),
@@ -335,7 +337,7 @@ class resource:
 		var text = ""
 		upgradepoints = value
 		
-		if difference != 0:
+		if difference < 0:
 			text = "[color=green]Obtained " + str(abs(difference)) +  " Mansion Upgrade Points[/color]"
 		
 		if globals.get_tree().get_current_scene().has_node("infotext"):
@@ -408,9 +410,26 @@ class progress:
 	mansionnursery = 0,
 	mansionparlor = 0,
 	}
-	
+	var capturedgroup = []
 	var ghostrep = {wimborn = 0, frostford = 0, gorn = 0, amberguard = 0}
+	var backpack = {stackables = {}, unstackables = []}
 	
+	func calculateweight():
+		var slave
+		var tempitem
+		var currentweight = 0
+		var maxweight = 5 + globals.player.sstr*3
+		for i in globals.state.playergroup:
+			slave = globals.state.findslave(i)
+			maxweight += slave.sstr*3 + 3
+		for i in globals.state.backpack.stackables:
+			if globals.itemdict[i].has('weight'):
+				currentweight += globals.itemdict[i].weight * globals.state.backpack.stackables[i]
+		for i in globals.state.backpack.unstackables:
+			if i.has('weight'):
+				currentweight += i.weight
+		var dict = {currentweight = currentweight, maxweight =maxweight }
+		return dict
 	
 	func reputation_set(value):
 		var text = ''
@@ -1452,6 +1471,11 @@ func repairsave():
 			state.portals[i] = progress.new().portals[i]
 	if !state.mansionupgrades.has('mansionparlor'):
 		state.mansionupgrades.mansionparlor = 0
+	for i in globals.state.unstackables.values():
+		if i.icon.find('Texture') >= 0:
+			i.icon = itemdict[i.code].icon.get_path()
+		if i.has('weight') == false:
+			i.weight = itemdict[i.code].weight
 	state.currentversion = gameversion
 
 var showalisegreet = false
@@ -1500,3 +1524,19 @@ func weightedrandom(array): #array must be made out of dictionaries with {value 
 			if counter + i[1] >= random:
 				return i[0]
 			counter += i[1]
+
+
+func buildportrait(node, slave):
+	var array = ['race','hairlength','ears'] #add more pieces of layers in order they should be added
+	var imagedict = { #should have all pieces you added to the array with paths
+	race = {human = load('humanheadimage.png'), elf = load('elfheadimage.png')},
+	hairlength = {long = load('longhairimage.png'), short = load('shorthairimage.png')},
+	ears = {normal = load('normalears.png'), pointy = load('pointyearsimg.png')},
+	} 
+	for i in array:
+		var newlayer = node.duplicate()
+		node.add_child(newlayer)
+		newlayer.set_texture(imagedict[i][slave[i]])
+
+
+

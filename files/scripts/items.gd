@@ -32,8 +32,78 @@ supply = {
 	cost = 5,
 	type = 'ingredient',
 	amount = 0,
+	weight = 1,
 	unlocked = true,
 },
+#ExplorationItems
+rope = {
+	code = 'rope',
+	name = 'Ropes',
+	icon = load("res://files/images/items/rope.png"),
+	description = "A sturdy rope required for safe unwilling person transfer.\n\n[color=yellow]Must be in possession to capture defeated people. [/color]",
+	effect = "rope",
+	recipe = '',
+	cost = 15,
+	type = 'supply',
+	amount = 0,
+	weight = 5,
+	unlocked = true,
+},
+torch = {
+	code = 'torch',
+	name = 'Torch',
+	icon = load("res://files/images/items/torch.png"),
+	description = "A simple source of light during night or enclosed spaces. ",
+	effect = "torch",
+	recipe = '',
+	cost = 25,
+	type = 'supply',
+	amount = 0,
+	weight = 3,
+	unlocked = true,
+},
+teleportseal = {
+	code = 'teleportseal',
+	name = 'Teleportation Seal',
+	icon = load("res://files/images/items/teleportseal.png"),
+	description = "Magical divice allowing a single person to teleport to specified personal location. \n\n[color=yellow]Allows to send captured people to your mansion without going with them.[/color]",
+	effect = "teleportsealeffect",
+	recipe = '',
+	cost = 20,
+	type = 'supply',
+	amount = 0,
+	weight = 1,
+	unlocked = true,
+},
+bandage = {
+	code = 'bandage',
+	name = 'Bandages',
+	icon = load("res://files/images/items/bandage.png"),
+	description = "A portable way to patch up an injured person. Restores 33% of health (20% if were used recently).",
+	effect = "bandageeffect",
+	recipe = '',
+	cost = 15,
+	type = 'supply',
+	amount = 0,
+	weight = 2,
+	unlocked = true,
+},
+lockpick = {
+	code = 'lockpick',
+	name = 'Lockpicks',
+	icon = load("res://files/images/items/lockpick.png"),
+	description = "",
+	effect = "supplypurchase",
+	recipe = '',
+	cost = 5,
+	type = 'supply',
+	amount = 0,
+	weight = 1,
+	unlocked = true,
+},
+
+
+
 teleportwimborn = {
 	code = 'teleportwimborn',
 	name = 'Teleportation Stone: Wimborn',
@@ -105,6 +175,7 @@ aphrodisiac = {
 	type = 'potion',
 	toxicity = 15,
 	unlocked = false,
+	weight = 1,
 	amount = 0
 	},
 hairdye = {
@@ -117,6 +188,7 @@ hairdye = {
 	cost = 50,
 	toxicity = 0,
 	unlocked = false,
+	weight = 1,
 	amount = 0,
 	type = 'potion',
 	},
@@ -131,6 +203,7 @@ hairgrowthpot = {
 	type = 'potion',
 	toxicity = 15,
 	unlocked = false,
+	weight = 1,
 	amount = 0
 	},
 maturingpot = {
@@ -144,6 +217,7 @@ maturingpot = {
 	type = 'potion',
 	toxicity = 40,
 	unlocked = false,
+	weight = 1,
 	amount = 0
 	},
 youthingpot = {
@@ -157,6 +231,7 @@ youthingpot = {
 	type = 'potion',
 	toxicity = 40,
 	unlocked = false,
+	weight = 1,
 	amount = 0
 	},
 regressionpot = {
@@ -170,6 +245,7 @@ regressionpot = {
 	type = 'potion',
 	toxicity = 50,
 	unlocked = false,
+	weight = 1,
 	amount = 0
 	},
 amnesiapot = {
@@ -183,6 +259,7 @@ amnesiapot = {
 	type = 'potion',
 	toxicity = 25,
 	unlocked = false,
+	weight = 1,
 	amount = 0
 	},
 lactationpot = {
@@ -196,6 +273,7 @@ lactationpot = {
 	type = 'potion',
 	toxicity = 20,
 	unlocked = false,
+	weight = 1,
 	amount = 0
 	},
 oblivionpot = {
@@ -209,6 +287,7 @@ oblivionpot = {
 	type = 'potion',
 	toxicity = 50,
 	unlocked = false,
+	weight = 1,
 	amount = 0
 	},
 miscariagepot = {
@@ -222,6 +301,7 @@ miscariagepot = {
 	type = 'potion',
 	toxicity = 20,
 	unlocked = false,
+	weight = 1,
 	amount = 0
 	},
 stimulantpot = {
@@ -235,6 +315,7 @@ stimulantpot = {
 	type = 'potion',
 	toxicity = 20,
 	unlocked = false,
+	weight = 1,
 	amount = 0
 	},
 deterrentpot = {
@@ -248,6 +329,7 @@ deterrentpot = {
 	type = 'potion',
 	toxicity = 20,
 	unlocked = false,
+	weight = 1,
 	amount = 0
 	},
 minoruspot = {
@@ -261,6 +343,7 @@ minoruspot = {
 	type = 'potion',
 	toxicity = 30,
 	unlocked = false,
+	weight = 1,
 	amount = 0
 	},
 majoruspot = {
@@ -274,6 +357,7 @@ majoruspot = {
 	type = 'potion',
 	toxicity = 30,
 	unlocked = false,
+	weight = 1,
 	amount = 0
 	},
 beautypot = {
@@ -287,6 +371,7 @@ beautypot = {
 	type = 'potion',
 	toxicity = 10,
 	unlocked = false,
+	weight = 1,
 	amount = 0
 	},
 aphroditebrew = {
@@ -299,6 +384,7 @@ aphroditebrew = {
 	cost = 400,
 	type = 'ingredient',
 	unlocked = false,
+	weight = 1,
 	amount = 0
 	},
 basicsolutioning = {
@@ -311,6 +397,7 @@ basicsolutioning = {
 	cost = 20,
 	type = 'ingredient',
 	unlocked = false,
+	weight = 1,
 	amount = 0
 	},
 magicessenceing = {
@@ -323,6 +410,7 @@ magicessenceing = {
 	cost = 50,
 	type = 'ingredient',
 	unlocked = false,
+	weight = 1,
 	amount = 0
 	},
 taintedessenceing = {
@@ -335,6 +423,7 @@ taintedessenceing = {
 	cost = 50,
 	type = 'ingredient',
 	unlocked = false,
+	weight = 1,
 	amount = 0
 	},
 natureessenceing = {
@@ -347,6 +436,7 @@ natureessenceing = {
 	cost = 50,
 	type = 'ingredient',
 	unlocked = false,
+	weight = 1,
 	amount = 0
 	},
 bestialessenceing = {
@@ -359,6 +449,7 @@ bestialessenceing = {
 	cost = 50,
 	type = 'ingredient',
 	unlocked = false,
+	weight = 1,
 	amount = 0
 	},
 fluidsubstanceing = {
@@ -371,6 +462,7 @@ fluidsubstanceing = {
 	cost = 50,
 	type = 'ingredient',
 	unlocked = false,
+	weight = 1,
 	amount = 0
 	},
 gem = {
@@ -383,6 +475,7 @@ gem = {
 	cost = 1250,
 	type = 'ingredient',
 	unlocked = false,
+	weight = 1,
 	amount = 0
 	},
 	
@@ -431,6 +524,7 @@ clothmaid = {
 	cost = 75,
 	type = 'gear',
 	subtype = 'costume',
+	weight = 5,
 	amount = 0,
 	unlocked = true,
 },
@@ -445,6 +539,7 @@ clothkimono = {
 	cost = 150,
 	type = 'gear',
 	subtype = 'costume',
+	weight = 5,
 	amount = 0,
 	unlocked = true,
 },
@@ -459,6 +554,7 @@ clothmiko = {
 	cost = 200,
 	type = 'gear',
 	subtype = 'costume',
+	weight = 5,
 	amount = 0,
 	unlocked = true,
 },
@@ -473,6 +569,7 @@ clothninja = {
 	cost = 200,
 	type = 'gear',
 	subtype = 'costume',
+	weight = 5,
 	amount = 0,
 	unlocked = true,
 },
@@ -487,6 +584,7 @@ clothpet = {
 	cost = 250,
 	type = 'gear',
 	subtype = 'costume',
+	weight = 5,
 	amount = 0,
 	unlocked = true,
 },
@@ -501,6 +599,7 @@ clothchain = {
 	cost = 250,
 	type = 'gear',
 	subtype = 'costume',
+	weight = 5,
 	amount = 0,
 	unlocked = true,
 },
@@ -515,6 +614,7 @@ clothbutler = {
 	cost = 75,
 	type = 'gear',
 	subtype = 'costume',
+	weight = 5,
 	amount = 0,
 	unlocked = true,
 },
@@ -529,6 +629,7 @@ clothbedlah = {
 	cost = 250,
 	type = 'gear',
 	subtype = 'costume',
+	weight = 5,
 	amount = 0,
 	unlocked = true,
 },
@@ -544,6 +645,7 @@ underwearplain = {
 	cost = 0,
 	type = 'gear',
 	subtype = 'underwear',
+	weight = 5,
 	amount = -1,
 	unlocked = true,
 },
@@ -558,6 +660,7 @@ underwearlacy = {
 	cost = 100,
 	type = 'gear',
 	subtype = 'underwear',
+	weight = 5,
 	amount = 0,
 	unlocked = true,
 },
@@ -572,6 +675,7 @@ underwearboxers = {
 	cost = 100,
 	type = 'gear',
 	subtype = 'underwear',
+	weight = 5,
 	amount = 0,
 	unlocked = true,
 },
@@ -586,6 +690,7 @@ armorleather = {
 	cost = 100,
 	type = 'gear',
 	subtype = 'armor',
+	weight = 5,
 	amount = 0,
 	unlocked = true,
 },
@@ -600,6 +705,7 @@ armorchain = {
 	cost = 250,
 	type = 'gear',
 	subtype = 'armor',
+	weight = 5,
 	amount = 0,
 	unlocked = true,
 },
@@ -614,6 +720,7 @@ armorelvenchain = {
 	cost = 500,
 	type = 'gear',
 	subtype = 'armor',
+	weight = 5,
 	amount = 0,
 	unlocked = true,
 },
@@ -628,6 +735,7 @@ armorplate = {
 	cost = 750,
 	type = 'gear',
 	subtype = 'armor',
+	weight = 5,
 	amount = 0,
 	unlocked = true,
 },
@@ -642,6 +750,7 @@ armorrobe = {
 	cost = 350,
 	type = 'gear',
 	subtype = 'armor',
+	weight = 5,
 	amount = 0,
 	unlocked = true,
 },
@@ -656,6 +765,7 @@ weapondagger = {
 	cost = 50,
 	type = 'gear',
 	subtype = 'weapon',
+	weight = 5,
 	amount = 0,
 	unlocked = true,
 },
@@ -670,6 +780,7 @@ weaponsword = {
 	cost = 150,
 	type = 'gear',
 	subtype = 'weapon',
+	weight = 5,
 	amount = 0,
 	unlocked = true,
 },
@@ -684,6 +795,7 @@ weaponclaymore = {
 	cost = 450,
 	type = 'gear',
 	subtype = 'weapon',
+	weight = 5,
 	amount = 0,
 	unlocked = true,
 },
@@ -698,6 +810,7 @@ accgoldring = {
 	cost = 250,
 	type = 'gear',
 	subtype = 'accessory',
+	weight = 5,
 	amount = 0,
 	unlocked = true,
 },
@@ -712,6 +825,7 @@ accslavecollar = {
 	cost = 150,
 	type = 'gear',
 	subtype = 'accessory',
+	weight = 5,
 	amount = 0,
 	unlocked = true,
 },
@@ -726,6 +840,7 @@ acchandcuffs = {
 	cost = 250,
 	type = 'gear',
 	subtype = 'accessory',
+	weight = 5,
 	amount = 0,
 	unlocked = true,
 },
@@ -842,7 +957,7 @@ func handcuffeffect(slave):
 
 func createunstackable(itemcode):
 	var item = itemlist[itemcode]
-	var tempitem = {code = item.code, type = item.subtype, name = item.name, owner = null, effects = item.effect, enchant = null, reqs = item.reqs, icon = item.icon, description = item.description}
+	var tempitem = {code = item.code, type = item.subtype, name = item.name, owner = null, effects = item.effect, enchant = null, reqs = item.reqs, icon = item.icon.get_path(), description = item.description, weight = item.weight}
 	tempitem.id = "I" + str(globals.state.itemcounter) 
 	globals.state.itemcounter += 1
 	return tempitem
@@ -1061,6 +1176,15 @@ func majoruseffect():
 	if slave.balls != 'big' && slave.balls != 'none':
 		buttons.append(['Testicles','applytestic'])
 	main.dialogue(true, self, text, buttons)
+
+func bondageeffect():
+	globals.get_tree().get_current_scene().popup(slave.dictionary("You help $name to cover $his wounds. "))
+	if slave.effects.has('bandaged') == false:
+		slave.health = slave.stats.health_max/3
+		slave.add_effect(globals.effectdict.bandaged)
+	else:
+		slave.health = slave.stats.health_max/5
+
 
 func applybutt():
 	var text = ''

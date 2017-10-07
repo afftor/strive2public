@@ -43,7 +43,6 @@ tabs_visible = true
 [node name="Settings" type="Tabs" parent="TabContainer"]
 
 editor/display_folded = true
-visibility/visible = false
 anchor/right = 1
 anchor/bottom = 1
 focus/ignore_mouse = false
@@ -507,7 +506,6 @@ items = [ "Always", null, false, -1, null, "After Daily Event", null, false, -1,
 
 [node name="Supporter section" type="Tabs" parent="TabContainer"]
 
-visibility/visible = false
 anchor/right = 1
 anchor/bottom = 1
 focus/ignore_mouse = false
@@ -601,7 +599,6 @@ flat = false
 
 [node name="cheatpanel" type="PopupPanel" parent="TabContainer/Supporter section"]
 
-visibility/visible = false
 anchor/left = 3
 anchor/top = 3
 anchor/right = 3
@@ -712,7 +709,7 @@ margin/bottom = 263.0
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
-text = "Add Upgrade Point"
+text = "Add 5 Upgrade Points"
 flat = false
 
 [node name="unlockspells" type="Button" parent="TabContainer/Supporter section/cheatpanel"]

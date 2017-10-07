@@ -299,7 +299,7 @@ func _on_aliseoption_item_selected( ID ):
 
 
 func _on_addupgradepoint_pressed():
-	globals.resources.upgradepoints += 1
+	globals.resources.upgradepoints += 5
 
 
 func _on_unlockgallery_pressed():
