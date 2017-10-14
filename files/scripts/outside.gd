@@ -55,19 +55,19 @@ func buildbuttons(array, target = self):
 		newbutton.set_hidden(false)
 		if i.has('args'):
 			newbutton.connect('pressed', target, i.function, [i.args])
-			if i.has('disabled'):
-				newbutton.set_disabled(true)
-			if i.has('tooltip'):
-				newbutton.set_tooltip(i.tooltip)
 		else:
 			newbutton.connect('pressed', target, i.function)
+		if i.has('disabled'):
+			newbutton.set_disabled(true)
+		if i.has('tooltip'):
+			newbutton.set_tooltip(i.tooltip)
 		counter += 1
 
 func _on_leave_pressed():
+	gooutside()
 	get_parent().get_node("explorationnode").currentzone = get_parent().get_node("explorationnode").zones[globals.state.location]
-	if globals.state.location == 'wimborn':
-		gooutside()
-		get_parent().get_node("explorationnode").zoneenter(globals.state.location)
+	get_parent().get_node("explorationnode").zoneenter(globals.state.location)
+	#gooutside()
 
 func playergrouppanel():
 	var charpanel
@@ -174,16 +174,13 @@ func usespell(spell, slave):
 	globals.hidetooltip()
 	playergrouppanel()
 
+
 func town():
+	main.get_node("explorationnode").zoneenter('wimborn')
+
+func wimborn():
 	gooutside()
-	main.background_set('wimborn')
-	if OS.get_name() != "HTML5" && globals.rules.fadinganimation == true:
-		yield(main, 'animfinished')
-	get_node("playergrouppanel/VBoxContainer").set_hidden(false)
 	get_node("charactersprite").set_hidden(true)
-	location = 'wimborn'
-	get_node("exploreprogress/locationname").set_text("Wimborn")
-	maintext.set_bbcode("The Wimborn is a lively place at nearly all hours, as the cries of hawkers and shopkeepers vie with the songs of work crews for attention. Along the major roads, most of the buildings have been painted in a riot of colors to break up the monotony of grey-blue brick and plaster covered stone, with many of the storefronts sporting colorful awnings and signs to attract potential customers. Away from the bright colors and raucous noise of the market streets things tend to be restrained, the buildings more grey, and cries more a cause for worry.\n\nThe city is divided into a number of districts, but only a few areas are of interest to you at the moment. To the north are the Market District, and past that Auld Erellon which is the home of the Mage’s Guild and other government bodies. To the west is Red-Lantern and Riverside, where most of the city’s brothels and whorehouses might be found. To the south is the Guild District, where there is always some foreman looking for cheap but reliable labor.")
 	var array = [{name = "Visit the Mage's Order",function = 'mageorder'},{name = "Visit Slaver's Guild", function = 'slaveguild'},{name = "Visit Market District",function = 'market'},{name = "Visit Red Lantern District", function = 'backstreets'},{name = "Leave Town",function = 'outskirts'}]
 	if globals.state.location == 'wimborn':
 		array.append({name = "Return to Mansion",function = 'mansion'})
@@ -194,13 +191,13 @@ func mansion():
 
 func gooutside():
 	get_parent().get_node("hideui").set_hidden(false)
+	get_node("playergrouppanel/VBoxContainer").set_hidden(false)
 	if OS.get_name() != "HTML5" && globals.rules.fadinganimation == true:
 		yield(main, 'animfinished')
 	main.music_set('wimborn')
 	main.checkplayergroup()
 	get_parent().get_node("Navigation").set_hidden(true)
 	main.get_node("buttonpanel").set_hidden(true)
-	#get_parent().hide_everything()
 	main.get_node('MainScreen').set_hidden(true)
 	main.get_node("charlistcontrol").set_hidden(true)
 	set_hidden(false)
@@ -268,7 +265,9 @@ func newslaveinguild(number, town = 'wimborn'):
 
 
 func setcharacter(text):
-	get_node("charactersprite").set_texture(get_parent().spritedict[text])
+	if get_parent().spritedict.has(text):
+		get_node("charactersprite").set_opacity(1)
+		get_node("charactersprite").set_texture(get_parent().spritedict[text])
 
 func slaveguild(guild = 'wimborn'):
 	mindread = false
@@ -1110,7 +1109,7 @@ func mageorder():
 		array.append({name = "Visit Tisha's workplace", function = "tishaquest"})
 	if globals.state.mainquest == 27:
 		array.append({name = "Teleport to Capital", function = 'capitalteleport'})
-	if globals.state.sidequests.maple == 4:
+	if globals.state.sidequests.maple in [4,5]:
 		array.append({name = "Audience Slaver Guild Host", function = 'slaveguildfairy', args = 3})
 	array.append({name = 'Return to city',function = 'town'})
 	buildbuttons(array)
@@ -1429,11 +1428,11 @@ func tishaquest():
 #################### Markets
 
 var shops = {
-wimbornmarket = {code = 'wimbornmarket', sprite = 'merchant', name = "Wimborn's Market", items =  ['food','supply','teleportgorn','teleportfrostford','basicsolutioning','hairdye', 'aphrodisiac' ,'beautypot', 'magicessenceing', 'natureessenceing','armorleather','armorchain','weapondagger','weaponsword','clothsundress','clothmaid','clothbutler','underwearlacy','underwearboxers'], selling = true},
+wimbornmarket = {code = 'wimbornmarket', sprite = 'merchant', name = "Wimborn's Market", items =  ['teleportwimborn','food','supply','bandage','rope','teleportseal', 'basicsolutioning','hairdye', 'aphrodisiac' ,'beautypot', 'magicessenceing', 'natureessenceing','armorleather','armorchain','weapondagger','weaponsword','clothsundress','clothmaid','clothbutler','underwearlacy','underwearboxers'], selling = true},
 shaliqshop = {code = 'shaliqshop', name = "Village's Trader", items = ['hairdye','beautypot','armorleather','clothmiko','clothkimono','clothninja'], selling = true},
-gornmarket = {code = 'gornmarket', name = "Gorn's Market", items = ['food', 'supply','teleportwimborn','teleportfrostford','magicessenceing',"armorleather",'armorchain','weaponclaymore','clothbedlah','accslavecollar','acchandcuffs'], selling = true},
-frostfordmarket = {code = 'frostfordmarket', name = "Frostford's Market", items = ['supply','teleportwimborn','teleportgorn', 'basicsolutioning','bestialessenceing','clothpet', 'weaponsword','accgoldring'], selling = true},
-aydashop = {code = 'aydashop', name = "Gorn's Alchemist", items = ['regressionpot', 'beautypot', 'hairdye', 'basicsolutioning','bestialessenceing','taintedessenceing','fluidsubstanceing'], selling = false},
+gornmarket = {code = 'gornmarket', name = "Gorn's Market", items = ['teleportgorn','food', 'supply','bandage','rope','teleportseal','magicessenceing',"armorleather",'armorchain','weaponclaymore','clothbedlah','accslavecollar','acchandcuffs'], selling = true},
+frostfordmarket = {code = 'frostfordmarket', name = "Frostford's Market", items = ['teleportfrostford', 'supply','bandage','rope','teleportseal', 'basicsolutioning','bestialessenceing','clothpet', 'weaponsword','accgoldring'], selling = true},
+aydashop = {code = 'aydashop', name = "Ayda's Assortments", items = ['regressionpot', 'beautypot', 'hairdye', 'basicsolutioning','bestialessenceing','taintedessenceing','fluidsubstanceing'], selling = false},
 amberguardmarket = {code = 'amberguardmarket', name = "Amberguard's Market", items = ['teleportamberguard','beautypot','bestialessenceing','magicessenceing','fluidsubstanceing','armorelvenchain','armorrobe'], selling = true},
 sebastian = {code = 'sebastian', name = "Sebastian", items = ['teleportumbra'], selling = false},
 blackmarket = {code = 'blackmarket', name = 'Black Market', items = ['accslavecollar','acchandcuffs','armorleather','armorchain','weaponsword'], selling = true}
@@ -1476,7 +1475,7 @@ func shopinitiate(shopname):
 	get_node("shoppanel/Panel/buybutton").set_pressed(false)
 	get_node("shoppanel/Panel/sellbutton").set_pressed(false)
 	if currentshop.has('sprite'):
-		setcharacter('merchant')
+		setcharacter(currentshop.sprite)
 		get_node("AnimationPlayer").play("show")
 	if currentshop.selling == true:
 		get_node("shoppanel/Panel/sellbutton").set_hidden(false)
@@ -1506,7 +1505,7 @@ func shopbuy():
 	
 	for i in currentshop.items:
 		item = globals.itemdict[i]
-		if item.code.find('teleport') >= 0:
+		if item.code.find('teleport') >= 0 && item.code != 'teleportseal':
 			var temp = item.code.replace('teleport', '')
 			if temp == globals.state.location || globals.state.portals[temp].enabled == true:
 				continue
@@ -1656,7 +1655,7 @@ func _on_buysellbutton_pressed():
 				get_parent().infotext("[color=green]Obtained: " + item.name + "[/color]")
 		if item.code in ['food']:
 			get_parent().get_node("itemnode").call(item.effect)
-		elif item.code.find('teleport') >= 0:
+		elif item.code.find('teleport') >= 0 && item.code != 'teleportseal':
 			get_parent().get_node("itemnode").call(item.effect, item)
 			selecteditem = null
 			shopbuy()
@@ -1681,6 +1680,9 @@ func _on_buysellbutton_pressed():
 
 func shopclose():
 	get_node("shoppanel").set_hidden(true)
+	if currentshop.has('sprite'):
+		get_node("AnimationPlayer").play_backwards("show")
+		#get_node("charactersprite").set_hidden(true)
 
 ####QUESTS
 
@@ -2014,7 +2016,6 @@ func brothel(slave = null):
 		if slave.work == 'prostitution' || slave.work == 'escort' || slave.work == 'fucktoy':
 			text = text + slave.dictionary('\nYou can see $name waiting for clients here.')
 	maintext.set_bbcode(text)
-	main.background_set('brothel')
 	var array = [{name = 'Return', function = 'backstreets'}]
 	if globals.state.sidequests.brothel == 0:
 		array.insert(0,{name = 'Ask about letting your servants work here', function = 'brothelquest'})
@@ -2106,7 +2107,10 @@ func _on_details_pressed():
 		get_node("playergroupdetails/quicksell").set_tooltip("Requires Slaver's guild present nearby. ")
 
 func itemtooltip(item):
-	get_node("playergroupdetails/itemdescript").set_bbcode('[center]' + item.name + '[/center]\n' + item.description + '\n\n[color=red]Click to discard')
+	var text ='[center]' + item.name + '[/center]\n' + item.description + '\nWeight: ' + str(item.weight)+  '\n\n[color=red]Click to discard'
+	if item.code in ['bandage', 'teleportseal']:
+		text += '\n\n[color=yellow]To use on party members click on their respective panel. [/color]'
+	get_node("playergroupdetails/itemdescript").set_bbcode(text)
 
 func itembackpackdrop(item):
 	globals.state.backpack.stackables[item.code] -= 1

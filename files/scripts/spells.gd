@@ -203,6 +203,10 @@ func mindreadeffect():
 func sedationeffect():
 	var spell = globals.spelldict.sedation
 	globals.resources.mana -= spell.manacost
+	if slave.effects.has('sedated'):
+		main.popup(slave.dictionary("You cast Sedation spell on the $name but it appears $he is already under its effect. "))
+		return
+	slave.add_effect(globals.effectdict.sedated)
 	slave.stress -= rand_range(20,30) + globals.player.smaf*6
 	if slave.obed < 40:
 		slave.obed += rand_range(20,30)
@@ -242,7 +246,7 @@ func invigorateeffect():
 	var spell = globals.spelldict.invigorate
 	globals.resources.mana -= spell.manacost
 	slave.energy = slave.stats.energy_max/2
-	slave.stress += rand_range(30,35)-globals.player.smaf*4
+	slave.stress += rand_range(25,35)-globals.player.smaf*4
 	globals.player.energy = 50
 	main.popup(slave.dictionary("You cast Invigorate on $name. Your and $his energy is partly restored. $His stress has increased. "))
 

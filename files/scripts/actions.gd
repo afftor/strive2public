@@ -30,7 +30,7 @@ func _on_actions_visibility_changed():
 	var tab = get_parent().tab
 	var text
 	player = globals.player
-	slave = globals.currentslave
+	slave = get_parent().slave
 	var dict = {}
 	for i in get_tree().get_nodes_in_group('actions'):
 		if i.get_meta("cost") > globals.player.energy :
@@ -287,7 +287,7 @@ func actionbuttons(button):
 	get_parent()._on_slave_tab_visibility_changed()
 
 
-func _on_getridof_pressed():
+func release():
 	get_tree().get_current_scene().yesnopopup(slave.dictionary("[color=red]Let $name leave? You can't cancel this action.[/color]"),'getridof')
 
 
@@ -368,16 +368,20 @@ func _on_talk_pressed():
 	var state = true
 	var sprite = []
 	var buttons = []
+	var text = ''
 	var nakedspritesdict = get_parent().get_node("sexual").nakedspritesdict
 	if slave.unique == 'Cali' && globals.state.sidequests.cali in [12,13,22]:
 		globals.events.calitalk0()
 		return
-	if slave.unique in ['Cali','Tisha','Emily', 'Chloe','Maple']:
+	if nakedspritesdict.has(slave.unique):
 		if slave.obed >= 80 && slave.stress < 50:
 			sprite = [[nakedspritesdict[slave.unique].clothcons, 'pos1', 'opac']]
 		else:
 			sprite = [[nakedspritesdict[slave.unique].clothrape, 'pos1', 'opac']]
-	var text = 'You ask $name about $his life. \n'
+	text = "You summon $name to your appartments. "
+	if slave.rules.silence:
+		text = "After giving $him a permission to talk, you begin a conversation. "
+	text += '\n\n'
 	if slave.obed < 50:
 		text = text + "— I don't wanna talk with you after all you've done!\n"
 	elif slave.traits.has('Sex-crazed') == true:
@@ -408,7 +412,9 @@ func _on_talk_pressed():
 		text += "\n\n[color=yellow]Your investigation shown, that " + slave.dictionary(slave.levelupreqs.speech) + '[/color]'
 		if slave.levelupreqs.activate == 'fromtalk':
 			buttons.append({text = slave.levelupreqs.button, function = 'levelup', args = slave.levelupreqs.effect})
-	
+	buttons.append({text = slave.dictionary("Release $name"), function = 'release'})
+	buttons.append({text = slave.dictionary("Praise"), function = 'praise'})
+	buttons.append({text = slave.dictionary("Punish"), function = 'Punish'})
 	get_tree().get_current_scene().dialogue(state, self, slave.dictionary(text), buttons, sprite)
 
 

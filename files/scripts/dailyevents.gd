@@ -112,9 +112,11 @@ func showevent():
 		button.connect("pressed", self, currentevent, [i[1]])
 	if slave.imageportait != null:
 			if File.new().file_exists(slave.imageportait) == true:
+				get_node("textpanel/Panel").set_hidden(false)
 				get_node("textpanel/portrait").set_texture(load(slave.imageportait))
 			else:
 				slave.imageportait = null
+				get_node("textpanel/Panel").set_hidden(true)
 				get_node("textpanel/portrait").set_texture(null)
 
 func finishevent():

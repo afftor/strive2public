@@ -32,7 +32,7 @@ unlocked = false, name = 'Chloe', descript = chardescript.chloe, sprite = 'chloe
 scenes = [{code = 'chloemana', name = 'Mana harvest', unlocked = false, text = 'Trade with Benefits'}, {code = 'chloeforest', name = 'Gnome in need', unlocked = false, text = 'An accident in the forest'}]
 },
 yris = {
-unlocked = false, name = 'Yris', descript = chardescript.yris, sprite = 'null', naked = 'null', nakedunlocked = false, 
+unlocked = false, name = 'Yris', descript = chardescript.yris, sprite = 'yrisnormal', naked = 'yrisnormalnaked', nakedunlocked = false, 
 scenes = [{code = 'yrisblowjob', name = 'First Bet', unlocked = false, text = 'Her bets can be tough'}, {code = 'yrissex', name = 'Second Bet', unlocked = false, text = 'Eventual success'}, {code = 'yrissex2', name = 'Third Bet', unlocked = false, text = 'A Breakthrough'}]
 },
 zoe = {

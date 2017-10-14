@@ -798,12 +798,12 @@ func resolution(text = ''):
 			i.state = 'defeated'
 			text += '\n[color=yellow]'+ i.name + ' has been defeated. [/color]'
 			if i.person != null:
-				var escapechance = (globals.originsarray.find(i.person.origin)+1)*15
+				var escapechance = (globals.originsarray.find(i.person.origins)+1)*15
 				if rand_range(0,100) < escapechance:
 					if counter > 1 && i.effects.has('shackleeffect'):
 						i.state = 'captured'
 						text += '\n[color=yellow]'+ i.name + ' has been defeated and subdued unable to escape. [/color]'
-					elif trapper == true && rand_range(0,100) <= 33:
+					elif trapper == true && rand_range(0,100) <= 50:
 						i.state = 'captured'
 						text += '\n[color=yellow]'+ i.name + ' has attempted to escape, but walked right into ' + trappername + "'s trap and was quickly subdued by your group. [/color]"
 					elif counter == 1:

@@ -335,7 +335,7 @@ trapper = {
 name = "Trapper",
 code = 'trapper',
 descript = "Trappers are generally common professionals you can find in any slavers party. They are also reasonably well trained in hunting. ",
-descriptbonus = "Bonus hunting +20%, 1/3 chance to automatically capture escaping person, bonus capture rate. ",
+descriptbonus = "Bonus hunting +20%, 50% chance to automatically capture escaping person, bonus capture rate. ",
 descriptreqs = "Wit 50+, Grade: Commoner and above ",
 reqs = "slave.wit >= 50 && !slave.origins in ['slave','poor']"
 },

@@ -5,7 +5,7 @@ var itemdict = {}
 var spelldict = {}
 var effectdict = {}
 var guildslaves = {wimborn = [], gorn = [], frostford = [], umbra = []}
-var gameversion = 5000
+var gameversion = 5100
 var state = progress.new()
 var developmode = false
 var gameloaded = false
@@ -35,7 +35,7 @@ var wimbornraces = ['Human', 'Elf', 'Dark Elf', 'Demon', 'Beastkin Cat', 'Beastk
 var gornraces = ['Human', 'Orc', 'Goblin', 'Gnome', 'Taurus', 'Centaur','Beastkin Cat', 'Beastkin Tanuki','Beastkin Bunny', 'Halfkin Cat','Halfkin Bunny','Halfkin Bunny', 'Harpy']
 var frostfordraces = ['Human','Elf','Drow','Beastkin Cat', 'Beastkin Wolf', 'Beastkin Fox', 'Beastkin Tanuki','Beastkin Bunny', 'Halfkin Cat', 'Halfkin Wolf', 'Halfkin Fox','Halfkin Bunny','Halfkin Bunny', 'Nereid']
 var allracesarray = ['Human', 'Elf', 'Dark Elf', 'Orc', 'Drow','Beastkin Cat', 'Beastkin Wolf', 'Beastkin Fox','Beastkin Tanuki','Beastkin Bunny', 'Halfkin Cat', 'Halfkin Wolf', 'Halfkin Fox','Halfkin Tanuki','Halfkin Bunny','Taurus', 'Demon', 'Seraph', 'Gnome','Goblin','Centaur','Lamia','Arachna','Scylla', 'Slime', 'Harpy','Dryad','Fairy','Nereid','Dragonkin']
-var banditraces = ['Human', 'Elf', 'Dark Elf', 'Demon', 'Beastkin Cat', 'Beastkin Wolf','Beastkin Tanuki','Beastkin Bunny', 'Halfkin Cat', 'Halfkin Wolf','Taurus','Orc','Goblin']
+var banditraces = ['Human', 'Elf', 'Dark Elf', 'Demon', 'Cat', 'Wolf','Bunny','Taurus','Orc','Goblin']
 var monsterraces = ['Centaur','Lamia','Arachna','Scylla', 'Slime', 'Harpy','Nereid']
 var specarray = ['geisha','ranger','executor','bodyguard','assassin','housekeeper','trapper','nympho','merchant','tamer']
 var player = slave.new()
@@ -81,6 +81,12 @@ chloenakedshy = load("res://files/images/chloe/chloenakedshy.png"),
 chloeneutral2 = load("res://files/images/chloe/chloeneutral2.png"),
 aydanormal = load("res://files/images/aydanormal.png"),
 aydanormal2 = load("res://files/images/aydanormal2.png"),
+yrisnormal = load("res://files/images/yris/yrisnormaldressed.png"),
+yrisalt = load("res://files/images/yris/yrisaltdressed.png"),
+yrisshock = load("res://files/images/yris/yrisshockdressed.png"),
+yrisnormalnaked = load("res://files/images/yris/yrisnormalnaked.png"),
+yrisaltnaked = load("res://files/images/yris/yrisaltnaked.png"),
+yrisshocknaked = load("res://files/images/yris/yrisshocknaked.png"),
 }
 
 var musicdict = {
@@ -105,7 +111,6 @@ wimborn = load("res://files/backgrounds/town.png"),
 mageorder = load("res://files/backgrounds/mageorder.png"),
 slaverguild = load("res://files/backgrounds/slaveguild.png"),
 market = load("res://files/backgrounds/market.jpg"),
-brothel = load("res://files/backgrounds/brothel.jpg"),
 library = load("res://files/backgrounds/library.jpg"),
 forest = load("res://files/backgrounds/forest.jpg"),
 shaliq = load("res://files/backgrounds/shaliq.jpg"),
@@ -413,22 +418,23 @@ class progress:
 	var capturedgroup = []
 	var ghostrep = {wimborn = 0, frostford = 0, gorn = 0, amberguard = 0}
 	var backpack = {stackables = {}, unstackables = []}
+	var restday = 0
 	
 	func calculateweight():
 		var slave
 		var tempitem
 		var currentweight = 0
-		var maxweight = 5 + globals.player.sstr*3
+		var maxweight = 10 + globals.player.sstr*5
 		for i in globals.state.playergroup:
 			slave = globals.state.findslave(i)
-			maxweight += slave.sstr*3 + 3
+			maxweight += slave.sstr*5 + 5
 		for i in globals.state.backpack.stackables:
 			if globals.itemdict[i].has('weight'):
 				currentweight += globals.itemdict[i].weight * globals.state.backpack.stackables[i]
 		for i in globals.state.backpack.unstackables:
 			if i.has('weight'):
 				currentweight += i.weight
-		var dict = {currentweight = currentweight, maxweight =maxweight }
+		var dict = {currentweight = currentweight, maxweight = maxweight}
 		return dict
 	
 	func reputation_set(value):
@@ -542,6 +548,7 @@ class slave:
 	var forcedsex = false
 	var metrics = {ownership = 0, jail = 0, mods = 0, brothel = 0, sex = 0, partners = [], randompartners = 0, item = 0, spell = 0, orgy = 0, threesome = 0, win = 0, capture = 0, goldearn = 0, foodearn = 0, manaearn = 0, birth = 0, preg = 0, vag = 0, anal = 0, oral = 0, roughsex = 0, roughsexlike = 0, orgasm = 0}
 	var fromguild = false
+	var masternoun = 'Master'
 	var stats = {
 		str_cur = 0,
 		str_max = 0,
@@ -983,7 +990,7 @@ class slave:
 		string = string.replace('$sibling', globals.fastif(sex == 'male', 'brother', 'sister'))
 		string = string.replace('$sir', globals.fastif(sex == 'male', 'Sir', "Ma'am"))
 		string = string.replace('$race', globals.decapitalize(race).replace('_', ' '))
-		string = string.replace('$master', globals.fastif(globals.player.sex == 'male', 'Master', "Mistress"))
+		string = string.replace('$master', masternoun)
 		string = string.replace('$haircolor', haircolor)
 		string = string.replace('$eyecolor', eyecolor)
 		return string
@@ -1180,7 +1187,6 @@ static func count_sleepers():
 
 func showtooltip(text):
 	get_tree().get_current_scene().get_node("tooltip/RichTextLabel").set_bbcode(text)
-	#get_tree().get_current_scene().get_node("tooltip").set_size(get_tree().get_current_scene().get_node("tooltip/RichTextLabel").get_size())
 	var pos = get_tree().get_current_scene().get_global_mouse_pos()
 	pos = Vector2(pos.x+20, pos.y+20)
 	get_tree().get_current_scene().get_node("tooltip").set_pos(pos)
@@ -1191,10 +1197,12 @@ func showtooltip(text):
 	tooltipsize = get_tree().get_current_scene().get_node("tooltip").get_rect()
 	if tooltipsize.pos.y + tooltipsize.size.y >= screen.size.y:
 		get_tree().get_current_scene().get_node("tooltip").set_pos(Vector2(tooltipsize.pos.x, tooltipsize.pos.y + (screen.size.y - (tooltipsize.pos.y + tooltipsize.size.y))-10))
-
 	get_tree().get_current_scene().get_node("tooltip").set_hidden(false)
 	get_tree().get_current_scene().get_node("tooltip").set_as_toplevel(true)
-	#if get_tree().get_current_scene().get_node("tooltip/RichTextLabel").
+	yield(get_tree(), "idle_frame")
+	get_tree().get_current_scene().get_node("tooltip/RichTextLabel").set_size(Vector2(get_tree().get_current_scene().get_node("tooltip/RichTextLabel").get_size().width, get_tree().get_current_scene().get_node("tooltip/RichTextLabel").get_v_scroll().get_max()))
+	get_tree().get_current_scene().get_node("tooltip").set_size(Vector2(get_tree().get_current_scene().get_node("tooltip").get_size().x, get_tree().get_current_scene().get_node("tooltip/RichTextLabel").get_size().y + 30))
+
 
 func hidetooltip():
 	get_tree().get_current_scene().get_node("tooltip").set_hidden(true)
@@ -1298,6 +1306,18 @@ var statsdict = {sstr = 'Strength', sagi = 'Agility', smaf = "Magic Affinity", s
 var maxstatdict = {sstr = 'str_max', sagi = 'agi_max', smaf = 'maf_max', send = 'end_max', cour = 'cour_max', conf = 'conf_max', wit = 'wit_max', charm = 'charm_max'}
 var statsdescript = dictionary.statdescription
 var sleepdict = {communal = {name = 'Communal Room'}, jail = {name = "Jail"}, personal = {name = 'Personal Room'}, your = {name = "Your bed"}}
+
+
+func itemdescription(item):
+	var text = ''
+	text = '[center]' + item.name + '[/center]\n' + item.description
+	if item.has('owner'):
+		text += '\n\n'
+		for i in item.effects:
+			text += i.descript + "\n"
+	if item.has('weight'):
+		text += "\n\n[color=yellow]Weight: " + str(item.weight) + "[/color]"
+	return text
 
 #saveload system
 func save():
@@ -1538,5 +1558,13 @@ func buildportrait(node, slave):
 		node.add_child(newlayer)
 		newlayer.set_texture(imagedict[i][slave[i]])
 
-
-
+func checkfurryrace(text):
+	if text in ['Cat','Wolf','Fox','Bunny','Tanuki']:
+		if rules.furry == true:
+			if rand_range(0,1) >= 0.5:
+				text = 'Halfkin ' + text
+			else:
+				text = 'Beastkin ' + text
+		else:
+			text = 'Halfkin ' + text
+	return text

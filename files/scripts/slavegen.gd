@@ -160,11 +160,6 @@ static func newslave(race, age, sex, origins = 'slave'):
 		globals.currentslave = slave
 		if globals.evaluate(globals.jobs.specs[spec].reqs) == true:
 			slave.spec = spec
-#	for i in globals.specarray[rand_range(0,globals.specarray.size())]:
-#		globals.currentslave = slave
-#		var spec = globals.jobs.specs[i]
-#		if globals.evaluate(i.reqs) == true:
-#			slave.spec = globals.jobs.specs[i.code].code
 	return slave
 
 static func getsexactions(slave):

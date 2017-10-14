@@ -3,10 +3,10 @@ extends Node
 
 static func getHeights(slave):
 	var text
-	if slave['bodyshape'] != 'shortstack':
-		text = [ 'petite', 'short', 'average', 'tall', 'towering' ]
+	if slave.bodyshape != 'shortstack':
+		text = ['petite', 'short', 'average', 'tall', 'towering']
 	else:
-		text = [ 'tiny' ]
+		text = ['tiny']
 	return text
 
 static func getSkinColors(slave):
@@ -20,8 +20,8 @@ static func getSkinColors(slave):
 	"Slime" : ['jelly'],
 	"Nereid" : ['teal', 'blue', 'pale blue']
 	}
-	if (text2.has(slave['race'])):
-		text = text2[slave['race']]
+	if (text2.has(slave.race)):
+		text = text2[slave.race]
 	return text
 
 static func getHornTypes(slave):
@@ -31,8 +31,8 @@ static func getHornTypes(slave):
 	"Dragonkin" : ['short', 'long_straight', 'curved'],
 	"Taurus" : ['long_straight'],
 	}
-	if (text2.has(slave['race'])):
-		text = text2[slave['race']]
+	if text2.has(slave.race):
+		text = text2[slave.race]
 	return text
 
 
@@ -44,8 +44,8 @@ static func getWings(slave):
 	"Dragonkin" : ['leather_black', 'leather_red'],
 	"Seraph" : ['feathered_black', 'feathered_white', 'feathered_brown'],
 	}
-	if (text2.has(slave['race'])):
-		text = text2[slave['race']]
+	if text2.has(slave.race):
+		text = text2[slave.race]
 	return text
 
 
@@ -58,8 +58,8 @@ static func getFurColors(slave):
 	"Beastkin Bunny" : ['white', 'gray'],
 	"Beastkin Tanuki" : ['black_gray'],
 	}
-	if (text2.has(slave['race'])):
-		text = text2[slave['race']]
+	if text2.has(slave.race):
+		text = text2[slave.race]
 	return text
 
 static func getRandomFurColor():
@@ -69,42 +69,42 @@ static func getRandomFurColor():
 
 static func getRandomName(slave):
 	var text = {}
-	if (slave.race == 'Human' && slave.sex != 'male'):
-		text['name'] = getRandomHumanFName()
-		text['surname'] = getRandomHumanSurname()
+	if slave.race == 'Human' && slave.sex != 'male':
+		text.name = getRandomHumanFName()
+		text.surname = getRandomHumanSurname()
 	elif (slave.race == 'Human' && slave.sex == 'male'):
-		text['name'] = getRandomHumanMName()
-		text['surname'] = getRandomHumanSurname()
+		text.name = getRandomHumanMName()
+		text.surname = getRandomHumanSurname()
 	elif ((slave.race == 'Elf'|| slave.race == 'Dark Elf' || slave.race == 'Drow') && slave.sex != 'male'):
-		text['name'] = getRandomFElfName()
-		text['surname'] = getRandomElfSurname()
+		text.name = getRandomFElfName()
+		text.surname = getRandomElfSurname()
 	elif ((slave.race == 'Elf'|| slave.race == 'Dark Elf' || slave.race == 'Drow') && slave.sex == 'male'):
-		text['name'] = getRandomMElfName()
-		text['surname'] = getRandomElfSurname()
+		text.name = getRandomMElfName()
+		text.surname = getRandomElfSurname()
 	elif slave.race.find('Beastkin') >= 0 || (slave.race.find('Halfkin') >= 0 && rand_range(0,1)>0.6) :
 		if slave.sex != 'male':
-			text['name'] = getRandomHumanFName()
+			text.name = getRandomHumanFName()
 		else:
-			text['name'] = getRandomHumanMName()
+			text.name = getRandomHumanMName()
 		text.surname = getRandomFurrySurname()
 	elif ((slave.race == 'Orc'|| slave.race == 'Goblin') && slave.sex != 'male'):
-		text['name'] = getRandomFOrcName()
-		text['surname'] = getRandomOrcSurname()
+		text.name = getRandomFOrcName()
+		text.surname = getRandomOrcSurname()
 	elif ((slave.race == 'Orc'|| slave.race == 'Goblin') && slave.sex == 'male'):
-		text['name'] = getRandomMOrcName()
-		text['surname'] = getRandomOrcSurname()
+		text.name = getRandomMOrcName()
+		text.surname = getRandomOrcSurname()
 	elif ((slave.race == 'Demon') && slave.sex != 'male'):
-		text['name'] = getRandomFDemonName()
-		text['surname'] = getRandomHumanSurname()
+		text.name = getRandomFDemonName()
+		text.surname = getRandomHumanSurname()
 	elif ((slave.race == 'Demon') && slave.sex == 'male'):
-		text['name'] = getRandomMDemonName()
-		text['surname'] = getRandomHumanSurname()
+		text.name = getRandomMDemonName()
+		text.surname = getRandomHumanSurname()
 	elif slave.sex != 'male':
-		text['name'] = getRandomHumanFName()
-		text['surname'] = getRandomHumanSurname()
+		text.name = getRandomHumanFName()
+		text.surname = getRandomHumanSurname()
 	else:
-		text['name'] = getRandomHumanMName()
-		text['surname'] = getRandomHumanSurname()
+		text.name = getRandomHumanMName()
+		text.surname = getRandomHumanSurname()
 	return text
 
 static func getRandomSex():
@@ -119,13 +119,13 @@ static func getRandomSex():
 
 static func getRandomAge():
 	var text = []
-	if (globals.rules['children'] == true):
+	if globals.rules['children'] == true:
 		text.append('child')
 	
-	if (globals.rules ['teens'] == true):
+	if globals.rules['teens'] == true:
 		text.append('teen')
 	
-	if (globals.rules ['adults'] == true):
+	if globals.rules['adults'] == true:
 		text.append('adult')
 	
 	return text[rand_range(0, text.size())]
@@ -233,15 +233,15 @@ static func getRandomHairAnyColor():
 
 static func getHairLengthBase(slave):
 	var text = '';
-	if (slave.sex == 'male'):
+	if slave.sex == 'male':
 		text = getRandomHairLengthShort()
 	else:
-		if (slave.age == 'child'):
+		if slave.age == 'child':
 			if (rand_range(0, 10) >= 8):
 				text = getRandomHairLengthLong()
 			else:
 				text = getRandomHairLengthNormal()
-		elif (slave.age != 'child' && rand_range(0,10) > 4):
+		elif slave.age != 'child' && rand_range(0,10) > 4:
 			text = getRandomHairLengthLong() 
 		else:
 			text = getRandomHairLengthLong()
@@ -250,11 +250,11 @@ static func getHairLengthBase(slave):
 static func getRandomHairStyle(slave):
 	var text = [];
 	
-	if (slave['hairlength'] != 'short' && rand_range(0,10) < 6):
+	if slave.hairlength != 'short' && rand_range(0,10) < 6:
 		text = ['ponytail', 'twintails', 'braid', 'two braids', 'bun']
 	else:
 		text = ['straight']
-	if (slave['sex'] == 'male'):
+	if slave.sex == 'male':
 		text = ['straight', 'straight', 'straight', 'straight', 'ponytail']
 	return text[rand_range(0, text.size())]
 
@@ -310,28 +310,28 @@ static func getSexFeatures(slave):
 	var penis = {}
 	var pussy = {}
 	
-	if (slave['race'].find("Beastkin") >= 0 && globals.rules['furrynipples'] == true):
-		tits['extrapairs'] = 3
+	if slave.race.find("Beastkin") >= 0 && globals.rules.furrynipples == true:
+		tits.extrapairs = 3
 	
-	if (sex != 'male'):
-			if (age == 'child'):
-				height = [ 'petite', 'short']
+	if sex != 'male':
+			if age == 'child':
+				height = ['petite', 'short']
 				titssize = ['flat', 'small']
 				ass = titssize
-			elif (age == 'teen'):
-				height = [ 'petite', 'short', 'short', 'average', 'average', 'average', 'tall' ]
+			elif age == 'teen':
+				height = ['petite', 'short', 'short', 'average', 'average', 'average', 'tall' ]
 				titssize = ['flat', 'small','average','big']
 				ass = titssize
-			elif (age == 'adult'):
+			elif age == 'adult':
 				height = [ 'short', 'short', 'average', 'average', 'average', 'tall', 'tall', 'towering']
 				titssize = ['small','average','big', 'huge']
 				ass = titssize
 			
-	elif (sex == 'male'):
+	elif sex == 'male':
 		penisnumber = 1
-		pussy['has'] = false
-		pussy['virgin'] = false
-		if (age == 'child'):
+		pussy.has = false
+		pussy.virgin = false
+		if age == 'child':
 			height = [ 'petite', 'short']
 			titssize = ['flat']
 			ass = ['flat']
@@ -344,65 +344,65 @@ static func getSexFeatures(slave):
 			penissize = ['small','average','big']
 			balls = ['small', 'average', 'big']
 		
-	if (sex == 'futanari' && globals.rules['futa'] == true): #check for futas to be allowed
+	if sex == 'futanari' && globals.rules.futa == true: #check for futas to be allowed
 		penisnumber = 1
-		if (age == 'child'):
+		if age == 'child':
 			penissize = ['small', 'average']
 		else:
 			penissize = ['small','average','big']
 			
-	if (globals.rules['futaballs'] == true && sex == 'futanari'): #// check for balls to be allowed
-		if (age == 'child'):
+	if globals.rules.futaballs == true && sex == 'futanari': #// check for balls to be allowed
+		if age == 'child':
 			balls = ['small', 'average']
 		else:
 			balls = ['small', 'average', 'big'];
-	elif (sex != 'male'):
+	elif sex != 'male':
 		balls = ['none']
 		
 		
-	if (sex == 'female'):
+	if sex == 'female':
 		penissize = ['none']
 		balls = ['none']
-	elif (sex == 'male'):
-		pussy['has'] = false
+	elif sex == 'male':
+		pussy.has = false
 		
-	if (sex != 'male') :
-		pussy['has'] = true
-		pussy['virgin'] = false
-		if (age == 'child' && rand_range(0,12) < 10):
-			pussy['virgin'] = true
-		elif (age == 'teen'):
-			if (rand_range(0,10) >= 4):
-				pussy['virgin'] = false
+	if sex != 'male':
+		pussy.has = true
+		pussy.virgin = false
+		if age == 'child' && rand_range(0,12) < 10:
+			pussy.virgin = true
+		elif age == 'teen':
+			if rand_range(0,10) >= 4:
+				pussy.virgin = false
 			else:
-				pussy['virgin'] = true
-		elif (age == 'adult'):
+				pussy.virgin = true
+		elif age == 'adult':
 			if (rand_range(0,10) >= 3):
-				pussy['virgin'] = false
+				pussy.virgin = false
 			else: 
-				pussy['virgin'] = true
+				pussy.virgin = true
 		else:
-			pussy['virgin'] = false
+			pussy.virgin = false
 		
-		if (bodyshape == 'shortstack'):
+		if bodyshape == 'shortstack':
 			height = ['tiny']
-	if (penissize != 'none' && slave['race'].find('Beastkin') >= 0):
-		if (slave['race'].find('Cat') >= 0):
+	if penissize != 'none' && slave.race.find('Beastkin') >= 0:
+		if slave.race.find('Cat') >= 0:
 			penistype = 'feline'
-		elif (slave['race'].find('Fox') >= 0 || slave['race'].find('Wolf') >= 0):
+		elif slave.race.find('Fox') >= 0 || slave.race.find('Wolf') >= 0:
 			penistype = 'canine'
-	if (penissize != 'none' && slave['race'].find('Centaur') >= 0):
+	if penissize != 'none' && slave.race.find('Centaur') >= 0:
 		penistype = 'equine'
 	
-	penis['type'] = penistype
-	penis['size'] = penissize[rand_range(0, penissize.size())]
-	penis['number'] = penisnumber
-	tits['size'] = titssize[rand_range(0, titssize.size())]
-	rval['tits'] = tits
-	rval['ass'] = ass[rand_range(0, ass.size())]
-	rval['height'] = height[rand_range(0, height.size())]
-	rval['penis'] = penis
-	rval['balls'] = balls[rand_range(0, balls.size())]
-	rval['pussy'] = pussy
-	return rval;
+	penis.type = penistype
+	penis.size = penissize[rand_range(0, penissize.size())]
+	penis.number = penisnumber
+	tits.size = titssize[rand_range(0, titssize.size())]
+	rval.tits = tits
+	rval.ass = ass[rand_range(0, ass.size())]
+	rval.height = height[rand_range(0, height.size())]
+	rval.penis = penis
+	rval.balls = balls[rand_range(0, balls.size())]
+	rval.pussy = pussy
+	return rval
 

@@ -257,7 +257,7 @@ static func getFeatures(slave):
 	feathered_black =  'On $hisback, $he has folded, [color=aqua]black, feathery wings[/color]. ',
 	feathered_white =  'On $hisback, $he has folded, [color=aqua]white, feathery wings[/color]. ',
 	feathered_brown =  'On $hisback, $he has folded, [color=aqua]brown, feathery wings[/color]. ',
-	insect = 'On $hisback rests translucent [color=aqua]fairy wings[/color]. ',
+	insect = 'On $his back rests translucent [color=aqua]fairy wings[/color]. ',
 	leather_black = 'Hidden on $his back is a pair of bat-like, [color=aqua]black leather wings[/color]. ',
 	leather_red = 'Hidden on $his back is a pair of bat-like, [color=aqua]red leather wings[/color]. ',
 	}

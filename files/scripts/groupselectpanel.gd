@@ -7,7 +7,7 @@ func show():
 	get_parent().checkplayergroup()
 	get_parent()._on_mansion_pressed()
 	if OS.get_name() != 'HTML5' && globals.rules.fadinganimation == true:
-		yield(self, 'animfinished')
+		yield(get_parent(), 'animfinished')
 	set_hidden(false)
 	for i in get_node("grouppanel/ScrollContainer/VBoxContainer").get_children():
 		if i != get_node("grouppanel/ScrollContainer/VBoxContainer/Button"):
@@ -154,10 +154,10 @@ func moveitemtoinventory(button):
 	itemtooltiphide()
 
 func itemtooltip(item):
-	var text = '[center]'+item.name + '[/center]\n' +item.description 
-	if item.has('weight'):
-		text += "\n\nWeight: [color=yellow]" + str(item.weight)+"[/color]"
-	globals.showtooltip(text)
+#	var text = '[center]'+item.name + '[/center]\n' +item.description 
+#	if item.has('weight'):
+#		text += "\n\nWeight: [color=yellow]" + str(item.weight)+"[/color]"
+	globals.showtooltip(globals.itemdescription(item))
 
 func itemtooltiphide():
 	globals.hidetooltip()

@@ -2,12 +2,12 @@ extends Node
 
 
 var alisesprites = {
-neutral = {costume1 = load('res://files/images/alise/005.png'), costume2 = load('res://files/images/alise/018.png'), naked = load('res://files/images/alise/025.png')},
-happy1 = {costume1 = load('res://files/images/alise/003.png'), costume2 = load('res://files/images/alise/016.png'), naked = load('res://files/images/alise/026.png')},
+neutral = {costume1 = load('res://files/images/alise/006.png'), costume2 = load('res://files/images/alise/018.png'), naked = load('res://files/images/alise/025.png')},
+happy1 = {costume1 = load('res://files/images/alise/004.png'), costume2 = load('res://files/images/alise/016.png'), naked = load('res://files/images/alise/026.png')},
 happy2 = {costume1 = load('res://files/images/alise/008.png'), costume2 = load('res://files/images/alise/020.png'), naked = load('res://files/images/alise/027.png')},
-wink1 = {costume1 = load('res://files/images/alise/006.png'), costume2 = load('res://files/images/alise/015.png'), naked = load('res://files/images/alise/028.png')},
+wink1 = {costume1 = load('res://files/images/alise/003.png'), costume2 = load('res://files/images/alise/015.png'), naked = load('res://files/images/alise/028.png')},
 wink2 = {costume1 = load('res://files/images/alise/009.png'), costume2 = load('res://files/images/alise/021.png'), naked = load('res://files/images/alise/029.png')},
-side = {costume1 = load('res://files/images/alise/002.png'), costume2 = load('res://files/images/alise/017.png'), naked = load('res://files/images/alise/030.png')},
+side = {costume1 = load('res://files/images/alise/005.png'), costume2 = load('res://files/images/alise/017.png'), naked = load('res://files/images/alise/030.png')},
 }
 
 

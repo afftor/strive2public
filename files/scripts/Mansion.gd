@@ -24,7 +24,7 @@ func _input(event):
 		if i.is_visible() == true:
 			anythingvisible = true
 			break
-	if event.is_echo() == true || event.is_pressed() == false || anythingvisible:
+	if event.is_echo() == true || event.is_pressed() == false || anythingvisible || get_node("screenchange/AnimationPlayer").is_playing():
 		if event.is_action_pressed("escape") == true && get_node("tutorialnode").is_visible() == true:
 			get_node("tutorialnode").close()
 		return
@@ -126,10 +126,6 @@ func _ready():
 		get_node("buttonpanel/leavenode").set_hidden(true)
 	
 	
-	
-
-
-
 
 
 
@@ -223,9 +219,11 @@ func _on_combatgroup_pressed():
 
 
 func getridof():
-	if globals.state.companion == currentslave:
-		globals.state.companion = -1
-	globals.slaves.remove(get_tree().get_current_scene().currentslave)
+	var slave = get_tree().get_current_scene().currentslave
+	if get_node("dialogue").is_visible():
+		popup(globals.slaves[slave].dictionary("You've released $name and $he left your household. "))
+		close_dialogue()
+	globals.slaves.remove(slave)
 	rebuild_slave_list()
 	if get_node("MainScreen").is_visible():
 		_on_nobutton_pressed()
@@ -1601,9 +1599,12 @@ func dialogue(showclose, destination, dialogtext, dialogbuttons = null, sprites 
 		buttons.add_child(newbutton)
 	if sprites != null:
 		for i in sprites:
-			if i.size() > 2 :
-				get_node("AnimationPlayer").play(i[2])
-			nodedict[i[1]].set_texture(spritedict[i[0]])
+			if !spritedict.has(i[0]):
+				continue
+			else:
+				if i.size() > 2 :
+					get_node("AnimationPlayer").play(i[2])
+				nodedict[i[1]].set_texture(spritedict[i[0]])
 
 func dialoguebuttons(array, destination, counter):
 	var newbutton = get_node("dialogue/popupbuttoncenter/popupbuttons/Button").duplicate()
@@ -1663,19 +1664,15 @@ func mainmenu():
 func _on_cancelsaveload_pressed():
 	get_node("menucontrol/menupanel/SavePanel").set_hidden(true)
 
+var yesbutton = {target = null, function = null}
+
 func yesnopopup(text, yesfunc, target = self):
-	var newbutton
-	for i in get_node("menucontrol/yesnopopup/yesbuttoncontainer").get_children():
-		i.set_hidden(true)
-		i.queue_free()
+	if yesbutton.target != null:
+		get_node("menucontrol/yesnopopup/HBoxContainer/yesbutton").disconnect("pressed",yesbutton.target,yesbutton.function)
+	get_node("menucontrol/yesnopopup/HBoxContainer/yesbutton").connect('pressed',target,yesfunc,[],4)
+	yesbutton.target = target
+	yesbutton.function = yesfunc
 	get_node("menucontrol/yesnopopup/Label").set_bbcode(text)
-	newbutton = Button.new()
-	newbutton.set_text('Yes')
-	get_node("menucontrol/yesnopopup/yesbuttoncontainer").add_child(newbutton)
-	newbutton.set_size(newbutton.get_parent().get_size())
-	newbutton.connect('pressed', target, yesfunc)
-	newbutton.connect('pressed', self, "_on_yesbutton_pressed")
-	newbutton.set_hidden(false)
 	get_node("menucontrol/yesnopopup").popup()
 
 
@@ -2025,6 +2022,7 @@ func _on_jailsettings_pressed():
 func _on_jailerclose_pressed():
 	get_node("MainScreen/mansion/jailpanel/jailsettings/jailsettingspanel").set_hidden(true)
 
+var potselected
 
 func _on_alchemy_pressed():
 	background_set('alchemy')
@@ -2034,20 +2032,9 @@ func _on_alchemy_pressed():
 	get_node("MainScreen/mansion/alchemypanel").set_hidden(false)
 	if globals.state.tutorial.alchemy == false:
 		get_node("tutorialnode").alchemy()
-
-var potselected
-
-func chloealchemy():
-	globals.events.chloealchemy()
-
-func _on_alchemypanel_visibility_changed():
-	if get_node("MainScreen/mansion/alchemypanel").is_visible() == false:
-		return
 	if globals.state.sidequests.chloe == 8 && globals.state.mansionupgrades.mansionalchemy >= 1:
 		globals.events.chloealchemy()
 	potselected = ''
-	if get_node("MainScreen/mansion/alchemypanel").is_hidden() == true:
-		return
 	var potlist = get_node("MainScreen/mansion/alchemypanel/ScrollContainer/selectpotionlist")
 	var potline = get_node("MainScreen/mansion/alchemypanel/ScrollContainer/selectpotionlist/selectpotionline")
 	var maintext = get_node("MainScreen/mansion/alchemypanel/alchemytext")
@@ -2058,7 +2045,7 @@ func _on_alchemypanel_visibility_changed():
 		maintext.set_hidden(false)
 		return
 	else:
-		get_node("MainScreen/mansion/alchemypanel/alchemytext").set_bbcode("This is your alchemy room. ")
+		get_node("MainScreen/mansion/alchemypanel/alchemytext").set_bbcode("This is your alchemy room. Chemistry equipment is ready to use and shelves contain your fresh ingredients.")
 		get_node("MainScreen/mansion/alchemypanel/potdescription").set_bbcode('')
 		for i in get_node("MainScreen/mansion/alchemypanel").get_children():
 			i.set_hidden(false)
@@ -2081,7 +2068,15 @@ func _on_alchemypanel_visibility_changed():
 			newpotline.get_node("potbutton").set_text(i.name)
 			newpotline.get_node("potbutton").connect('pressed', self, 'brewlistpressed', [i])
 			newpotline.set_name(i.name)
+	alchemyclear()
 
+func alchemyclear():
+	get_node("MainScreen/mansion/alchemypanel/Label").set_hidden(true)
+	get_node("MainScreen/mansion/alchemypanel/Label1").set_hidden(true)
+	for i in get_node("MainScreen/mansion/alchemypanel/VBoxContainer").get_children():
+		if i.get_name() != 'Panel':
+			i.set_hidden(true)
+			i.queue_free()
 
 func brewlistpressed(potion):
 	potselected = potion
@@ -2094,17 +2089,28 @@ func brewlistpressed(potion):
 	for i in recipedict:
 		array.append(i)
 	array.sort_custom(get_node("itemnode"),'sortbytype')
+	alchemyclear()
+	get_node("MainScreen/mansion/alchemypanel/Label").set_hidden(false)
+	get_node("MainScreen/mansion/alchemypanel/Label1").set_hidden(false)
 	for i in array:
 		var item = globals.itemdict[i]
-		if item.type == 'potion':
-			text = text +'[color=yellow]' + item.name + '[/color] - ' + str(recipedict[i]*counter) + '/'
-		else:
-			text = text + item.name + ' - ' + str(recipedict[i]*counter) + '/'
-		if item.amount >= recipedict[i]*counter:
-			text = text + str(item.amount) + '\n'
-		else:
-			text = text + '[color=red]' + str(item.amount) + '[/color]\n'
+		var newpanel = get_node("MainScreen/mansion/alchemypanel/VBoxContainer/Panel").duplicate()
+		get_node("MainScreen/mansion/alchemypanel/VBoxContainer/").add_child(newpanel)
+		newpanel.set_hidden(false)
+		newpanel.get_node("icon").set_texture(item.icon)
+		newpanel.get_node("icon").connect("mouse_enter",globals, 'showtooltip', [item.description])
+		newpanel.get_node("icon").connect("mouse_exit",globals, 'hidetooltip')
+		newpanel.get_node('name').set_text(item.name)
+		newpanel.get_node("number").set_text(str(recipedict[i]*counter))
+		newpanel.get_node("totalnumber").set_text(str(item.amount))
+		if item.amount < recipedict[i]*counter:
+			newpanel.get_node("totalnumber").set('custom_colors/font_color', Color(1,0,0))
 			brewable = false
+#		if item.type == 'potion':
+#			text = text +'[color=yellow]' + item.name + '[/color] - ' + str(recipedict[i]*counter) + '/'
+#		else:
+#			text = text + item.name + ' - ' + str(recipedict[i]*counter) + '/'
+			
 	text = text + '\n[color=white]'+ potselected.name + ': ' + '[color=green]' + potselected.description + '\n'		
 	for i in get_tree().get_nodes_in_group('alchemypot'):
 		if i.get_text() != potion.name && i.is_pressed() == true:
@@ -2131,6 +2137,8 @@ func _on_brewcounter_value_changed( value ):
 	if typeof(potselected) != 4:
 		brewlistpressed(potselected)
 
+func chloealchemy():
+	globals.events.chloealchemy()
 
 var loredict = globals.dictionary.loredict
 
@@ -2198,7 +2206,7 @@ var mainquestdict = {
 '7' : "Visit Melissa for your next task.",
 '8' : "Set up a laboratory. You can buy tools at Mage's Order. Then return to Melissa.",
 '9' : "Return to Melissa.",
-'10': "Bring Melissa a Taurus girl with huge lactating tits. ",
+'10': "Bring Melissa a Taurus girl with huge lactating tits. Size can be altered with certain potions. ",
 '11': "Visit Melissa for your next mission. ",
 '12': "Melissa told you to travel to Gorn and find the Orc named Garthor. ",
 '13': "Garthor from Gorn ordered you to capture and bring Dark Elf Ivran who you can find at Gorn's outskirts.",
@@ -3195,7 +3203,8 @@ func _on_startcombat_pressed():
 		for j in ['sstr','sagi','smaf','send','wit','cour','conf','charm','health']:
 			i[j] = 100
 	get_node("outside").gooutside()
-	get_node("explorationnode").zoneenter("amberguardforest")
+	globals.state.backpack.stackables.rope = 3
+	get_node("explorationnode").zoneenter("wimbornoutskirts")
 	#get_node("combat").start_battle()
 
 func checkplayergroup():
@@ -3489,7 +3498,6 @@ func sortitems():
 			else:
 				button.get_node("Label").set_text(i.name)
 				button.get_node("Label").set_hidden(false)
-				#button.get_node("icon").set_texture(globals.noimage)
 			button.connect("pressed",self,"itemselected",[button])
 			button.connect("mouse_enter",self,'itemhovered',[button])
 			button.connect("mouse_exit",self,'itemunhovered',[button])

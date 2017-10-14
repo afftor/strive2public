@@ -27,12 +27,12 @@ combat = true,
 code = 'wimbornoutskirts',
 name = 'Wimborn Outskirts',
 description = "The rural road leads across green plains and various settlements. Bright scenery puts you at peace. ",
-enemies = [{value = 'slaverseasy', weight = 1},{value = 'peasant', weight = 2},{value = 'banditseasy', weight = 2},{value = 'thugseasy',weight = 3}],
+enemies = [{value = 'peasant', weight = 2},{value = 'banditseasy', weight = 1},{value = 'thugseasy',weight = 3}],
 encounters = [],
 length = 5,
 exits = ['wimborn','forest', 'prairie'],
 tags = ['wimborn'],
-races = [{value = 'Taurus', weight = 1},{value = 'Elf', weight = 2},{value = 'Human', weight = 12}],
+races = [{value = 'Taurus', weight = 2}, {value = 'Cat', weight = 1},{value = 'Human', weight = 12}],
 },
 prairie = {
 background = 'highlands',
@@ -41,12 +41,12 @@ combat = true,
 code = 'prairie',
 name = 'Prairies',
 description = "Long trading route goes through the wide prairies. Rarely you can spot mixed settlements and lone estates. ",
-enemies = [{value = 'banditsmedium', weight = 2},{value = 'slaverseasy', weight = 1},{value = 'peasant', weight = 2},{value = 'banditseasy', weight = 4},{value = 'thugseasy',weight = 3},{value = 'wolveseasy', weight = 6}],
+enemies = [{value = 'banditsmedium', weight = 2},{value = 'slaverseasy', weight = 1},{value = 'peasant', weight = 2},{value = 'banditseasy', weight = 3}],
 encounters = [],
 length = 5,
 exits = ['wimbornoutskirts','gornoutskirts','sea'],
 tags = ['wimborn'],
-races = [{value = 'Elf', weight = 2},{value = 'Human', weight = 12}]
+races = [{value = 'Orc', weight = 6},{value = 'Human', weight = 4}, {value = 'Cat', weight = 1}, {value = 'Bunny', weight = 1}]
 },
 
 forest = {
@@ -61,7 +61,7 @@ encounters = [['chloeforest','globals.state.sidequests.chloe in [0,1]',10]],
 length = 5,
 exits = ['shaliq', 'wimbornoutskirts', 'elvenforest'],
 tags = ['wimborn'],
-races = [{value = 'Elf', weight = 2}, {value = 'Beastkin Wolf', weight = 1},{value = 'Halfkin Bunny',weight = 1},{value = 'Beastkin Bunny', weight = 1},{value = 'Halfkin Wolf', weight = 1},{value = 'Human', weight = 10}]
+races = [{value = 'Elf', weight = 2}, {value = 'Wolf', weight = 1}, {value = 'Bunny', weight = 1}, {value = 'Human', weight = 10}]
 },
 
 elvenforest = {
@@ -71,12 +71,12 @@ combat = true,
 code = 'elvenforest',
 name = 'Deep Elven Grove',
 description = "This portion of the forest is located dangerously close to eleven lands. They take poorly to intruders in their part of the woods so you should remain on your guard.",
-enemies = [{value = 'fairy', weight = 1},{value = 'thugseasy', weight = 3},{value = 'solobear', weight = 3}, {value = 'peasantgroup', weight = 4}, {value = 'peasant', weight = 3},{value = 'elfguards',weight = 3},{value = 'banditseasy',weight = 3},{value = 'plantseasy', weight = 3},{value = 'wolveseasy', weight = 5}],
+enemies = [{value = 'fairy', weight = 1},{value = 'solobear', weight = 3},{value = 'elfguards',weight = 3},{value = 'plantseasy', weight = 3},{value = 'wolveseasy', weight = 5}],
 encounters = [],
 length = 5,
 exits = ['amberguard','forest'],
 tags = ['amberguard'],
-races = [{value = 'Dark Elf', weight = 3},{value = 'Drow', weight = 1},{value = 'Elf', weight = 10}]
+races = [{value = 'Drow', weight = 1},{value = 'Elf', weight = 12},{value = 'Bunny', weight = 2},{value = 'Tanuki', weight = 2}]
 },
 
 
@@ -87,7 +87,7 @@ combat = true,
 code = 'amberguardforest',
 name = 'Amber Road',
 description = "Amber Road is a long way through seeming glade and various small settlements and hills. ",
-enemies = [{value = 'solobear',weight = 1}, {value = 'wolveshard', weight = 3}, {value ='direwolveseasy', weight = 5}],
+enemies = [{value = 'solobear',weight = 1}, {value = 'wolveshard', weight = 3}, {value ='direwolveseasy', weight = 5}, {value = 'elfguards',weight = 3},],
 encounters = [['aynerisencounter','globals.state.sidequests.ayneris in [0,1,2]',15]],
 length = 4,
 exits = ['amberguard','witchhut','undercityentrance'],
@@ -95,20 +95,97 @@ tags = ['amberguard'],
 races = [{value = "Elf", weight = 100}]
 },
 
-witchhut = {
-background = 'amberroad',
-reqs = 'globals.state.mainquest >= 21',
-combat = false,
-code = 'witchhut',
-name = 'Lone Hut',
-description = "You come across a lone wooden hut hidden in the thicket. ",
-enemies = [],
-encounters = [],
-length = 1,
-exits = ['witchhut'],
-tags = [],
-races = []
+grove = {
+background = 'grove',
+reqs = "true",
+combat = true,
+code = 'grove',
+name = 'Far Eerie Woods',
+description = "This portion of the forest is deeply shadowed, and strange sounds drift in and out of hearing. Something about the atmosphere keeps the normal forest creatures silent, lending an eerie, mystic feeling to the grove you stand within.",
+enemies = [{value = 'dryad',weight = 2},  {value = 'fairy', weight = 2},{value = 'wolveshard', weight = 4},{value = 'plantseasy',weight = 5}],
+encounters = [['chloegrove','globals.state.sidequests.chloe == 6',25],['snailevent','globals.state.mansionupgrades.farmhatchery >= 1 && globals.state.snails < 10',10]],
+length = 7,
+exits = ['shaliq','marsh'],
+tags = ['wimborn'],
+races = [{value = 'Fairy', weight = 3},{value = "Dryad", weight = 2}]
 },
+
+marsh = {
+background = 'marsh',
+reqs = "true",
+combat = true,
+code = 'marsh',
+name = 'Marsh',
+description = "Dank bog lies at the border of the forest and swamps beyond. Noxious smells and a sinister aura prevail throughout. The landscape itself is hostile, with pitch-black pools of water mixed among the solid ground and you doubt that the creatures that live here are any more pleasant than the land they live in.",
+enemies = [{value = 'banditcamp',weight = 1},{value = 'monstergirl', weight = 1}, {value = 'oozesgroup', weight = 2}, {value = 'solospider', weight = 5}],
+encounters = [],
+length = 6,
+exits = ['frostfordoutskirts','grove'],
+tags = ['frostford'],
+races = [{value = 'Arachna', weight = 1},{value = 'Lamia', weight = 2},{value = 'Slime', weight = 2}, {value = 'Demon', weight = 5}]
+},
+
+mountains = {
+background = 'mountains',
+reqs = "true",
+combat = true,
+code = 'mountains',
+name = 'Mountains',
+description = "You climb over small hills in search for any activity in these elevated grounds.",
+enemies = [{value = 'slaversmedium', weight = 1},{value = 'harpy', weight = 2},{value = 'banditsmedium', weight = 3}, {value = 'fewcougars', weight = 4}],
+encounters = [],
+length = 6,
+exits = ['gornoutskirts'],
+tags = ['gorn'],
+races = [{value = 'Dragonkin', weight = 1},{value = 'Seraph', weight = 2.5},{value = 'Gnome', weight = 3},{value = 'Centaur', weight = 2},{value = 'Goblin', weight = 4},{value = 'Orc', weight = 8}]
+},
+
+sea = {
+background = 'sea',
+reqs = "true",
+combat = true,
+code = 'sea',
+name = 'Sea',
+description = "You are at the beach of a Big Sea. Air smells of salt and you can spot some sea caves formed by plateau and incoming waves.",
+enemies = [{value = 'banditcamp', weight = 1},{value = 'monstergirl', weight = 3},{value = 'travelersgroup', weight = 5},{value = 'oozesgroup', weight = 5}],
+encounters = [],
+length = 5,
+exits = ['prairie'],
+tags = ['gorn'],
+races = [{value = 'Scylla', weight = 1},{value = 'Lamia', weight = 1},{value = 'Nereid', weight = 3}]
+},
+
+gornoutskirts = {
+background = 'highlands',
+reqs = "true",
+combat = true,
+code = 'gornoutskirts',
+name = 'Gorn Outskirts',
+description = "The town's outskirts look bright and green. ",
+enemies = [{value = 'slaverseasy', weight = 1},{value = 'peasant', weight = 1},{value = 'banditseasy', weight = 3},{value = 'thugseasy', weight = 3},{value = 'wolveseasy', weight = 5}],
+encounters = [],
+length = 5,
+exits = ['gorn','prairie'],
+tags = ['gorn'],
+races = [{value = 'Centaur', weight = 1},{value = 'Goblin', weight = 4},{value = 'Orc', weight = 12}]
+},
+
+
+frostfordoutskirts = {
+background = 'borealforest',
+reqs = "true",
+combat = true,
+code = 'frostfordoutskirts',
+name = 'Frostford Outskirts',
+description = "Main road quickly branches off at thick boreal forest. Even though Frostford is considerably dense in population, its periphery is far less inhabitable due to harsh climat. You make your way through semi-utilized forest paths paying attention to the surroundings. ",
+enemies = [{value = 'banditsmedium', weight = 2},{value = 'travelersgroup', weight = 1.5},{value = 'peasant', weight = 2},{value = 'thugseasy', weight = 2},{value = 'solobear', weight = 4}],
+encounters = [],
+length = 5,
+exits = ['frostford','marsh','frostfordclearing'],
+tags = ['frostford'],
+races = [{value = 'Halfkin Fox', weight = 1},{value = 'Beastkin Fox', weight = 1},{value = 'Halfkin Cat', weight = 2},{value = 'Beastkin Cat', weight = 2},{value = 'Halfkin Wolf', weight = 6},{value = 'Beastkin Wolf', weight = 6},{value = 'Human', weight = 5}]
+},
+
 
 undercityentrance = {
 background = 'mountains',
@@ -167,66 +244,21 @@ exits = ['undercityhall'],
 tags = ['noreturn'],
 races = []
 },
-grove = {
-background = 'grove',
-reqs = "true",
-combat = true,
-code = 'grove',
-name = 'Far Eerie Woods',
-description = "This portion of the forest is deeply shadowed, and strange sounds drift in and out of hearing. Something about the atmosphere keeps the normal forest creatures silent, lending an eerie, mystic feeling to the grove you stand within.",
-enemies = [{value = 'dryad',weight = 2}, {value = 'solobear', weight = 1}, {value = 'fairy', weight = 2},{value = 'wolveshard', weight = 4},{value = 'plantseasy',weight = 5}, {value = 'wolveseasy', weight = 5}],
-encounters = [['chloegrove','globals.state.sidequests.chloe == 6',25],['snailevent','globals.state.mansionupgrades.farmhatchery >= 1 && globals.state.snails < 10',10]],
-length = 7,
-exits = ['forest','marsh'],
-tags = ['wimborn'],
-races = [{value = 'Fairy', weight = 3},{value = "Dryad", weight = 2}]
-},
 
-marsh = {
-background = 'marsh',
-reqs = "true",
-combat = true,
-code = 'marsh',
-name = 'Marsh',
-description = "Dank bog lies at the border of the forest and swamps beyond. Noxious smells and a sinister aura prevail throughout. The landscape itself is hostile, with pitch-black pools of water mixed among the solid ground and you doubt that the creatures that live here are any more pleasant than the land they live in.",
-enemies = [{value = 'banditcamp',weight = 1},{value = 'monstergirl', weight = 1}, {value = 'oozesgroup', weight = 2}, {value = 'solospider', weight = 5}, {value = 'solobear', weight = 2}],
+witchhut = {
+background = 'amberroad',
+reqs = 'globals.state.mainquest >= 21',
+combat = false,
+code = 'witchhut',
+name = 'Lone Hut',
+description = "You come across a lone wooden hut hidden in the thicket. ",
+enemies = [],
 encounters = [],
-length = 6,
-exits = ['frostfordoutskirts','grove'],
-tags = ['frostford'],
-races = [{value = 'Arachna', weight = 1},{value = 'Lamia', weight = 2},{value = 'Slime', weight = 2}, {value = 'Demon', weight = 5}]
+length = 1,
+exits = ['witchhut'],
+tags = [],
+races = []
 },
-
-mountains = {
-background = 'mountains',
-reqs = "true",
-combat = true,
-code = 'mountains',
-name = 'Mountains',
-description = "You climb over small hills in search for any activity in these elevated grounds.",
-enemies = [{value = 'slaversmedium', weight = 1},{value = 'harpy', weight = 2},{value = 'banditsmedium', weight = 3},{value = 'travelersgroup', weight = 2},{value = 'fewcougars', weight = 4}],
-encounters = [],
-length = 6,
-exits = ['gornoutskirts'],
-tags = ['gorn'],
-races = [{value = 'Dragonkin', weight = 1},{value = 'Seraph', weight = 2.5},{value = 'Gnome', weight = 3},{value = 'Centaur', weight = 2},{value = 'Goblin', weight = 3},{value = 'Orc', weight = 6}]
-},
-
-sea = {
-background = 'sea',
-reqs = "true",
-combat = true,
-code = 'sea',
-name = 'Sea',
-description = "You are at the beach of a Big Sea. Air smells of salt and you can spot some sea caves formed by plateau and incoming waves.",
-enemies = [{value = 'banditcamp', weight = 1},{value = 'monstergirl', weight = 3},{value = 'travelersgroup', weight = 5},{value = 'oozesgroup', weight = 5}],
-encounters = [],
-length = 5,
-exits = ['gornoutskirts'],
-tags = ['gorn'],
-races = [{value = 'Scylla', weight = 1},{value = 'Lamia', weight = 1},{value = 'Nereid', weight = 3}]
-},
-
 shaliq = {
 background = 'shaliq',
 reqs = "true",
@@ -262,7 +294,7 @@ reqs = "true",
 combat = false,
 code = 'wimborn',
 name = 'Wimborn',
-description = "Though the weather is commonly hot, the streets are rich with many kinds of races. Orcs and goblins are the most prevalent citizens, and small traders can be seen virtually everywhere, however, you can still frequently notice some humans, gnomes and even centaurs among the bystanders. Rare Orc Guard Patrols keep their eyes out for any potential troublemakers. ",
+description = "The Wimborn is a lively place at nearly all hours, as the cries of hawkers and shopkeepers vie with the songs of work crews for attention. Along the major roads, most of the buildings have been painted in a riot of colors to break up the monotony of grey-blue brick and plaster covered stone, with many of the storefronts sporting colorful awnings and signs to attract potential customers. Away from the bright colors and raucous noise of the market streets things tend to be restrained, the buildings more grey, and cries more a cause for worry.\n\nThe city is divided into a number of districts, but only a few areas are of interest to you at the moment. To the north are the Market District, and past that Auld Erellon which is the home of the Mage’s Guild and other government bodies. To the west is Red-Lantern and Riverside, where most of the city’s brothels and whorehouses might be found. To the south is the Guild District, where there is always some foreman looking for cheap but reliable labor.",
 enemies = [],
 encounters = [],
 length = 0,
@@ -295,37 +327,6 @@ encounters = [],
 length = 0,
 exits = ['gornalchemist'],
 tags = [],
-},
-
-gornoutskirts = {
-background = 'highlands',
-reqs = "true",
-combat = true,
-code = 'gornoutskirts',
-name = 'Gorn Outskirts',
-description = "The town's outskirts look bright and green. ",
-enemies = [{value = 'slaverseasy', weight = 1},{value = 'peasant', weight = 1},{value = 'banditseasy', weight = 3},{value = 'thugseasy', weight = 3},{value = 'wolveseasy', weight = 5}],
-encounters = [],
-length = 5,
-exits = ['gorn','gornoutskirts'],
-tags = ['gorn'],
-races = [{value = 'Centaur', weight = 1},{value = 'Goblin', weight = 4},{value = 'Orc', weight = 12}]
-},
-
-
-frostfordoutskirts = {
-background = 'borealforest',
-reqs = "true",
-combat = true,
-code = 'frostfordoutskirts',
-name = 'Frostford Outskirts',
-description = "Main road quickly branches off at thick boreal forest. Even though Frostford is considerably dense in population, its periphery is far less inhabitable due to harsh climat. You make your way through semi-utilized forest paths paying attention to the surroundings. ",
-enemies = [{value = 'banditsmedium', weight = 2},{value = 'travelersgroup', weight = 1.5},{value = 'peasant', weight = 2},{value = 'thugseasy', weight = 2},{value = 'solobear', weight = 4}],
-encounters = [],
-length = 5,
-exits = ['frostford','marsh','frostfordclearing'],
-tags = ['frostford'],
-races = [{value = 'Halfkin Fox', weight = 1},{value = 'Beastkin Fox', weight = 1},{value = 'Halfkin Cat', weight = 2},{value = 'Beastkin Cat', weight = 2},{value = 'Halfkin Wolf', weight = 6},{value = 'Beastkin Wolf', weight = 6},{value = 'Human', weight = 5}]
 },
 
 frostfordclearing = {
@@ -369,47 +370,6 @@ exits = ['amberguard'],
 tags = [],
 races = [],
 },
-
-#wimbornoutskirts = {
-#background = 'meadows',
-#reqs = "true",
-#combat = false,
-#code = 'wimbornoutskirts',
-#name = 'Wimborn Outskirts',
-#description = "From here you may choose what area you would like to scout. ",
-#enemies = [],
-#encounters = [],
-#length = 0,
-#exits = ['wimbornoutskirts'],
-#tags = [],
-#},
-
-#gornoutskirts = {
-#background = 'highlands',
-#reqs = "true",
-#combat = false,
-#code = 'gornoutskirts',
-#name = 'Gorn Outskirts',
-#description = "You walk out of Gorn and get far away from its walls until road brings you to the intersection. These arid areas lead to moutains and cave systems. You can feel sun getting hotter over your head.",
-#enemies = [],
-#encounters = [],
-#length = 0,
-#exits = ['gornoutskirts'],
-#tags = [],
-#},
-
-#frostfordoutskirts = {
-#background = 'borealforest',
-#reqs = "true",
-#combat = false,
-#code = 'frostfordoutskirts',
-#name = 'Frostford Outskirts',
-#description = "Main road quickly branches off at thick boreal forest. Even though Frostford is considerably dense in population, its periphery is far less inhabitable due to harsh climat. ",
-#enemies = [],
-#encounters = [],
-#length = 0,
-#exits = ['frostfordoutskirts']
-#},
 }
 
 var buttoncontainer
@@ -431,6 +391,7 @@ func zoneenter(zone):
 	else:
 		lastzone = currentzone.code
 	zone = self.zones[zone]
+	outside.location = zone.code
 	main.background_set(zone.background)
 	if OS.get_name() != "HTML5" && globals.rules.fadinganimation == true:
 		yield(main, "animfinished")
@@ -456,7 +417,10 @@ func zoneenter(zone):
 	currentzone = zone
 	outside.clearbuttons()
 	text = '[center]'+ zone.name + '[/center]' + globals.fastif(deeperregion == true, ' [Deep Area]', '')
-	outside.maintext.set_bbcode(text+ '\n\n'+ zone.description)
+	text += '\n\n'+ zone.description
+	if zone.code in ['wimborn','gorn','amberguard','frostford']:
+		text += "\n\n[color=yellow]You can use public teleport to return to mansion from this location.[/color]"
+	outside.maintext.set_bbcode(text)
 	if zone.combat == false:
 		call(zone.exits[0])
 		return
@@ -468,6 +432,13 @@ func zoneenter(zone):
 			var temp = self.zones[i]
 			if globals.evaluate(temp.reqs) == true:
 				array.append({name = 'Move to ' + temp.name, function = 'zoneenter', args = temp.code})
+		if globals.state.backpack.stackables.has('supply') && globals.state.backpack.stackables.supply >= 3 && globals.state.playergroup.size()*5+5 <= globals.resources.food:
+			array.append({name = "Rest and eat", function = 'rest', tooltip = 'Requires 3 units of supplies and 5 food per party member'})
+		else:
+			array.append({name = "Rest and eat", function = 'rest', disabled = true, tooltip = 'Requires 3 units of supplies and 5 food per party member'})
+		if globals.state.restday == globals.resources.day:
+			array[array.size()-1].disabled = true
+			array[array.size()-1].tooltip = 'Can only be done once per day'
 		progress = 0
 		if deeperregion == false:
 			array.insert(0,{name = 'Move deeper into the region', function = 'deepzone', args = currentzone.code})
@@ -475,6 +446,7 @@ func zoneenter(zone):
 		else:
 			array.insert(0,{name = 'Return to the central region', function = 'zoneenter', args = currentzone.code})
 			array.insert(0,{name = 'Stay in the deeper region', function = 'deepzone', args = currentzone.code})
+		deeperregion = false
 		outside.buildbuttons(array, self)
 	else:
 		array.append({name = "Proceed through area", function = 'enemyencounter'})
@@ -482,13 +454,13 @@ func zoneenter(zone):
 			array.append({name = "Skip", function = 'areaskip'})
 	if globals.state.sidequests.cali == 19 && zone.code == 'forest':
 		array.append({name = "Look for bandits' camp", function = 'event',args = 'calibanditcamp'})
-	elif (globals.state.sidequests.cali == 23 || globals.state.sidequests.cali == 24) && zone.code == 'wimbornoutskirtsexplore':
+	elif (globals.state.sidequests.cali == 23 || globals.state.sidequests.cali == 24) && zone.code == 'wimbornoutskirts':
 		array.append({name = "Visit slaver's camp", function = 'event',args = 'calislavercamp'})
-	elif (globals.state.sidequests.cali == 25) && zone.code == 'wimbornoutskirtsexplore':
+	elif (globals.state.sidequests.cali == 25) && zone.code == 'wimbornoutskirts':
 		array.append({name = "Find the Bandit",function = 'event',args = 'calistraybandit'})
 	elif (globals.state.sidequests.cali == 26) && zone.code == 'grove':
 		array.append({name = "Find Cali's village",function = 'event',args = 'calireturnhome'})
-	if globals.state.mainquest == 13 && zone.code == 'gornoutskirtsexplore':
+	if globals.state.mainquest == 13 && zone.code == 'gornoutskirts':
 		array.append({name = "Search for Ivran's location",function = 'event',args = 'gornivran'})
 	if zone.code == 'undercitytunnels' && progress >= 6 && globals.state.lorefound.find('amberguardlog1') < 0:
 		globals.state.lorefound.append('amberguardlog1')
@@ -496,9 +468,9 @@ func zoneenter(zone):
 	if zone.code == 'undercityruins' && progress >= 5 && globals.state.lorefound.find('amberguardlog2') < 0:
 		globals.state.lorefound.append('amberguardlog2')
 		outside.maintext.set_bbcode(outside.maintext.get_bbcode() + "[color=yellow]\n\nYou've found some old writings in the ruins. Does not look like what you came for, but you can read them later.[/color]")
-	if zone.code == 'frostfordoutskirtsexplore' && globals.state.mainquest in [27,30,32] && progress >= 5:
+	if zone.code == 'frostfordoutskirts' && globals.state.mainquest in [27,30,32] && progress >= 5:
 		array.append({name = "Explore hunting grounds to South-East", function = 'event', args = 'frostforddryad'})
-	if zone.code == 'frostfordoutskirtsexplore' && globals.state.sidequests.zoe == 1 && progress >= 3:
+	if zone.code == 'frostfordoutskirts' && globals.state.sidequests.zoe == 1 && progress >= 3:
 		globals.state.sidequests.zoe = 2
 		main.dialogue(true, self, globals.questtext.MainQuestFrostfordBeforeForestZoe, [], null)
 	if progress == 0 && lastzone != zone.code:
@@ -508,6 +480,24 @@ func zoneenter(zone):
 func deepzone(currentzonecode):
 	deeperregion = true
 	zoneenter(currentzonecode)
+
+
+func rest():
+	globals.state.backpack.stackables.supply -= 2
+	globals.player.health = globals.player.stats.health_max/4
+	globals.player.energy = globals.player.stats.energy_max
+	globals.resources.food -= 5
+	for i in globals.state.playergroup:
+		var slave = globals.state.findslave(i)
+		slave.health = slave.stats.health_max/4
+		slave.energy = slave.stats.energy_max
+		slave.stress -= slave.stress/1.5
+		globals.resources.food -= 5
+	outside.playergrouppanel()
+	progress = currentzone.length
+	globals.state.restday = globals.resources.day
+	zoneenter(currentzone.code)
+	get_parent().popup("You set up a small camp and take a rest with your party. ")
 
 func frostfordclearing():
 	event('frostforddryad')
@@ -610,6 +600,7 @@ func enemyencounter():
 						if rand < ii[1]:
 							race = ii[0]
 							break
+				race = globals.checkfurryrace(race)
 				if i.capturesex.find('any') >= 0:
 					sex = 'random'
 				else:
@@ -656,6 +647,7 @@ func enemyencounter():
 							sex = i[0]
 							break
 				rand = rand_range(0,100)
+				race = globals.checkfurryrace(race)
 				age = globals.weightedrandom(slave.agepool)
 				origins = globals.weightedrandom(slave.originspool)
 				if deeperregion == true && globals.originsarray.find(origins) < 4 && rand_range(0,1) > 0.3:
@@ -901,12 +893,16 @@ func enemydefeated():
 				if i == 'gold':
 					goldearned += round(rand_range(unit.rewardgold[0], unit.rewardgold[1]))
 				else:
-					var item = globals.itemdict[i]
-					if item.type != 'gear':
-						if enemyloot.stackables.has(item.code):
-							enemyloot.stackables[item.code] += 1
+					if globals.itemdict.has(i):
+						var item = globals.itemdict[i]
+						if item.type != 'gear':
+							if enemyloot.stackables.has(item.code):
+								enemyloot.stackables[item.code] += 1
+							else:
+								enemyloot.stackables[item.code] = 1
 						else:
-							enemyloot.stackables[item.code] = 1
+							var tempitem = get_parent().get_node("itemnode").createunstackable(item.code)
+							enemyloot.unstackables.append(tempitem)
 		expearned += unit.rewardexp
 	if deeperregion:
 		expearned *= 1.2
@@ -986,10 +982,28 @@ func mindreadslave(slave):
 	buildcapturelist()
 
 func captureslave(slave):
+	var location
 	globals.state.backpack.stackables.rope -= 1
 	if globals.state.backpack.stackables.rope <= 0:
 		globals.state.backpack.stackables.erase('rope')
+	var effect = globals.effectdict.captured
+	var dict = {'slave':0.7, 'poor':1,'commoner':1.2,"rich": 2, "noble": 4}
+	effect.duration = round((4 + (slave.conf+slave.cour)/20) * dict[slave.origins])
+	slave.add_effect(effect)
+	if slave.race in ['Lamia','Arachna','Harpy','Nereid','Slime','Scylla','Dryad','Fairy']:
+		slave.add_trait(globals.origins.trait('Uncivilized'))
 	globals.state.capturedgroup.append(slave)
+	if defeated.names[defeated.units.find(slave)] == 'Captured':
+		if currentzone.tags.find("wimborn") >= 0:
+			location = 'wimborn'
+		elif currentzone.tags.find("frostford") >= 0:
+			location = 'frostford'
+		elif currentzone.tags.find("gorn") >= 0:
+			location = 'gorn'
+		elif currentzone.tags.find("amberguard") >= 0:
+			location = 'amberguard'
+		globals.state.reputation[location] -= 1
+	defeated.names.remove(defeated.units.find(slave))
 	defeated.units.erase(slave)
 	buildcapturelist()
 	builditemlists()
@@ -1013,6 +1027,19 @@ func builditemlists():
 		newbutton.set_meta("item", tempitem)
 		newbutton.connect("mouse_enter", self, 'itemtooltip', [tempitem])
 		newbutton.connect("mouse_exit", self, 'itemtooltiphide')
+	for i in enemyloot.unstackables:
+		newbutton = get_node("winningpanel/lootpanel/enemyloot/VBoxContainer/Button").duplicate()
+		get_node("winningpanel/lootpanel/enemyloot/VBoxContainer").add_child(newbutton)
+		newbutton.set_hidden(false)
+		if i.icon != null:
+			newbutton.get_node("image").set_texture(load(i.icon))
+		newbutton.connect("pressed",self,'moveitemtobackpack',[newbutton])
+		newbutton.set_meta("item", i)
+		newbutton.get_node("amount").set_hidden(true)
+		newbutton.connect("mouse_enter", self, 'itemtooltip', [i])
+		newbutton.connect("mouse_exit", self, 'itemtooltiphide')
+	
+	
 	
 	for i in globals.state.backpack.stackables:
 		tempitem = globals.itemdict[i]
@@ -1042,21 +1069,11 @@ func builditemlists():
 func calculateweight():
 	var slave
 	var tempitem
-	var currentweight = 0
-	var maxweight = 5 + globals.player.sstr*3
-	for i in globals.state.playergroup:
-		slave = globals.state.findslave(i)
-		maxweight += slave.sstr*3 + 3
-	for i in globals.state.backpack.stackables:
-		if globals.itemdict[i].has('weight'):
-			currentweight += globals.itemdict[i].weight * globals.state.backpack.stackables[i]
-	for i in globals.state.backpack.unstackables:
-		if i.has('weight'):
-			currentweight += i.weight
+	var weight = globals.state.calculateweight()
 	
-	get_node("winningpanel/lootpanel/weightmeter/Label").set_text("Weight: " + str(currentweight) + '/' + str(maxweight))
-	get_node("winningpanel/lootpanel/weightmeter/").set_val((currentweight*10/max(maxweight,1)*10))
-	if currentweight > maxweight:
+	get_node("winningpanel/lootpanel/weightmeter/Label").set_text("Weight: " + str(weight.currentweight) + '/' + str(weight.maxweight))
+	get_node("winningpanel/lootpanel/weightmeter/").set_val((weight.currentweight*10/max(weight.maxweight,1)*10))
+	if weight.currentweight > weight.maxweight:
 		get_node("winningpanel/confirmwinning").set_tooltip("Reduce carry weight before proceeding")
 		get_node("winningpanel/confirmwinning").set_disabled(true)
 	else:
@@ -1075,7 +1092,7 @@ func moveitemtobackpack(button):
 			globals.state.backpack.stackables[item.code] = 1
 	else:
 		globals.state.backpack.unstackables.append(item)
-		enemyloot.unstackables.erase(item.id)
+		enemyloot.unstackables.erase(item)
 	itemtooltiphide()
 	builditemlists()
 
@@ -1090,7 +1107,7 @@ func moveitemtoenemy(button):
 		if globals.state.backpack.stackables[item.code] <= 0:
 			globals.state.backpack.stackables.erase(item.code)
 	else:
-		globals.state.unstackables[str(item.id)] = item
+		enemyloot.unstackables.append(item)
 		globals.state.backpack.unstackables.erase(item)
 	itemtooltiphide()
 	builditemlists()
@@ -1099,6 +1116,11 @@ func itemtooltip(item):
 	var text = '[center]'+item.name + '[/center]\n' +item.description 
 	if item.has('weight'):
 		text += "\n\nWeight: [color=yellow]" + str(item.weight)+"[/color]"
+	if item.has('owner'):
+		if item.effects.size() > 0:
+			text += "\n\n[color=green]Effects: [/color]"
+			for k in item.effects:
+				text += "\n" + k.descript
 	globals.showtooltip(text)
 
 func itemtooltiphide():
@@ -1275,45 +1297,10 @@ func _on_sellconfirm_pressed():
 	get_node("winningpanel/sellpanel").set_hidden(true)
 
 
-func enemycapture(slave):
-	slave.sleep = 'jail'
-	var effect = globals.effectdict.captured
-	var dict = {'slave':0.7, 'poor':1,'commoner':1.2,"rich": 2, "noble": 4}
-	effect.duration = round((4 + (slave.conf+slave.cour)/20) * dict[slave.origins])
-	slave.add_effect(effect)
-	if slave.race in ['Lamia','Arachna','Harpy','Nereid','Slime','Scylla','Dryad','Fairy']:
-		slave.add_trait(globals.origins.trait('Uncivilized'))
-	globals.slaves = slave
 
-
-func wimbornoutskirts():
-	var array = []
-	array.append({name = "Explore Outskirts", function = 'zoneenter', args = 'wimbornoutskirtsexplore'})
-	array.append({name = "Explore Forest", function = 'zoneenter', args = 'forest'})
-	array.append({name = "Explore Deep Elven Grove", function = 'zoneenter', args = 'elvenforest'})
-	array.append({name = "Explore Far Eerie Woods", function = 'zoneenter', args = 'grove'})
-	array.append({name = "Return to Wimborn", function = 'wimborn'})
-	outside.buildbuttons(array, self)
-
-func gornoutskirts():
-	var array = []
-	array.append({name = "Explore Outskirts", function = 'zoneenter', args = 'gornoutskirtsexplore'})
-	array.append({name = "Explore Mountain Ridge", function = 'zoneenter', args = 'mountains'})
-	array.append({name = "Explore Sea Beach", function = 'zoneenter', args = 'sea'})
-	array.append({name = "Return to Gorn", function = 'zoneenter', args = 'gorn'})
-	outside.buildbuttons(array,self)
-
-
-func frostfordoutskirts():
-	var array = []
-	array.append({name = "Explore Outskirts", function = 'zoneenter', args = 'frostfordoutskirtsexplore'})
-	array.append({name = "Explore Marsh", function = 'zoneenter', args = 'marsh'})
-	array.append({name = "Return to Frostford", function = 'zoneenter', args = 'frostford'})
-	outside.buildbuttons(array,self)
 
 func wimborn():
-	main.get_node('outside').town()
-	main.get_node('outside').gooutside()
+	main.get_node('outside').wimborn()
 
 func gorn():
 	outside.location = 'gorn'
@@ -1328,8 +1315,12 @@ func gorn():
 		array.append({name = "Visit Alchemist", function = 'gornayda'})
 	array.append({name = "Gorn's Market", function = 'gornmarket'})
 	array.append({name = "Outskirts", function = 'zoneenter', args = 'gornoutskirts'})
-	array.append({name = "Return to Mansion", function = 'mansionreturn'})
+	if globals.state.location == 'gorn':
+		array.append({name = "Return to Mansion",function = 'mansion'})
 	outside.buildbuttons(array,self)
+
+func mansion():
+	get_parent().mansion()
 
 func gornbar():
 	var array = []
@@ -1348,6 +1339,7 @@ func gornyris():
 	var state = false
 	var text
 	var buttons = []
+	var sprite = [['yrisnormal', 'pos1', 'opac']]
 	if globals.player.penis.number < 1:
 		main.popup("This encounter requires your character to possess a penis. ")
 		return
@@ -1387,7 +1379,7 @@ func gornyris():
 			buttons.append({text = "Accept (1000 Gold)", function = "gornyrisaccept", args = 4})
 	buttons.append({text = "Refuse", function = "gornyrisaccept", args = 0})
 	gornbar()
-	main.dialogue(state, self, text, buttons)
+	main.dialogue(state, self, text, buttons, sprite)
 
 func gornyrisleave(args):
 	zoneenter('gorn')
@@ -1397,10 +1389,13 @@ func gornyrisaccept(stage):
 	var text = ''
 	var state = false
 	var buttons = []
+	var sprite = []
 	if stage == 0:
+		sprite = [['yrisnormal', 'pos1']]
 		text = globals.questtext.GornYrisRefuse
 		buttons.append({text = "Continue", function = 'gornyrisleave', args = null})
 	elif stage == 1:
+		sprite = [['yrisnormalnaked', 'pos1']]
 		globals.charactergallery.yris.scenes[0].unlocked = true
 		globals.charactergallery.yris.nakedunlocked = true
 		text = globals.questtext.GornYrisAccept1
@@ -1409,11 +1404,13 @@ func gornyrisaccept(stage):
 		globals.state.sidequests.yris = 2
 		state = true
 	elif stage == 2:
+		sprite = [['yrisnormalnaked', 'pos1']]
 		text = globals.questtext.GornYrisAcceptRepeat
 		state = true
 		globals.resources.gold -= 200
 		globals.resources.mana += 15
 	elif stage == 3:
+		sprite = [['yrisnormalnaked', 'pos1']]
 		text = globals.questtext.GornYrisAccept2
 		globals.charactergallery.yris.scenes[1].unlocked = true
 		globals.state.sidequests.yris += 1
@@ -1421,22 +1418,26 @@ func gornyrisaccept(stage):
 		state = true
 		globals.resources.mana += 25
 	elif stage == 4:
+		sprite = [['yrisshocknaked', 'pos1']]
 		globals.charactergallery.yris.scenes[2].unlocked = true
 		globals.itemdict.deterrentpot.amount -= 1
 		text = globals.questtext.GornYrisAccept3
 		buttons.append({text = "Reveal everything", function = 'gornyrisaccept', args = 5})
 		buttons.append({text = "Demand the gold", function = 'gornyrisaccept', args = 6})
 	elif stage == 5:
+		sprite = [['yrisnormalnaked', 'pos1']]
 		text = globals.questtext.GornYrisReveal
 		buttons.append({text = "Offer Yris to work for you", function = 'gornyrisaccept', args = 8})
 		buttons.append({text = "Demand the gold", function = 'gornyrisaccept', args = 7})
 	elif stage == 6:
+		sprite = [['yrisaltnaked', 'pos1']]
 		text = globals.questtext.GornYrisTakeGold
 		globals.state.sidequests.yris = 100
 		globals.resources.gold += 1000
 		text += "\n\nIn the end you get the gold you asked for, but never seen Yris again. "
 		state = true
 	elif stage == 7:
+		sprite = [['yrisaltnaked', 'pos1']]
 		text = globals.questtext.GornYrisTakeGold2
 		globals.state.sidequests.yris = 100
 		text += "\n\nIn the end you get the gold you asked for, but never seen Yris again. "
@@ -1444,6 +1445,7 @@ func gornyrisaccept(stage):
 		state = true
 	elif stage == 8:
 		state = true
+		sprite = [['yrisnormalnaked', 'pos1']]
 		text = globals.questtext.GornYrisHire
 		globals.state.sidequests.yris += 1
 		var slave = globals.slavegen.newslave('Beastkin Cat', 'adult', 'female', 'commoner')
@@ -1453,12 +1455,13 @@ func gornyrisaccept(stage):
 		slave.tits.size = 'big'
 		slave.ass = 'average'
 		slave.beautybase = 72
-		slave.hairlength = 'waist'
+		slave.hairlength = 'neck'
 		slave.height = 'average'
 		slave.haircolor = 'blond'
-		slave.eyecolor = 'green'
+		slave.eyecolor = 'blue'
+		slave.eyeshape = 'slit'
 		slave.skin = 'fair'
-		slave.furcolor = 'white'
+		slave.furcolor = 'orange_white'
 		slave.hairstyle = 'straight'
 		slave.pussy.virgin = false
 		slave.pussy.first = 'unknown'
@@ -1469,6 +1472,7 @@ func gornyrisaccept(stage):
 		slave.wit = 62
 		slave.cour = 33
 		slave.conf = 48
+		slave.imageportait = "res://files/images/yris/yrisportrait.png"
 		slave.sexuals.unlocked = true
 		slave.sexuals.unlocks.append("petting")
 		slave.sexuals.unlocks.append('oral')
@@ -1481,7 +1485,7 @@ func gornyrisaccept(stage):
 		slave.obed += 90
 		globals.slaves = slave
 	gornbar()
-	main.dialogue(state, self, text, buttons)
+	main.dialogue(state, self, text, buttons, sprite)
 
 func amberguard():
 	var array = []
@@ -1674,7 +1678,8 @@ func frostford():
 	array.append({name = "Visit local Slave Guild", function = 'frostfordslaveguild'})
 	array.append({name = "Frostford's Market", function = 'frostfordmarket'})
 	array.append({name = "Outskirts", function = 'zoneenter', args = 'frostfordoutskirts'})
-	array.append({name = "Return to Mansion", function = 'mansionreturn'})
+	if globals.state.location == 'frostford':
+		array.append({name = "Return to Mansion",function = 'mansion'})
 	outside.buildbuttons(array,self)
 
 func frostfordzoe(stage):

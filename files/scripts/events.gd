@@ -1172,10 +1172,13 @@ func sexscene(value):
 		sprite = [['calinakedhappy','pos1']]
 		text = textnode.CaliAcceptProposal + '\n' + textnode.CaliProposalSexMale
 	elif value == 'yrisblowjob':
+		sprite = [['yrisnormal', 'pos1']]
 		text = textnode.GornYrisAccept1
 	elif value == 'yrissex':
+		sprite = [['yrisnormalnaked', 'pos1']]
 		text = textnode.GornYrisAccept2
 	elif value == 'yrissex2':
+		sprite = [['yrisshocknaked', 'pos1']]
 		text = textnode.GornYrisAccept3
 	elif value == "chloemana":
 		sprite = [['chloeshy2','pos1']]

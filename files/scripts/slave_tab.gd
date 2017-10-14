@@ -531,7 +531,7 @@ func _on_slavedescript_meta_clicked( meta ):
 
 
 func _on_relativesbutton_pressed():
-	get_node("customization/clothes&relatives&customs/relativespanel").set_hidden(false)
+	get_node("customization/clothes&relatives&customs/relativespanel").popup()
 	var mother = slave.relatives.mother
 	var father = slave.relatives.father
 	var id = slave.id
@@ -724,6 +724,12 @@ func _on_reverseportrait_pressed():
 			slave.imageportait = "res://files/images/emily/emilyportrait.png"
 		elif slave.unique == 'Tisha':
 			slave.imageportait = "res://files/images/tisha/tishaportrait.png"
+		elif slave.unique == 'Chloe':
+			slave.imageportait = "res://files/images/chloe/chloeportrait.png"
+		elif slave.unique == 'Yris':
+			slave.imageportait = "res://files/images/yris/yrisportrait.png"
+		elif slave.unique == 'Maple':
+			slave.imageportait = "res://files/images/maple/mapleportrait.png"
 		get_node("inspect/portait/Panel").set_hidden(true)
 		_on_slave_tab_visibility_changed()
 		get_tree().get_current_scene().rebuild_slave_list()

@@ -26,13 +26,13 @@ supply = {
 	code = 'supply',
 	name = 'Supplies',
 	icon = load("res://files/images/items/supply.png"),
-	description = "An assemblance of various commodities which can be sold or used in certain tasks.",
+	description = "An assemblance of various commodities which can be sold or used in certain tasks. Required for outside camping",
 	effect = "supplypurchase",
 	recipe = '',
 	cost = 5,
 	type = 'ingredient',
 	amount = 0,
-	weight = 1,
+	weight = 2,
 	unlocked = true,
 },
 #ExplorationItems
@@ -509,6 +509,7 @@ clothsundress = {
 	cost = 75,
 	type = 'gear',
 	subtype = 'costume',
+	weight = 5,
 	amount = 0,
 	unlocked = true,
 },
@@ -645,7 +646,6 @@ underwearplain = {
 	cost = 0,
 	type = 'gear',
 	subtype = 'underwear',
-	weight = 5,
 	amount = -1,
 	unlocked = true,
 },
@@ -1096,9 +1096,9 @@ func lactationpoteffect():
 
 func oblivionpoteffect():
 	var text = ''
-	if slave == globals.player:
+	if slave != globals.player:
 		text = slave.dictionary('$name drinks the oblivion potion, forgetting all $his fixations. ')
-		slave.level.reqs.clear()
+		slave.levelupreqs.clear()
 	else:
 		text = slave.dictionary('You drink the oblivion potion, but it seems to not have any effect on you. ')
 	return text
