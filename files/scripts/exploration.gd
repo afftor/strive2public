@@ -484,13 +484,13 @@ func deepzone(currentzonecode):
 
 func rest():
 	globals.state.backpack.stackables.supply -= 2
-	globals.player.health = globals.player.stats.health_max/4
-	globals.player.energy = globals.player.stats.energy_max
+	globals.player.health += globals.player.stats.health_max/4
+	globals.player.energy += globals.player.stats.energy_max
 	globals.resources.food -= 5
 	for i in globals.state.playergroup:
 		var slave = globals.state.findslave(i)
-		slave.health = slave.stats.health_max/4
-		slave.energy = slave.stats.energy_max
+		slave.health += slave.stats.health_max/4
+		slave.energy += slave.stats.energy_max
 		slave.stress -= slave.stress/1.5
 		globals.resources.food -= 5
 	outside.playergrouppanel()
@@ -683,13 +683,20 @@ func buildenemies(enemyname = null):
 	else:
 		enemygroup = str2var(var2str(enemygrouppools[enemyname]))
 	var tempunits = str2var(var2str(enemygroup.units))
+	var unitcounter = {}
 	enemygroup.units = []
 	for i in tempunits:
 		var count = round(rand_range(i[1], i[2]))
 		if deeperregion:
 			count = round(count * rand_range(1.2,1.6))
 		while count >= 1:
-			enemygroup.units.append(str2var(var2str(enemypool[i[0]])))
+			var newunit = str2var(var2str(enemypool[i[0]]))
+			if unitcounter.has(newunit.name) == false:
+				unitcounter[newunit.name] = 1
+			else:
+				unitcounter[newunit.name] += 1
+			newunit.name = newunit.name + " " + str(unitcounter[newunit.name])
+			enemygroup.units.append(newunit)
 			count -= 1
 
 
@@ -701,8 +708,6 @@ func encounterbuttons(state = null):
 			array.append({name = "Leave", function = "enemyleave"})
 		else:
 			array.append({name = "Fight",function = "enemyfight"})
-			#if currentzone.tags.find('noreturn') < 0:
-			#	array.append({name = "Escape", function = "enemyleave"})
 	elif state in ['patrolsmall', 'patrolbig']:
 		array.append({name = "Fight",function = "enemyfight"})
 		var dict = {}
@@ -836,10 +841,10 @@ func mindreadenemy():
 func enemyleave():
 	progress += 1.0
 	var text = ''
-	globals.player.energy = -max(5-floor((globals.player.sagi+globals.player.send)/2),1)
+	globals.player.energy -= max(5-floor((globals.player.sagi+globals.player.send)/2),1)
 	for i in globals.state.playergroup:
 		var slave = globals.state.findslave(i)
-		slave.energy = -max(5-floor((slave.sagi+slave.send)/2),1)
+		slave.energy -= max(5-floor((slave.sagi+slave.send)/2),1)
 	zoneenter(currentzone.code)
 	if text != '':
 		outside.maintext.set_bbcode(outside.maintext.get_bbcode()+'\n[color=yellow]'+text+'[/color]')
@@ -940,12 +945,11 @@ func enemydefeated():
 	for i in range(0, defeated.units.size()):
 		defeated.units[i].stress += rand_range(20, 50)
 		defeated.units[i].obed += rand_range(10, 20)
-		defeated.units[i].health = -rand_range(40,70)
+		defeated.units[i].health -= rand_range(40,70)
 		if defeated.names[i] == 'Captured':
 			defeated.units[i].obed += rand_range(10,20)
 			defeated.units[i].loyal += rand_range(5,15)
 	buildcapturelist()
-	checkoptionsbutton()
 	if !enemyloot.stackables.empty() || enemyloot.unstackables.size() >= 1:
 		get_node("winningpanel/lootpanel").set_hidden(false)
 		builditemlists()
@@ -958,6 +962,9 @@ func enemydefeated():
 
 func buildcapturelist():
 	var winpanel = main.get_node("explorationnode/winningpanel")
+	var text = "Defeated and Captured | Free ropes left: "
+	text += str(globals.state.backpack.stackables.rope) if globals.state.backpack.stackables.has('rope') else '0'
+	winpanel.get_node("Label").set_text(text)
 	for i in get_node("winningpanel/ScrollContainer/VBoxContainer").get_children():
 		i.free() if i.get_name() != 'Button' else print()
 	for i in range(0, defeated.units.size()):
@@ -1005,6 +1012,7 @@ func captureslave(slave):
 		globals.state.reputation[location] -= 1
 	defeated.names.remove(defeated.units.find(slave))
 	defeated.units.erase(slave)
+	get_tree().get_current_scene().infotext("[color=green]New captive added to your group.[/color]")
 	buildcapturelist()
 	builditemlists()
 
@@ -1147,24 +1155,6 @@ func defeatedchoice(ID, slave, node):
 
 
 
-
-func checkoptionsbutton():
-	var counter = 0
-	var winpanel = main.get_node("explorationnode/winningpanel")
-	var text = ''
-	
-	for i in get_tree().get_nodes_in_group('winoption'):
-		if i.get_item_text(i.get_selected()) == 'Capture':
-			counter += 1
-	text = "Defeated and Captured | Free ropes left: "
-	text += str(globals.state.backpack.rope) if globals.state.backpack.has('rope') else '0'
-	winpanel.get_node("Label").set_text(text)
-	if globals.itemdict.rope.amount < counter:
-		for i in get_tree().get_nodes_in_group('winoption'):
-			i.set_item_disabled(1, true)
-	else:
-		for i in get_tree().get_nodes_in_group('winoption'):
-			i.set_item_disabled(1, false)
 
 
 

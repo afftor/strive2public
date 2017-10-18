@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=1]
+[gd_scene load_steps=16 format=1]
 
 [ext_resource path="res://files/scripts/residentslinescript.gd" type="Script" id=1]
 [ext_resource path="res://files/buttons/stats.png" type="Texture" id=2]
@@ -7,12 +7,10 @@
 [ext_resource path="res://files/buttons/inspectdown.png" type="Texture" id=5]
 [ext_resource path="res://files/buttons/dig-dug.png" type="Texture" id=6]
 [ext_resource path="res://files/buttons/dig-dug (1).png" type="Texture" id=7]
-[ext_resource path="res://files/buttons/actiondown.png" type="Texture" id=8]
-[ext_resource path="res://files/buttons/action.png" type="Texture" id=9]
-[ext_resource path="res://files/buttons/sex.png" type="Texture" id=10]
-[ext_resource path="res://files/buttons/sexdown.png" type="Texture" id=11]
-[ext_resource path="res://mainfont.tres" type="DynamicFont" id=12]
-[ext_resource path="res://files/buttons/icons/stress/2.png" type="Texture" id=13]
+[ext_resource path="res://files/buttons/sex.png" type="Texture" id=8]
+[ext_resource path="res://files/buttons/sexdown.png" type="Texture" id=9]
+[ext_resource path="res://mainfont.tres" type="DynamicFont" id=10]
+[ext_resource path="res://files/buttons/icons/stress/2.png" type="Texture" id=11]
 
 [sub_resource type="StyleBoxTexture" id=1]
 
@@ -250,9 +248,9 @@ params/resize_mode = 0
 params/scale = Vector2( 0.1, 0.1 )
 params/stretch_mode = 0
 
-[node name="actions" type="TextureButton" parent="actionbuttons"]
+[node name="sexual" type="TextureButton" parent="actionbuttons"]
 
-hint/tooltip = "Actions"
+hint/tooltip = "Sexual actions"
 focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
@@ -266,26 +264,6 @@ enabled_focus_mode = 2
 shortcut = null
 textures/normal = ExtResource( 8 )
 textures/hover = ExtResource( 9 )
-params/resize_mode = 0
-params/scale = Vector2( 0.1, 0.1 )
-params/stretch_mode = 0
-
-[node name="sexual" type="TextureButton" parent="actionbuttons"]
-
-hint/tooltip = "Sexual actions"
-focus/ignore_mouse = false
-focus/stop_mouse = true
-size_flags/horizontal = 2
-size_flags/vertical = 2
-margin/left = 112.0
-margin/top = 0.0
-margin/right = 137.6
-margin/bottom = 25.6
-toggle_mode = false
-enabled_focus_mode = 2
-shortcut = null
-textures/normal = ExtResource( 10 )
-textures/hover = ExtResource( 11 )
 params/resize_mode = 0
 params/scale = Vector2( 0.1, 0.1 )
 params/stretch_mode = 0
@@ -319,7 +297,7 @@ custom_styles/hover = SubResource( 1 )
 custom_styles/pressed = SubResource( 2 )
 custom_styles/focus = SubResource( 3 )
 custom_styles/normal = SubResource( 4 )
-custom_fonts/font = ExtResource( 12 )
+custom_fonts/font = ExtResource( 10 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 custom_colors/font_color_hover = Color( 0, 1, 0.882813, 1 )
 custom_colors/font_color_pressed = Color( 1, 1, 1, 1 )
@@ -423,7 +401,7 @@ margin/bottom = 25.0
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
-textures/normal = ExtResource( 13 )
+textures/normal = ExtResource( 11 )
 params/resize_mode = 0
 params/stretch_mode = 5
 
@@ -440,8 +418,6 @@ params/stretch_mode = 5
 [connection signal="pressed" from="actionbuttons/inspect" to="." method="_on_inspect_pressed"]
 
 [connection signal="pressed" from="actionbuttons/regulations" to="." method="_on_regulations_pressed"]
-
-[connection signal="pressed" from="actionbuttons/actions" to="." method="_on_actions_pressed"]
 
 [connection signal="pressed" from="actionbuttons/sexual" to="." method="_on_cast_spell_pressed"]
 

@@ -122,7 +122,7 @@ meadows = load("res://files/backgrounds/meadows.png"),
 sea = load("res://files/backgrounds/sea.jpg"),
 lab1 = load("res://files/backgrounds/laboratory1.jpg"),
 lab2 = load("res://files/backgrounds/laboratory2.jpg"),
-gorn = load("res://files/backgrounds/gorn.jpg"),
+gorn = load("res://files/backgrounds/gorn.png"),
 frostford = load("res://files/backgrounds/frostford.jpg"),
 mountains = load("res://files/backgrounds/mountains.jpg"),
 borealforest = load("res://files/backgrounds/borealforest.jpg"),
@@ -419,6 +419,7 @@ class progress:
 	var ghostrep = {wimborn = 0, frostford = 0, gorn = 0, amberguard = 0}
 	var backpack = {stackables = {}, unstackables = []}
 	var restday = 0
+	var defaultmasternoun = "Master"
 	
 	func calculateweight():
 		var slave
@@ -720,7 +721,7 @@ class slave:
 	
 	func health_set(value):
 		stats.health_max = 35 + stats.end_cur*20
-		stats.health_cur = min(stats.health_cur + value, stats.health_max) 
+		stats.health_cur = min(value, stats.health_max) 
 	
 	func obed_set(value):
 		var difference = stats.obed_cur - value
@@ -820,7 +821,7 @@ class slave:
 	
 	func energy_set(value):
 		value = round(value)
-		stats.energy_cur = max(min(stats.energy_cur + value*(1 + stats.energy_mod/100), stats.energy_max),0)
+		stats.energy_cur = max(min(value*(1 + stats.energy_mod/100), stats.energy_max),0)
 		if self == globals.player:
 			globals.resources.energy = 0
 	
@@ -1507,7 +1508,8 @@ func dir_contents(target = "user://saves"):
 		dir.list_dir_begin()
 		var file_name = dir.get_next()
 		while (file_name != ""):
-			if !dir.current_is_dir():
+			if !file_name in ['.','..', "", null]:
+		#	if !dir.current_is_dir():
 				array.append(file_name)
 			file_name = dir.get_next()
 		return array

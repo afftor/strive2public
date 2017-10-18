@@ -5,19 +5,15 @@ extends Node
 static func getRaceFunction(name):
 	var text
 	var temp
-	var script = GDScript.new()
 	temp = name
-	if (temp.find('Beastkin ') >= 0 || temp.find('Halfkin') >= 0 || temp.find(' ') >= 0):
+	if temp.find('Beastkin ') >= 0 || temp.find('Halfkin') >= 0 || temp.find(' ') >= 0:
 		temp = temp.replace('Beastkin ', '')
 		temp = temp.replace('Halfkin ', '')
 		temp = temp.replace(' ', '')
-	text = 'var text2 = globals.races.Race' + temp + '()' 
-	script.set_source_code(text)
-	script.reload()
-	var obj = Node.new()
-	obj.set_script(script)
-	text = obj.text2
+	text = globals.races.call('Race'+temp)
 	return text
+
+#
 
 static func newslave(race, age, sex, origins = 'slave'):
 	var temp
@@ -43,9 +39,8 @@ static func newslave(race, age, sex, origins = 'slave'):
 	else:
 		slave.mindage = age
 	slave.sex = sex
-	if (slave.sex == 'random'):
-		slave.sex = globals.assets.getRandomSex()
-	slave.fetch(globals.assets.getRandomName(slave))
+	if slave.sex == 'random': slave.sex = globals.assets.getRandomSex()
+	globals.assets.getRandomName(slave)
 	slave.stats = {
 		str_cur = 0,
 		str_max = 0,
@@ -111,30 +106,26 @@ static func newslave(race, age, sex, origins = 'slave'):
 	slave.hairlength = globals.assets.getHairLengthBase(slave)
 	slave.nickname = ''
 	slave.fetch(getRaceFunction(race))
-	temp = {
-	relatives = {father = -1, mother = -1, siblings = [], children =[]},
-	brand = 'none',
-	preg = getPregnancy(slave['sex'], slave['age']),
-	work = 'rest',
-	ability = ['attack','protect'],
-	abilityactive = ['attack','protect'],
-	level = 1,
-	xp = 0,
-	skillpoints = 2,
-	sleep = 'communal',
-	hairstyle = globals.assets.getRandomHairStyle(slave),
-	}
+	slave.relatives = {father = -1, mother = -1, siblings = [], children =[]}
+	slave.brand = 'none'
+	getPregnancy(slave)
+	slave.work = 'rest'
+	slave.ability = ['attack','protect']
+	slave.abilityactive = ['attack','protect']
+	slave.level = 1
+	slave.xp = 0
+	slave.skillpoints = 2
+	slave.sleep = 'communal'
+	slave.hairstyle = globals.assets.getRandomHairStyle(slave)
 	slave.sexuals.actions.kiss = 0
 	slave.sexuals.actions.massage = 0
-	slave.fetch(temp)
-	slave.fetch(globals.assets.getSexFeatures(slave))
+	globals.assets.getSexFeatures(slave)
 	if slave.pussy.virgin == true:
 		slave.pussy.first = 'none'
 		if rand_range(0,1) >= 0.7:
 			slave.sexuals.unlocks.append('petting')
 			if rand_range(0,1) >= 0.5:
 				slave.sexuals.unlocks.append('oral')
-		
 	elif slave.sex != 'male':
 		slave.pussy.first = 'unknown'
 		slave.sexuals.unlocks.append('petting')
@@ -152,9 +143,9 @@ static func newslave(race, age, sex, origins = 'slave'):
 	slave.origins = ''
 	get_caste(slave, origins)
 	getsexactions(slave)
-	slave.stats.health_max = 35 + slave.stats.end_cur*25
 	slave.health = 100
 	slave.memory = slave.origins
+	slave.masternoun = globals.state.defaultmasternoun
 	if rand_range(0,100) < 5:
 		var spec = globals.specarray[rand_range(0,globals.specarray.size())]
 		globals.currentslave = slave
@@ -233,17 +224,15 @@ static func get_caste(slave, caste):
 		slave.sexuals.unlocks.append("swing")
 
 
-static func getPregnancy(sex, age):
-	var rval = {}
-	rval.duration = 0
-	rval.baby = ''
-	if (sex == 'male'):
-		rval['has_womb'] = false
-		rval['fertility'] = 0
+static func getPregnancy(slave):
+	slave.preg.duration = 0
+	slave.preg.baby = ''
+	if slave.sex == 'male':
+		slave.preg.has_womb = false
+		slave.preg.fertility = 0
 	else:
-		rval['has_womb'] = true
-		if (age == 'child'): 
-			rval['fertility'] = 10
+		slave.preg.has_womb = true
+		if slave.age == 'child': 
+			slave.preg.fertility = 10
 		else:
-			rval['fertility'] = 20
-	return rval
+			slave.preg.fertility = 20

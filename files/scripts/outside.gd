@@ -148,11 +148,11 @@ func useitem(item, slave):
 	if item.code == 'bandage':
 		if slave.effects.has('bandaged') == false:
 			get_parent().infotext(slave.dictionary("[color=green]Bandage used on $name.[/color]"))
-			slave.health = slave.stats.health_max/2.5
+			slave.health += slave.stats.health_max/2.5
 			slave.add_effect(globals.effectdict.bandaged)
 		else:
 			get_parent().infotext(slave.dictionary("[color=green]Bandage used on $name with reduced efficiency.[/color]"))
-			slave.health = slave.stats.health_max/5
+			slave.health += slave.stats.health_max/5
 	elif item.code == 'teleportseal':
 		if slave == globals.player:
 			get_parent().popup("After activating Teleportation Seal, you appear inside of your mansion, leaving your party behind. Hopefully they will find a way back in near time. ")
@@ -725,10 +725,6 @@ func _on_questaccept_pressed():
 	else:
 		if get_node("slaveguildquestpanel/questaccept").get_text() == 'Turn in':
 			main.popup(offeredslave.dictionary('You hand away $name and receive your reward. \n[color=yellow]You have gained ' + str(selectedquest.reward/10) + ' XP.[/color]\n\n[color=green]Your reputation with ' + location.capitalize() + " has increased.[/color]"))
-			if offeredslave.work == 'companion':
-				globals.state.companion = -1
-			elif offeredslave.work == 'labassit':
-				globals.state.labassit = -1
 			globals.slaves.remove(globals.slaves.find(offeredslave))
 			selectedquest.taken = false
 			globals.player.xp += selectedquest.reward/10
@@ -967,12 +963,12 @@ func _on_serviceconfirm_pressed():
 		slave.preg.baby = null
 		slave.preg.duration = 0
 		slave.stress += rand_range(35,70)
-		slave.health = -25
+		slave.health -= 20
 		globals.resources.gold -= operation.price
 	elif operation.code == 'sterilize':
 		slave.preg.has_womb = false
 		slave.stress += rand_range(30,50)
-		slave.health = -15
+		slave.health -= 15
 		globals.resources.gold -= operation.price
 	elif operation.code == 'nurture':
 		slave.trait_remove('Regressed')

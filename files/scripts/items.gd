@@ -1180,10 +1180,10 @@ func majoruseffect():
 func bondageeffect():
 	globals.get_tree().get_current_scene().popup(slave.dictionary("You help $name to cover $his wounds. "))
 	if slave.effects.has('bandaged') == false:
-		slave.health = slave.stats.health_max/3
+		slave.health += slave.stats.health_max/3
 		slave.add_effect(globals.effectdict.bandaged)
 	else:
-		slave.health = slave.stats.health_max/5
+		slave.health += slave.stats.health_max/5
 
 
 func applybutt():

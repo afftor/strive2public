@@ -171,7 +171,7 @@ func _on_new_slave_button_pressed():
 	globals.resources.gold += 100000
 	globals.resources.food += 1000
 	globals.resources.mana += 5
-	globals.player.energy = 100
+	globals.player.energy += 100
 	globals.player.xp += 50
 	globals.resources.upgradepoints += 100
 	for i in ['armorchain','weaponclaymore','clothpet','clothninja','clothmiko']:
@@ -240,7 +240,6 @@ func rebuild_slave_list():
 	var slavelist = get_node("charlistcontrol/CharList/scroll_list/slave_list")
 	var prison = 0
 	var prisonlabel = get_node("charlistcontrol/CharList/scroll_list/slave_list/prisonlabel")
-	globals.state.companion = -1
 	for i in clear:
 		if i != prisonlabel:
 			i.queue_free()
@@ -283,7 +282,7 @@ func rebuild_slave_list():
 		size = 0
 		for i in globals.slaves:
 			slave = i
-			if slave.sleep == 'jail':
+			if slave.sleep == 'jail' && slave.away.duration == 0:
 				node = load("res://files/listline.tscn").instance()
 				node.set_meta('id', slave.id)
 				node.set_meta('pos', size)
@@ -300,9 +299,6 @@ func rebuild_slave_list():
 				else:
 					node.find_node('portait').set_hidden(true)
 			size += 1
-				#var label = Label.new()
-				#label.set_text(slave.name_long() + ' is kept in your jail.')
-				#get_node("charlistcontrol/CharList/scroll_list/slave_list").add_child(label)
 	for slave in globals.slaves:
 		if slave.sleep == 'farm':
 			var label = Label.new()
@@ -424,7 +420,7 @@ func _on_end_pressed():
 				if slave.work in ['rest','forage','hunt','cooking','library','nurse','maid','storewimborn','artistwimborn','assistwimborn','whorewimborn','escortwimborn','fucktoywimborn', 'lumberer', 'ffprostitution','guardian', 'research', 'slavecatcher','fucktoy']:
 					if slave.work != 'rest' && slave.energy < 30:
 						text = "$name had no energy to fulfill $his duty and had to take a rest. \n"
-						slave.health = 10
+						slave.health += 10
 						slave.stress -= 20
 					else:
 						workdict = call(slave.work, slave)
@@ -462,7 +458,7 @@ func _on_end_pressed():
 				slave.stress += rand_range(-5,-10)
 				if slave.race == 'Fairy':
 					slave.stress += rand_range(-10,-15)
-				slave.health = rand_range(2,5)
+				slave.health += rand_range(2,5)
 				slave.obed += slave.loyal/5 - (slave.cour+slave.conf)/10
 				if chef != null:
 					var consumption = -10 + (chef.sagi + (chef.wit/20)/2)
@@ -474,7 +470,7 @@ func _on_end_pressed():
 					
 			else:
 				slave.stress += 20
-				slave.health = -rand_range(slave.stats.health_max/6,slave.stats.health_max/4)
+				slave.health -= rand_range(slave.stats.health_max/6,slave.stats.health_max/4)
 				slave.obed += -max(35 - slave.loyal/3,10)
 				if slave.health < 1:
 					text = slave.dictionary('[color=red]$name has died of starvation.[/color]\n')
@@ -513,23 +509,23 @@ func _on_end_pressed():
 			slave.lust = round(rand_range(3,8))
 			if slave.sleep == 'communal' && globals.count_sleepers()['communal'] > globals.state.mansionupgrades.mansioncommunal:
 				slave.stress += rand_range(5,15)
-				slave.health = -rand_range(1,5)
+				slave.health -= rand_range(1,5)
 				text2.set_bbcode(text2.get_bbcode() + slave.dictionary('$name suffers from communal room being overcrowded.\n'))
 			elif slave.sleep == 'communal':
 				slave.stress += -rand_range(5,10)
-				slave.health = rand_range(1,3)
-				slave.energy = rand_range(20,30)+ slave.stats.end_cur*6
+				slave.health += rand_range(1,3)
+				slave.energy += rand_range(20,30)+ slave.stats.end_cur*6
 			elif slave.sleep == 'personal':
 				slave.stress += rand_range(-10,-15)
-				slave.health = rand_range(2,6)
-				slave.energy = rand_range(40,50)+ slave.stats.end_cur*6
+				slave.health += rand_range(2,6)
+				slave.energy += rand_range(40,50)+ slave.stats.end_cur*6
 				text2.set_bbcode(text2.get_bbcode() + slave.dictionary('$name sleeps in a private room, which helps $him heal faster and provides some stress relief.\n'))
 				if slave.lust >= 50 && slave.rules.masturbation == false && slave.tags.find('nosex') < 0:
 					slave.lust = rand_range(-10,-15)
 					text2.set_bbcode(text2.get_bbcode() + slave.dictionary('In an attempt to calm $his lust, $he spent some time busying $himself in feverish masturbation, making use of $his private room.\n'))
 			elif slave.sleep == 'your':
 				slave.loyal += rand_range(1,4)
-				slave.energy = rand_range(25,45)+ slave.stats.end_cur*6
+				slave.energy += rand_range(25,45)+ slave.stats.end_cur*6
 				slave.sexuals.affection += round(rand_range(1,2))
 				if slave.loyal > 30:
 					slave.stress += -(slave.loyal/7)
@@ -544,7 +540,7 @@ func _on_end_pressed():
 			elif slave.sleep == 'jail':
 				slave.metrics.jail += 1
 				slave.obed += 25 - slave.conf/6
-				slave.energy = rand_range(20,30) + slave.stats.end_cur*6
+				slave.energy += rand_range(20,30) + slave.stats.end_cur*6
 				if slave.stress > 30:
 					slave.stress -= rand_range(5,10)
 				else:
@@ -558,7 +554,7 @@ func _on_end_pressed():
 				slave.dom = -200
 				slave.dom = slave.conf
 			elif slave.race == 'Orc':
-				slave.health = 15
+				slave.health += 15
 			elif slave.race == 'Slime':
 				slave.toxicity = -200
 			#Traits
@@ -635,7 +631,7 @@ func _on_end_pressed():
 			if slave.toxicity > 0:
 				if slave.toxicity > 35 && rand_range(0,10) > 6.5:
 					slave.stress += rand_range(10,15)
-					slave.health = -rand_range(10,15)
+					slave.health -= rand_range(10,15)
 					text2.set_bbcode(text2.get_bbcode() + slave.dictionary("$name suffers from magical toxicity.\n"))
 				if slave.toxicity > 60 && rand_range(0,10) > 7.5:
 					get_node("spellnode").slave = slave
@@ -665,7 +661,7 @@ func _on_end_pressed():
 				slave.charm += -rand_range(5,slave.charm/4)
 				if slave.effects.has('captured') == true:
 					slave.add_effect(globals.effectdict.captured, true)
-				slave.health = -rand_range(0,slave.stats.health_max/6)
+				slave.health -= rand_range(0,slave.stats.health_max/6)
 			if slave.skillpoints == -1:
 				slave.skillpoints = 0
 			if slave.attention < 150 && slave.sleep != 'your':
@@ -759,7 +755,7 @@ func _on_end_pressed():
 		for slave in globals.slaves:
 			if slave.sleep == 'jail':
 				jailer.xp += 5
-				slave.health = round(jailer.wit/10)
+				slave.health += round(jailer.wit/10)
 				slave.obed += round(jailer.charm/8)
 				if slave.effects.has('captured') == true && jailerconf-30 >= rand_range(0,100):
 					slave.effects.captured.duration -= 1
@@ -808,7 +804,7 @@ func _on_end_pressed():
 				text0.set_bbcode(text0.get_bbcode() + slave.dictionary("[color=yellow]$name was distressed by mansion's poor condition. [/color]\n"))
 			elif rand_range(0,10) >= 4:
 				slave.stress += rand_range(25,30)
-				slave.health = -rand_range(5,10)
+				slave.health -= rand_range(5,10)
 				text0.set_bbcode(text0.get_bbcode() + slave.dictionary("[color=red]Mansion's terrible condition causes $name a lot of stress and impacted $his health. [/color]\n"))
 	#####          Outside Events
 	for i in globals.guildslaves:
@@ -870,10 +866,10 @@ func _on_end_pressed():
 		text0.set_bbcode(text0.get_bbcode() + '[color=green]You have leveled up and earned an additional skillpoint. [/color]\n')
 	
 	if globals.player.preg.duration > 10:
-		globals.player.energy = 60
+		globals.player.energy += 60
 	else:
-		globals.player.energy = 100
-	globals.player.health = 50
+		globals.player.energy += 100
+	globals.player.health += 50
 	
 	#####         Results
 	if start_gold < globals.resources.gold:
@@ -894,8 +890,6 @@ func _on_end_pressed():
 		results = 'worst'
 		deads_array.invert()
 		for i in deads_array:
-			if globals.slaves[i.number].work == 'companion':
-				globals.state.companion = -1
 			globals.slaves.remove(i.number)
 			text0.set_bbcode(text0.get_bbcode() + i.reason + '\n')
 	text0.set_bbcode(text0.get_bbcode()+ "[color=yellow]" +str(round(gold_consumption))+'[/color] gold was used for various tasks.\n'  )
@@ -1025,7 +1019,7 @@ func startnewday():
 
 func rest(slave):
 	var text = '$name has spent most of the day relaxing.\n'
-	slave.health = 10
+	slave.health += 10
 	slave.stress -= 20
 	return {text = text}
 
@@ -1085,13 +1079,13 @@ func library(slave):
 func nurse(slave):
 	var text = "$name is taking care of residents' health.\n"
 	
-	globals.player.health = slave.wit/15+slave.smaf*3
+	globals.player.health += slave.wit/15+slave.smaf*3
 	for i in globals.slaves:
 		if i.away.duration == 0 && i.health < i.stats.health_max:
 			if globals.itemdict.supply.amount > 0:
-				i.health = slave.wit/25+slave.smaf*2
+				i.health += slave.wit/25+slave.smaf*2
 			else:
-				i.health = slave.wit/35+slave.smaf*3
+				i.health += slave.wit/35+slave.smaf*3
 			slave.xp += rand_range(1,3)
 	
 	var dict = {text = text}
@@ -1131,7 +1125,7 @@ func ffprostitution(slave):
 		slave.sexuals.actions.pussy = 1
 		slave.pussy.virgin = false
 		slave.pussy.first = 'brothel'
-		slave.health = -5
+		slave.health -= 5
 		slave.stress += 15
 		text += "$His virginity was taken by one of the customers.\n"
 	slave.lust = rand_range(-15,-25)
@@ -1184,7 +1178,7 @@ func research(slave):
 	text += "In the end $he earned [color=yellow]" + str(round(gold)) + "[/color] gold\n"
 	slave.obed += rand_range(15,25)
 	if rand_range(0,100) >= 40:
-		slave.health = -slave.health/3
+		slave.health -= slave.health/3
 	if rand_range(0,100) < 30:
 		array = ['conf','cour','wit','charm']
 		slave[array[rand_range(0,array.size())]] -= rand_range(15,25)
@@ -1197,7 +1191,7 @@ func research(slave):
 		dead = true
 	slave.stress += rand_range(10,25)
 	if rand_range(35,50) > slave.health && rand_range(0,100) < 15:
-		slave.health = -200
+		slave.health -= 200
 		dead = true
 		text = "[color=red]Due to life-threatening experiments $name has deceased.[/color]"
 	var dict = {text = slave.dictionary(text), gold = gold, dead = dead}
@@ -1213,7 +1207,7 @@ func fucktoy(slave):
 		slave.sexuals.actions.pussy = 1
 		slave.pussy.virgin = false
 		slave.pussy.first = 'brothel'
-		slave.health = -5
+		slave.health -= 5
 		slave.stress += 10
 		slave.loyal += rand_range(-2,-4)
 		text += "$His virginity was taken by one of the customers.\n"
@@ -1340,7 +1334,7 @@ func whorewimborn(slave):
 		slave.sexuals.actions.pussy = 1
 		slave.pussy.virgin = false
 		slave.pussy.first = 'brothel'
-		slave.health = -5
+		slave.health -= 5
 		slave.stress += 15
 		text += "$His virginity was taken by one of the customers.\n"
 	slave.lust = rand_range(-15,-25)
@@ -1396,7 +1390,7 @@ func escortwimborn(slave):
 		slave.pussy.virgin = false
 		slave.pussy.first = 'brothel'
 		slave.sexuals.actions.pussy = 1
-		slave.health = -5
+		slave.health -= 5
 		if slave.race.find('Bunny') >= 0:
 			slave.stress += 7
 		else:
@@ -1444,7 +1438,7 @@ func fucktoywimborn(slave):
 		slave.sexuals.actions.pussy = 1
 		slave.pussy.virgin = false
 		slave.pussy.first = 'brothel'
-		slave.health = -5
+		slave.health -= 5
 		slave.stress += 10
 		slave.loyal += rand_range(-2,-4)
 		text += "$His virginity was taken by one of the customers.\n"
@@ -1562,16 +1556,14 @@ func _on_popupmessagetext_meta_clicked( meta ):
 		OS.shell_open('https://www.patreon.com/maverik')
 
 var spritedict = globals.spritedict
+onready var nodedict = {pos1 = get_node("dialogue/charactersprite1"), pos2 = get_node("dialogue/charactersprite2")}
 
 func dialogue(showclose, destination, dialogtext, dialogbuttons = null, sprites = null): #for arrays: 0 - boolean to show close button or not. 1 - node to return connection back. 2 - text to show 3+ - arrays of buttons and functions in those
 	var text = get_node("dialogue/dialoguetext")
 	var buttons = get_node("dialogue/popupbuttoncenter/popupbuttons")
-	var nodedict = {pos1 = get_node("dialogue/charactersprite1"), pos2 = get_node("dialogue/charactersprite2")}
 	var closebutton
 	var newbutton
 	var counter = 1
-	for i in nodedict.values():
-		i.set_texture(null)
 	get_node("dialogue").set_hidden(false)
 	text.set_bbcode('')
 	for i in buttons.get_children():
@@ -1597,14 +1589,23 @@ func dialogue(showclose, destination, dialogtext, dialogbuttons = null, sprites 
 		newbutton.connect('pressed',self,'close_dialogue')
 		newbutton.get_node("Label").set_text(str(counter))
 		buttons.add_child(newbutton)
+	
+	var sprite1 = false
+	var sprite2 = false
+	
 	if sprites != null:
 		for i in sprites:
 			if !spritedict.has(i[0]):
 				continue
 			else:
-				if i.size() > 2 :
+				if i.size() > 2 && (i[2] != 'opac' || spritedict[i[0]] != nodedict[i[1]].get_texture()):
 					get_node("AnimationPlayer").play(i[2])
 				nodedict[i[1]].set_texture(spritedict[i[0]])
+				if i[1] == 'pos1': sprite1 = true
+				if i[1] == 'pos2': sprite2 = true
+	if sprite1 == false: nodedict.pos1.set_texture(null)
+	if sprite2 == false: nodedict.pos2.set_texture(null)
+
 
 func dialoguebuttons(array, destination, counter):
 	var newbutton = get_node("dialogue/popupbuttoncenter/popupbuttons/Button").duplicate()
@@ -1630,6 +1631,8 @@ func dialoguebuttons(array, destination, counter):
 
 func close_dialogue():
 	get_node("dialogue").set_hidden(true)
+	for i in nodedict.values():
+		i.set_texture(null)
 
 func _on_menu_pressed():
 	get_node("music").set_paused(true)
@@ -2111,7 +2114,7 @@ func brewlistpressed(potion):
 #		else:
 #			text = text + item.name + ' - ' + str(recipedict[i]*counter) + '/'
 			
-	text = text + '\n[color=white]'+ potselected.name + ': ' + '[color=green]' + potselected.description + '\n'		
+	text = text + '\n[center][color=aqua]'+ potselected.name + '[/color][/center]\n' + '' + potselected.description + '\n'		
 	for i in get_tree().get_nodes_in_group('alchemypot'):
 		if i.get_text() != potion.name && i.is_pressed() == true:
 			i.set_pressed(false)
@@ -2622,17 +2625,14 @@ func _on_selfbutton_pressed():
 	get_node("MainScreen/mansion/selfinspect/statspanel").show()
 	if slave.imageportait != null:
 		if File.new().file_exists(slave.imageportait) == true:
-			get_node("MainScreen/mansion/selfinspect/portaittexture").set_texture(load(slave.imageportait))
+			get_node("MainScreen/mansion/selfinspect/portraittexture").set_hidden(false)
+			get_node("MainScreen/mansion/selfinspect/portraittexture").set_texture(load(slave.imageportait))
 		else:
+			get_node("MainScreen/mansion/selfinspect/portraittexture").set_hidden(true)
 			slave.imageportait = null
-	
-	
-	if globals.player.skillpoints <= 0:
-		get_node("MainScreen/mansion/selfinspect/selfstatupgrade").set_disabled(true)
-		get_node("MainScreen/mansion/selfinspect/selfabilityupgrade").set_disabled(true)
 	else:
-		get_node("MainScreen/mansion/selfinspect/selfstatupgrade").set_disabled(false)
-		get_node("MainScreen/mansion/selfinspect/selfabilityupgrade").set_disabled(false)
+		get_node("MainScreen/mansion/selfinspect/portraittexture").set_hidden(true)
+	
 
 
 func _on_selfinspectclose_pressed():
@@ -2660,56 +2660,6 @@ func reputationword(value):
 		text = "Neutral"
 	return text
 
-
-func _on_selfstatupgrade_pressed():
-	get_node("MainScreen/mansion/selfinspect/selfstatpanel").set_hidden(false)
-
-func _on_strup_pressed():
-	if globals.player.skillpoints >= 1 && globals.player.stats.str_cur < globals.player.stats.str_max:
-		globals.player.skillpoints -= 1
-		globals.player.sstr += 1
-		_on_selfbutton_pressed()
-		popup('Your Strength has increased.')
-	elif globals.player.stats.str_cur >= globals.player.stats.str_max:
-		popup("Currently your Strength can't be increased any further.")
-	else:
-		popup("You don't have any skillpoints left.")
-
-func _on_agiup_pressed():
-	if globals.player.skillpoints >= 1 && globals.player.stats.agi_cur < globals.player.stats.agi_max:
-		globals.player.skillpoints -= 1
-		globals.player.sagi += 1
-		_on_selfbutton_pressed()
-		popup('Your Agility has increased.')
-	elif globals.player.stats.agi_cur >= globals.player.stats.agi_max:
-		popup("Currently your Agility can't be increased any further.")
-	else:
-		popup("You don't have any skillpoints left.")
-
-func _on_mafup_pressed():
-	if globals.player.skillpoints >= 1 && globals.player.stats.maf_cur < globals.player.stats.maf_max:
-		globals.player.skillpoints -= 1
-		globals.player.smaf += 1
-		_on_selfbutton_pressed()
-		popup('Your Magic Affinity has increased.')
-	elif globals.player.stats.maf_cur >= globals.player.stats.maf_max:
-		popup("Currently your Magic Affinity can't be increased any further.")
-	else:
-		popup("You don't have any skillpoints left.")
-
-func _on_endup_pressed():
-	if globals.player.skillpoints >= 1 && globals.player.stats.end_cur < globals.player.stats.end_max:
-		globals.player.skillpoints -= 1
-		globals.player.send += 1
-		_on_selfbutton_pressed()
-		popup('Your Endurance has increased.')
-	elif globals.player.stats.end_cur >= globals.player.stats.end_max:
-		popup("Currently your Endurance can't be increased any further.")
-	else:
-		popup("You don't have any skillpoints left.")
-
-func _on_statclose_pressed():
-	get_node("MainScreen/mansion/selfinspect/selfstatpanel").set_hidden(true)
 
 func _on_selfinspectlooks_pressed():
 	get_node("MainScreen/mansion/selfinspect/selflookspanel/selfdescript").set_bbcode(globals.player.description_full(true))
@@ -2789,12 +2739,9 @@ func _on_abilitypurchase_pressed():
 	_on_selfabilityupgrade_pressed()
 	_on_selfbutton_pressed()
 
-func _on_chooseselfportait_file_selected( path ):
-	globals.player.imageportait = path
-	_on_selfbutton_pressed()
 
 func _on_selfportait_pressed():
-	get_node("MainScreen/mansion/selfinspect/chooseselfportait").popup()
+	imageselect("portrait",globals.player)
 
 
 func _on_abilityclose_pressed():
@@ -3488,6 +3435,8 @@ func sortitems():
 		button.add_to_group('inventoryitems')
 		itemgrid.add_child(button)
 	for i in globals.state.unstackables.values():
+		if i.owner != null && globals.state.findslave(i.owner) == null:
+			i.owner = null
 		if i.owner == null && (categoryselected == 'everything' || categoryselected == 'gear' ):
 			items = true
 			button = get_node("inventory/Panel/ScrollContainer/GridContainer/TextureButton").duplicate()
@@ -3662,4 +3611,10 @@ func _on_ugrades_pressed():
 func _on_upgradesclose_pressed():
 	get_node("MainScreen/mansion/upgradespanel").set_hidden(true)
 
-
+func imageselect(mode = 'portrait', slave = globals.currentslave):
+	if OS.get_name() != 'HTML5':
+		get_node("imageselect").slave = slave
+		get_node("imageselect").mode = mode
+		get_node("imageselect").chooseimage()
+	else:
+		popup("Sorry, this option can't be utilized in HTML5 Version. ")

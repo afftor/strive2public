@@ -520,7 +520,10 @@ func sexinitiate(secondtime = false):
 				pos = 'pos1'
 			else:
 				pos = 'pos2'
-			sprites.append([sprite, pos])
+			if secondtime == false:
+				sprites.append([sprite, pos, 'opac'])
+			else:
+				sprites.append([sprite, pos])
 	
 	text += getessencesfromsex(slave, managain)
 	

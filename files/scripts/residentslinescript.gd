@@ -32,7 +32,7 @@ func _on_cast_spell_pressed():
 	slavetabopen()
 	if OS.get_name() != "HTML5" && globals.rules.fadinganimation == true:
 		yield(get_tree().get_current_scene(), 'animfinished')
-	get_tree().get_current_scene().find_node('slave_tab').set_current_tab(4)
+	get_tree().get_current_scene().find_node('slave_tab').set_current_tab(3)
 
 
 

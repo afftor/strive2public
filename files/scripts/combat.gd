@@ -576,20 +576,17 @@ func actionexecute(actor, target, skill):
 					else:
 						damage = damage - damage*0.35
 			elif skill.type == 'spell':
-				damage = skill.power*actor.magic
+				damage = (actor.magic * 2.5) * skill.power
 			if actor.energy == 0:
 				damage = damage/2
 			actor.energy = max(actor.energy - skill.costenergy,0)
-			if actor.person != null:
-				if actor.person.spec == 'assassin':
-					damage += 5
+			if actor.person != null && actor.person.spec == 'assassin':
+				damage += 5
 			if hit == 'precise':
 				damage = damage*1.3
 				text = text + "$name's swift attack lands precisely at desirable spot. " 
-			if damage < 0:
-				damage = 0
-			if actor.energy <= 0:
-				damage = damage*0.66
+			if damage < 0: damage = 0
+			if actor.energy <= 0: damage = damage*0.66
 			if hit != 'miss' && hit != 'glance':
 				var power = powercompare(actor.power, target.power)
 				if power == 'overpower':
@@ -631,6 +628,11 @@ func actionexecute(actor, target, skill):
 	if skill.code == 'heal':
 		globals.abilities.restorehealth(actor,target)
 	target.health = ceil(target.health)
+	if target.health < 0:
+		target.health = 0
+		if actor.person != null && actor.person != globals.player:
+			actor.person.stress -= rand_range(5,10)
+			text += "\n$name has defeated " + target.name + ". "
 	text = combatantdictionary(actor, text)
 	return text
 

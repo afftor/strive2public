@@ -151,7 +151,7 @@ func play(stage = 0):
 		slave.loyal += -rand_range(5,10)
 		slave.obed += -rand_range(15,25)
 	if stage != 0 && stage != 4:
-		globals.player.energy = -25
+		globals.player.energy -= 25
 	buttons = tempbuttons
 	showevent()
 
@@ -180,7 +180,7 @@ func spendtime(stage = 0):
 		slave.loyal += -rand_range(5,10)
 		slave.obed += -rand_range(15,25)
 	if stage != 0 && stage != 4:
-		globals.player.energy = -25
+		globals.player.energy -= 25
 	buttons = tempbuttons
 	showevent()
 
@@ -204,7 +204,7 @@ func horny(stage = 0):
 		slave.obed += -rand_range(25,35)
 		slave.loyal += -rand_range(5,10)
 	if stage != 0 && stage != 3:
-		globals.player.energy = -25
+		globals.player.energy -= 25
 	buttons = tempbuttons
 	showevent()
 
@@ -224,7 +224,7 @@ func forestfind(stage = 0):
 		showntext = slave2.dictionary(eventstext[currentevent][stage])
 		globals.resources.gold += rand_range(50,100)
 		slave.loyal += rand_range(5,10)
-		globals.player.energy = -25
+		globals.player.energy -= 25
 	elif stage == 3:
 		showntext = slave.dictionary(eventstext[currentevent][stage])
 		slave.loyal += -rand_range(5,10)
@@ -282,7 +282,7 @@ func abortion(stage = 0):
 	elif stage == 3:
 		slave.loyal += rand_range(10,15)
 		slave.stress += -rand_range(10,20)
-		globals.player.energy = -25
+		globals.player.energy -= 25
 	elif stage == 4:
 		slave.loyal += -rand_range(10,15)
 		slave.stress += rand_range(20,40)
@@ -317,7 +317,7 @@ func accident(stage = 0):
 		tempbuttons = [['Punish (-25 energy)', 1], ["Forgive", 2]]
 		globals.resources.gold -= 50
 	if stage == 1:
-		globals.player.energy = -25
+		globals.player.energy -= 25
 		slave.obed += rand_range(20,35)
 		slave.punish.expect = true
 		slave.punish.strength = 3
@@ -355,12 +355,12 @@ func escape(stage = 0):
 	if stage == 1:
 		slave.loyal += rand_range(7,15)
 		slave.obed += rand_range(10,15)
-		globals.player.energy = -25
+		globals.player.energy -= 25
 	elif stage == 2:
 		slave.obed += rand_range(20,35)
 		slave.stress += rand_range(15,25)
 		slave.loyal += rand_range(3,7)
-		globals.player.energy = -25
+		globals.player.energy -= 25
 	elif stage == 3:
 		slave.obed += -rand_range(10,25)
 	buttons = tempbuttons
@@ -390,10 +390,10 @@ func kidnap(stage = 0):
 		slave.stress += -25
 		if slave.brand != 'none':
 			showntext +=  "in couple of hours."
-			globals.player.energy = -25
+			globals.player.energy -= 25
 		else:
 			showntext += "by the end of the day."
-			globals.player.energy = -25
+			globals.player.energy -= 25
 	elif stage == 2:
 		if slave.brand != 'none':
 			slave.loyal += rand_range(5,10)
@@ -435,7 +435,7 @@ func gift(stage = 0):
 			globals.resources.mana += rand_range(3,6)
 			if slave.race == "Drow":
 				globals.resources.mana += 1
-			globals.player.energy = -25
+			globals.player.energy -= 25
 	buttons = tempbuttons
 	showevent()
 
@@ -443,17 +443,17 @@ func injure(stage = 0):
 	var tempbuttons
 	showntext = slave.dictionary(eventstext[currentevent][stage])
 	if stage == 0:
-		slave.health = -slave.stats.health_max/3
+		slave.health -= slave.stats.health_max/3
 		tempbuttons = [["Let $name rest for 3 days",1],["Let $name rest for a day",2], ["No rest", 3]]
 	if stage == 1:
 		slave.loyal += rand_range(7,15)
 		slave.obed += rand_range(10,15)
-		slave.health = slave.stats.health_max
+		slave.health += slave.stats.health_max
 		slave.away.duration = 3
 	elif stage == 2:
 		slave.loyal += rand_range(5,10)
 		slave.away.duration = 1
-		slave.health = slave.stats.health_max/6
+		slave.health += slave.stats.health_max/6
 	elif stage == 3:
 		slave.stress += rand_range(10,25)
 		slave.loyal += -rand_range(5,10)
@@ -472,7 +472,7 @@ func escapedslave(stage = 0):
 		globals.slaves = slave2
 	elif stage == 2:
 		globals.resources.gold += rand_range(50,150)
-		globals.player.energy = -25
+		globals.player.energy -= 25
 	elif stage == 3:
 		slave.obed += rand_range(5,10)
 	showntext = slave2.dictionary(eventstext[currentevent][stage])
@@ -485,11 +485,11 @@ func teenagersflirt(stage = 0):
 	if stage == 0:
 		tempbuttons = [["Drive them away (-25 energy)",1],["Let $name serve them (-25 energy)",2], ["Ignore", 3]]
 	if stage == 1:
-		globals.player.energy = -25
+		globals.player.energy -= 25
 		slave.loyal += rand_range(7,15)
 		slave.obed += rand_range(10,15)
 	elif stage == 2:
-		globals.player.energy = -25
+		globals.player.energy -= 25
 		slave.metrics.randompartners += round(rand_range(3,5))
 		slave.metrics.sex += 1
 		if (slave.sexuals.actions.has('pussy') || slave.sexuals.actions.has('ass') ) && slave.traits.has("Monogamous") == false:
@@ -542,11 +542,11 @@ func passiveevent(stage = 0):
 	if stage == 1:
 		slave.loyal += rand_range(7,15)
 		slave.obed += rand_range(10,20)
-		globals.player.energy = -25
+		globals.player.energy -= 25
 	elif stage == 2:
 		slave.loyal += -rand_range(10,20)
 		slave.obed += -rand_range(15,30)
-		globals.player.energy = -25
+		globals.player.energy -= 25
 	elif stage == 3:
 		slave.stress += rand_range(25,50)
 	buttons = tempbuttons
@@ -561,7 +561,7 @@ func masochistevent(stage = 0):
 		slave.lust = rand_range(5,10)
 		slave.obed += rand_range(15,25)
 		slave.loyal += rand_range(3,6)
-		globals.player.energy = -25
+		globals.player.energy -= 25
 	elif stage == 2:
 		slave.lust = -rand_range(15,25)
 		slave.obed += rand_range(15,25)
@@ -597,13 +597,13 @@ func fickleevent(stage = 0):
 		slave.loyal += -rand_range(7,15)
 		slave.obed += -rand_range(10,20)
 		slave.lust = rand_range(15,25)
-		globals.player.energy = -25
+		globals.player.energy -= 25
 	elif stage == 2:
 		slave.loyal += rand_range(5,10)
 		slave.sexuals.unlocked == true
 		get_parent().impregnation(slave)
 		slave.lust = -rand_range(10,20)
-		globals.player.energy = -25
+		globals.player.energy -= 25
 		globals.resources.mana += rand_range(4,10)
 		if slave.race == "Drow":
 			globals.resources.mana += 2
@@ -623,13 +623,13 @@ func pervertevent(stage = 0):
 		slave.loyal += -rand_range(5,10)
 		slave2.loyal += rand_range(5,10)
 		slave.obed += -rand_range(10,20)
-		globals.player.energy = -25
+		globals.player.energy -= 25
 	elif stage == 2:
 		slave.loyal += rand_range(5,10)
 		slave.lust = -rand_range(10,20)
 		slave2.obed += -rand_range(10,30)
 		slave2.lust = -rand_range(10,15)
-		globals.player.energy = -25
+		globals.player.energy -= 25
 		globals.resources.mana += rand_range(5,10)
 		if slave.race == "Drow":
 			globals.resources.mana += 2

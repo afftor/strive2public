@@ -1,6 +1,6 @@
 extends Control
 
-var slave #= globals.slavegen.newslave("Human","random","random","any")
+var slave 
 var availableitems
 
 func _ready():

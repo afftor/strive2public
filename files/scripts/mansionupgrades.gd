@@ -153,7 +153,7 @@ cost = 2000,
 mansionparlor = {
 name = "Beauty Parlor",
 code = 'mansionparlor',
-description = "Upgrades and equips a room within the mansion allowing to alter servants via [color=aqua]Piercing[/color] and [color=aqua]Tattoo[/color].", 
+description = "Upgrades and equips a room within the mansion allowing to alter servants via [color=aqua]Piercing[/color] and [color=aqua]Tattoo[/color] (Tattoos can empower your slaves).", 
 levels = 1,
 pointscost = 10,
 cost = 1000,

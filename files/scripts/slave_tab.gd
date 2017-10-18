@@ -7,20 +7,23 @@ var tab
 var jobdict = globals.jobs.jobdict
 
 func _ready():
+	for i in get_node("customization/tattoopanel/VBoxContainer").get_children():
+		i.connect('pressed',self,'choosetattooarea',[i])
 	set_process_input(true)
 	for i in get_tree().get_nodes_in_group('slaverules'):
 		i.connect("pressed", self, 'rulecheck', [i])
 
 func _input(event):
-	if get_tree().get_current_scene().get_node("screenchange/AnimationPlayer").is_playing() == true && get_tree().get_current_scene().get_node("screenchange/AnimationPlayer").get_current_animation() == "fadetoblack" || get_node("customization/clothes&relatives&customs/nicknamepanel").is_visible() || get_node("inspect/portait/Panel").is_visible():
+	if get_tree().get_current_scene().get_node("screenchange/AnimationPlayer").is_playing() == true && get_tree().get_current_scene().get_node("screenchange/AnimationPlayer").get_current_animation() == "fadetoblack" || get_node("customization/clothes&relatives&customs/nicknamepanel").is_visible() :
 		return
 	if event.type == 1:
 		var dict = {49 : 1, 50 : 2, 51 : 3, 52 : 4,53 : 5,54 : 6,55 : 7,56 : 8,}
-		if event.scancode in [KEY_1,KEY_2,KEY_3,KEY_4,KEY_5]:
+		if event.scancode in [KEY_1,KEY_2,KEY_3,KEY_4]:
 			var key = dict[event.scancode]
 			if event.is_action_pressed(str(key)) == true && self.is_visible() == true && get_tree().get_current_scene().get_node("dialogue").is_hidden() == true:
 				set_current_tab(key-1)
 
+onready var nakedspritesdict = get_node("sexual").nakedspritesdict
 
 func _on_slave_tab_visibility_changed():
 	var label
@@ -42,7 +45,6 @@ func _on_slave_tab_visibility_changed():
 	namelabel.set_hidden(false)
 	globals.currentslave = slave
 	get_node("stats/statspanel").slave = slave
-	get_node("actions").slave = slave
 	get_node("stats/statspanel").mode = 'full'
 	get_node("stats/statspanel").show()
 	namelabel.set_text(slave.name_short())
@@ -52,7 +54,14 @@ func _on_slave_tab_visibility_changed():
 	get_node("inspect/slavedescript").set_bbcode(text)
 	text = desc.getSlaveStatus(slave)
 	get_node("inspect/statustext").set_bbcode(text)
-	find_node('origins').set_text(slave.origins.capitalize())
+	get_node("inspect/Panel 2/fullbody").set_texture(null)
+	if nakedspritesdict.has(slave.unique):
+		if slave.obed >= 50 || slave.stress < 10:
+			get_node("inspect/Panel 2/fullbody").set_texture(globals.spritedict[nakedspritesdict[slave.unique].clothcons])
+		else:
+			get_node("inspect/Panel 2/fullbody").set_texture(globals.spritedict[nakedspritesdict[slave.unique].clothrape])
+	get_node("inspect/Panel 2").set_hidden(true) if get_node("inspect/Panel 2/fullbody").get_texture() == null else get_node("inspect/Panel 2").set_hidden(false)
+	get_node("stats/origins").set_text(slave.origins.capitalize())
 	for i in get_node("stats/traits/traitlist").get_children():
 		if i != get_node("stats/traits/traitlist/Label"):
 			i.free()
@@ -211,11 +220,7 @@ onready var mouseoverdescript = false
 
 func makeselectbuttons():
 	sleeprooms()
-	#clothlist()
-	#underwearlist()
-	if slave.work == 'companion':
-		get_node("stats/workbutton").set_text('Companion')
-	elif slave.work == 'jailer':
+	if slave.work == 'jailer':
 		get_node("stats/workbutton").set_text('Jailer')
 	elif slave.work == 'headgirl':
 		get_node("stats/workbutton").set_text('Headgirl')
@@ -390,10 +395,10 @@ func _on_confirm_pressed():
 		slave.stress = 15 + slave.conf/5 - slave.loyal/10
 		get_tree().get_current_scene().popup(slave.dictionary('You perform a Ritual of Branding on $name. As symbols are engraved onto $his neck, $he yelps in pain. \n\nWith this you put serious claim on $his future life: $He will be unable to raise a hand against you and will be far less tempted to escape. '))
 		globals.resources.mana -= 10
-		globals.player.energy = -20
+		globals.player.energy -= 20
 	elif confirm.get_meta('value') == 2:
 		slave.brand = 'advanced'
-		globals.player.energy = -20
+		globals.player.energy -= 20
 		globals.resources.mana -= 15
 	_on_slave_tab_visibility_changed()
 
@@ -621,134 +626,6 @@ func _on_relativesbutton_pressed():
 func _on_relativesclose_pressed():
 	get_node("customization/clothes&relatives&customs/relativespanel").set_hidden(true)
 
-var portaitsbuilt = false
-var portraitspath = "user://portraits/"
-var portaitsfolder ='file://' + OS.get_data_dir() + '/portraits'
-
-func _on_changeportait_pressed():
-	if get_node("inspect/portait/Panel/racelock").is_pressed() == false:
-		get_node("inspect/portait/Panel/search").set_hidden(false)
-		get_node("inspect/portait/Panel/search").set_text("")
-	else:
-		get_node("inspect/portait/Panel/search").set_hidden(true)
-	get_node("inspect/portait/Panel").popup()
-	if portaitsbuilt == false:
-		portaitsbuilt = true
-		buildportaitlist()
-
-
-func _on_reloadlist_pressed():
-	buildportaitlist()
-
-func buildportaitlist():
-	var dir = Directory.new()
-	if dir.dir_exists(portraitspath) == false:
-		dir.make_dir(portraitspath)
-	for i in get_node("inspect/portait/Panel/ScrollContainer/GridContainer").get_children():
-		if i != get_node("inspect/portait/Panel/ScrollContainer/GridContainer/Button"):
-			i.set_hidden(true)
-			i.free()
-	for i in globals.dir_contents(portraitspath):
-		if i.find('.jpg') < 0 && i.find(".png") < 0:
-			continue
-		var node = get_node("inspect/portait/Panel/ScrollContainer/GridContainer/Button").duplicate()
-		get_node("inspect/portait/Panel/ScrollContainer/GridContainer").add_child(node)
-		node.get_node("pic").set_texture(load(portraitspath + i))
-		node.connect('pressed', self, 'setportrait', [i])
-		node.get_node("Label").set_text(i.replacen('.jpg','').replacen('.png','').replacen('female','F').replacen('male','M'))
-		node.set_meta("type", i)
-	resort()
-
-
-func resort():
-	var strictsearch = get_node("inspect/portait/Panel/racelock").is_pressed()
-	var gender = slave.sex
-	var race = slave.race
-	var counter = 0
-	if gender == 'futanari':
-		gender = 'female'
-	if race.find('Beastkin') >= 0:
-		race = 'beastkin'
-	elif race.find('Halfkin') >= 0:
-		race = 'halfkin'
-	
-	
-	
-	for i in get_node("inspect/portait/Panel/ScrollContainer/GridContainer").get_children():
-		i.set_hidden(true)
-		if i == get_node("inspect/portait/Panel/ScrollContainer/GridContainer/Button"):
-			continue
-		if strictsearch == true:
-			if i.get_meta('type').findn(race) < 0 || i.get_meta('type').findn(gender) < 0:
-				continue 
-		if strictsearch == false && get_node("inspect/portait/Panel/search").get_text() != '' && i.get_node("Label").get_text().findn(get_node("inspect/portait/Panel/search").get_text()) < 0:
-			continue
-		i.set_hidden(false)
-		counter += 1
-	if counter < 1:
-		get_node("inspect/portait/Panel/noimagestext").set_hidden(false)
-	else:
-		get_node("inspect/portait/Panel/noimagestext").set_hidden(true)
-
-func setportrait(path):
-	slave.imageportait = (portraitspath + path)
-	get_node("inspect/portait/Panel").set_hidden(true)
-	_on_slave_tab_visibility_changed()
-	get_tree().get_current_scene().rebuild_slave_list()
-
-
-
-func _on_cancelportait_pressed():
-	get_node("inspect/portait/Panel").set_hidden(true)
-
-
-func _on_racelock_pressed():
-	_on_changeportait_pressed()
-	resort()
-
-
-func _on_search_text_changed( text ):
-	resort()
-
-func _on_removeportrait_pressed():
-	slave.imageportait = null
-	get_node("inspect/portait/Panel").set_hidden(true)
-	_on_slave_tab_visibility_changed()
-	get_tree().get_current_scene().rebuild_slave_list()
-
-func _on_reverseportrait_pressed():
-	if slave.unique != null:
-		if slave.unique == 'Cali':
-			slave.imageportait = 'res://files/images/cali/caliportrait.png'
-		elif slave.unique == 'Emily':
-			slave.imageportait = "res://files/images/emily/emilyportrait.png"
-		elif slave.unique == 'Tisha':
-			slave.imageportait = "res://files/images/tisha/tishaportrait.png"
-		elif slave.unique == 'Chloe':
-			slave.imageportait = "res://files/images/chloe/chloeportrait.png"
-		elif slave.unique == 'Yris':
-			slave.imageportait = "res://files/images/yris/yrisportrait.png"
-		elif slave.unique == 'Maple':
-			slave.imageportait = "res://files/images/maple/mapleportrait.png"
-		get_node("inspect/portait/Panel").set_hidden(true)
-		_on_slave_tab_visibility_changed()
-		get_tree().get_current_scene().rebuild_slave_list()
-
-
-
-func _on_addcustom_pressed():
-	get_node("inspect/portait/Panel/FileDialog").popup()
-
-func _on_FileDialog_file_selected( path ):
-	var dir = Directory.new()
-	var path2 = path.substr(path.find_last('/'), path.length()-path.find_last('/'))
-	dir.copy(path, portraitspath + path2)
-	buildportaitlist()
-
-
-func _on_openfolder_pressed():
-	OS.shell_open(portaitsfolder)
-
 
 func _on_nickname_pressed():
 	get_node("customization/clothes&relatives&customs/nicknamepanel").popup()
@@ -758,8 +635,6 @@ func _on_nickaccept_pressed():
 	slave.nickname = get_node("customization/clothes&relatives&customs/nicknamepanel/nickline").get_text()
 	get_tree().get_current_scene().rebuild_slave_list()
 	_on_slave_tab_visibility_changed()
-
-
 
 
 func _on_description_pressed():
@@ -791,5 +666,247 @@ func _on_spec_mouse_enter():
 
 func _on_spec_mouse_exit():
 	globals.hidetooltip()
+
+#Tattoos
+
+var tattoosdescript = { #this goes like : start + tattoo theme + end + tattoo description: I.e On $his face you see a notable nature themed tattoo, depicting flowers and vines
+face = {start = "On $his cheek you see a notable ", end = " themed tattoo, depicting"},
+chest = {start = "$His chest is decorated with a", end = " tattoo, portraying"},
+waist = {start = "On lower part of $his back, you spot a ", end = " tattooed image of "},
+arms = {start = "$His arm has a skillfully created ", end = " image of "},
+legs = {start = "$His ankle holds a piece of ", end = " art, representing"},
+ass = {start = "$His butt has a large ", end = " themed image showing "},
+}
+
+var tattoooptions = {
+none = {name = 'none', descript = "", applydescript = "Select a theme for future tattoo"},
+nature = {name = 'nature', descript = " flowers and vines", function = "naturetattoo", applydescript = "Nature thematic tattoo will increase $name's beauty. "},
+tribal = {name = 'tribal',descript = " totemic markings and symbols", function = "tribaltattoo", applydescript = "Tribal thematic tattoo will increase $name's scouting performance. "},
+degrading = {name = 'derogatory', descript = " rude words and lewd drawings", function = "degradingtattoo",  applydescript = "Derogatory tattoo will promote $name's lust and enforce obedience. "},
+animalistic = {name = 'beastly', descript = " realistic beasts and insects", function = "animaltattoo", applydescript = "Animalistic tattoo will boost $name's energy regeneration. "},
+magic = {name = "energy", descript = " empowering patterns and runes", function = "manatattoo", applydescript = "Magic tattoo will increase $name's Magic Affinity. "},
+}
+
+var tattoolevels = {
+nature = {
+1 : {bonusdescript = "+5 Beauty", effect = 'nature1'},
+2 : {bonusdescript = "+10 Beauty", effect = 'nature2'},
+3 : {bonusdescript = "+15 Beauty", effect = 'nature3'},
+highest = "+15 Beauty",
+},
+tribal = {
+1 : {bonusdescript = "+3 Awareness", effect = 'tribal1'},
+2 : {bonusdescript = "+6 Awareness", effect = 'tribal2'},
+3 : {bonusdescript = "+9 Awareness", effect = 'tribal3'},
+highest = "+9 Awareness",
+},
+degrading = {
+1 : {bonusdescript = "+5 Lust and Obedience per day", effect = 'degrading1'},
+2 : {bonusdescript = "+10 Lust and Obedience per day", effect = 'degrading2'},
+3 : {bonusdescript = "+15 Lust and Obedience per day", effect = 'degrading3'},
+4 : {bonusdescript = "+20 Lust and Obedience per day", effect = 'degrading4'},
+highest = "+20 Lust and Obedience per day",
+},
+animalistic = {
+1 : {bonusdescript = "+8 Energy per day", effect = 'animalistic1'},
+2 : {bonusdescript = "+16 Energy per day", effect = 'animalistic2'},
+3 : {bonusdescript = "+24 Energy per day", effect = 'animalistic3'},
+highest = "+24 Energy per day",
+},
+magic = {
+1 : {bonusdescript = "+0 Magic Affinity", effect = 'magic1'},
+2 : {bonusdescript = "+1 Magic Affinity", effect = 'magic2'},
+3 : {bonusdescript = "+1 Magic Affinity", effect = 'magic3'},
+4 : {bonusdescript = "+1 Magic Affinity", effect = 'magic4'},
+5 : {bonusdescript = "+2 Magic Affinity", effect = 'magic5'},
+highest = '+2 Magic Affinity',
+},
+}
+
+var tattoodict = {
+none = {value = 0, code = 'none'},
+nature = {value = 1, code = 'nature'},
+tribal = {value = 2, code = 'tribal'},
+degrading = {value = 3, code = 'degrading'},
+animalistic = {value = 4, code = 'animalistic'},
+magic = {value = 5, code = 'magic'},
+}
+
+var selectedpart = ''
+var slavetattoos = {}
+var tattootheme = 'none'
+
+func _on_applybutton_pressed():
+	slave.tattooshow[selectedpart] = !get_node("customization/tattoopanel/invisible").is_pressed()
+	if get_node("customization/tattoopanel/tattoooptions").is_disabled():
+		return
+	elif tattootheme == 'none':
+		return
+	elif globals.itemdict.magicessenceing.amount < 1 || globals.itemdict.supply.amount < 1:
+		get_tree().get_current_scene().infotext("[color=red]Not enough resources[/color]")
+		return
+	else:
+		globals.itemdict.magicessenceing.amount -= 1
+		globals.itemdict.supply.amount -= 1
+	counttattoos()
+	slave.tattoo[selectedpart] = tattootheme
+	var tattooDict = {currentlevel = slavetattoos[slave.tattoo[selectedpart]]}
+	if tattoolevels[tattootheme].has(tattooDict.currentlevel-1) && tattoolevels[tattootheme].has(tattooDict.currentlevel):
+		slave.add_effect(globals.effectdict[tattoolevels[tattootheme][tattooDict.currentlevel-1].effect],true)
+	if tattoolevels[tattootheme].has(tattooDict.currentlevel):
+		slave.add_effect(globals.effectdict[tattoolevels[tattootheme][tattooDict.currentlevel].effect])
+	for i in get_node("customization/tattoopanel/VBoxContainer").get_children():
+		if i.get_name() == selectedpart:
+			choosetattooarea(i)
+	_on_slave_tab_visibility_changed()
+
+func _on_tattoo_pressed():
+	get_node("customization/tattoopanel").popup()
+	tattootheme = 'none'
+	selectedpart = ''
+	counttattoos()
+	get_node("customization/tattoopanel/tattoooptions").set_hidden(true)
+	get_node("customization/tattoopanel/RichTextLabel").set_bbcode("Select body part to work on")
+	for i in get_node("customization/tattoopanel/VBoxContainer").get_children():
+		i.set_pressed(false)
+		if i.get_name() in ['legs','arms']:
+			if i.get_name() == 'legs' && slave.legs in ['webbed','fur_covered','normal','scales']:
+				i.set_disabled(false)
+			elif i.get_name() == 'arms' && slave.arms in ['webbed','fur_covered','normal','scales']:
+				i.set_disabled(false)
+			else:
+				i.set_disabled(true)
+
+func counttattoos():
+	slavetattoos = {none = 0,nature = 0, tribal = 0, degrading = 0, animalistic = 0, magic = 0}
+	for i in slave.tattoo:
+		slavetattoos[slave.tattoo[i]] += 1
+
+func choosetattooarea(button):
+	var area = button.get_name()
+	var text = ''
+	selectedpart = str(area)
+	for i in get_node("customization/tattoopanel/VBoxContainer").get_children():
+		if i == button:
+			i.set_pressed(true)
+		else:
+			i.set_pressed(false)
+	get_node("customization/tattoopanel/tattoooptions").set_hidden(false)
+	get_node("customization/tattoopanel/tattoooptions").select(tattoodict[slave.tattoo[area]].value)
+	if get_node("customization/tattoopanel/tattoooptions").get_selected() == 0:
+		text += "$name currently has no tattoos on $his " + area + ". "
+		get_node("customization/tattoopanel/tattoooptions").set_disabled(false)
+	else:
+		get_node("customization/tattoopanel/tattoooptions").set_disabled(true)
+		text += "$name has a [color=aqua]" + tattoooptions[slave.tattoo[area]].name + '[/color] tattoo on $his ' + area + '. '
+		text += "\n[color=aqua]Apply to change visibility[/color]"
+	get_node("customization/tattoopanel/RichTextLabel").set_bbcode(slave.dictionary(text))
+
+func _on_tattooclose_pressed():
+	get_node("customization/tattoopanel").set_hidden(true)
+
+
+func _on_tattoooptions_item_selected( ID ):
+	for i in tattoodict.values():
+		if i.value == get_node("customization/tattoopanel/tattoooptions").get_selected():
+			tattootheme = i.code
+	var text = slave.dictionary(tattoooptions[tattootheme].applydescript)
+	if tattootheme != 'none':
+		text += "\n\n"
+		if slavetattoos[tattootheme] > 0:
+			text += "Current Level: " + str(slavetattoos[tattootheme])
+			if tattoolevels[tattootheme].has(slavetattoos[tattootheme]):
+				text += "\nCurrent Bonus: " + tattoolevels[tattootheme][slavetattoos[tattootheme]].bonusdescript
+			else:
+				text += "\nCurrent Bonus: " + tattoolevels[tattootheme].highest
+		if tattoolevels[tattootheme].has(slavetattoos[tattootheme]+1):
+			text += "\nNext Bonus: " + tattoolevels[tattootheme][slavetattoos[tattootheme]+1].bonusdescript
+		else:
+			text += "\n[color=yellow]No additional effects. [/color]"
+	get_node("customization/tattoopanel/RichTextLabel").set_bbcode(text)
+
+#Piercing
+
+
+var piercingdict = {
+earlobes = {name = 'earlobes', options = ['earrings', 'stud'], requirement = null, id = 1},
+eyebrow = {name = 'eyebrow', options = ['stud'], requirement = null, id = 2},
+nose = {name = 'nose', options = ['stud', 'ring'], requirement = null, id = 3},
+lips = {name = 'lips', options = ['stud', 'ring'], requirement = null, id = 4},
+tongue = {name = 'tongue', options = ['stud'], requirement = null, id = 5},
+navel = {name = 'navel', options = ['stud'], requirement = null, id = 6},
+nipples = {name = 'nipples', options = ['ring', 'stud', 'chain'], requirement = 'lewdness', id = 7},
+clit = {name = 'clit', options = ['ring', 'stud'], requirement = 'lewdness, pussy', id = 8},
+labia = {name = 'labia', options = ['ring', 'stud'], requirement = 'lewdness, pussy', id = 9},
+penis = {name = 'penis', options = ['ring', 'stud'], requirement = 'lewdness, penis', id = 10},
+}
+
+func _on_piercing_pressed():
+	get_node("customization/piercingpanel").popup()
+	for i in get_node("customization/piercingpanel/ScrollContainer/VBoxContainer").get_children():
+		if i != get_node("customization/piercingpanel/ScrollContainer/VBoxContainer/piercingline"):
+			i.set_hidden(true)
+			i.queue_free()
+	if slave.sexuals.unlocked == true:
+		get_node("customization/piercingpanel/piercestate").set_text(slave.dictionary('$name does not seems to mind you pierce $his private places.'))
+	else:
+		get_node("customization/piercingpanel/piercestate").set_text(slave.dictionary('$name refuses to let you pierice $his private places'))
+	
+	for i in piercingdict:
+		if slave.piercing.has(i) == false:
+			slave.piercing[i] = null
+	
+	var array = []
+	for i in piercingdict.values():
+		array.append(i)
+	array.sort_custom(self, 'idsort')
+	
+	
+	for ii in array:
+		if ii.requirement == null || (slave.sexuals.unlocked == true&& ii.requirement == 'lewdness') || (slave.penis.number >= 1 && slave.sexuals.unlocked == true && ii.id == 10) || (slave.pussy.has == true && slave.sexuals.unlocked == true && (ii.id == 8 || ii.id == 9)):
+			var newline = get_node("customization/piercingpanel/ScrollContainer/VBoxContainer/piercingline").duplicate()
+			newline.set_hidden(false)
+			get_node("customization/piercingpanel/ScrollContainer/VBoxContainer").add_child(newline)
+			newline.get_node("placename").set_text(ii.name.capitalize())
+			for i in ii.options:
+				newline.get_node("pierceoptions").add_item(i)
+				if slave.piercing[ii.name] == i:
+					newline.get_node("pierceoptions").select(newline.get_node("pierceoptions").get_item_count()-1)
+			newline.get_node('pierceoptions').set_meta('pierce', ii.name)
+			newline.get_node("pierceoptions").connect("item_selected", self, 'pierceselect', [newline.get_node("pierceoptions").get_meta('pierce')])
+
+func idsort(first, second):
+	if first.id < second.id:
+		return true
+	else:
+		return false
+
+func pierceselect(ID, node):
+	if ID == 0:
+		slave.piercing[node] = 'pierced'
+	else:
+		slave.piercing[node] = piercingdict[node].options[ID-1]
+	_on_piercing_pressed()
+
+func _on_closebutton_pressed():
+	get_node("customization/piercingpanel").set_hidden(true)
+
+
+func _on_hairstyle_item_selected( ID ):
+	slave = globals.currentslave
+	var hairstyles = ['straight','ponytail', 'twintails', 'braid', 'two braids', 'bun']
+	slave.hairstyle = hairstyles[ID]
+	get_parent()._on_slave_tab_visibility_changed()
+
+
+func _on_useitem_pressed():
+	get_tree().get_current_scene()._on_inventory_pressed("slave")
+
+func _on_image_pressed():
+	pass # replace with function body
+
+
+func _on_portrait_pressed():
+	get_tree().get_current_scene().imageselect("portrait", slave)
 
 

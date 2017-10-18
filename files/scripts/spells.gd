@@ -142,11 +142,23 @@ shackle = {
 acidspit = {
 	code = 'acidspit',
 	name = 'Acid Spit',
-	description = "Turns your saliva into highly potent corrosive substance for a short time. \nDeals damage to single target enemy and recudes it's armor. ",
+	description = "Turns your saliva into highly potent corrosive substance for a short time. \nDeals spell damage to single target enemy and recudes it's armor. ",
 	effect = '',
 	manacost = 5,
 	req = 2,
 	price = 400,
+	personal = false,
+	combat = true,
+	learned = false,
+	},
+mindblast = {
+	code = 'mindblast',
+	name = 'Mind Blast',
+	description = "Simple mind attack which can be utilized in combat. While not terribly effective on its own, can eventually break the enemy. \nDeals spell damage to single target enemy. ",
+	effect = '',
+	manacost = 3,
+	req = 1,
+	price = 100,
 	personal = false,
 	combat = true,
 	learned = false,
@@ -218,7 +230,7 @@ func healeffect():
 	var spell = globals.spelldict.heal
 	globals.resources.mana -= spell.manacost
 	if slave.health < slave.stats.health_max:
-		slave.health = rand_range(20,30) + globals.player.smaf*5
+		slave.health += rand_range(20,30) + globals.player.smaf*5
 		text = "After you finish casting the spell, $name's wounds close up. "
 		if slave.loyal < 20:
 			slave.loyal += rand_range(2,4)
@@ -245,9 +257,9 @@ func invigorateeffect():
 	var text = ''
 	var spell = globals.spelldict.invigorate
 	globals.resources.mana -= spell.manacost
-	slave.energy = slave.stats.energy_max/2
+	slave.energy += slave.stats.energy_max/2
 	slave.stress += rand_range(25,35)-globals.player.smaf*4
-	globals.player.energy = 50
+	globals.player.energy += 50
 	main.popup(slave.dictionary("You cast Invigorate on $name. Your and $his energy is partly restored. $His stress has increased. "))
 
 func entrancementeffect():
