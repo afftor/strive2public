@@ -24,6 +24,7 @@ func _ready():
 	get_node("TabContainer/Settings/fading").set_pressed(globals.rules.fadinganimation)
 	get_node("TabContainer/Game/permadeath").set_pressed(globals.rules.permadeath)
 	get_node("TabContainer/Game/aliseoption").select(globals.rules.enddayalise)
+	get_node("TabContainer/Settings/spritesindialogues").set_pressed(globals.rules.spritesindialogues)
 	if globals.rules.children == true:
 		get_node("TabContainer/Game/noadults").set_hidden(false)
 		get_node("TabContainer/Game/noadults").set_pressed(globals.rules.noadults)
@@ -309,3 +310,7 @@ func _on_unlockgallery_pressed():
 		for k in i.scenes:
 			k.unlocked = true
 
+
+
+func _on_spritesindialogues_pressed():
+	globals.rules.spritesindialogues = get_node("TabContainer/Settings/spritesindialogues").is_pressed()

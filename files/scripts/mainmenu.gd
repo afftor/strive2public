@@ -73,7 +73,7 @@ func _on_SavePanel_visibility_changed():
 		if i != get_node("TextureFrame/SavePanel/ScrollContainer/savelist/Button"):
 			i.queue_free()
 			i.set_hidden(true)
-	get_node("TextureFrame/SavePanel/saveline").set_text(filename)
+	get_node("TextureFrame/SavePanel/saveline").set_text(filename.replacen("user://saves/",''))
 	var dir = Directory.new()
 	if dir.dir_exists("user://saves") == false:
 		dir.make_dir("user://saves")
@@ -81,16 +81,17 @@ func _on_SavePanel_visibility_changed():
 		node = get_node("TextureFrame/SavePanel/ScrollContainer/savelist/Button").duplicate()
 		node.set_hidden(false)
 		get_node("TextureFrame/SavePanel/ScrollContainer/savelist").add_child(node)
-		node.set_text(i)
+		node.set_text(i.replacen("user://saves/",''))
+		node.set_meta('text', i)
 		node.connect('pressed', self, 'loadchosen', [node])
 
 func loadchosen(node):
-	filename = node.get_text()
+	filename = node.get_meta('text')
 	_on_SavePanel_visibility_changed()
 
 func _on_deletebutton_pressed():
 	var dir = Directory.new()
-	if dir.file_exists("user://saves/"+filename):
+	if dir.file_exists(filename):
 		yesnopopup('Delete this file?', 'deletefile', 'cancel')
 	else:
 		popup('No file with such name') 
@@ -99,13 +100,13 @@ func deletefile():
 	var dir = Directory.new()
 	if dir.dir_exists("user://saves") == false:
 		dir.make_dir("user://saves")
-	dir.remove("user://saves/"+filename)
+	dir.remove(filename)
 	cancel()
 	_on_SavePanel_visibility_changed()
 
 func _on_loadbutton_pressed():
 	var dir = Directory.new()
-	if dir.file_exists("user://saves/"+filename):
+	if dir.file_exists(filename):
 		loadfile()
 
 func loadfile():

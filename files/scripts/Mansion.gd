@@ -89,12 +89,11 @@ func _ready():
 		globals.player.abilityactive.append('escape')
 		globals.player.abilityactive.append('acidspit')
 		globals.state.supporter = true
-		for i in globals.charactergallery.values():
-			i.unlocked = true
-			i.nakedunlocked = true
-			for k in i.scenes:
-				k.unlocked = true
-		globals.charactergallery.maple.unlocked = true
+#		for i in globals.charactergallery.values():
+#			i.unlocked = true
+#			i.nakedunlocked = true
+#			for k in i.scenes:
+#				k.unlocked = true
 		_on_new_slave_button_pressed()
 	rebuild_slave_list()
 	get_node("itemnode").main = get_tree().get_current_scene()
@@ -115,6 +114,9 @@ func _ready():
 	
 	for i in get_tree().get_nodes_in_group("mansionbuttons"):
 		i.connect("pressed",self,i.get_name())
+	
+	for i in get_tree().get_nodes_in_group("spellbookcategory"):
+		i.connect("pressed",self,'spellbookcategory',[i])
 	
 	if globals.state.tutorialcomplete == false && globals.resources.day == 1:
 		get_node("tutorialnode").starttutorial()
@@ -178,7 +180,8 @@ func _on_new_slave_button_pressed():
 		var tmpitem = get_node("itemnode").createunstackable(i)
 		globals.state.unstackables[str(tmpitem.id)] = tmpitem
 	globals.state.sidequests.brothel = 1
-	globals.state.sidequests.maple = 6
+	globals.state.sidequests.chloe = 8
+	#globals.state.decisions.append('')
 	globals.state.rank = 3
 	globals.state.mainquest = 0
 	globals.state.farm = 3
@@ -423,7 +426,7 @@ func _on_end_pressed():
 						slave.health += 10
 						slave.stress -= 20
 					else:
-						workdict = call(slave.work, slave)
+						workdict = globals.jobs.call(slave.work, slave)
 						if workdict.has('dead') && workdict.dead == true:
 							deads_array.append({number = count, reason = workdict.text})
 							continue
@@ -534,7 +537,7 @@ func _on_end_pressed():
 					slave.lust = -rand_range(10,15)
 					slave.metrics.sex += 1
 					globals.resources.mana += 2
-					impregnation(slave, globals.player)
+					globals.impregnation(slave, globals.player)
 				else:
 					text2.set_bbcode(text2.get_bbcode() + slave.dictionary('$name keeps you company at night and you grew closer.\n'))
 			elif slave.sleep == 'jail':
@@ -1017,495 +1020,7 @@ func startnewday():
 #	if globals.state.supporter == false && int(globals.resources.day)%100 == 0:
 #		get_node("sellout").set_hidden(false)
 
-func rest(slave):
-	var text = '$name has spent most of the day relaxing.\n'
-	slave.health += 10
-	slave.stress -= 20
-	return {text = text}
 
-func forage(slave):
-	var text = '$name went to the forest in search of wild edibles.\n'
-	var food = rand_range(15,25) - min(globals.resources.day/10,10)
-	food += slave.wit/4
-	if slave.race == 'Dryad':
-		food = food*1.4
-	if slave.cour < 50 && rand_range(0,100) + slave.cour/5 < 33:
-		food = food*rand_range(0.25, 0.75)
-		text += "Due to [color=yellow]lack of courage[/color], $he obtained less food than $he could. \n"
-	if slave.smaf * 3 + 2 >= rand_range(0,100):
-		text += "$name has found nature's essence. \n"
-		globals.itemdict.natureessenceing.amount += 1
-	food = round(min(food, (slave.sstr+slave.send)*20+25))
-	if slave.spec == 'ranger':
-		food *= 1.25
-	text += '$He brought back [color=aqua]'+ str(food) + '[/color] units of food.\n'
-	slave.xp += food/5
-	var dict = {text = text, food = food}
-	
-	return dict
-
-func hunt(slave):#agility, strength, endurance, courage
-	var text = "$name went to the forest in search for wild animals.\n"
-	var food = slave.awareness()*rand_range(2,4) + slave.send*rand_range(5,10)
-	if slave.cour < 60 && rand_range(0,100) + slave.cour/4 < 45:
-		food = food*rand_range(0.25, 0.50)
-		text +=  "Due to [color=yellow]lack of courage[/color], $he obtained less food than $he could. \n"
-	if slave.race == 'Arachna':
-		food = food*1.3
-	if slave.spec in ['ranger','trapper']:
-		food *= 1.25
-	globals.itemdict.supply.amount += round(food/12)
-	slave.xp += food/7
-	slave.cour += rand_range(0,2)
-	food = min(food, (slave.sstr+slave.send)*30+40)
-	text += "In the end $he brought [color=aqua]" + str(round(food)) + "[/color] food and [color=yellow]" + str(round(food/12)) + "[/color] supplies. \n"
-	if slave.smaf * 3 + 3 >= rand_range(0,100):
-		text += "$name has found beastial essence. \n"
-		globals.itemdict.bestialessenceing.amount += 1
-	
-	var dict = {text = text, food = food}
-	return dict
-
-func library(slave):
-	var text = "$name spends $his time studying in library.\n"
-	slave.wit += rand_range(1,3)
-	if slave.race == 'Gnome':
-		slave.xp += max((30 + 5*globals.state.mansionupgrades.mansionlibrary + slave.wit/12) - (slave.level-1)*8,0)
-	else:
-		slave.xp += max((15 + 5*globals.state.mansionupgrades.mansionlibrary + slave.wit/12) - (slave.level-1)*8,0)
-	var dict = {text = text}
-	return dict
-
-func nurse(slave):
-	var text = "$name is taking care of residents' health.\n"
-	
-	globals.player.health += slave.wit/15+slave.smaf*3
-	for i in globals.slaves:
-		if i.away.duration == 0 && i.health < i.stats.health_max:
-			if globals.itemdict.supply.amount > 0:
-				i.health += slave.wit/25+slave.smaf*2
-			else:
-				i.health += slave.wit/35+slave.smaf*3
-			slave.xp += rand_range(1,3)
-	
-	var dict = {text = text}
-	return dict
-
-func cooking(slave):
-	var text = ''
-	var gold = 0
-	var food = 0
-	slave.xp += globals.slaves.size()
-	if globals.resources.food < 200:
-		if globals.resources.gold >= 100:
-			text = '$name went to purchase groceries and bought 200 units of food.\n'
-			gold = -100
-			food = 200
-		else:
-			text = '$name complained about the lack of food and no money to supply kitchen on $his own.\n'
-	text += '$name spent $his time prepearing meals for everyone.\n'
-	text = slave.dictionary(text)
-	var dict = {text = text, gold = gold, food = food}
-	return dict
-
-func lumberer(slave):
-	var text = "$name spent the day in the Frostford woods, cutting and chopping trees. \n"
-	var gold = max(slave.sstr*rand_range(4,8) + slave.send*rand_range(4,8),5)
-	slave.xp += gold/4
-	text += "In the end $he made [color=yellow]" + str(round(gold)) + "[/color] gold\n"
-	var dict = {text = text, gold = gold}
-	return dict
-
-func ffprostitution(slave):
-	var text = "$name spent the day at Frostford, selling $his body for sexual pleasure.\n"
-	var gold = 0
-	slave.metrics.brothel += 1
-	var jobactions = ['vaginal','anal','oral','toys']
-	if slave.pussy.virgin == true:
-		slave.sexuals.actions.pussy = 1
-		slave.pussy.virgin = false
-		slave.pussy.first = 'brothel'
-		slave.health -= 5
-		slave.stress += 15
-		text += "$His virginity was taken by one of the customers.\n"
-	slave.lust = rand_range(-15,-25)
-	slave.loyal += rand_range(-1,-3)
-	if rand_range(1,10) > 4:
-		impregnation(slave)
-	var counter = 0
-	for i in jobactions:
-		if slave.sexuals.unlocks.has(i):
-			counter += 1
-	gold = rand_range(1,5) + slave.charm/4 + slave.send*15 + slave.beauty/5 + counter*5
-	if slave.traits.has('Sex-crazed') == true:
-		slave.stress += -counter*4
-		gold = gold*1.2
-	slave.metrics.randompartners += round(rand_range(2,4))
-	slave.metrics.sex += round(rand_range(2,5))
-	if slave.sexuals.unlocks.find('penetration') && slave.pussy.has == true:
-		slave.metrics.vag += round(rand_range(1,4))
-	if slave.sexuals.unlocks.find('anal') >= 0:
-		slave.metrics.anal += round(rand_range(1,4))
-	if slave.sexuals.unlocks.find('oral') >= 0:
-		slave.metrics.oral += round(rand_range(1,2))
-	if slave.race.find('Bunny') >= 0 || slave.spec in ['geisha','nympho']:
-		slave.stress += 12 - min(counter*4, 10)
-	else:
-		slave.stress += 25 - min(counter*5, 20)
-	if slave.spec == 'geisha':
-		gold = gold*1.25
-	gold = round(gold)
-	slave.xp += gold/5
-	text += "By the end of the day $he earned [color=yellow]"+ str(gold) + "[/color] gold.\n"
-	
-	var dict = {text = text, gold = gold}
-	return dict
-
-func guardian(slave):
-	var text = "$name spent the day in Gorn, patrolling the city as part of the guard.\n"
-	var gold = max(slave.sstr*rand_range(5,10) + slave.cour/4,5)
-	slave.xp += gold/6
-	text += "In the end $he made [color=yellow]" + str(round(gold)) + "[/color] gold\n"
-	slave.loyal -= 1
-	var dict = {text = text, gold = gold}
-	return dict
-
-func research(slave):
-	var text = "$name spent day by being used in magic experiments. \n"
-	var gold = 25*(globals.originsarray.find(slave.origins)+1) + 20*slave.level + rand_range(0,10)
-	var array = []
-	var dead = false
-	text += "In the end $he earned [color=yellow]" + str(round(gold)) + "[/color] gold\n"
-	slave.obed += rand_range(15,25)
-	if rand_range(0,100) >= 40:
-		slave.health -= slave.health/3
-	if rand_range(0,100) < 30:
-		array = ['conf','cour','wit','charm']
-		slave[array[rand_range(0,array.size())]] -= rand_range(15,25)
-		text += "[color=red]$name's mental health has been damaged. [/color]"
-	if rand_range(0,100) < 20 && slave.send >= 1:
-		slave.send -= 1
-		text += "[color=red]$name's physical health has been damaged. [/color]"
-	if slave.wit >= 65 && slave.cour >= 65 && rand_range(0,100) <= 15:
-		text = "[color=red]$name has managed to break free from place of $his employment and hasn't returned to mansion. [/color]"
-		dead = true
-	slave.stress += rand_range(10,25)
-	if rand_range(35,50) > slave.health && rand_range(0,100) < 15:
-		slave.health -= 200
-		dead = true
-		text = "[color=red]Due to life-threatening experiments $name has deceased.[/color]"
-	var dict = {text = slave.dictionary(text), gold = gold, dead = dead}
-	return dict
-
-func fucktoy(slave):
-	var gold = 0
-	var text
-	slave.metrics.brothel += 1
-	text = "$name sent to Umbra to be used as a Fucktoy.\n"
-	var jobactions = ['oral','anal','vaginal','fetish','fetish2','toy','group']
-	if slave.pussy.virgin == true:
-		slave.sexuals.actions.pussy = 1
-		slave.pussy.virgin = false
-		slave.pussy.first = 'brothel'
-		slave.health -= 5
-		slave.stress += 10
-		slave.loyal += rand_range(-2,-4)
-		text += "$His virginity was taken by one of the customers.\n"
-	if rand_range(1,10) > 2:
-		impregnation(slave)
-	var counter = 0
-	for i in jobactions:
-		if slave.sexuals.unlocks.has(i) :
-			counter += 1
-	for i in globals.state.reputation:
-		if globals.state.reputation[i] < 0:
-			gold += abs(globals.state.reputation[i])
-	gold += rand_range(5,10)
-	if slave.traits.has('Sex-crazed') == true:
-		slave.stress -= counter*3
-	slave.metrics.sex += round(rand_range(3,6))
-	slave.metrics.randompartners += round(rand_range(2,5))
-	if slave.sexuals.unlocks.find('penetration') >= 0 && slave.pussy.has == true:
-		slave.metrics.vag += round(rand_range(2,5))
-	if slave.sexuals.unlocks.find('anal') >= 0:
-		slave.metrics.anal += round(rand_range(2,5))
-	if slave.sexuals.unlocks.find('oral') >= 0:
-		slave.metrics.oral += round(rand_range(1,4))
-	if slave.sexuals.unlocks.find('orgy') >= 0:
-		slave.metrics.orgy += round(rand_range(1,3))
-	gold = round(gold)
-	if slave.wit >= 25:
-		slave.loyal -= 8
-	if slave.conf >= 25:
-		slave.stress += 15
-	if slave.effects.has('captured'):
-		slave.effects.captured.duration -= 3
-	slave.obed += 20
-	slave.dom -= rand_range(4,8)
-	text += "By the end of the day $he earned [color=yellow]" + str(gold) + "[/color] gold.\n"
-	var dict = {text = text, gold = gold}
-	return dict
-
-
-func slavecatcher(slave):
-	var text = "$name spent day helping Gorn's slavers to acquire and tranport slaves. \n"
-	var gold = slave.sstr*rand_range(5,10) + slave.sagi*rand_range(5,10) + slave.cour/4
-	slave.xp += gold/6
-	text += "In the end $he made [color=yellow]" + str(round(gold)) + "[/color] gold\n"
-	slave.stress += rand_range(5,15)
-	slave.loyal -= rand_range(1,3)
-	var dict = {text = text, gold = gold}
-	return dict
-
-func storewimborn(slave):
-	var text
-	var gold
-	var bonus = 1
-	var supplyprice = round(rand_range(3,5))
-	var supplysold
-	text = "$name worked at the local market. "
-	gold = rand_range(1,5) + (slave.charm + slave.wit)/3
-	gold = gold*(min(0.30*(globals.originsarray.find(slave.origins)+1),1))
-	if slave.race.find("Tanuki")>= 0:
-		bonus = bonus + 0.3
-		supplyprice += 1
-	if slave.traits.has('Pretty voice') == true:
-		bonus = bonus + 0.2
-	elif slave.traits.has('Foul Mouth') == true:
-		bonus = bonus - 0.3
-	if slave.spec == 'merchant':
-		bonus += 0.3
-		supplyprice += 1
-	gold = round(gold*bonus)
-	supplysold = floor(gold/supplyprice)
-	if globals.itemdict.supply.amount-globals.state.supplykeep >= supplysold:
-		gold = supplysold*supplyprice
-	else:
-		supplysold = globals.itemdict.supply.amount - globals.state.supplykeep
-		gold = ((gold-supplysold*supplyprice)*0.5) + (supplysold*supplyprice)
-	globals.itemdict.supply.amount -= supplysold
-	if supplysold > 0:
-		text += "$He managed to sell [color=yellow]" + str(supplysold) + "[/color] units of supplies. "
-	slave.metrics.goldearn += gold
-	gold = round(gold)
-	slave.xp += gold/4
-	slave.stress += rand_range(5,10)
-	text = text + "$He earned "+str(gold)+" gold by the end of day.\n"
-	var dict = {text = text, gold = gold, supplies = -supplysold}
-	return dict
-
-func assistwimborn(slave):
-	var text
-	var gold
-	text = "$name worked at the Mage's Order.\n"
-	gold = rand_range(1,5) + slave.stats.maf_cur*7 + slave.wit/1.4 + min(globals.state.reputation.wimborn/1.5,50)
-	gold = round(gold)
-	slave.metrics.goldearn += gold
-	slave.xp += gold/5
-	slave.stress += rand_range(5,10)
-	text = text + "$He earned [color=yellow]"+str(gold)+"[/color] gold by the end of day.\n"
-	var dict = {text = text, gold = gold}
-	return dict
-
-func artistwimborn(slave):
-	var text
-	var gold
-	text ="$name worked in town as a public entertainer.\n"
-	gold = rand_range(1,5) + slave.cour/4 + slave.charm/3 + slave.sagi*15 + slave.beauty/3.5
-	if slave.race == 'Nereid':
-		gold = gold*1.25
-	if slave.traits.has('Pretty voice') == true:
-		gold = gold*1.2
-	elif slave.traits.has('Foul Mouth') == true:
-		gold = gold*0.7
-	gold = round(gold)
-	slave.stress += rand_range(10,15)
-	slave.xp += gold/7
-	text += "$He earned [color=yellow]"+str(gold)+"[/color] gold by the end of day.\n"
-	var dict = {text = text, gold = gold}
-	return dict
-
-func whorewimborn(slave):
-	var text = "$name went to work as whore at the brothel.\n"
-	var gold = 0
-	slave.metrics.brothel += 1
-	var jobactions = ['vaginal','anal','oral','toys']
-	if slave.pussy.virgin == true:
-		slave.sexuals.actions.pussy = 1
-		slave.pussy.virgin = false
-		slave.pussy.first = 'brothel'
-		slave.health -= 5
-		slave.stress += 15
-		text += "$His virginity was taken by one of the customers.\n"
-	slave.lust = rand_range(-15,-25)
-	slave.loyal += rand_range(-1,-3)
-	if rand_range(1,10) > 4:
-		impregnation(slave)
-	var counter = 0
-	for i in jobactions:
-		if slave.sexuals.unlocks.has(i):
-			counter += 1
-	gold = rand_range(1,5) + slave.charm/4 + slave.send*15 + slave.beauty/5 + counter*7
-	if slave.traits.has('Sex-crazed') == true:
-		slave.stress += -counter*4
-		gold = gold*1.2
-	if counter < 4:
-		text += "\nBrothel owner complained that $name does not have sufficient skill and didn't satisfy many customers. $His salary was cut by half. \n"
-		gold = gold/2
-		slave.metrics.sex += round(rand_range(1,3))
-		slave.metrics.randompartners += round(rand_range(1,2))
-		if slave.sexuals.unlocks.find('penetration') && slave.pussy.has == true:
-			slave.metrics.vag += round(rand_range(1,2))
-		if slave.sexuals.unlocks.find('anal') >= 0:
-			slave.metrics.anal += round(rand_range(1,2))
-		if slave.sexuals.unlocks.find('oral') >= 0:
-			slave.metrics.oral += round(rand_range(0,1))
-	else:
-		slave.metrics.randompartners += round(rand_range(2,4))
-		slave.metrics.sex += round(rand_range(2,5))
-		if slave.sexuals.unlocks.find('penetration') && slave.pussy.has == true:
-			slave.metrics.vag += round(rand_range(1,4))
-		if slave.sexuals.unlocks.find('anal') >= 0:
-			slave.metrics.anal += round(rand_range(1,4))
-		if slave.sexuals.unlocks.find('oral') >= 0:
-			slave.metrics.oral += round(rand_range(1,2))
-	if slave.race.find('Bunny') >= 0 || slave.spec in ['geisha','nympho']:
-		slave.stress += 12 - min(counter*4, 10)
-	else:
-		slave.stress += 25 - min(counter*5, 20)
-	if slave.spec == 'geisha':
-		gold = gold*1.25
-	gold = round(gold)
-	slave.xp += gold/5
-	text += "By the end of the day $he earned [color=yellow]"+ str(gold) + "[/color] gold.\n"
-	
-	var dict = {text = text, gold = gold}
-	return dict
-
-func escortwimborn(slave):
-	slave.metrics.brothel += 1
-	var text = "$name provided escort service to rich clients of the brothel.\n"
-	var gold
-	if slave.pussy.virgin == true:
-		slave.pussy.virgin = false
-		slave.pussy.first = 'brothel'
-		slave.sexuals.actions.pussy = 1
-		slave.health -= 5
-		if slave.race.find('Bunny') >= 0:
-			slave.stress += 7
-		else:
-			slave.stress += 15
-		slave.loyal += rand_range(-1,-3)
-		text += "$His virginity was taken by one of the customers.\n"
-		if slave.race.find('Bunny') >= 0:
-			slave.stress += 10 - min(slave.sexuals.actions.size()*3, 8)
-		else:
-			slave.stress += 20 - min(slave.sexuals.actions.size()*2, 15)
-	slave.lust = rand_range(-10,-20)
-	if rand_range(1,10) > 7:
-		impregnation(slave)
-	gold = rand_range(15,35) + slave.charm/1.8 + slave.conf/3 + slave.beauty/3 + min(globals.state.reputation.wimborn,60)
-	if slave.traits.has('Pretty voice') == true:
-		gold = gold*1.2
-	elif slave.traits.has('Foul Mouth') == true:
-		gold = gold*0.7
-	if slave.race.find('Fox') >= 0:
-		gold = gold*1.2
-	if slave.spec == 'geisha':
-		gold = gold*1.25
-	gold = round(gold)
-	slave.xp += gold/6
-	slave.metrics.randompartners += round(rand_range(1,2))
-	slave.metrics.sex += round(rand_range(1,2))
-	if slave.sexuals.unlocks.find('penetration') && slave.pussy.has == true:
-		slave.metrics.vag += round(rand_range(1,3))
-	if slave.sexuals.unlocks.find('anal') >= 0:
-		slave.metrics.anal += round(rand_range(1,3))
-	if slave.sexuals.unlocks.find('oral') >= 0:
-		slave.metrics.oral += round(rand_range(0,2))
-	text += "By the end of the day $he earned [color=yellow]"+ str(gold) + "[/color] gold.\n"
-	
-	var dict = {text = text, gold = gold}
-	return dict
-
-func fucktoywimborn(slave):
-	var gold
-	var text
-	slave.metrics.brothel += 1
-	text = "$name departed to work as an exotic whore.\n"
-	var jobactions = ['oral','anal','vaginal','fetish','fetish2','toy','group']
-	if slave.pussy.virgin == true:
-		slave.sexuals.actions.pussy = 1
-		slave.pussy.virgin = false
-		slave.pussy.first = 'brothel'
-		slave.health -= 5
-		slave.stress += 10
-		slave.loyal += rand_range(-2,-4)
-		text += "$His virginity was taken by one of the customers.\n"
-	if rand_range(1,10) > 2:
-		impregnation(slave)
-	var counter = 0
-	for i in jobactions:
-		if slave.sexuals.unlocks.has(i) :
-			counter += 1
-	gold = rand_range(5,10) + slave.cour/2.3 + slave.send*15 + slave.beauty/5 + counter*4
-	if slave.traits.has('Sex-crazed') == true:
-		slave.stress += -counter*4
-		gold = gold*1.2
-	if slave.pussy.has == true && slave.penis.number >= 1:
-		gold = gold*1.1
-	if slave.mods.has("hollownipples") == true:
-		gold = gold*1.2
-	if counter < 4:
-		text += "\nBrothel owner complained that $name does not have sufficient skill and didn't satisfy many customers. $His salary was cut by half. \n"
-		slave.conf += -rand_range(5,10)
-		slave.cour += -rand_range(5,10)
-		slave.metrics.sex += round(rand_range(2,4))
-		gold = gold/2
-		slave.metrics.randompartners += round(rand_range(1,4))
-		if slave.sexuals.unlocks.find('penetration') && slave.pussy.has == true:
-			slave.metrics.vag += round(rand_range(1,3))
-		if slave.sexuals.unlocks.find('anal') >= 0:
-			slave.metrics.anal += round(rand_range(1,3))
-		if slave.sexuals.unlocks.find('oral') >= 0:
-			slave.metrics.oral += round(rand_range(1,2))
-		if slave.sexuals.unlocks.find('orgy') >= 0:
-			slave.metrics.orgy += round(rand_range(0,2))
-	else:
-		
-		slave.metrics.sex += round(rand_range(3,6))
-		slave.metrics.randompartners += round(rand_range(2,5))
-		if slave.sexuals.unlocks.find('penetration') >= 0 && slave.pussy.has == true:
-			slave.metrics.vag += round(rand_range(2,5))
-		if slave.sexuals.unlocks.find('anal') >= 0:
-			slave.metrics.anal += round(rand_range(2,5))
-		if slave.sexuals.unlocks.find('oral') >= 0:
-			slave.metrics.oral += round(rand_range(1,4))
-		if slave.sexuals.unlocks.find('orgy') >= 0:
-			slave.metrics.orgy += round(rand_range(1,3))
-	
-	
-	if slave.race.find('Bunny') >= 0 || slave.spec == 'nympho':
-		slave.stress += 25 - min(counter*4, 20)
-	else:
-		slave.stress += 50 - min(counter*7, 35)
-	slave.lust = rand_range(-20,-30)
-	if slave.spec == 'nympho':
-		gold = gold*1.25
-	gold = round(gold)
-	slave.xp += gold/6
-	text += "By the end of the day $he earned [color=yellow]" + str(gold) + "[/color] gold.\n"
-	var dict = {text = text, gold = gold}
-	return dict
-
-func maid(slave):
-	var text = ""
-	var temp = 5.5 + (slave.sagi+slave.send)*6
-	slave.xp += temp/4
-	globals.state.condition = temp
-	text = "$name spent the day cleaning around the mansion. \n"
-	var dict = {text = text}
-	return dict
 
 
 
@@ -1593,14 +1108,19 @@ func dialogue(showclose, destination, dialogtext, dialogbuttons = null, sprites 
 	var sprite1 = false
 	var sprite2 = false
 	
-	if sprites != null:
+	if sprites != null && globals.rules.spritesindialogues == true:
 		for i in sprites:
-			if !spritedict.has(i[0]):
+			if !spritedict.has(i[0]) && load(i[0]) == null:
 				continue
 			else:
-				if i.size() > 2 && (i[2] != 'opac' || spritedict[i[0]] != nodedict[i[1]].get_texture()):
-					get_node("AnimationPlayer").play(i[2])
-				nodedict[i[1]].set_texture(spritedict[i[0]])
+				if spritedict.has(i[0]):
+					if i.size() > 2 && (i[2] != 'opac' || spritedict[i[0]] != nodedict[i[1]].get_texture()):
+						get_node("AnimationPlayer").play(i[2])
+					nodedict[i[1]].set_texture(spritedict[i[0]])
+				else:
+					if i.size() > 2 && (i[2] != 'opac' || load(i[0]) != nodedict[i[1]].get_texture()):
+						get_node("AnimationPlayer").play(i[2])
+					nodedict[i[1]].set_texture(load(i[0]))
 				if i[1] == 'pos1': sprite1 = true
 				if i[1] == 'pos2': sprite2 = true
 	if sprite1 == false: nodedict.pos1.set_texture(null)
@@ -1698,7 +1218,7 @@ func _on_SavePanel_visibility_changed():
 		if i != get_node("menucontrol/menupanel/SavePanel/ScrollContainer/savelist/Button"):
 			i.set_hidden(true)
 			i.queue_free()
-	get_node("menucontrol/menupanel/SavePanel/saveline").set_text(filename)
+	get_node("menucontrol/menupanel/SavePanel/saveline").set_text(filename.replacen("user://saves/",''))
 	var dir = Directory.new()
 	if dir.dir_exists("user://saves") == false:
 		dir.make_dir("user://saves")
@@ -1706,18 +1226,19 @@ func _on_SavePanel_visibility_changed():
 		node = get_node("menucontrol/menupanel/SavePanel/ScrollContainer/savelist/Button").duplicate()
 		node.set_hidden(false)
 		get_node("menucontrol/menupanel/SavePanel/ScrollContainer/savelist").add_child(node)
-		node.set_text(i)
+		node.set_text(i.replacen("user://saves/",''))
+		node.set_meta("name", i)
 		node.connect('pressed', self, 'loadchosen', [node])
 
 
 
 func loadchosen(node):
-	filename = node.get_text()
+	filename = node.get_meta('name')
 	_on_SavePanel_visibility_changed()
 
 func _on_deletebutton_pressed():
 	var dir = Directory.new()
-	if dir.file_exists("user://saves/"+filename):
+	if dir.file_exists(filename):
 		yesnopopup('Delete this file?', 'deletefile')
 	else:
 		popup('No file with such name') 
@@ -1726,13 +1247,13 @@ func deletefile():
 	var dir = Directory.new()
 	if dir.dir_exists("user://saves") == false:
 		dir.make_dir("user://saves")
-	dir.remove("user://saves/"+filename)
+	dir.remove(filename)
 	_on_nobutton_pressed()
 	_on_SavePanel_visibility_changed()
 
 
 func _on_loadbutton_pressed():
-	if Directory.new().file_exists("user://saves/"+filename):
+	if Directory.new().file_exists(filename):
 		yesnopopup('Load this file?', 'loadfile')
 	else:
 		popup_set('No file with such name') 
@@ -1745,11 +1266,11 @@ func loadfile():
 	
 
 func _on_saveline_text_changed( text ):
-	filename = text
+	filename = "user://saves/" + text
 
 func _on_savefilebutton_pressed():
 	var dir = Directory.new()
-	if dir.file_exists("user://saves/"+filename) == true:
+	if dir.file_exists(filename) == true:
 		yesnopopup('This file already exists. Overwrite?', 'savefile')
 	else:
 		savefile()
@@ -2351,13 +1872,19 @@ func removequest():
 	get_node("menucontrol/yesnopopup").set_hidden(true)
 	_on_questnode_visibility_changed()
 
+var spellscategory = 'control'
+var spellbookimages = {
+control = load("res://files/buttons/book/control.png"),
+offensive = load("res://files/buttons/book/offensive.png"),
+defensive = load("res://files/buttons/book/defensive.png"),
+utility = load("res://files/buttons/book/utility.png"),
+}
+
 func _on_spellbook_pressed():
-	get_node("spellbooknode").set_hidden(false)
-
-
-func _on_spellbooknode_visibility_changed():
+	get_node("spellbooknode").popup()
 	var spelllist = get_node("spellbooknode/spellbooklist/ScrollContainer/spellist")
 	var spellbutton = get_node("spellbooknode/spellbooklist/ScrollContainer/spellist/spellbutton")
+	get_node("spellbooknode/spellbooklist").set_texture(spellbookimages[spellscategory])
 	for i in spelllist.get_children():
 		if i != spellbutton:
 			i.set_hidden(true)
@@ -2366,8 +1893,9 @@ func _on_spellbooknode_visibility_changed():
 	for i in globals.spelldict.values():
 		array.append(i)
 	array.sort_custom(get_node("spellnode"),'sortspells')
+	get_node("spellbooknode/spellbooklist/spelldescription").set_bbcode('')
 	for i in array:
-		if i.learned == true:
+		if i.learned == true && i.type == spellscategory:
 			var newbutton = spellbutton.duplicate()
 			spelllist.add_child(newbutton)
 			newbutton.set_text(i.name)
@@ -2376,8 +1904,16 @@ func _on_spellbooknode_visibility_changed():
 
 func spellbookselected(spell):
 	var text = ''
-	text = '[center]'+ spell.name + '[/center]\n\n' + spell.description + '\n\nManacost: ' + str(spell.manacost) 
+	for i in get_tree().get_nodes_in_group("spellbutton"):
+		if i.get_text() != spell.name: i.set_pressed(false)
+	text = '[center]'+ spell.name + '[/center]\n\n' + spell.description + '\n\nType: ' + spell.type.capitalize() + '\n\nMana: ' + str(spell.manacost)
+	if spell.combat == true:
+		text += '\n\nCan be used in combat' 
 	get_node("spellbooknode/spellbooklist/spelldescription").set_bbcode(text)
+
+func spellbookcategory(button):
+	spellscategory = button.get_name()
+	_on_spellbook_pressed()
 
 func _on_spellbookclose_pressed():
 	get_node("spellbooknode").set_hidden(true)
@@ -2386,62 +1922,6 @@ func _on_spellbookclose_pressed():
 func _on_debug_pressed():
 	get_node("options").set_hidden(false)
 	get_node("options")._on_cheats_pressed()
-
-func impregnation(mother, father = null, anyfather = false):
-	var realfather
-	if father == null:
-		var gender
-		realfather = -1
-		if globals.rules.futa == true:
-			gender = ['male','futanari']
-		else:
-			gender = ['male']
-		if anyfather == false:
-			father = globals.slavegen.newslave('randomcommon', 'random', gender[rand_range(0,gender.size())])
-		else:
-			father = globals.slavegen.newslave('randomany', 'random', gender[rand_range(0,gender.size())])
-	else:
-		if father.penis.number < 1:
-			return
-		realfather = father.id
-	if mother.preg.has_womb == false || mother.preg.duration > 0 || mother == father:
-		return
-	var rand = rand_range(1,100)
-	if mother.preg.fertility < rand:
-		mother.preg.fertility += rand_range(5,15)
-		return
-	var age = ''
-	var babyrace = mother.race
-	if globals.rules.children == true:
-		age = 'child'
-	else: 
-		age = 'teen'
-	if (mother.race.find('Beastkin') >= 0 && father.race.find('Beastkin') < 0)|| (father.race.find('Beastkin') >= 0 && mother.race.find('Beastkin') < 0):
-		if father.race.find('Beastkin') >= 0 && mother.race in ['Human','Elf','Dark Elf','Drow','Demon','Seraph']:
-			babyrace = father.race.replace('Beastkin', 'Halfkin')
-		else:
-			babyrace = mother.race.replace('Beastkin', 'Halfkin')
-		
-	var baby = globals.slavegen.newslave(babyrace, age, 'random', mother.origins)
-	baby.surname = mother.surname
-	var array = ['skin','tail','ears','wings','horns','arms','legs','bodyshape','haircolor','eyecolor','eyeshape','eyesclera']
-	for i in array:
-		if rand_range(0,10) > 5:
-			baby[i] = father[i]
-		else:
-			baby[i] = mother[i]
-	if baby.race.find('Halfkin')>=0 && mother.race.find('Beastkin') >= 0 && father.race.find('Beastkin') < 0:
-		baby.bodyshape = 'humanoid'
-	if rand_range(0,10) > 5:
-		baby.beautybase = father.beautybase
-	else:
-		baby.beautybase = mother.beautybase
-	baby.relatives.father = realfather
-	baby.relatives.mother = mother.id
-	mother.preg.baby = baby.id
-	mother.preg.duration = 1
-	mother.metrics.preg += 1
-	globals.state.babylist.append(baby)
 
 var baby
 

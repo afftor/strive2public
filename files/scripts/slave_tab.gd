@@ -60,7 +60,10 @@ func _on_slave_tab_visibility_changed():
 			get_node("inspect/Panel 2/fullbody").set_texture(globals.spritedict[nakedspritesdict[slave.unique].clothcons])
 		else:
 			get_node("inspect/Panel 2/fullbody").set_texture(globals.spritedict[nakedspritesdict[slave.unique].clothrape])
-	get_node("inspect/Panel 2").set_hidden(true) if get_node("inspect/Panel 2/fullbody").get_texture() == null else get_node("inspect/Panel 2").set_hidden(false)
+	elif slave.imagefull != null && File.new().file_exists(slave.imagefull) == true:
+		get_node("inspect/Panel 2/fullbody").set_texture(load(slave.imagefull))
+	if get_node("inspect/Panel 2/fullbody").get_texture() == null:
+		get_node("inspect/Panel 2").set_hidden(true)
 	get_node("stats/origins").set_text(slave.origins.capitalize())
 	for i in get_node("stats/traits/traitlist").get_children():
 		if i != get_node("stats/traits/traitlist/Label"):
@@ -189,13 +192,18 @@ func buildmetrics():
 	get_node("stats/statistics/Popup/statssextext").set_bbcode(text)
 
 func setdescriptpos():
-	if slave.imageportait != null:
-		if File.new().file_exists(slave.imageportait) == true:
+	if slave.imageportait != null || slave.imagefull != null:
+		if slave.imageportait != null && File.new().file_exists(slave.imageportait) == true:
 			get_node("inspect/portait").set_texture(load(slave.imageportait))
+			get_node("inspect/portaitpanel").set_hidden(false)
+			get_node("inspect/AnimationPlayer").play("descriptportait")
+		elif slave.imagefull != null && File.new().file_exists(slave.imagefull) == true:
+			get_node("inspect/portait").set_texture(load(slave.imagefull))
 			get_node("inspect/portaitpanel").set_hidden(false)
 			get_node("inspect/AnimationPlayer").play("descriptportait")
 		else:
 			slave.imageportait = null
+			slave.imagefull = null
 			get_node("inspect/portait").set_texture(null)
 			get_node("inspect/portaitpanel").set_hidden(true)
 			get_node("inspect/AnimationPlayer").play("descriptfull")
@@ -528,7 +536,7 @@ func underwearlist():
 
 
 func _on_impregnate_pressed():
-	get_tree().get_current_scene().impregnation(slave)
+	globals.impregnation(slave)
 
 func _on_slavedescript_meta_clicked( meta ):
 	get_tree().get_current_scene().showracedescript(slave)
@@ -903,10 +911,15 @@ func _on_useitem_pressed():
 	get_tree().get_current_scene()._on_inventory_pressed("slave")
 
 func _on_image_pressed():
-	pass # replace with function body
+	get_tree().get_current_scene().imageselect("body", slave)
 
 
 func _on_portrait_pressed():
 	get_tree().get_current_scene().imageselect("portrait", slave)
 
 
+
+
+func _on_bodybutton_pressed():
+	if get_node("inspect/Panel 2/fullbody").get_texture() != null:
+		get_node("inspect/Panel 2").set_hidden(!get_node("inspect/Panel 2").is_hidden())

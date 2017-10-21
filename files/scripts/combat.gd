@@ -214,7 +214,8 @@ func start_battle():
 		combatant.button = null
 		if get_parent().get_node("explorationnode").deeperregion:
 			combatant.power = ceil(combatant.power * 1.25)
-			combatant.healthmax =  ceil(combatant.healthmax * 1.5)
+			combatant.healthmax = ceil(combatant.healthmax * 1.5)
+			combatant.speed = ceil(combatant.speed + 5)
 		combatant.health = combatant.healthmax
 		for ii in i.stats.abilities:
 			combatant.abilities.append(globals.abilities.abilitydict[ii])

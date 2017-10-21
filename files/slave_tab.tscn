@@ -1387,7 +1387,7 @@ visible_characters = -1
 
 anchor/left = 1
 anchor/right = 1
-focus/ignore_mouse = true
+focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
@@ -1398,11 +1398,27 @@ margin/bottom = 134.0
 expand = true
 stretch_mode = 7
 
+[node name="bodybutton" type="TextureButton" parent="inspect/portait"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 1.0
+margin/right = 133.0
+margin/bottom = 134.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+params/resize_mode = 0
+params/stretch_mode = 0
+
 [node name="portaitpanel" type="Panel" parent="inspect"]
 
 anchor/left = 1
 anchor/right = 1
-focus/ignore_mouse = false
+focus/ignore_mouse = true
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
@@ -1464,6 +1480,7 @@ visible_characters = -1
 
 [node name="Panel 2" type="Panel" parent="inspect"]
 
+visibility/visible = false
 anchor/left = 1
 anchor/right = 1
 anchor/bottom = 1
@@ -3895,6 +3912,8 @@ items = [ "Pussy", null, false, -1, null, "Ass", null, false, -1, null ]
 [connection signal="pressed" from="stats/callorder/callconfirm" to="stats" method="_on_callconfirm_pressed"]
 
 [connection signal="meta_clicked" from="inspect/slavedescript" to="." method="_on_slavedescript_meta_clicked"]
+
+[connection signal="pressed" from="inspect/portait/bodybutton" to="." method="_on_bodybutton_pressed"]
 
 [connection signal="pressed" from="customization/clothes&relatives&customs/relativesbutton" to="." method="_on_relativesbutton_pressed"]
 

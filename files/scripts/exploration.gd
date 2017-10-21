@@ -165,7 +165,7 @@ description = "The town's outskirts look bright and green. ",
 enemies = [{value = 'slaverseasy', weight = 1},{value = 'peasant', weight = 1},{value = 'banditseasy', weight = 3},{value = 'thugseasy', weight = 3},{value = 'wolveseasy', weight = 5}],
 encounters = [],
 length = 5,
-exits = ['gorn','prairie'],
+exits = ['gorn','prairie','mountains'],
 tags = ['gorn'],
 races = [{value = 'Centaur', weight = 1},{value = 'Goblin', weight = 4},{value = 'Orc', weight = 12}]
 },

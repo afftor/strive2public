@@ -140,7 +140,6 @@ func _init():
 	randomize()
 	loadsettings()
 	effectdict = effects.effectlist 
-	#logger.filename = ('log')
 	if rules.custommouse == false:
 		Input.set_custom_mouse_cursor(null)
 
@@ -158,17 +157,15 @@ func loadsettings():
 		if temp.has(i):
 			rules[i] = temp[i]
 	settings.close()
-	#Glossary
-	var data = {chars = charactergallery}
+	var data = {chars = charactergallery, folders = setfolders}
 	
 	if settings.file_exists("user://progressdata") == false:
-		var file = settings.open_encrypted_with_pass("user://progressdata", File.WRITE, 'tehpass')
-		settings.store_var(data)
-		settings.close()
+		overwritesettings()
 	
 	settings.open_encrypted_with_pass("user://progressdata", File.READ, 'tehpass')
-	temp = settings.get_var().chars
-	#print(temp)
+	var storedsettings = settings.get_var()
+	temp = storedsettings.chars
+	
 	for char in charactergallery:
 		if temp.has(char):
 			for part in charactergallery[char]:
@@ -177,10 +174,20 @@ func loadsettings():
 				elif part == 'scenes':
 					for scene in range(temp[char][part].size()):
 						charactergallery[char][part][scene].unlocked = temp[char][part][scene].unlocked
-			#if temp.has(i):
+	if storedsettings.has('folders') == false:
+		overwritesettings()
+		settings.open_encrypted_with_pass("user://progressdata", File.READ, 'tehpass')
+		storedsettings = settings.get_var()
+	temp = storedsettings.folders
+	for i in temp:
+		setfolders[i] = temp[i]
 	settings.close()
 
 var charactergallery = gallery.charactergallery
+var setfolders = {portraits = 'user://portraits/', fullbody = 'user://bodies/'} setget savefolders
+
+func savefolders(value):
+	overwritesettings()
 
 func overwritesettings():
 	var settings = File.new()
@@ -188,7 +195,7 @@ func overwritesettings():
 	settings.store_line(var2str(rules))
 	settings.close()
 	settings.open_encrypted_with_pass("user://progressdata", File.WRITE, 'tehpass')
-	var data = {chars = charactergallery}
+	var data = {chars = charactergallery, folders = setfolders}
 	settings.store_var(data)
 	settings.close()
 
@@ -239,6 +246,7 @@ fadinganimation = true,
 permadeath = false,
 autoattack = true,
 enddayalise = 1,
+spritesindialogues = true,
 }
 
 
@@ -484,8 +492,8 @@ class slave:
 	var mindage = ''
 	var sex = ''
 	var spec = null
-	var imageportait = ''
-	var imagefull = ''
+	var imageportait = null
+	var imagefull = null
 	var haircolor = ''
 	var hairlength = ''
 	var hairstyle = ''
@@ -1179,12 +1187,71 @@ static func count_sleepers():
 				farm += 1
 			elif i.sleep == 'communal':
 				communal += 1
-	rval['personal'] = personal_room
-	rval['your_bed'] = your_bed
-	rval['jail'] = jail
-	rval['farm'] = farm
-	rval['communal'] = communal
+	rval.personal = personal_room
+	rval.your_bed = your_bed
+	rval.jail = jail
+	rval.farm = farm
+	rval.communal = communal
 	return rval
+
+func impregnation(mother, father = null, anyfather = false):
+	var realfather
+	if father == null:
+		var gender
+		realfather = -1
+		if globals.rules.futa == true:
+			gender = ['male','futanari']
+		else:
+			gender = ['male']
+		if anyfather == false:
+			father = globals.slavegen.newslave('randomcommon', 'random', gender[rand_range(0,gender.size())])
+		else:
+			father = globals.slavegen.newslave('randomany', 'random', gender[rand_range(0,gender.size())])
+	else:
+		if father.penis.number < 1:
+			return
+		realfather = father.id
+	if mother.preg.has_womb == false || mother.preg.duration > 0 || mother == father:
+		return
+	var rand = rand_range(1,100)
+	if mother.preg.fertility < rand:
+		mother.preg.fertility += rand_range(5,15)
+		return
+	var age = ''
+	var babyrace = mother.race
+	if globals.rules.children == true:
+		age = 'child'
+	else: 
+		age = 'teen'
+	if (mother.race.find('Beastkin') >= 0 && father.race.find('Beastkin') < 0)|| (father.race.find('Beastkin') >= 0 && mother.race.find('Beastkin') < 0):
+		if father.race.find('Beastkin') >= 0 && mother.race in ['Human','Elf','Dark Elf','Drow','Demon','Seraph']:
+			babyrace = father.race.replace('Beastkin', 'Halfkin')
+		else:
+			babyrace = mother.race.replace('Beastkin', 'Halfkin')
+		
+	var baby = globals.slavegen.newslave(babyrace, age, 'random', mother.origins)
+	baby.surname = mother.surname
+	var array = ['skin','tail','ears','wings','horns','arms','legs','bodyshape','haircolor','eyecolor','eyeshape','eyesclera']
+	for i in array:
+		if rand_range(0,10) > 5:
+			baby[i] = father[i]
+		else:
+			baby[i] = mother[i]
+	if baby.race.find('Halfkin')>=0 && mother.race.find('Beastkin') >= 0 && father.race.find('Beastkin') < 0:
+		baby.bodyshape = 'humanoid'
+	if rand_range(0,10) > 5:
+		baby.beautybase = father.beautybase
+	else:
+		baby.beautybase = mother.beautybase
+	baby.relatives.father = realfather
+	baby.relatives.mother = mother.id
+	mother.preg.baby = baby.id
+	mother.preg.duration = 1
+	mother.metrics.preg += 1
+	globals.state.babylist.append(baby)
+
+var baby
+
 
 func showtooltip(text):
 	get_tree().get_current_scene().get_node("tooltip/RichTextLabel").set_bbcode(text)
@@ -1351,7 +1418,7 @@ func save_game(var savename):
 	var dir = Directory.new()
 	if dir.dir_exists("user://saves") == false:
 		dir.make_dir("user://saves")
-	savegame.open("user://saves/"+savename, File.WRITE)
+	savegame.open(savename, File.WRITE)
 	var nodedata = save()
 	savegame.store_line(nodedata.to_json())
 	savegame.close()
@@ -1359,11 +1426,11 @@ func save_game(var savename):
 func load_game(filename):
 	var savegame = File.new()
 	var newslave
-	if !savegame.file_exists("user://saves/"+filename):
+	if !savegame.file_exists(filename):
 		return #Error!  We don't have a save to load
 	clearstate()
 	var currentline = {} 
-	savegame.open("user://saves/"+filename, File.READ)
+	savegame.open(filename, File.READ)
 	currentline.parse_json(savegame.get_as_text())
 	get_tree().change_scene("res://files/Mansion.scn")
 	resources = dict2inst(currentline.resources)
@@ -1507,10 +1574,11 @@ func dir_contents(target = "user://saves"):
 	if dir.open(target) == OK:
 		dir.list_dir_begin()
 		var file_name = dir.get_next()
-		while (file_name != ""):
-			if !file_name in ['.','..', "", null]:
-		#	if !dir.current_is_dir():
-				array.append(file_name)
+		while file_name != "":
+			if !dir.current_is_dir():
+				array.append(target + "/" + file_name)
+			elif !file_name in ['.','..', null] && dir.current_is_dir():
+				array += dir_contents(target + "/" + file_name)
 			file_name = dir.get_next()
 		return array
 	else:

@@ -27,6 +27,7 @@ mindread = {
 	personal = true,
 	combat = true,
 	learned = false,
+	type = 'control',
 	flavor = "Reading other person's thoughts hardly worth the effort: way too often they are just chaotic streams changing one after another. Netherless, you can grasp some understanding how others think by devoting your time to them. ",
 	},
 sedation = {
@@ -40,6 +41,7 @@ sedation = {
 	personal = true,
 	combat = true,
 	learned = false,
+	type = 'control',
 	flavor = "Ability to calm down another person is invaluable in many situations. ",
 	},
 heal = {
@@ -53,6 +55,7 @@ heal = {
 	personal = true,
 	combat = true,
 	learned = false,
+	type = 'defensive',
 	flavor = "Regeneration is a part of every living being.",
 	},
 dream = {
@@ -66,6 +69,7 @@ dream = {
 	personal = true,
 	combat = false,
 	learned = false,
+	type = 'control',
 	},
 entrancement = {
 	code = 'entrancement',
@@ -78,6 +82,7 @@ entrancement = {
 	personal = true,
 	combat = false,
 	learned = false,
+	type = 'control',
 	},
 fear = {
 	code = 'fear',
@@ -90,6 +95,7 @@ fear = {
 	personal = true,
 	combat = false,
 	learned = false,
+	type = 'control',
 	},
 domination = {
 	code = 'domination',
@@ -102,6 +108,7 @@ domination = {
 	personal = true,
 	combat = false,
 	learned = false,
+	type = 'control',
 	},
 mutate = {
 	code = 'mutate',
@@ -114,6 +121,7 @@ mutate = {
 	personal = true,
 	combat = false,
 	learned = false,
+	type = 'utility',
 	},
 barrier = {
 	code = 'barrier',
@@ -126,6 +134,7 @@ barrier = {
 	personal = false,
 	combat = true,
 	learned = false,
+	type = 'defensive',
 	},
 shackle = {
 	code = 'shackle',
@@ -138,6 +147,7 @@ shackle = {
 	personal = false,
 	combat = true,
 	learned = false,
+	type = 'utility',
 	},
 acidspit = {
 	code = 'acidspit',
@@ -150,6 +160,7 @@ acidspit = {
 	personal = false,
 	combat = true,
 	learned = false,
+	type = 'offensive',
 	},
 mindblast = {
 	code = 'mindblast',
@@ -162,6 +173,7 @@ mindblast = {
 	personal = false,
 	combat = true,
 	learned = false,
+	type = 'offensive',
 	},
 invigorate = {
 	code = 'invigorate',
@@ -174,6 +186,7 @@ invigorate = {
 	personal = true,
 	combat = false,
 	learned = false,
+	type = 'utility',
 	},
 summontentacle = {
 	code = 'summontentacle',
@@ -186,6 +199,7 @@ summontentacle = {
 	personal = true,
 	combat = false,
 	learned = false,
+	type = 'utility',
 	}
 	}
 

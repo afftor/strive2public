@@ -284,7 +284,7 @@ func _on_confirmbutton_pressed():
 var nakedspritesdict = {
 	Cali = {cons = 'calinakedhappy', rape = 'calinakedangry', clothcons = 'calineutral', clothrape = 'caliangry2'},
 	Tisha = {cons = 'tishanakedhappy', rape = 'tishanakedneutral', clothcons = 'tishahappy', clothrape = 'tishaneutral'},
-	Emily = {cons = 'emilynakedhappy', rape = 'emilynakedneutral', clothcons = 'emily2happy', clothrape = 'emily2worried'},
+	Emily = {cons = 'emilynakedhappy', rape = 'emilynakedneutral', clothcons = 'emily2normal', clothrape = 'emily2worried'},
 	Chloe = {cons = 'chloenakedhappy', rape = 'chloenakedneutral', clothcons = 'chloehappy2', clothrape = 'chloeneutral2'},
 	Maple = {cons = 'fairynaked', rape = 'fairynaked', clothcons = 'fairy', clothrape = 'fairy'},
 	Yris = {cons = 'yrisnormalnaked', rape = 'yrisshocknaked', clothcons = 'yrisnormal', clothrape = 'yrisshock'}
@@ -432,7 +432,7 @@ func sexinitiate(secondtime = false):
 	elif action.tags.find('selfpenetration') >= 0  && (hole == 'ass' || action.tags.find('anal') >= 0):
 		partner.metrics.anal += 1
 	if action.code == 'pussy':
-		get_tree().get_current_scene().impregnation(slave, partner)
+		globals.impregnation(slave, partner)
 	if action.code in ['blowjob','oraltake','rimjob']:
 		slave.metrics.oral += 1
 	elif action.code in ['blowjobgive','oral','rimjobgive']:
@@ -446,7 +446,7 @@ func sexinitiate(secondtime = false):
 		affectionreward += 1
 		slave.lust = -(slave.lust/2 + rand_range(10,20))
 		if action.code == 'pussytake':
-			get_tree().get_current_scene().impregnation(partner, slave)
+			globals.impregnation(partner, slave)
 		var counter = 0
 		if slave.traits.has("Prude") == true && (rand_range(0,1) >= 0.8 || slave.effects.has('entranced') == true) :
 			slave.trait_remove("Prude")
@@ -483,17 +483,17 @@ func sexinitiate(secondtime = false):
 	slave.metrics.manaearn += managain
 	globals.resources.mana += managain
 	if secondtime == true:
-		globals.player.energy = round(-action.cost/2)
-		slave.energy = round(-action.cost/2)
+		globals.player.energy -= round(action.cost/2)
+		slave.energy -= round(action.cost/2)
 		slave.lust = -20
 	else:
-		slave.energy = -action.cost
-		partner.energy = -action.cost
+		slave.energy -= action.cost
+		partner.energy -= action.cost
 		if slave.spec == 'nympho':
-			slave.energy = action.cost/2
+			slave.energy -= action.cost/2
 			text += "\n[color=green]$name's skills and training helped $him waste less energy.[/color]"
 		if globals.player != partner:
-			globals.player.energy = -action.cost
+			globals.player.energy -= action.cost
 	
 	text += "\n\n[color=green]Earned " + str(affectionreward) + " affection with $name. [/color]"
 	text += "\n\n[color=aqua]You've gained " + str(managain) + " mana. [/color]"
@@ -503,19 +503,23 @@ func sexinitiate(secondtime = false):
 	
 	
 	for i in [slave, partner]:
-		if nakedspritesdict.has(i.unique):
+		if i.imagefull == '': i.imagefull = null
+		if nakedspritesdict.has(i.unique) || i.imagefull != null:
 			var sprite
 			var pos 
-			if action.code == 'kiss':
-				if rape == true && rapelike == false:
-					sprite = nakedspritesdict[i.unique].clothrape
+			if i.imagefull == null:
+				if action.code == 'kiss':
+					if rape == true && rapelike == false:
+						sprite = nakedspritesdict[i.unique].clothrape
+					else:
+						sprite = nakedspritesdict[i.unique].clothcons
 				else:
-					sprite = nakedspritesdict[i.unique].clothcons
+					if rape == true && rapelike == false:
+						sprite = nakedspritesdict[i.unique].rape
+					else:
+						sprite = nakedspritesdict[i.unique].cons
 			else:
-				if rape == true && rapelike == false:
-					sprite = nakedspritesdict[i.unique].rape
-				else:
-					sprite = nakedspritesdict[i.unique].cons
+				sprite = i.imagefull
 			if i == slave:
 				pos = 'pos1'
 			else:
@@ -524,6 +528,7 @@ func sexinitiate(secondtime = false):
 				sprites.append([sprite, pos, 'opac'])
 			else:
 				sprites.append([sprite, pos])
+	
 	
 	text += getessencesfromsex(slave, managain)
 	
@@ -684,7 +689,7 @@ func _on_confirm_pressed():
 				else:
 					pos = 'pos2'
 				sprites.append([sprite, pos])
-		globals.player.energy = -30
+		globals.player.energy -= 30
 		text += "You, " + slave.dictionary("$name, ") + threesomepartner.dictionary("and $name get onto the bed and spend next few hours having wild sex with each other. ")
 		mana += round(slave.lust/15 + threesomepartner.lust/15 + 4)
 		slave.metrics.manaearn += round(mana/2)
@@ -701,16 +706,16 @@ func _on_confirm_pressed():
 			mana += 2
 		text += getessencesfromsex(slave, slave.lust/15)
 		text += getessencesfromsex(threesomepartner, threesomepartner.lust/15)
-		get_tree().get_current_scene().impregnation(slave, threesomepartner)
-		get_tree().get_current_scene().impregnation(threesomepartner, slave)
+		globals.impregnation(slave, threesomepartner)
+		globals.impregnation(threesomepartner, slave)
 		for i in array:
 			i.metrics.threesome += 1
 			i.lust = -rand_range(20,35)
 			i.obed += rand_range(10,20)
 			i.loyal += rand_range(5,10)
-			i.energy = -30
-			get_tree().get_current_scene().impregnation(i, globals.player)
-			get_tree().get_current_scene().impregnation(globals.player, i)
+			i.energy -= 30
+			globals.impregnation(i, globals.player)
+			globals.impregnation(globals.player, i)
 		text += "\nAfter you're done your both partners look exhausted and satisfied. "
 	elif action == 'orgy':
 		for i in globals.slaves:
@@ -725,7 +730,7 @@ func _on_confirm_pressed():
 			i.metrics.orgy += 1
 			globals.state.condition = -rand_range(5,10)
 			text += getessencesfromsex(i, 5)
-			get_tree().get_current_scene().impregnation(i, array[rand_range(0, array.size())])
+			globals.impregnation(i, array[rand_range(0, array.size())])
 			mana += round(slave.lust/15)+3
 			if i.race == "Drow":
 				mana += 1

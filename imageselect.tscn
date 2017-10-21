@@ -12,10 +12,10 @@ focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
-margin/left = 512.5
-margin/top = 353.5
-margin/right = -371.5
-margin/bottom = -144.5
+margin/left = 513.0
+margin/top = 354.0
+margin/right = -371.0
+margin/bottom = -144.0
 popup/exclusive = false
 window/title = ""
 script/script = ExtResource( 1 )
@@ -27,9 +27,9 @@ focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
 margin/left = 33.0
-margin/top = 8.0
+margin/top = 7.0
 margin/right = 693.0
-margin/bottom = 408.0
+margin/bottom = 407.0
 scroll/horizontal = false
 scroll/vertical = true
 
@@ -41,14 +41,15 @@ size_flags/horizontal = 2
 size_flags/vertical = 2
 margin/left = 0.0
 margin/top = 0.0
-margin/right = 100.0
-margin/bottom = 120.0
+margin/right = 0.0
+margin/bottom = 0.0
 custom_constants/vseparation = 15
 custom_constants/hseparation = 5
 columns = 6
 
 [node name="Button" type="TextureButton" parent="ScrollContainer/GridContainer"]
 
+visibility/visible = false
 rect/min_size = Vector2( 100, 120 )
 focus/ignore_mouse = false
 focus/stop_mouse = true
@@ -113,6 +114,7 @@ flat = false
 
 [node name="racelock" type="CheckBox" parent="."]
 
+hint/tooltip = "Will only show images with character's race in its name of path"
 focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
@@ -189,7 +191,7 @@ margin/bottom = 183.0
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
-text = "Open portrait folder"
+text = "Open system folder"
 flat = false
 
 [node name="reloadlist" type="Button" parent="."]
@@ -222,7 +224,7 @@ margin/bottom = 274.0
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
-text = "Remove portrait"
+text = "Reset the image"
 flat = false
 
 [node name="reverseportrait" type="Button" parent="."]
@@ -240,6 +242,23 @@ toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
 text = "Reverse to default"
+flat = false
+
+[node name="selectfolder" type="Button" parent="."]
+
+hint/tooltip = "Restore default character's portrait (if existed)"
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 706.0
+margin/top = 331.0
+margin/right = 863.0
+margin/bottom = 365.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Select Folders"
 flat = false
 
 [node name="FileDialog" type="FileDialog" parent="."]
@@ -262,6 +281,138 @@ access = 2
 filters = StringArray( "*.jpg", "*.png" )
 show_hidden_files = false
 
+[node name="selectfolders" type="WindowDialog" parent="."]
+
+visibility/visible = false
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 132.0
+margin/top = 190.0
+margin/right = 814.0
+margin/bottom = 425.0
+popup/exclusive = false
+window/title = ""
+
+[node name="portratislabel" type="Label" parent="selectfolders"]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 14.0
+margin/top = 14.0
+margin/right = 267.0
+margin/bottom = 32.0
+text = "Portrait folder: "
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="spritelabel" type="Label" parent="selectfolders"]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 14.0
+margin/top = 64.0
+margin/right = 269.0
+margin/bottom = 85.0
+text = "Body folder: "
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="closefolderselect" type="Button" parent="selectfolders"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 260.0
+margin/top = 185.0
+margin/right = 422.0
+margin/bottom = 216.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Close"
+flat = false
+
+[node name="chooseportraitolder" type="Button" parent="selectfolders"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 121.0
+margin/top = 12.0
+margin/right = 641.0
+margin/bottom = 32.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Close"
+flat = false
+align = 0
+
+[node name="choosebodyfolder" type="Button" parent="selectfolders"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 121.0
+margin/top = 62.0
+margin/right = 640.0
+margin/bottom = 82.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Close"
+flat = false
+align = 0
+
+[node name="RichTextLabel" type="RichTextLabel" parent="selectfolders"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 33.0
+margin/top = 98.0
+margin/right = 639.0
+margin/bottom = 156.0
+bbcode/enabled = true
+bbcode/bbcode = "Selected folder and all subfolders in it will provide images to the required area and will be saved upon exit"
+visible_characters = -1
+
+[node name="folderdialogue" type="FileDialog" parent="."]
+
+visibility/visible = false
+anchor/left = 3
+anchor/top = 3
+anchor/right = 3
+anchor/bottom = 3
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 224.0
+margin/top = 122.0
+margin/right = -422.0
+margin/bottom = -213.0
+popup/exclusive = false
+window/title = "Open a Directory"
+dialog/text = "Select default path folder"
+dialog/hide_on_ok = false
+mode = 2
+access = 1
+filters = StringArray(  )
+show_hidden_files = false
+
 [connection signal="pressed" from="cancelportait" to="." method="_on_cancelportait_pressed"]
 
 [connection signal="pressed" from="racelock" to="." method="_on_racelock_pressed"]
@@ -278,6 +429,16 @@ show_hidden_files = false
 
 [connection signal="pressed" from="reverseportrait" to="." method="_on_reverseportrait_pressed"]
 
+[connection signal="pressed" from="selectfolder" to="." method="_on_selectfolder_pressed"]
+
 [connection signal="file_selected" from="FileDialog" to="." method="_on_FileDialog_file_selected"]
+
+[connection signal="pressed" from="selectfolders/closefolderselect" to="." method="_on_closefolderselect_pressed"]
+
+[connection signal="pressed" from="selectfolders/chooseportraitolder" to="." method="_on_chooseportraitolder_pressed"]
+
+[connection signal="pressed" from="selectfolders/choosebodyfolder" to="." method="_on_choosebodyfolder_pressed"]
+
+[connection signal="dir_selected" from="folderdialogue" to="." method="_on_folderdialogue_dir_selected"]
 
 

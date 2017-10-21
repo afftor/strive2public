@@ -221,6 +221,8 @@ func _on_talk_pressed(mode = 'talk'):
 			sprite = [[nakedspritesdict[slave.unique].clothcons, 'pos1', 'opac']]
 		else:
 			sprite = [[nakedspritesdict[slave.unique].clothrape, 'pos1', 'opac']]
+	elif slave.imagefull != null:
+		sprite = [[slave.imagefull,'pos1','opac']]
 	if mode == 'talk':
 		if slave.sleep == 'jail':
 			text = "You enter jail cell with $name handcuffed in it. "
@@ -359,6 +361,8 @@ func unlocksex():
 			sprite = [[nakedspritesdict[slave.unique].clothcons, 'pos1']]
 		else:
 			sprite = [[nakedspritesdict[slave.unique].clothrape, 'pos1']]
+	elif slave.imagefull != null:
+		sprite = [[slave.imagefull,'pos1','opac']]
 	buttons.append({text = slave.dictionary("Continue"), function = '_on_talk_pressed'})
 	get_tree().get_current_scene().dialogue(state, self, slave.dictionary(text), buttons, sprite)
 
@@ -566,4 +570,6 @@ func action(actionname):
 
 func release():
 	get_tree().get_current_scene().yesnopopup(slave.dictionary("[color=red]Let $name leave? You can't cancel this action.[/color]"),'getridof')
+
+
 

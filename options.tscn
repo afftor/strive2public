@@ -42,7 +42,6 @@ tabs_visible = true
 
 [node name="Settings" type="Tabs" parent="TabContainer"]
 
-editor/display_folded = true
 anchor/right = 1
 anchor/bottom = 1
 focus/ignore_mouse = false
@@ -87,6 +86,24 @@ toggle_mode = true
 enabled_focus_mode = 2
 shortcut = null
 text = "Use animation on screen change"
+flat = false
+align = 0
+
+[node name="spritesindialogues" type="CheckBox" parent="TabContainer/Settings"]
+
+hint/tooltip = "Fade to black on window transition"
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 104.0
+margin/right = 243.0
+margin/bottom = 131.0
+toggle_mode = true
+enabled_focus_mode = 2
+shortcut = null
+text = "Show Sprites in Dialogues"
 flat = false
 align = 0
 
@@ -506,6 +523,7 @@ items = [ "Always", null, false, -1, null, "After Daily Event", null, false, -1,
 
 [node name="Supporter section" type="Tabs" parent="TabContainer"]
 
+visibility/visible = false
 anchor/right = 1
 anchor/bottom = 1
 focus/ignore_mouse = false
@@ -599,6 +617,7 @@ flat = false
 
 [node name="cheatpanel" type="PopupPanel" parent="TabContainer/Supporter section"]
 
+visibility/visible = false
 anchor/left = 3
 anchor/top = 3
 anchor/right = 3
@@ -1039,6 +1058,8 @@ flat = false
 [connection signal="pressed" from="TabContainer/Settings/screenresize" to="." method="_on_screenresize_pressed"]
 
 [connection signal="pressed" from="TabContainer/Settings/fading" to="." method="_on_fading_pressed"]
+
+[connection signal="pressed" from="TabContainer/Settings/spritesindialogues" to="." method="_on_spritesindialogues_pressed"]
 
 [connection signal="pressed" from="TabContainer/Settings/fullscreen" to="." method="_on_fullscreen_pressed"]
 

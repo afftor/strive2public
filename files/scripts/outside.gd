@@ -335,6 +335,9 @@ func slaveguildfairy(stage = 0):
 		maintext.set_bbcode(globals.player.dictionary(text))
 		return
 	elif stage == 1:
+		if globals.player.penis.number < 1:
+			main.popup("This option requires player character to have a penis. ")
+			return
 		if globals.state.sidequests.maple == 1:
 			sprites = [['fairy','pos1']]
 			text = questtext.MapleFlirt
