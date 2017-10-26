@@ -5,7 +5,7 @@ var itemdict = {}
 var spelldict = {}
 var effectdict = {}
 var guildslaves = {wimborn = [], gorn = [], frostford = [], umbra = []}
-var gameversion = 5100
+var gameversion = 5200
 var state = progress.new()
 var developmode = false
 var gameloaded = false
@@ -13,9 +13,9 @@ var gameloaded = false
 var resources = resource.new()
 var slavegen = load("res://files/scripts/slavegen.gd").new()
 var assets = load("res://files/scripts/assets.gd").new()
-var races = load("res://files/scripts/races.gd").new()
+var constructor = load("res://files/scripts/characters/constructor.gd").new()
 var origins = load("res://files/scripts/origins.gd").new()
-var description = load("res://files/scripts/description.gd").new()
+var description = load("res://files/scripts/characters/description.gd").new()
 var dictionary = load("res://files/scripts/dictionary.gd").new()
 var sexscenes = load("res://files/scripts/sexscenes.gd").new()
 var glossary = load("res://files/scripts/glossary.gd").new()
@@ -23,6 +23,10 @@ var repeatables = load("res://files/scripts/repeatable_quests.gd").new()
 var abilities = load("res://files/scripts/abilities.gd").new()
 var effects = load("res://files/scripts/effects.gd").new()
 var events = load("res://files/scripts/events.gd").new()
+var racefile = load("res://files/scripts/characters/races.gd").new()
+var characters = load("res://files/scripts/characters/customcharacters.gd").new()
+var races = racefile.races
+var names = racefile.names
 var dailyevents = load("res://files/scripts/dailyevents.gd").new()
 var jobs = load("res://files/scripts/jobs&specs.gd").new()
 var mansionupgrades = load("res://files/scripts/mansionupgrades.gd").new()
@@ -40,55 +44,10 @@ var monsterraces = ['Centaur','Lamia','Arachna','Scylla', 'Slime', 'Harpy','Nere
 var specarray = ['geisha','ranger','executor','bodyguard','assassin','housekeeper','trapper','nympho','merchant','tamer']
 var player = slave.new()
 var partner
-var clothes = load("res://files/scripts/clothes.gd").costumelist()
-var underwear = load("res://files/scripts/clothes.gd").underwearlist()
+#var clothes = load("res://files/scripts/clothes.gd").costumelist()
+#var underwear = load("res://files/scripts/clothes.gd").underwearlist()
 
-var spritedict = {
-chancellor = load("res://files/images/chancellor.png"),
-merchant = load("res://files/images/merchant.png"),
-fairy = load("res://files/images/maple/maple.png"),
-fairynaked = load("res://files/images/maple/maplenaked.png"),
-melissafriendly = load("res://files/images/melissafriendly.png"),
-melissaneutral = load("res://files/images/melissaneutral.png"),
-melissaworried = load("res://files/images/melissaworried.png"),
-emilyhappy = load("res://files/images/emily/emilyhappy.png"),
-emilynormal = load("res://files/images/emily/emilynormal.png"),
-emily2normal = load("res://files/images/emily/emily2neutral.png"),
-emily2happy = load("res://files/images/emily/emily2happy.png"),
-emily2worried = load("res://files/images/emily/emily2worried.png"),
-emilynakedhappy = load("res://files/images/emily/emilynakedhappy.png"),
-emilynakedneutral = load("res://files/images/emily/emilynakedneutral.png"),
-calineutral = load("res://files/images/cali/calineutral.png"),
-calihappy = load("res://files/images/cali/calihappy.png"),
-calinakedhappy = load("res://files/images/cali/calinakedneutral.png"),
-calinakedangry = load("res://files/images/cali/calinakedangry.png"),
-caliangry = load("res://files/images/cali/caliangry.png"),
-caliangry2 = load("res://files/images/cali/caliangry2.png"),
-sebastian = load("res://files/images/sebastian.png"),
-tishahappy = load("res://files/images/tisha/tishahappy.png"),
-tishaneutral = load("res://files/images/tisha/tishaneutral.png"),
-tishaangry = load("res://files/images/tisha/tishaangry.png"),
-tishashocked = load("res://files/images/tisha/tishashocked.png"),
-tishanakedhappy = load("res://files/images/tisha/tishanakedhappy.png"),
-tishanakedneutral = load("res://files/images/tisha/tishanakedneutral.png"),
-chloehappy = load("res://files/images/chloe/chloehappy.png"),
-chloenakedhappy = load("res://files/images/chloe/chloenakedhappy.png"),
-chloeneutral = load("res://files/images/chloe/chloeneutral.png"),
-chloenakedneutral = load("res://files/images/chloe/chloenakedneutral.png"),
-chloehappy2 = load("res://files/images/chloe/chloehappy2.png"),
-chloeshy2 = load("res://files/images/chloe/chloeshy2.png"),
-chloenakedshy = load("res://files/images/chloe/chloenakedshy.png"),
-chloeneutral2 = load("res://files/images/chloe/chloeneutral2.png"),
-aydanormal = load("res://files/images/aydanormal.png"),
-aydanormal2 = load("res://files/images/aydanormal2.png"),
-yrisnormal = load("res://files/images/yris/yrisnormaldressed.png"),
-yrisalt = load("res://files/images/yris/yrisaltdressed.png"),
-yrisshock = load("res://files/images/yris/yrisshockdressed.png"),
-yrisnormalnaked = load("res://files/images/yris/yrisnormalnaked.png"),
-yrisaltnaked = load("res://files/images/yris/yrisaltnaked.png"),
-yrisshocknaked = load("res://files/images/yris/yrisshocknaked.png"),
-}
-
+var spritedict = characters.sprites
 var musicdict = {
 combat1 = load("res://files/music/Corruption.ogg"),
 combat2 = load("res://files/music/Crossing_the_Chasm.ogg"),
@@ -126,7 +85,7 @@ gorn = load("res://files/backgrounds/gorn.png"),
 frostford = load("res://files/backgrounds/frostford.jpg"),
 mountains = load("res://files/backgrounds/mountains.jpg"),
 borealforest = load("res://files/backgrounds/borealforest.jpg"),
-amberguard = load("res://files/backgrounds/amberguard.jpg"),
+amberguard = load("res://files/backgrounds/amberguard.png"),
 amberroad = load("res://files/backgrounds/amberroad.png"),
 undercity = load("res://files/backgrounds/undercity.jpg"),
 tunnels = load("res://files/backgrounds/tunnels.jpg"),
@@ -205,6 +164,9 @@ func clearstate():
 	events = load("res://files/scripts/events.gd").new()
 	resources.reset()
 
+func newslave(race, age, sex, origins = 'slave'):
+	return constructor.newslave(race, age, sex, origins)
+
 func slaves_set(slave):
 	slave.stats.health_max = 35 + slave.stats.end_cur*20
 	slave.health = 100
@@ -225,6 +187,8 @@ func slavecount():
 		if i.away.at != 'hidden':
 			number += 1
 	return number
+
+
 
 var rules = {
 futa = true,
@@ -403,6 +367,7 @@ class progress:
 	var alisecloth = 'normal'
 	var decisions = []
 	var lorefound = []
+	var descriptsettings = {full = true, basic = true, appearance = true, genitals = true, piercing = true, tattoo = true, mods = true}
 	var mansionupgrades = {
 	farmcapacity = 0,
 	farmhatchery = 0,
@@ -433,16 +398,22 @@ class progress:
 		var slave
 		var tempitem
 		var currentweight = 0
-		var maxweight = 10 + globals.player.sstr*5
+		var maxweight = 10 + globals.player.sstr*4
+		var array = [globals.player]
 		for i in globals.state.playergroup:
 			slave = globals.state.findslave(i)
-			maxweight += slave.sstr*5 + 5
+			array.append(slave)
+			maxweight += slave.sstr*5 + 3
 		for i in globals.state.backpack.stackables:
 			if globals.itemdict[i].has('weight'):
 				currentweight += globals.itemdict[i].weight * globals.state.backpack.stackables[i]
 		for i in globals.state.backpack.unstackables:
 			if i.has('weight'):
 				currentweight += i.weight
+		for i in array:
+			for k in i.gear.values():
+				if !k in ['underwearplain','clothcommon'] && k != null && globals.state.unstackables[k].code == 'acctravelbag': maxweight += 20
+					
 		var dict = {currentweight = currentweight, maxweight = maxweight}
 		return dict
 	
@@ -482,7 +453,7 @@ class progress:
 		return rval
 
 class slave:
-	var name
+	var name = ''
 	var surname = ''
 	var nickname = ''
 	var unique = null
@@ -498,63 +469,74 @@ class slave:
 	var hairlength = ''
 	var hairstyle = ''
 	var eyecolor = ''
-	var eyeshape = ''
-	var eyesclera = ''
-	var arms = ''
-	var legs = ''
-	var bodyshape = ''
-	var height = ''
-	var skincov = ''
-	var furcolor = ''
 	var skin = ''
-	var ears = ''
-	var tail = ''
-	var wings = ''
-	var horns = ''
+	var height = ''
+	var titssize = ''
+	var asssize = ''
+	var eyeshape = 'normal'
+	var eyesclera = 'normal'
+	var arms = 'normal'
+	var legs = 'normal'
+	var bodyshape = 'humanoid'
+	var skincov = 'none'
+	var furcolor = 'none'
+	var ears = 'human'
+	var tail = 'none'
+	var wings = 'none'
+	var horns = 'none'
 	var beauty = 0 setget ,beauty_get
 	var beautybase = 0 setget beautybase_set
 	var beautytemp = 0 
 	
-	var tits = {size = '', lactation = false, extrapairs = 0, developed = false,}
-	var pussy = {virgin = true, has = true}
-	var ass = ''
-	var balls = ''
-	var penis = {}
-	var preg = {}
+	var lactation = false
+	var titsextra = 0
+	var titsextradeveloped = false
+	var vagina = true
+	var vagvirgin = true
+	var mouthvirgin = true
+	var assvirgin = true
+	var penis = 'none'
+	var balls = 'none'
+	var penistype = 'human'
+	var penisextra = false
+	var penisvirgin = true
+	var preg = {fertility = 0, has_womb = true, duration = 0, baby = null}
 	var rules = {'silence':false, 'pet':false, 'contraception':false, 'aphrodisiac':false, 'masturbation':false, 'nudity':false, 'betterfood':false, 'personalbath':false,'cosmetics':false,'pocketmoney':false}
 	var traits = {}
-	var relatives = {}
+	var relatives = {father = -1, mother = -1, siblings = [], children =[]}
 	var gear = {costume = null, underwear = null, armor = null, weapon = null, accessory = null}
 	var genes = {}
 	var effects = {}
-	var brand = ''
-	var work = ''
+	var brand = 'none'
+	var work = 'rest'
+	var sleep = ''
 	var farmoutcome = false
-	var ability = []
-	var abilityactive = []
+	var ability = ['attack','protect']
+	var abilityactive = ['attack','protect']
 	var customdesc = ''
-	var piercing = {}
-	var level = 0
+	var piercing = {earlobes = null, eyebrow = null, nose = null, lips = null, tongue = null, navel = null, clit = null, nipples = null, clit = null, labia = null, penis = null}
+	var tattoo = {chest = 'none', face = 'none', ass = 'none', arms = 'none', legs = 'none', waist = 'none'}
+	var level = 1
 	var xp = 0 setget xp_set, xp_get
 	var realxp = 0
-	var skillpoints = 0
+	var skillpoints = 2
 	var levelupreqs = {} setget levelupreqs_set
-	var sleep = ''
 	var punish = {expect = false, strength = 0}
 	var praise = 0
 	var away = {duration = 0, at = ''}
 	var cattle = {is_cattle = false, work = '', used_for = 'food'}
 	var mods = {}
-	var tattoo = {chest = 'none', face = 'none', ass = 'none', arms = 'none', legs = 'none', waist = 'none'}
 	var tattooshow = {chest = true, face = true, ass = true, arms = true, legs = true, waist = true}
 	var tags = []
-	var origins = ''
+	var origins = 'slave'
 	var originstrue = ''
 	var memory = ''
 	var attention = 0
 	var sexuals = {actions = {}, unlocked = false, affection = 0, kinks = {}, unlocks = [], lastaction = ''}
 	var kinks = []
 	var forcedsex = false
+	var sexexp = {}
+	var sensation = {}
 	var metrics = {ownership = 0, jail = 0, mods = 0, brothel = 0, sex = 0, partners = [], randompartners = 0, item = 0, spell = 0, orgy = 0, threesome = 0, win = 0, capture = 0, goldearn = 0, foodearn = 0, manaearn = 0, birth = 0, preg = 0, vag = 0, anal = 0, oral = 0, roughsex = 0, roughsexlike = 0, orgasm = 0}
 	var fromguild = false
 	var masternoun = 'Master'
@@ -575,27 +557,27 @@ class slave:
 		end_cur = 0,
 		end_mod = 0,
 		end_max = 0,
-		cour_max = 0,
+		cour_max = 100,
 		cour_base = 0,
-		conf_max = 0,
+		conf_max = 100,
 		conf_base = 0,
-		wit_max = 0,
+		wit_max = 100,
 		wit_base = 0,
-		charm_max = 0,
+		charm_max = 100,
 		charm_base = 0,
 		obed_cur = 0.0,
-		obed_max = 0,
+		obed_max = 100,
 		obed_min = 0,
 		obed_mod = 0,
 		stress_cur = 0.0,
-		stress_max = 0,
+		stress_max = 150,
 		stress_min = 0,
 		stress_mod = 0,
 		dom_cur = 0.0,
-		dom_max = 0,
+		dom_max = 100,
 		dom_min = 0,
 		tox_cur = 0.0,
-		tox_max = 0,
+		tox_max = 100,
 		tox_min = 0,
 		lust_cur = 0,
 		lust_max = 100,
@@ -604,15 +586,16 @@ class slave:
 		health_cur = 0,
 		health_max = 100,
 		health_base = 0,
-		energy_cur = 0,
-		energy_max = 0,
+		health_bonus = 1,
+		energy_cur = 75,
+		energy_max = 100,
 		energy_mod = 0,
 		armor_cur = 0,
 		armor_max = 0,
 		armor_base = 0,
 		loyal_cur = 0.0,
 		loyal_mod = 0,
-		loyal_max = 0,
+		loyal_max = 100,
 		loyal_min = 0,
 	}
 	var health setget health_set,health_get
@@ -728,7 +711,7 @@ class slave:
 	
 	
 	func health_set(value):
-		stats.health_max = 35 + stats.end_cur*20
+		stats.health_max = (35 + stats.end_cur*20)*stats.health_bonus
 		stats.health_cur = min(value, stats.health_max) 
 	
 	func obed_set(value):
@@ -821,7 +804,8 @@ class slave:
 		stats.stress_cur = max(min(stats.stress_cur, 150),stats.stress_min)
 		if globals.get_tree().get_current_scene().has_node("infotext") && globals.slaves.find(self) >= 0 && away.at != 'hidden':
 			globals.get_tree().get_current_scene().infotext(text)
-		
+		if self == globals.player:
+			stats.stress_cur = 0
 		
 	
 	func tox_set(value):
@@ -987,7 +971,7 @@ class slave:
 		var string = text
 		string = string.replace('$name', name_short())
 		string = string.replace('$surname', surname)
-		string = string.replace('$penis', globals.fastif(penis.size == 'none', 'strapon', '$his cock'))
+		string = string.replace('$penis', globals.fastif(penis == 'none', 'strapon', '$his cock'))
 		string = string.replace('$child', globals.fastif(sex == 'male', 'boy', 'girl'))
 		string = string.replace('$sex', sex)
 		string = string.replace('$He', globals.fastif(sex == 'male', 'He', 'She'))
@@ -1000,15 +984,15 @@ class slave:
 		string = string.replace('$sir', globals.fastif(sex == 'male', 'Sir', "Ma'am"))
 		string = string.replace('$race', globals.decapitalize(race).replace('_', ' '))
 		string = string.replace('$master', masternoun)
-		string = string.replace('$haircolor', haircolor)
-		string = string.replace('$eyecolor', eyecolor)
+		string = string.replace('[haircolor]', haircolor)
+		string = string.replace('[eyecolor]', eyecolor)
 		return string
 	
 	func dictionaryplayer(text):
 		var string = text
 		string = string.replace('[Playername]', globals.player.name_short())
 		string = string.replace('$name', name_short())
-		string = string.replace('$penis', globals.fastif(penis.size == 'none', 'strapon', '$his cock'))
+		string = string.replace('$penis', globals.fastif(penis == 'none', 'strapon', '$his cock'))
 		string = string.replace('$child', globals.fastif(sex == 'male', 'boy', 'girl'))
 		string = string.replace('$sex', sex)
 		string = string.replace('$He', 'You')
@@ -1020,8 +1004,8 @@ class slave:
 		string = string.replace('$sibling', globals.fastif(sex == 'male', 'brother', 'sister'))
 		string = string.replace('$sir', globals.fastif(sex == 'male', 'Sir', "Ma'am"))
 		string = string.replace('$master', globals.fastif(sex == 'male', 'Master', "Mistress"))
-		string = string.replace('$haircolor', haircolor)
-		string = string.replace('$eyecolor', eyecolor)
+		string = string.replace('[haircolor]', haircolor)
+		string = string.replace('[eyecolor]', eyecolor)
 		string = string.replace('$race', globals.decapitalize(race).replace('_', ' '))
 		return string
 	
@@ -1034,18 +1018,11 @@ class slave:
 		string = string.replace('appears', 'appear')
 		return string
 	
-	func description_full(forself = false):
-		var text = ''
-		if forself == true:
-			text = globals.description.getSlaveDescription(self, true)
-		else:
-			text = globals.description.getSlaveDescription(self)
-		return text
+	func description(forself = false):
+		return globals.description.getslavedescription(self)
 	
-	func description_small(captured = false):
-		var text = ''
-		text = globals.description.getSlaveDescription(self, false, false, captured)
-		return text
+	func status():
+		return globals.description.getstatus(self)
 	
 	func countluxuty():
 		var luxury = 0
@@ -1108,7 +1085,7 @@ class slave:
 		var price = 0
 		price = beautybase*2.5 + beautytemp*1.5
 		price += (level-1)*50
-		if pussy.virgin == true:
+		if vagvirgin == true:
 			price = price*1.2
 		if sex == 'futanari':
 			price = price*1.1
@@ -1204,9 +1181,9 @@ func impregnation(mother, father = null, anyfather = false):
 		else:
 			gender = ['male']
 		if anyfather == false:
-			father = globals.slavegen.newslave('randomcommon', 'random', gender[rand_range(0,gender.size())])
+			father = globals.newslave('randomcommon', 'random', gender[rand_range(0,gender.size())])
 		else:
-			father = globals.slavegen.newslave('randomany', 'random', gender[rand_range(0,gender.size())])
+			father = globals.newslave('randomany', 'random', gender[rand_range(0,gender.size())])
 	else:
 		if father.penis.number < 1:
 			return
@@ -1229,7 +1206,7 @@ func impregnation(mother, father = null, anyfather = false):
 		else:
 			babyrace = mother.race.replace('Beastkin', 'Halfkin')
 		
-	var baby = globals.slavegen.newslave(babyrace, age, 'random', mother.origins)
+	var baby = globals.newslave(babyrace, age, 'random', mother.origins)
 	baby.surname = mother.surname
 	var array = ['skin','tail','ears','wings','horns','arms','legs','bodyshape','haircolor','eyecolor','eyeshape','eyesclera']
 	for i in array:
@@ -1266,7 +1243,7 @@ func showtooltip(text):
 	if tooltipsize.pos.y + tooltipsize.size.y >= screen.size.y:
 		get_tree().get_current_scene().get_node("tooltip").set_pos(Vector2(tooltipsize.pos.x, tooltipsize.pos.y + (screen.size.y - (tooltipsize.pos.y + tooltipsize.size.y))-10))
 	get_tree().get_current_scene().get_node("tooltip").set_hidden(false)
-	get_tree().get_current_scene().get_node("tooltip").set_as_toplevel(true)
+	#get_tree().get_current_scene().get_node("tooltip").set_as_toplevel(true)
 	yield(get_tree(), "idle_frame")
 	get_tree().get_current_scene().get_node("tooltip/RichTextLabel").set_size(Vector2(get_tree().get_current_scene().get_node("tooltip/RichTextLabel").get_size().width, get_tree().get_current_scene().get_node("tooltip/RichTextLabel").get_v_scroll().get_max()))
 	get_tree().get_current_scene().get_node("tooltip").set_size(Vector2(get_tree().get_current_scene().get_node("tooltip").get_size().x, get_tree().get_current_scene().get_node("tooltip/RichTextLabel").get_size().y + 30))
@@ -1482,88 +1459,6 @@ func load_game(filename):
 	
 
 func repairsave():
-	#repairing player
-	if !player.sexuals.has('unlocks'):
-		player.sexuals.unlocks = []
-	#repairing quests
-	var array = []
-	for i in globals.state.upcomingevents:
-		array.append(i.code)
-	if globals.state.sidequests.emily in [9,10,11] && array.find("tishadisappear"):
-		globals.state.upcomingevents.append({code = 'tishadisappear', duration = round(rand_range(9,14))})
-	if globals.state.sidequests.has('ivran') == false:
-		globals.state.sidequests.ivran = ''
-	if globals.state.sidequests.has('ayda') == false:
-		globals.state.sidequests.ayda = 0
-	if globals.state.sidequests.has("yris") == false:
-		globals.state.sidequests.yris = 0
-	if globals.state.sidequests.has("ayneris") == false:
-		globals.state.sidequests.ayneris = 0
-	#repairing slaves
-	var tempslaves = []
-	tempslaves.append(player)
-	if state.sebastianslave != null && globals.state.sebastianorder.taken:
-		tempslaves.append(state.sebastianslave)
-	for i in slaves:
-		tempslaves.append(i)
-	for i in state.babylist:
-		tempslaves.append(i)
-	for i in tempslaves:
-		if !i.sexuals.has('unlocks'):
-			i.sexuals.unlocks = []
-		if !i.sexuals.actions.has("massage"):
-			i.sexuals.actions.massage = 0
-			i.sexuals.actions.kiss = 0
-		i.unlocksexuals()
-		if i.metrics.has("vag") == false:
-			i.metrics.jail = 0
-			i.metrics.birth = 0
-			i.metrics.preg = 0
-			i.metrics.anal = 0
-			i.metrics.oral = 0
-			i.metrics.vag = 0
-			i.metrics.roughsex = 0
-			i.metrics.roughsexlike = 0
-			i.metrics.capture = 0
-			i.metrics.orgasm = 0
-			i.metrics.mods = 0
-			i.metrics.randompartners = 0
-		if i.origins == 'atypical':
-			i.origins = 'commoner'
-		if i.origins == 'royal':
-			i.origins = 'noble'
-		if typeof(i.level) == TYPE_DICTIONARY:
-			var dict = i.level
-			i.level = dict.value
-			i.skillpoints = dict.skillpoints
-			i.xp = dict.xp
-		i.rules = {'silence':false, 'pet':false, 'contraception':false, 'aphrodisiac':false, 'masturbation':false, 'nudity':false, 'betterfood':false, 'personalbath':false,'cosmetics':false,'pocketmoney':false} 
-		if i.gear.has('clothes'):
-			i.gear = {costume = 'clothcommon', underwear = 'underwearplain', armor = null, weapon = null, accessory = null}
-		if i.stats.has('str_mod') == false:
-			for k in ['str_mod','agi_mod','maf_mod','end_mod']:
-				i.stats[k] = 0
-	#repairing items
-	if globals.player.ability.find('escape') < 0:
-		globals.player.ability.append('escape')
-		globals.player.abilityactive.append('escape')
-		if globals.spelldict.heal.learned == true && globals.player.ability.find('heal') < 0:
-			globals.player.ability.append('heal')
-	if typeof(state.portals) == TYPE_ARRAY:
-		var portaldict = {}
-		for i in state.portals:
-			portaldict[i] = {enabled = true, code = i}
-		state.portals = portaldict
-	for i in progress.new().portals:
-		if state.portals.has(i) == false:
-			state.portals[i] = progress.new().portals[i]
-	if !state.mansionupgrades.has('mansionparlor'):
-		state.mansionupgrades.mansionparlor = 0
-	for i in globals.state.unstackables.values():
-		if i.icon.find('Texture') >= 0:
-			i.icon = itemdict[i.code].icon.get_path()
-		if i.has('weight') == false:
-			i.weight = itemdict[i.code].weight
 	state.currentversion = gameversion
 
 var showalisegreet = false

@@ -106,7 +106,7 @@ func _on_sexual_visibility_changed():
 		for i in sexbuttons.values():
 			if  globals.evaluate(i.slavereqs) == false || globals.evaluate(i.playerreqs) == false:
 				continue
-			if i.canbeforced == true && (i.code in ['bestiality', 'ass', 'dildo', 'lbondage', 'hbondage','oral','blowjobgive','tribadism','pussytake'] || slave.sexuals.actions.has(i.code) ||(i.code == 'pussy' && slave.pussy.has == true)):
+			if i.canbeforced == true && (i.code in ['bestiality', 'ass', 'dildo', 'lbondage', 'hbondage','oral','blowjobgive','tribadism','pussytake'] || slave.sexuals.actions.has(i.code) ||(i.code == 'pussy' && slave.vagina != "none")):
 				button = get_node("foreplaycontainer/VBoxContainer/Button").duplicate()
 				button.set_hidden(false)
 				button.add_to_group('sexactions')
@@ -205,9 +205,9 @@ func sexactionchosen(button):
 	if action.tags.find("choosehole") >= 0:
 		text += slave.dictionary("\n\nWhich hole $name should use?")
 		get_node("descriptpanel/holebutton").set_hidden(false)
-		if slave.pussy.has == true:
+		if slave.vagina != "none":
 			get_node("descriptpanel/holebutton").add_item("Pussy", 1)
-		if (slave.sexuals.unlocks.has('anal') == true || slave.pussy.has == false) || get_node("togglerape").is_pressed() == true:
+		if (slave.sexuals.unlocks.has('anal') == true || slave.vagina == "none") || get_node("togglerape").is_pressed() == true:
 			get_node("descriptpanel/holebutton").add_item("Ass", 2)
 		if get_node("descriptpanel/holebutton").get_item_count() < 1:
 			get_node("descriptpanel/holebutton").set_hidden(true)
@@ -219,7 +219,7 @@ func sexactionchosen(button):
 			text += "\n\nWhich of your holes you would like to use?"
 		else:
 			text += partner.dictionary("\n\nWhich of $name's holes should be used")
-		if partner.pussy.has == true:
+		if partner.vagina != 'none':
 			get_node("descriptpanel/holebutton").add_item("Pussy", 1)
 		get_node("descriptpanel/holebutton").add_item("Ass", 2)
 	get_node("descriptpanel/RichTextLabel").set_bbcode(text)
@@ -275,7 +275,7 @@ func _on_confirmbutton_pressed():
 	elif slave.stress >= 80 && rape == false:
 		text = slave.dictionary("$name is too stressed and wishes to stay alone.")
 		return
-	elif slave.pussy.virgin == true && action.tags.find('penetration') >= 0 && (get_node("descriptpanel/holebutton").get_selected_ID() == 1 || action.tags.find('pussy') >= 0):
+	elif slave.vagvirgin == true && action.tags.find('penetration') >= 0 && (get_node("descriptpanel/holebutton").get_selected_ID() == 1 || action.tags.find('pussy') >= 0):
 		get_tree().get_current_scene().yesnopopup(slave.dictionary("$name currently is a virgin. Continue?"), 'sexinitiate' ,self)
 		return
 	
@@ -406,23 +406,23 @@ func sexinitiate(secondtime = false):
 	managain = round(managain)
 	if action.tags.find('penetration') >= 0  && (action.tags.find('pussy') >= 0 || ( hole == 'pussy' && action.tags.find('choosehole') >= 0)):
 		slave.metrics.vag += 1
-		if slave.pussy.virgin == true:
-			slave.pussy.virgin = false
+		if slave.vagvirgin == true:
+			slave.vagvirgin = false
 			if action.code != 'bestiality':
 				if partner == globals.player:
-					slave.pussy.first = 'you'
+					#slave.pussy.first = 'you'
 					text += "\n\n[color=yellow]You tear through $name's hymen and claim $his virginity. [/color]"
 				else:
-					slave.pussy.first = partner.id
+					#slave.pussy.first = partner.id
 					text += ("\n\n[color=yellow]$2name tears through $name's hymen and claims $his virginity. [/color]")
 				if (rape == false || rapelike == true) && partner == globals.player:
 					slave.loyal += 10
 					text += "[color=green]$He seems to be glad about it. [/color]"
 	elif action.tags.find("selfpenetration") >= 0 && (hole == 'pussy'||action.code == 'pussytake'):
 		partner.metrics.vag += 1
-		if partner.pussy.virgin == true:
-			partner.pussy.virgin = false
-			partner.pussy.first = slave.id
+		if partner.vagvirgin == true:
+			partner.vagvirgin = false
+			#partner.pussy.first = slave.id
 			if globals.player == partner:
 				text += slave.dictionary("[color=yellow]\n\n$name has taken your virginity.[/color] ")
 			else:
@@ -551,13 +551,13 @@ func sexinitiate(secondtime = false):
 		else:
 			var tempaction = array[rand_range(0,array.size())]
 			if tempaction.tags.find('choosehole') >= 0:
-				if slave.pussy.has == false:
+				if slave.vagina == 'none':
 					hole = 'ass'
 				else:
 					if slave.sexuals.unlocks.has('anal') == false:
 						hole = 'pussy'
 					else:
-						if slave.pussy.virgin == true && tempaction.tags.find("penetration"):
+						if slave.vagvirgin == true && tempaction.tags.find("penetration"):
 							hole = 'ass'
 						else:
 							hole = holedict[int(round(rand_range(1,2)))]
@@ -837,7 +837,7 @@ func _on_piercing_pressed():
 	
 	
 	for ii in array:
-		if ii.requirement == null || (slave.lewd >= 100 && ii.requirement == 'lewdness') || (slave.penis.number >= 1 && slave.lewd >= 100 && ii.id == 10) || (slave.pussy.has == true && slave.lewd >= 100 && (ii.id == 8 || ii.id == 9)):
+		if ii.requirement == null || (slave.lewd >= 100 && ii.requirement == 'lewdness') || (slave.penis.number >= 1 && slave.lewd >= 100 && ii.id == 10) || (slave.vagina != 'none' && slave.lewd >= 100 && (ii.id == 8 || ii.id == 9)):
 			var newline = get_node("piercingpanel/ScrollContainer/VBoxContainer/piercingline").duplicate()
 			newline.set_hidden(false)
 			get_node("piercingpanel/ScrollContainer/VBoxContainer").add_child(newline)

@@ -20,7 +20,7 @@ func showup():
 	for i in globals.state.unstackables.values():
 		if i.owner == null:
 			availableitems.append(i)
-	popup()
+	set_hidden(false)
 	for i in get_tree().get_nodes_in_group("paperdollbutton"):
 		currentgear = slave.gear[i.get_name()]
 		i.set_meta("item", currentgear)
@@ -156,16 +156,17 @@ func paperdolltooltip(button):
 		item = globals.state.unstackables[item]
 		
 	pos.x += 75
-	get_node("tooltippanel").set_hidden(false)
+#	get_node("tooltippanel").set_hidden(false)
 	text = "[center]"+item.name+"[/center]\n" + item.description 
-	get_node("tooltippanel").set_global_pos(pos)
-	get_node("tooltippanel/RichTextLabel").set_bbcode(text)
+	globals.showtooltip(text)
+#	get_node("tooltippanel").set_global_pos(pos)
+#	get_node("tooltippanel/RichTextLabel").set_bbcode(text)
 
 
 
 
 func paperdolltooltipoff():
-	get_node("tooltippanel").set_hidden(true)
+	globals.hidetooltip()
 
 func _on_close_pressed():
 	set_hidden(true)

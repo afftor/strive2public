@@ -311,7 +311,7 @@ bodyguard = {
 name = "Bodyguard",
 code = 'bodyguard',
 descript = "A Bodyguard is trained to put their life before their master's. Not only they are capable of taking down threats on their own, but are substantially more resilient. ",
-descriptbonus = "Bonus armor and health, 'Protect' action doubles the amount of reduced damage.",
+descriptbonus = "+ 4 Armor, +20% Maximum Health, 'Protect' action doubles the amount of reduced damage.",
 descriptreqs = "Courage 60+, agility 3+, strength 4+, loyalty 50+",
 reqs = "slave.cour >= 60 && slave.sagi >= 3 && slave.sstr >= 4 && slave.loyal >= 50"
 },

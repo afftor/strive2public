@@ -6,7 +6,7 @@
 [ext_resource path="res://files/buttons/itemnormal.png" type="Texture" id=4]
 [ext_resource path="res://files/buttongrouptheme.tres" type="Theme" id=5]
 
-[node name="paperdoll" type="Popup"]
+[node name="paperdoll" type="Panel"]
 
 focus/ignore_mouse = true
 focus/stop_mouse = true
@@ -17,7 +17,6 @@ margin/left = -1.0
 margin/top = 0.0
 margin/right = 582.0
 margin/bottom = 492.0
-popup/exclusive = false
 script/script = ExtResource( 2 )
 
 [node name="Panel" type="Panel" parent="."]
@@ -424,6 +423,7 @@ visible_characters = -1
 
 [node name="selectitem" type="Popup" parent="."]
 
+visibility/visible = false
 anchor/left = 3
 anchor/top = 3
 anchor/right = 3

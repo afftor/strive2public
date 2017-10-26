@@ -245,11 +245,14 @@ func healeffect():
 	globals.resources.mana -= spell.manacost
 	if slave.health < slave.stats.health_max:
 		slave.health += rand_range(20,30) + globals.player.smaf*5
-		text = "After you finish casting the spell, $name's wounds close up. "
-		if slave.loyal < 20:
-			slave.loyal += rand_range(2,4)
-			slave.obed += rand_range(10,15)
-			text = text + '$He looks somewhat surprised at your kind treatment and grows bit closer to you. '
+		if globals.player != slave:
+			text = "After you finish casting the spell, $name's wounds close up. "
+			if slave.loyal < 20:
+				slave.loyal += rand_range(2,4)
+				slave.obed += rand_range(10,15)
+				text += '$He looks somewhat surprised at your kind treatment and grows bit closer to you. '
+		else:
+			text = "After you finish casting the healing spell, your wounds close up. "
 	else:
 		text = "It does not seems like $name was injured in first place. "
 	main.popup(slave.dictionary(text))

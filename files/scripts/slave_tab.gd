@@ -2,7 +2,6 @@
 extends TabContainer
 
 var slave
-var desc = load('res://files/scripts/description.gd')
 var tab
 var jobdict = globals.jobs.jobdict
 
@@ -50,9 +49,9 @@ func _on_slave_tab_visibility_changed():
 	namelabel.set_text(slave.name_short())
 	var file = File.new()
 	setdescriptpos()
-	var text = slave.description_full()
+	text = slave.description()
 	get_node("inspect/slavedescript").set_bbcode(text)
-	text = desc.getSlaveStatus(slave)
+	text = slave.status()
 	get_node("inspect/statustext").set_bbcode(text)
 	get_node("inspect/Panel 2/fullbody").set_texture(null)
 	if nakedspritesdict.has(slave.unique):
@@ -68,13 +67,13 @@ func _on_slave_tab_visibility_changed():
 	for i in get_node("stats/traits/traitlist").get_children():
 		if i != get_node("stats/traits/traitlist/Label"):
 			i.free()
-	for i in slave.traits.values():
-		label = get_node("stats/traits/traitlist/Label").duplicate()
-		get_node("stats/traits/traitlist").add_child(label)
-		label.set_hidden(false)
-		label.set_text(i.name)
-		label.connect("mouse_enter", self, 'traittooltip', [i])
-		label.connect("mouse_exit", self, 'traittooltiphide')
+#	for i in slave.traits.values():
+#		label = get_node("stats/traits/traitlist/Label").duplicate()
+#		get_node("stats/traits/traitlist").add_child(label)
+#		label.set_hidden(false)
+#		label.set_text(i.name)
+#		label.connect("mouse_enter", self, 'traittooltip', [i])
+#		label.connect("mouse_exit", self, 'traittooltiphide')
 	for i in get_node("stats/abilities/abilitylist").get_children():
 		if i != get_node("stats/abilities/abilitylist/Label"):
 			i.set_hidden(true)
@@ -195,20 +194,24 @@ func setdescriptpos():
 	if slave.imageportait != null || slave.imagefull != null:
 		if slave.imageportait != null && File.new().file_exists(slave.imageportait) == true:
 			get_node("inspect/portait").set_texture(load(slave.imageportait))
+			get_node("inspect/portait").set_hidden(false)
 			get_node("inspect/portaitpanel").set_hidden(false)
 			get_node("inspect/AnimationPlayer").play("descriptportait")
 		elif slave.imagefull != null && File.new().file_exists(slave.imagefull) == true:
 			get_node("inspect/portait").set_texture(load(slave.imagefull))
+			get_node("inspect/portait").set_hidden(false)
 			get_node("inspect/portaitpanel").set_hidden(false)
 			get_node("inspect/AnimationPlayer").play("descriptportait")
 		else:
 			slave.imageportait = null
 			slave.imagefull = null
 			get_node("inspect/portait").set_texture(null)
+			get_node("inspect/portait").set_hidden(true)
 			get_node("inspect/portaitpanel").set_hidden(true)
 			get_node("inspect/AnimationPlayer").play("descriptfull")
 	else:
 		get_node("inspect/portait").set_texture(null)
+		get_node("inspect/portait").set_hidden(true)
 		get_node("inspect/portaitpanel").set_hidden(true)
 		get_node("inspect/AnimationPlayer").play("descriptfull")
 
@@ -296,8 +299,8 @@ func _on_charmfield_mouse_exit():
 
 
 func regulationdescription():
-	var cloth = globals.clothes
-	var underwear = globals.underwear
+	#var cloth = globals.clothes
+	#var underwear = globals.underwear
 	var text
 	if !jobdict.has(slave.work):
 		slave.work = 'rest'
@@ -539,8 +542,11 @@ func _on_impregnate_pressed():
 	globals.impregnation(slave)
 
 func _on_slavedescript_meta_clicked( meta ):
-	get_tree().get_current_scene().showracedescript(slave)
-
+	if meta == 'race':
+		get_tree().get_current_scene().showracedescript(slave)
+	elif globals.state.descriptsettings.has(meta):
+		globals.state.descriptsettings[meta] = !globals.state.descriptsettings[meta]
+	_on_slave_tab_visibility_changed()
 
 
 func _on_relativesbutton_pressed():
@@ -871,7 +877,7 @@ func _on_piercing_pressed():
 	
 	
 	for ii in array:
-		if ii.requirement == null || (slave.sexuals.unlocked == true&& ii.requirement == 'lewdness') || (slave.penis.number >= 1 && slave.sexuals.unlocked == true && ii.id == 10) || (slave.pussy.has == true && slave.sexuals.unlocked == true && (ii.id == 8 || ii.id == 9)):
+		if ii.requirement == null || (slave.sexuals.unlocked == true&& ii.requirement == 'lewdness') || (slave.penis != 'none' && slave.sexuals.unlocked == true && ii.id == 10) || (slave.vagina == 'normal' && slave.sexuals.unlocked == true && (ii.id == 8 || ii.id == 9)):
 			var newline = get_node("customization/piercingpanel/ScrollContainer/VBoxContainer/piercingline").duplicate()
 			newline.set_hidden(false)
 			get_node("customization/piercingpanel/ScrollContainer/VBoxContainer").add_child(newline)

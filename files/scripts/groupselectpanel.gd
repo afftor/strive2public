@@ -68,7 +68,7 @@ func updateitemsinventory():
 			i.set_hidden(true)
 			i.queue_free()
 	for i in globals.itemdict.values():
-		if i.amount >= 1:
+		if i.amount >= 1 && !i.type in ['gear','dummy']:
 			newbutton = get_node("inventory/VBoxContainer/Button").duplicate()
 			get_node("inventory/VBoxContainer").add_child(newbutton)
 			newbutton.set_hidden(false)
@@ -80,7 +80,7 @@ func updateitemsinventory():
 			newbutton.connect("mouse_enter", self, 'itemtooltip', [i])
 			newbutton.connect("mouse_exit", self, 'itemtooltiphide')
 	for i in globals.state.unstackables.values():
-		if i.owner != null && globals.state.findslave(i.owner) == null:
+		if i.owner != null && globals.state.findslave(i.owner) == null && i.owner != globals.player.id:
 			i.owner = null
 		if i.owner == null:
 			newbutton = get_node("inventory/VBoxContainer/Button").duplicate()

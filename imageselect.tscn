@@ -212,7 +212,7 @@ flat = false
 
 [node name="removeportrait" type="Button" parent="."]
 
-hint/tooltip = "Disables portait for this character"
+hint/tooltip = "Disables currently selected image for this character"
 focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2

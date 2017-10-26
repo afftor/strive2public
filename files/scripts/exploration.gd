@@ -69,7 +69,7 @@ background = 'forest',
 reqs = "true",
 combat = true,
 code = 'elvenforest',
-name = 'Deep Elven Grove',
+name = 'Elven Grove',
 description = "This portion of the forest is located dangerously close to eleven lands. They take poorly to intruders in their part of the woods so you should remain on your guard.",
 enemies = [{value = 'fairy', weight = 1},{value = 'solobear', weight = 3},{value = 'elfguards',weight = 3},{value = 'plantseasy', weight = 3},{value = 'wolveseasy', weight = 5}],
 encounters = [],
@@ -88,7 +88,7 @@ code = 'amberguardforest',
 name = 'Amber Road',
 description = "Amber Road is a long way through seeming glade and various small settlements and hills. ",
 enemies = [{value = 'solobear',weight = 1}, {value = 'wolveshard', weight = 3}, {value ='direwolveseasy', weight = 5}, {value = 'elfguards',weight = 3},],
-encounters = [['aynerisencounter','globals.state.sidequests.ayneris in [0,1,2]',15]],
+encounters = [['aynerisencounter','globals.state.sidequests.ayneris in [0,1,2]',7]],
 length = 4,
 exits = ['amberguard','witchhut','undercityentrance'],
 tags = ['amberguard'],
@@ -433,9 +433,9 @@ func zoneenter(zone):
 			if globals.evaluate(temp.reqs) == true:
 				array.append({name = 'Move to ' + temp.name, function = 'zoneenter', args = temp.code})
 		if globals.state.backpack.stackables.has('supply') && globals.state.backpack.stackables.supply >= 3 && globals.state.playergroup.size()*5+5 <= globals.resources.food:
-			array.append({name = "Rest and eat", function = 'rest', tooltip = 'Requires 3 units of supplies and 5 food per party member'})
+			array.append({name = "Rest and eat", function = 'rest', tooltip = 'Requires 3 units of supplies (in total) and 5 food per party member'})
 		else:
-			array.append({name = "Rest and eat", function = 'rest', disabled = true, tooltip = 'Requires 3 units of supplies and 5 food per party member'})
+			array.append({name = "Rest and eat", function = 'rest', disabled = true, tooltip = 'Requires 3 units of supplies (in total) and 5 food per party member'})
 		if globals.state.restday == globals.resources.day:
 			array[array.size()-1].disabled = true
 			array[array.size()-1].tooltip = 'Can only be done once per day'
@@ -483,7 +483,7 @@ func deepzone(currentzonecode):
 
 
 func rest():
-	globals.state.backpack.stackables.supply -= 2
+	globals.state.backpack.stackables.supply -= 3
 	globals.player.health += globals.player.stats.health_max/4
 	globals.player.energy += globals.player.stats.energy_max
 	globals.resources.food -= 5
@@ -613,7 +613,7 @@ func enemyencounter():
 				origins = globals.weightedrandom(i.captureoriginspool)
 				if deeperregion == true && globals.originsarray.find(origins) < 4 && rand_range(0,1) > 0.3:
 					origins = globals.originsarray[globals.originsarray.find(origins)+1]
-				var slavetemp = globals.slavegen.newslave(race, age, sex, origins)
+				var slavetemp = globals.newslave(race, age, sex, origins)
 				enemygroup.units[counter].capture = slavetemp
 			counter += 1
 		if enemygroup.captured != null:
@@ -652,7 +652,7 @@ func enemyencounter():
 				origins = globals.weightedrandom(slave.originspool)
 				if deeperregion == true && globals.originsarray.find(origins) < 4 && rand_range(0,1) > 0.3:
 					origins = globals.originsarray[globals.originsarray.find(origins)+1]
-				slave = globals.slavegen.newslave(race, age, sex, origins)
+				slave = globals.newslave(race, age, sex, origins)
 				enemygroup.captured.append(slave)
 	enemyawareness = enemygroup.awareness
 	if deeperregion == true:
@@ -818,7 +818,7 @@ func slaverbuy():
 	globals.get_tree().get_current_scene().popup("You purchase slavers' captive and return to mansion. " )
 
 func inspectenemy():
-	globals.get_tree().get_current_scene().popup(enemygroup.captured.description_small())
+	globals.get_tree().get_current_scene().popup(enemygroup.captured.description())
 
 func mindreadcapturee(state = 'encounter'):
 	globals.get_tree().get_current_scene().get_node("spellnode").slave = enemygroup.captured
@@ -956,7 +956,7 @@ func enemydefeated():
 	else:
 		get_node("winningpanel/lootpanel").set_hidden(true)
 	
-	if globals.state.sidequests.cali == 18 && defeated.names.find('Bandit') >= 0 && currentzone.code == 'forest':
+	if globals.state.sidequests.cali == 18 && defeated.names.find('Bandit 1') >= 0 && currentzone.code == 'forest':
 		main.popup("One of the defeated bandits in exchange for their life reveal location of their camp you've been in search for. ")
 		globals.state.sidequests.cali = 19
 
@@ -993,13 +993,9 @@ func captureslave(slave):
 	globals.state.backpack.stackables.rope -= 1
 	if globals.state.backpack.stackables.rope <= 0:
 		globals.state.backpack.stackables.erase('rope')
-	var effect = globals.effectdict.captured
-	var dict = {'slave':0.7, 'poor':1,'commoner':1.2,"rich": 2, "noble": 4}
-	effect.duration = round((4 + (slave.conf+slave.cour)/20) * dict[slave.origins])
-	slave.add_effect(effect)
 	if slave.race in ['Lamia','Arachna','Harpy','Nereid','Slime','Scylla','Dryad','Fairy']:
 		slave.add_trait(globals.origins.trait('Uncivilized'))
-	globals.state.capturedgroup.append(slave)
+	captureeffect(slave)
 	if defeated.names[defeated.units.find(slave)] == 'Captured':
 		if currentzone.tags.find("wimborn") >= 0:
 			location = 'wimborn'
@@ -1015,6 +1011,14 @@ func captureslave(slave):
 	get_tree().get_current_scene().infotext("[color=green]New captive added to your group.[/color]")
 	buildcapturelist()
 	builditemlists()
+
+func captureeffect(slave):
+	
+	var effect = globals.effectdict.captured
+	var dict = {'slave':0.7, 'poor':1,'commoner':1.2,"rich": 2, "noble": 4}
+	effect.duration = round((4 + (slave.conf+slave.cour)/20) * dict[slave.origins])
+	slave.add_effect(effect)
+	globals.state.capturedgroup.append(slave)
 
 func builditemlists():
 	var newbutton
@@ -1136,21 +1140,10 @@ func itemtooltiphide():
 
 
 func defeatedselected(slave):
-	get_tree().get_current_scene().popup(slave.description_small(true))
-#	var winpanel = main.get_node("explorationnode/winningpanel")
-#	winpanel.get_node("defeateddescript").set_bbcode(slave.description_small(true))
-#	if globals.spelldict.mindread.learned == true:
-#		winpanel.get_node("defeatedmindread").set_hidden(false)
-#		winpanel.get_node("defeateddescript").set_meta('slave', slave)
-#		if globals.resources.mana >= globals.spelldict.mindread.manacost:
-#			winpanel.get_node("defeatedmindread").set_disabled(false)
-#		else:
-#			winpanel.get_node("defeatedmindread").set_disabled(true)
-#	else:
-#		winpanel.get_node("defeatedmindread").set_hidden(true)
+	get_tree().get_current_scene().popup(slave.description())
+
 
 func defeatedchoice(ID, slave, node):
-	checkoptionsbutton()
 	defeated.select[defeated.units.find(slave)] = ID
 
 
@@ -1438,41 +1431,7 @@ func gornyrisaccept(stage):
 		sprite = [['yrisnormalnaked', 'pos1']]
 		text = globals.questtext.GornYrisHire
 		globals.state.sidequests.yris += 1
-		var slave = globals.slavegen.newslave('Beastkin Cat', 'adult', 'female', 'commoner')
-		slave.name = 'Yris'
-		slave.unique = 'Yris'
-		slave.surname = ''
-		slave.tits.size = 'big'
-		slave.ass = 'average'
-		slave.beautybase = 72
-		slave.hairlength = 'neck'
-		slave.height = 'average'
-		slave.haircolor = 'blond'
-		slave.eyecolor = 'blue'
-		slave.eyeshape = 'slit'
-		slave.skin = 'fair'
-		slave.furcolor = 'orange_white'
-		slave.hairstyle = 'straight'
-		slave.pussy.virgin = false
-		slave.pussy.first = 'unknown'
-		slave.relatives.father = -1
-		slave.relatives.mother = -1
-		slave.sexuals.affection += 1
-		slave.charm = 71
-		slave.wit = 62
-		slave.cour = 33
-		slave.conf = 48
-		slave.imageportait = "res://files/images/yris/yrisportrait.png"
-		slave.sexuals.unlocked = true
-		slave.sexuals.unlocks.append("petting")
-		slave.sexuals.unlocks.append('oral')
-		slave.sexuals.unlocks.append('vaginal')
-		slave.unlocksexuals()
-		slave.cleartraits()
-		slave.sagi += 1
-		slave.send += 1
-		slave.loyal = 25
-		slave.obed += 90
+		var slave = globals.characters.create("Yris")
 		globals.slaves = slave
 	gornbar()
 	main.dialogue(state, self, text, buttons, sprite)

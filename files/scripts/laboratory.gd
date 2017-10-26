@@ -235,49 +235,49 @@ func labbuttonselected(string):
 	if dict[string].type == 'custom':
 		var newbutton
 		if dict[string].code == 'penis':
-			if slave.penis.number >= 1 && slave.pussy.has == true:
+			if slave.penis != 'none' && slave.vagina != 'none':
 				newbutton = get_node("labmodpanel/ScrollContainer1/secondarymodlist/buttontemp").duplicate()
 				newbutton.set_hidden(false)
 				newbutton.set_text('Remove')
 				get_node("labmodpanel/ScrollContainer1/secondarymodlist").add_child(newbutton)
 				newbutton.connect("pressed",self,'genetalia', [dict[string],'remove'])
 				newbutton.set_meta('effect', 'remove')
-			if slave.penis.number >= 1 && slave.penis.type != 'human':
+			if slave.penis != 'none' && slave.penistype != 'human':
 				newbutton = get_node("labmodpanel/ScrollContainer1/secondarymodlist/buttontemp").duplicate()
 				newbutton.set_hidden(false)
 				newbutton.set_text('Shape: Normal')
 				get_node("labmodpanel/ScrollContainer1/secondarymodlist").add_child(newbutton)
 				newbutton.connect("pressed",self,'genetalia', [dict[string],'humanshape'])
 				newbutton.set_meta('effect', 'humanshape')
-			if slave.penis.number >= 1 && slave.penis.type != 'feline':
+			if slave.penis != 'none' && slave.penistype != 'feline':
 				newbutton = get_node("labmodpanel/ScrollContainer1/secondarymodlist/buttontemp").duplicate()
 				newbutton.set_hidden(false)
 				newbutton.set_text('Shape: Feline')
 				get_node("labmodpanel/ScrollContainer1/secondarymodlist").add_child(newbutton)
 				newbutton.connect("pressed",self,'genetalia', [dict[string],'felineshape'])
 				newbutton.set_meta('effect', 'felineshape')
-			if slave.penis.number >= 1 && slave.penis.type != 'canine':
+			if slave.penis != 'none' && slave.penistype != 'canine':
 				newbutton = get_node("labmodpanel/ScrollContainer1/secondarymodlist/buttontemp").duplicate()
 				newbutton.set_hidden(false)
 				newbutton.set_text('Shape: Canine')
 				get_node("labmodpanel/ScrollContainer1/secondarymodlist").add_child(newbutton)
 				newbutton.connect("pressed",self,'genetalia', [dict[string],'canineshape'])
 				newbutton.set_meta('effect', 'canineshape')
-			if slave.penis.number >= 1 && slave.penis.type != 'equine':
+			if slave.penis != 'none' && slave.penistype != 'equine':
 				newbutton = get_node("labmodpanel/ScrollContainer1/secondarymodlist/buttontemp").duplicate()
 				newbutton.set_hidden(false)
 				newbutton.set_text('Shape: Equine')
 				get_node("labmodpanel/ScrollContainer1/secondarymodlist").add_child(newbutton)
 				newbutton.connect("pressed",self,'genetalia', [dict[string],'equineshape'])
 				newbutton.set_meta('effect', 'equineshape')
-			if slave.penis.number == 0:
+			if slave.penis == 'none':
 				newbutton = get_node("labmodpanel/ScrollContainer1/secondarymodlist/buttontemp").duplicate()
 				newbutton.set_hidden(false)
 				newbutton.set_text('Grow')
 				get_node("labmodpanel/ScrollContainer1/secondarymodlist").add_child(newbutton)
 				newbutton.connect("pressed",self,'genetalia', [dict[string],'grow'])
 				newbutton.set_meta('effect', 'grow')
-			if slave.pussy.has == false || slave.preg.has_womb == false:
+			if slave.vagina == 'none' || slave.preg.has_womb == false:
 				newbutton = get_node("labmodpanel/ScrollContainer1/secondarymodlist/buttontemp").duplicate()
 				newbutton.set_hidden(false)
 				newbutton.set_text('Female genitals')
@@ -285,21 +285,21 @@ func labbuttonselected(string):
 				newbutton.connect("pressed",self,'genetalia', [dict[string],'pussy'])
 				newbutton.set_meta('effect', 'pussy')
 		elif dict[string].code == 'tits':
-			if slave.tits.extrapairs >= 1 && slave.tits.extrapairs <= 4&& slave.tits.developed == false:
+			if slave.tits.extrapairs >= 1 && slave.titsextra <= 4&& slave.titsextradeveloped == false:
 				newbutton = get_node("labmodpanel/ScrollContainer1/secondarymodlist/buttontemp").duplicate()
 				newbutton.set_hidden(false)
 				newbutton.set_text('Develop nipples')
 				get_node("labmodpanel/ScrollContainer1/secondarymodlist").add_child(newbutton)
 				newbutton.connect("pressed",self,'genetalia', [dict[string],'developtits'])
 				newbutton.set_meta('effect', 'developtits')
-			elif slave.tits.extrapairs >= 1:
+			elif slave.titsextra >= 1:
 				newbutton = get_node("labmodpanel/ScrollContainer1/secondarymodlist/buttontemp").duplicate()
 				newbutton.set_hidden(false)
 				newbutton.set_text('Remove nipples')
 				get_node("labmodpanel/ScrollContainer1/secondarymodlist").add_child(newbutton)
 				newbutton.connect("pressed",self,'genetalia', [dict[string],'reversetits'])
 				newbutton.set_meta('effect', 'reversetits')
-			if slave.tits.extrapairs < 4:
+			if slave.titsextra < 4:
 				newbutton = get_node("labmodpanel/ScrollContainer1/secondarymodlist/buttontemp").duplicate()
 				newbutton.set_hidden(false)
 				newbutton.set_text('Add nipples')
@@ -312,7 +312,7 @@ func labbuttonselected(string):
 				get_node("labmodpanel/ScrollContainer1/secondarymodlist").add_child(newbutton)
 				newbutton.connect("pressed",self,'genetalia', [dict[string],'maximizenipples'])
 				newbutton.set_meta('effect', 'maximizenipples')
-			if slave.tits.extrapairs > 0:
+			if slave.titsextra > 0:
 				newbutton = get_node("labmodpanel/ScrollContainer1/secondarymodlist/buttontemp").duplicate()
 				newbutton.set_hidden(false)
 				newbutton.set_text('Remove nipples')
@@ -325,7 +325,7 @@ func labbuttonselected(string):
 				get_node("labmodpanel/ScrollContainer1/secondarymodlist").add_child(newbutton)
 				newbutton.connect("pressed",self,'genetalia', [dict[string],'minimizenipples'])
 				newbutton.set_meta('effect', 'minimizenipples')
-			if globals.sizearray.find(slave.tits.size) >= 3 && slave.mods.has('hollownipples') == false:
+			if globals.sizearray.find(slave.titssize) >= 3 && slave.mods.has('hollownipples') == false:
 				newbutton = get_node("labmodpanel/ScrollContainer1/secondarymodlist/buttontemp").duplicate()
 				newbutton.set_hidden(false)
 				newbutton.set_text('Hollow nipples')
@@ -501,7 +501,7 @@ func genetalia(dict, action):
 	elif modification.code == 'penis' && action == 'equineshape':
 		text = "$name's cock will be changed to equine shape, with a blunt tip and flared head. \n\nRequirements:"
 	elif modification.code == 'penis' && action == 'pussy':
-		if slave.pussy.has == false:
+		if slave.vagina == 'none':
 			text = "$name will obtain a fully functional vagina capable of pregnancy. \n\nRequirements:"
 		else:
 			text = "$name's womb will be restored and capable of pregnancy again. \n\nRequirements:"
@@ -591,7 +591,7 @@ func _on_labconfirm_pressed():
 		slave.away.duration = operation.time
 		slave.away.at = 'lab'
 		slave.stress += rand_range(70,95) - slave.loyal/3
-		slave.health = -rand_range(slave.stats.health_max/8,slave.stats.health_max/4)
+		slave.health -= rand_range(slave.stats.health_max/8,slave.stats.health_max/4)
 		for i in operation.price:
 			globals.resources[i] -= operation.price[i]
 		for i in operation.items:
@@ -599,37 +599,35 @@ func _on_labconfirm_pressed():
 			item.amount -= operation.items[i]
 	elif operation.type == 'custom' && operation.code == 'penis':
 		if result == 'grow':
-			slave.penis.number = 1
-			slave.penis.size = 'small'
-			slave.penis.type = 'human'
+			slave.penis = 'small'
+			slave.penistype = 'human'
 		elif result == 'remove':
-			slave.penis.number = 0
-			slave.penis.size = 'none'
+			slave.penis = 'none'
 		elif result == 'humanshape':
-			slave.penis.type = 'human'
+			slave.penistype = 'human'
 		elif result == 'felineshape':
-			slave.penis.type = 'feline'
+			slave.penistype = 'feline'
 		elif result == 'canineshape':
-			slave.penis.type = 'canine'
+			slave.penistype = 'canine'
 		elif result == 'equineshape':
-			slave.penis.type = 'equine'
+			slave.penistype = 'equine'
 		elif result == 'pussy':
-			slave.pussy.has = true
-			slave.pussy.virgin = false
+			slave.vagina = 'normal'
+			slave.vagvirgin = false
 			slave.preg.has_womb = true
 	elif operation.type == 'custom' && operation.code == 'tits':
 		if result == 'developtits':
-			slave.tits.developed = true
+			slave.titsextradeveloped = true
 		elif result == 'reversetits':
-			slave.tits.developed = false
+			slave.titsextradeveloped = false
 		elif result == 'addnipples':
-			slave.tits.extrapairs += 1
+			slave.titsextra += 1
 		elif result == 'removenipples':
-			slave.tits.extrapairs -= 1
+			slave.titsextra -= 1
 		elif result == 'maximizenipples':
-			slave.tits.extrapairs = 4
+			slave.titsextra = 4
 		elif result == 'minimizenipples':
-			slave.tits.extrapairs = 0
+			slave.titsextra = 0
 		elif result == 'hollownipples':
 			slave.mods['hollownipples'] = 'hollownipples'
 	elif operation.type == 'custom' && operation.code == 'balls':
@@ -662,7 +660,7 @@ func _on_labconfirm_pressed():
 		slave.away.duration = operation.data[result].time
 		slave.away.at = 'lab'
 		slave.stress += rand_range(70,95) - slave.loyal/3
-		slave.health = -rand_range(slave.stats.health_max/8,slave.stats.health_max/4)
+		slave.health -= rand_range(slave.stats.health_max/8,slave.stats.health_max/4)
 		for i in operation.data[result].price:
 			globals.resources[i] -= operation.data[result].price[i]
 		for i in operation.data[result].items:

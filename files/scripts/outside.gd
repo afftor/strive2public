@@ -252,7 +252,7 @@ func newslaveinguild(number, town = 'wimborn'):
 			else:
 				originpool = [{value = 'rich', weight = 1},{value = 'commoner', weight = 3},{value = 'poor', weight = 6},{value = 'slave',weight = 6}]
 			origin = globals.weightedrandom(originpool)
-		var newslave = globals.slavegen.newslave(race, 'random', 'random', origin)
+		var newslave = globals.newslave(race, 'random', 'random', origin)
 		if town == 'umbra':
 			newslave.obed = rand_range(0,80)
 			if rand_range(0,100) >= 30:
@@ -373,44 +373,10 @@ func slaveguildfairy(stage = 0):
 		sprites = [['fairy','pos1']]
 		text = questtext.MapleTake
 		globals.state.sidequests.maple = 7
-		globals.slaves = makemaple()
+		globals.slaves = globals.characters.create("Maple")
 		town()
 		slaveguild()
 	main.dialogue(state, self, globals.player.dictionary(text), buttons, sprites)
-
-func makemaple():
-	
-	var slave = globals.slavegen.newslave('Fairy', 'adult', 'female', 'rich')
-	slave.name = 'Maple'
-	slave.unique = 'Maple'
-	slave.surname = ''
-	slave.tits.size = 'average'
-	slave.ass = 'small'
-	slave.beautybase = 74
-	slave.hairlength = 'shoulder'
-	slave.height = 'tiny'
-	slave.haircolor = 'red'
-	slave.eyecolor = 'red'
-	slave.skin = 'fair'
-	slave.hairstyle = 'straight'
-	slave.pussy.virgin = false
-	slave.pussy.first = 'unknown'
-	slave.relatives.father = -1
-	slave.relatives.mother = -1
-	slave.sexuals.affection += 15
-	slave.imageportait = 'res://files/images/maple/mapleportrait.png'
-	slave.stats.cour_base = 65
-	slave.stats.conf_base = 73
-	slave.stats.wit_base = 69
-	slave.stats.charm_base = 92
-	slave.cleartraits()
-	slave.sexuals.unlocked = true
-	slave.level = 5
-	slave.skillpoints = 14
-	slave.obed += 90
-	slave.add_trait(globals.origins.trait('Ascetic'))
-	return slave
-
 
 func togorn():
 	get_node("playergrouppanel/VBoxContainer").set_hidden(false)
@@ -467,10 +433,10 @@ func selectslavebuy(slave):
 		text += "During the examination $name only returned bold, angry look, showing $his [color=red]rebellious[/color] attitude. \n\n"
 	elif slave.obed < 40:
 		text += "$name reacts to commands [color=red]poorly[/color] and does not seem to hold any enthusiasm about $his position. Perhaps $he will need an additional training...\n\n"
-	if slave.pussy.virgin == true:
+	if slave.vagvirgin == true:
 		text += "After a gesture, $name reveals to you $his [color=aqua]virgin[/color] pussy. \n\n"
 	text += "As you finish inspection, you are being reminded, that you can purchase $him for mere [color=yellow]"+str(price)+ " gold[/color].[/color] "
-	maintext.set_bbcode(slave.description_small() + '\n\n[color=#ff5df8]'+ slave.dictionary(text))
+	maintext.set_bbcode(slave.description() + '\n\n[color=#ff5df8]'+ slave.dictionary(text))
 	if globals.resources.gold < price:
 		get_node("slavebuypanel/purchasebutton").set_disabled(true)
 	else:
@@ -763,8 +729,8 @@ func slaveforquestselected(slave):
 			ref = slave[i[0]]
 		if i[0] == 'hairlength':
 			ref = globals.hairlengtharray.find(slave.hairlength)
-		if i[0] == 'tits.size':
-			ref = globals.sizearray.find(slave.tits.size)
+		if i[0] == 'titssize':
+			ref = globals.sizearray.find(slave.titssize)
 		if i[0] == 'sexuals.unlocks':
 			ref = slave.sexuals.unlocks.size()
 		if i[1] == 'gte':
@@ -801,7 +767,7 @@ sex = 'Sex',obed = 'Obedience', cour = 'Courage',conf = 'Confidence',wit = 'Wit'
 'sexuals.unlocks' : "Unlocked Sex Categories",
 'sstr' : 'Strength', 'sagi' : 'Agility', 'smaf' : 'Magic Affinity', 'send' : 'Endurance',
 loyal = 'Loyalty', race = 'Race', age = 'Age', hairlength = 'Hair Length', origins = 'Origins',
-bodyshape = 'Type', haircolor = 'Hair Color', 'tits.size' : 'Breasts Size',
+bodyshape = 'Type', haircolor = 'Hair Color', 'titssize' : 'Breasts Size',
 }
 
 func slavequesttext(quest):
@@ -822,7 +788,7 @@ func slavequesttext(quest):
 			text2 = text2 + repeatablesdict[i[0]] + ' — '+ str(i[2]) + ';\n'
 		elif i[0] == 'hairlength':
 			text2 = text2 + 'Hair length — ' + str(globals.hairlengtharray[i[2]]) + ';\n'
-		elif i[0] == 'tits.size':
+		elif i[0] == 'titssize':
 			text2 = text2 + 'Breast size — ' + str(globals.sizearray[i[2]]) + operators[i[1]]
 		elif i[0] == 'origins':
 			text2 = text2 + 'Origins — ' +globals.fastif(i[1] == 'neq', 'not '+ str(i[2]), str(i[2])) + ';\n'
@@ -996,7 +962,9 @@ func _on_serviceconfirm_pressed():
 		slave.away.duration = 1 + globals.originsarray.find(slave.origins)
 	elif operation.code == 'spec':
 		globals.resources.gold -= 500
+		if slave.effects.has('bodyguardeffect'): slave.add_effect(globals.effectdict.bodyguardeffect, true)
 		slave.spec = get_node("slaveservicepanel/serviceconfirm").get_meta('spec').code
+		if slave.spec == 'bodyguard': slave.add_effect(globals.effectdict.bodyguardeffect)
 		slave.away.duration = 5
 	slaveserviceselected = null
 	serviceoperation = null
@@ -1211,7 +1179,7 @@ func mageorderquest1(slave = null):
 			buttons.append(['Select Slave', 'selectslaveforquest', 'mageorderquest1'])
 		else:
 			slave = questgiveawayslave
-			if slave.race == 'Taurus' && slave.tits.size == 'huge' && slave.tits.lactation == true:
+			if slave.race == 'Taurus' && slave.titssize == 'huge' && slave.lactation == true:
 				text = "— Great work! Can I have her?"
 				sprites = [['melissafriendly','pos1']]
 				buttons.append(['Give away ' + slave.name, 'givecompanion'])
@@ -1275,8 +1243,6 @@ func givecompanion():
 				globals.player.ability.append('mindread')
 			globals.state.branding = 1
 			globals.state.rank = 1
-			globals.player.level += 1
-			globals.player.skillpoints += 1
 			globals.resources.upgradepoints += 5
 			main.getridof()
 	elif str(globals.state.mainquest) in ['3','3.1']:
@@ -1288,8 +1254,7 @@ func givecompanion():
 			globals.resources.gold += 500
 			globals.state.rank = 2
 			globals.state.branding = 2
-			globals.player.level += 1
-			globals.player.skillpoints += 1
+			globals.player.levelup()
 			globals.resources.upgradepoints += 5
 			main.getridof()
 	elif globals.state.mainquest == 10:
@@ -1299,8 +1264,7 @@ func givecompanion():
 		globals.state.rank = 3
 		globals.resources.gold += 750
 		main.currentslave = globals.slaves.find(slave)
-		globals.player.level += 1
-		globals.player.skillpoints += 1
+		globals.player.levelup()
 		globals.resources.upgradepoints += 5
 		main.getridof()
 	questgiveawayslave = null
@@ -1427,10 +1391,10 @@ func tishaquest():
 #################### Markets
 
 var shops = {
-wimbornmarket = {code = 'wimbornmarket', sprite = 'merchant', name = "Wimborn's Market", items =  ['teleportwimborn','food','supply','bandage','rope','teleportseal', 'basicsolutioning','hairdye', 'aphrodisiac' ,'beautypot', 'magicessenceing', 'natureessenceing','armorleather','armorchain','weapondagger','weaponsword','clothsundress','clothmaid','clothbutler','underwearlacy','underwearboxers'], selling = true},
-shaliqshop = {code = 'shaliqshop', name = "Village's Trader", items = ['hairdye','beautypot','armorleather','clothmiko','clothkimono','clothninja'], selling = true},
+wimbornmarket = {code = 'wimbornmarket', sprite = 'merchant', name = "Wimborn's Market", items =  ['teleportwimborn','food','supply','bandage','rope','teleportseal', 'basicsolutioning','hairdye', 'aphrodisiac' ,'beautypot', 'magicessenceing', 'natureessenceing','armorleather','armorchain','weapondagger','weaponsword','clothsundress','clothmaid','clothbutler','underwearlacy','underwearboxers', 'acctravelbag'], selling = true},
+shaliqshop = {code = 'shaliqshop', name = "Village's Trader", items = ['teleportseal','hairdye','beautypot','armorleather','clothmiko','clothkimono','clothninja', 'acctravelbag'], selling = true},
 gornmarket = {code = 'gornmarket', name = "Gorn's Market", items = ['teleportgorn','food', 'supply','bandage','rope','teleportseal','magicessenceing',"armorleather",'armorchain','weaponclaymore','clothbedlah','accslavecollar','acchandcuffs'], selling = true},
-frostfordmarket = {code = 'frostfordmarket', name = "Frostford's Market", items = ['teleportfrostford', 'supply','bandage','rope','teleportseal', 'basicsolutioning','bestialessenceing','clothpet', 'weaponsword','accgoldring'], selling = true},
+frostfordmarket = {code = 'frostfordmarket', name = "Frostford's Market", items = ['teleportfrostford', 'supply','bandage','rope','teleportseal', 'basicsolutioning','bestialessenceing','clothpet', 'weaponsword','accgoldring', 'acctravelbag'], selling = true},
 aydashop = {code = 'aydashop', name = "Ayda's Assortments", items = ['regressionpot', 'beautypot', 'hairdye', 'basicsolutioning','bestialessenceing','taintedessenceing','fluidsubstanceing'], selling = false},
 amberguardmarket = {code = 'amberguardmarket', name = "Amberguard's Market", items = ['teleportamberguard','beautypot','bestialessenceing','magicessenceing','fluidsubstanceing','armorelvenchain','armorrobe'], selling = true},
 sebastian = {code = 'sebastian', name = "Sebastian", items = ['teleportumbra'], selling = false},
@@ -1684,6 +1648,7 @@ func shopclose():
 		#get_node("charactersprite").set_hidden(true)
 
 ####QUESTS
+var cali
 
 func caliqueststart(value = ''):
 	var buttons = []
@@ -1691,8 +1656,6 @@ func caliqueststart(value = ''):
 	var sprites
 	if typeof(value) != 4:
 		globals.state.sidequests.cali = value
-	#array.append(false)
-	#array.append(self)
 	if globals.state.sidequests.cali == 0:
 		text = "As you walk by rows of traders you hear some noise and bunch of people gathering around.\n\n[color=yellow]— Let me go, you brute, I didn't do anything! — you hear girl's voice. [/color]\n\nAs you get closer, you notice a small dirty-looking halfkin wolf girl trying to break free from big man holding her.\n\n[color=aqua]— She's a thief! Everyone saw this! Why do they even let your kind roam around? You are no different from wild animals trying to hunt human flocks! [/color]\n\n[color=yellow]— Damn you, fat bastard! [/color]\n\nWith that girl tries to bite on hand holding her, but fails as her holder reacts to that and makes her struggling useless.\n\n[color=aqua]— Call the guards already! I still have stall to look after![/color]"
 		buttons.append(["Intervene as a guild member",'caliqueststart', 1])
@@ -1704,7 +1667,7 @@ func caliqueststart(value = ''):
 			buttons.append(["Offer compensation for her", 'caliqueststart', 2])
 		buttons.append(["Offer to take her away for personal punishment", 'caliqueststart', 3])
 		buttons.append(["Step away and leave it to guards", 'caliqueststart', 100])
-		calimake()
+		cali = globals.characters.create('Cali')
 	elif globals.state.sidequests.cali == 2:
 		globals.resources.gold -= 50
 		text = ("— That is... very noble of you " + globals.fastif(globals.player.sex == 'male', 'Mylord', 'Milady')+ ", but I believe thief should be punished.\n\nOn that you tell him to let you handle the girl and after a moment butcher agrees to drop his charge. You lead the girl away and after some time end up in desolated place.")
@@ -1764,37 +1727,6 @@ func caliqueststart(value = ''):
 	else:
 		sprites = [['calineutral', 'pos1']]
 	main.dialogue(false, self, text, buttons, sprites)
-
-var cali
-
-func calimake():
-	var age = ''
-	if globals.rules.children == true:
-		age = 'child'
-	else:
-		age = 'teen'
-	var calitemp = globals.slavegen.newslave('Halfkin Wolf', age, 'female', 'commoner')
-	calitemp.name = 'Cali'
-	calitemp.surname = ''
-	calitemp.tits.size = 'flat'
-	calitemp.ass = 'small'
-	calitemp.beautybase = 55
-	calitemp.hairlength = 'shoulder'
-	calitemp.height = 'short'
-	calitemp.haircolor = 'gray'
-	calitemp.eyecolor = 'blue'
-	calitemp.eyeshape = 'slit'
-	calitemp.hairstyle = 'straight'
-	calitemp.skin = 'fair'
-	calitemp.imageportait = 'res://files/images/cali/caliportrait.png'
-	calitemp.pussy.virgin = true
-	calitemp.pussy.first = 'none'
-	calitemp.relatives.father = -1
-	calitemp.relatives.mother = -1
-	calitemp.obed += 65
-	calitemp.unique = "Cali"
-	calitemp.cleartraits()
-	cali = calitemp
 
 func sebastian():
 	if get_node("charactersprite").get_texture() != get_parent().spritedict['sebastian'] || get_node("charactersprite").is_hidden() == true :
@@ -1907,7 +1839,7 @@ func _on_sebastianconfirm_pressed():
 	globals.state.sebastianorder.duration = round(rand_range(3,5))
 	globals.resources.gold -= 100
 	var caste = ['slave','poor','commoner','rich','noble']
-	globals.state.sebastianslave = globals.slavegen.newslave(globals.state.sebastianorder.race, 'random', 'random', caste[rand_range(0,caste.size())])
+	globals.state.sebastianslave = globals.newslave(globals.state.sebastianorder.race, 'random', 'random', caste[rand_range(0,caste.size())])
 	maintext.set_bbcode("— "+race+", huh? Got ya! Come see me in "+ str(globals.state.sebastianorder.duration)+ " days and don't forget the coins! Those are not cheap after all. ")
 	get_node("sebastiannode").set_hidden(true)
 	var array = [{name = 'Leave', function = 'market'}]
@@ -1978,26 +1910,7 @@ func emily(state = 1):
 		text = questtext.EmilyTake
 		sprites = [['emilyhappy','pos1']]
 		main.dialogue(true, self, text, buttons, sprites)
-		var emily = globals.slavegen.newslave('Human', 'teen', 'female', 'poor')
-		emily.name = 'Emily'
-		emily.surname = 'Hale'
-		emily.tits.size = 'small'
-		emily.ass = 'small'
-		emily.beautybase = 33
-		emily.hairlength = 'neck'
-		emily.height = 'average'
-		emily.haircolor = 'brown'
-		emily.eyecolor = 'gray'
-		emily.hairstyle = 'straight'
-		emily.pussy.virgin = true
-		emily.pussy.first = 'none'
-		emily.unique = 'Emily'
-		emily.tags.append('nosex')
-		emily.relatives.father = -1
-		emily.relatives.mother = 2
-		emily.imageportait = "res://files/images/emily/emilyportrait.png"
-		emily.obed += 80
-		emily.skin = 'pale'
+		var emily = globals.characters.create('Emily')
 		emily.cleartraits()
 		globals.state.upcomingevents.append({code = 'tishaappearance',duration =7})
 		globals.slaves = emily

@@ -1314,6 +1314,8 @@ caret/caret_blink_speed = 0.65
 
 [node name="inspect" type="Tabs" parent="."]
 
+editor/display_folded = true
+visibility/visible = false
 anchor/right = 1
 anchor/bottom = 1
 focus/ignore_mouse = false
@@ -1510,7 +1512,6 @@ stretch_mode = 6
 
 [node name="customization" type="Tabs" parent="."]
 
-visibility/visible = false
 anchor/right = 1
 anchor/bottom = 1
 focus/ignore_mouse = false
@@ -2760,8 +2761,6 @@ max_lines_visible = -1
 
 [node name="tattoopanel" type="PopupPanel" parent="customization"]
 
-editor/display_folded = true
-visibility/visible = false
 anchor/left = 3
 anchor/top = 3
 anchor/right = 3
@@ -2899,25 +2898,6 @@ shortcut = null
 text = "Ass"
 flat = false
 
-[node name="tattoooptions" type="OptionButton" parent="customization/tattoopanel"]
-
-focus/ignore_mouse = false
-focus/stop_mouse = true
-size_flags/horizontal = 2
-size_flags/vertical = 2
-margin/left = 56.0
-margin/top = 159.0
-margin/right = 247.0
-margin/bottom = 198.0
-toggle_mode = false
-enabled_focus_mode = 2
-shortcut = null
-text = "None"
-flat = false
-align = 0
-selected = 0
-items = [ "None", null, false, -1, null, "Nature", null, false, -1, null, "Tribal", null, false, -1, null, "Derogatory", null, false, -1, null, "Animalistic", null, false, -1, null, "Magic", null, false, -1, null ]
-
 [node name="RichTextLabel" type="RichTextLabel" parent="customization/tattoopanel"]
 
 focus/ignore_mouse = false
@@ -2995,6 +2975,25 @@ shortcut = null
 text = "Transperent Ink"
 flat = false
 align = 0
+
+[node name="tattoooptions" type="OptionButton" parent="customization/tattoopanel"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 56.0
+margin/top = 159.0
+margin/right = 247.0
+margin/bottom = 198.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "None"
+flat = false
+align = 0
+selected = 0
+items = [ "None", null, false, -1, null, "Nature", null, false, -1, null, "Tribal", null, false, -1, null, "Derogatory", null, false, -1, null, "Animalistic", null, false, -1, null, "Magic", null, false, -1, null ]
 
 [node name="FileDialog" type="FileDialog" parent="customization"]
 
@@ -3947,11 +3946,11 @@ items = [ "Pussy", null, false, -1, null, "Ass", null, false, -1, null ]
 
 [connection signal="pressed" from="customization/piercingpanel/closebutton" to="." method="_on_closebutton_pressed"]
 
-[connection signal="item_selected" from="customization/tattoopanel/tattoooptions" to="." method="_on_tattoooptions_item_selected"]
-
 [connection signal="pressed" from="customization/tattoopanel/applybutton" to="." method="_on_applybutton_pressed"]
 
 [connection signal="pressed" from="customization/tattoopanel/tattooclose" to="." method="_on_tattooclose_pressed"]
+
+[connection signal="item_selected" from="customization/tattoopanel/tattoooptions" to="." method="_on_tattoooptions_item_selected"]
 
 [connection signal="visibility_changed" from="sexual" to="sexual" method="_on_sexual_visibility_changed"]
 

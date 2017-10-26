@@ -79,9 +79,9 @@ func _ready():
 	set_process_input(true)
 	rebuildrepeatablequests()
 	globals.resources.panel = get_node("ResourcePanel")
-	if globals.player.name == null:
+	if globals.player.name == '':
 		#_on_leavenode_mouse_enter()
-		globals.player = globals.slavegen.newslave('Human', 'teen', 'male')
+		globals.player = globals.newslave('Human', 'teen', 'male')
 		globals.player.relatives.father = 0
 		globals.player.relatives.mother = 0
 		globals.player.ability.append('escape')
@@ -136,7 +136,7 @@ func _on_new_slave_button_pressed():
 	for i in globals.state.tutorial:
 		globals.state.tutorial[i] = true
 	music_set('mansion')
-	var slave = globals.slavegen.newslave(testslaverace[rand_range(0,testslaverace.size())], testslaveage, testslavegender, testslaveorigin[rand_range(0,testslaveorigin.size())])
+	var slave = globals.newslave(testslaverace[rand_range(0,testslaverace.size())], testslaveage, testslavegender, testslaveorigin[rand_range(0,testslaveorigin.size())])
 	slave.obed += 200
 	slave.loyal += 100
 	slave.xp += 0
@@ -180,7 +180,7 @@ func _on_new_slave_button_pressed():
 		var tmpitem = get_node("itemnode").createunstackable(i)
 		globals.state.unstackables[str(tmpitem.id)] = tmpitem
 	globals.state.sidequests.brothel = 1
-	globals.state.sidequests.chloe = 8
+	globals.state.sidequests.cali = 0
 	#globals.state.decisions.append('')
 	globals.state.rank = 3
 	globals.state.mainquest = 0
@@ -189,8 +189,9 @@ func _on_new_slave_button_pressed():
 	globals.state.mansionupgrades.mansionalchemy = 1
 	globals.state.mansionupgrades.mansionparlor = 1
 	globals.state.backpack.stackables.bandage = 1
-	globals.state.capturedgroup.append(globals.slavegen.newslave(testslaverace[rand_range(0,testslaverace.size())], testslaveage, testslavegender, testslaveorigin[rand_range(0,testslaveorigin.size())]))
-
+	for i in globals.characters.characters:
+		slave = globals.characters.create(i)
+		globals.slaves = slave
 
 func mansion():
 	_on_mansion_pressed()
@@ -1006,10 +1007,16 @@ func _process(delta):
 		if i.get_opacity() != 0:
 			i.set_opacity(i.get_opacity() - delta)
 
+var thread = Thread.new()
+
 func startnewday():
 	rebuild_slave_list()
 	get_node("FinishDayPanel").set_hidden(false)
-	globals.save_game('autosave')
+	if thread.is_active():
+		thread.wait_to_finish()
+	thread.start(globals,"save_game",'user://saves/autosave')
+	
+	#globals.save_game('autosave')
 	if globals.rules.enddayalise == 0:
 		alisebuild(aliseresults)
 	elif globals.rules.enddayalise == 1 && dailyevent == true:
@@ -1259,6 +1266,8 @@ func _on_loadbutton_pressed():
 		popup_set('No file with such name') 
 
 func loadfile():
+	if thread.is_active():
+		thread.wait_to_finish()
 	globals.load_game(filename)
 	_on_SavePanel_visibility_changed()
 	get_node("menucontrol").set_hidden(true)
@@ -1301,6 +1310,8 @@ func hide_everything():
 	get_node("MainScreen/mansion/selfinspect").set_hidden(true)
 	get_node("MainScreen/mansion/portalspanel").set_hidden(true)
 	get_node("MainScreen/mansion/upgradespanel").set_hidden(true)
+	get_node("paperdoll").set_hidden(true)
+	globals.hidetooltip()
 	#rebuild_slave_list()
 
 var backgrounddict = globals.backgrounds
@@ -1901,6 +1912,7 @@ func _on_spellbook_pressed():
 			newbutton.set_text(i.name)
 			newbutton.set_hidden(false)
 			newbutton.connect('pressed',self,'spellbookselected',[i])
+	#get_node("screenchange/AnimationPlayer").play("fadetoblack")
 
 func spellbookselected(spell):
 	var text = ''
@@ -2169,7 +2181,7 @@ func _on_selfabilityupgrade_pressed():
 func selfabilityselect(ability):
 	var text = ''
 	var slave = globals.player
-	var dict = {'stats.str_cur': 'Strength', 'stats.agi_cur' : 'Agility', 'stats.maf_cur': 'Magic', 'level': 'Level'}
+	var dict = {'sstr': 'Strength', 'sagi' : 'Agility', 'smaf': 'Magic', 'level': 'Level'}
 	var confirmbutton = get_node("MainScreen/mansion/selfinspect/selfabilitypanel/abilitypurchase")
 	
 	for i in get_node("MainScreen/mansion/selfinspect/selfabilitypanel/ScrollContainer/VBoxContainer").get_children():
@@ -2631,7 +2643,7 @@ func _on_startcombat_pressed():
 			i[j] = 100
 	get_node("outside").gooutside()
 	globals.state.backpack.stackables.rope = 3
-	get_node("explorationnode").zoneenter("wimbornoutskirts")
+	get_node("explorationnode").zoneenter("mountains")
 	#get_node("combat").start_battle()
 
 func checkplayergroup():
@@ -2915,7 +2927,7 @@ func sortitems():
 		button.add_to_group('inventoryitems')
 		itemgrid.add_child(button)
 	for i in globals.state.unstackables.values():
-		if i.owner != null && globals.state.findslave(i.owner) == null:
+		if i.owner != null && globals.state.findslave(i.owner) == null && i.owner != globals.player.id:
 			i.owner = null
 		if i.owner == null && (categoryselected == 'everything' || categoryselected == 'gear' ):
 			items = true

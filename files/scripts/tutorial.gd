@@ -133,7 +133,12 @@ outside = [
 {sprite = 'happy1', text = "Starving for some fresh air?  Do you want to explore?  Just wanting to stretch your legs?  Regardless of your reasons, it’s always a good practice to get familiar with your surroundings in any situation."},
 {text = "While you're outside you can visit shops and the guild, find new people, discover and complete quests, or locate new servants.  The choice is purely up to you."},
 {text = "You can return to your mansion any time you desire, just as long as you're not caught up in some event. "},
-{text = "Go out and explore, see what you may find. "},
+{text = "However, keep in mind, once you set your foot out of town, you enter the wilderness where not everyone you encounter is pleasant and wild animals lurk around every corner. "},
+{text = "While encounters may often lead to trouble, they also reward you with items or potential slaves as well as other possible benefits. "},
+{text = "It's quite important to ensure your expeditions are well stocked with additional supplies for healing, capturing and teleportation. "},
+{text = "Captives cannot be brought back to your mansion if you do not possess the means to restrain them first; rope in this case is important. "},
+{text = "Lastly, after exploring a location, you will be able to progress into a  [Deeper Area] of this location. "},
+{text = "Those have harder enemies and better rewards, including the possibility of higher grade characters. They might also feature new encounters or races you may not normally meet in that location. "},
 {funct = 'closeorcont'},
 ],
 combatintro = [

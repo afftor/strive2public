@@ -118,6 +118,9 @@ func showevent():
 				slave.imageportait = null
 				get_node("textpanel/Panel").set_hidden(true)
 				get_node("textpanel/portrait").set_texture(null)
+	else:
+		get_node("textpanel/Panel").set_hidden(true)
+		get_node("textpanel/portrait").set_texture(null)
 
 func finishevent():
 	set_hidden(true)

@@ -59,7 +59,7 @@ func _on_trainingabils_pressed():
 func chooseability(ability):
 	var text = ''
 	var confirmbutton = get_node("trainingabilspanel/abilityconfirm")
-	var dict = {'stats.str_cur': 'Strength', 'stats.agi_cur' : 'Agility', 'stats.maf_cur': 'Magic', 'level': 'Level'}
+	var dict = {'sstr': 'Strength', 'sagi' : 'Agility', 'smaf': 'Magic', 'level': 'Level'}
 	for i in get_node("trainingabilspanel/ScrollContainer/VBoxContainer").get_children():
 		if i.get_text() != ability.name:
 			i.set_pressed(false)
@@ -518,7 +518,7 @@ func action(actionname):
 			slave.praise += 1
 			slave.obed += -rand_range(10,20)
 			slave.loyal += -rand_range(4,8)
-	if actionname in ['tickling','spanking','whiping','hotwax','woodenhorse']:
+	if actionname in ['tickling','spanking','whipping','hotwax','woodenhorse']:
 		if slave.lust > 70 || (slave.lust > 30 && (slave.traits.has('Masochist') == true||slave.dom <= 20)):
 			text = text + "\nDuring the procedure $name twitches and climaxes, unable to hold back $his excitement."
 			slave.lust = -rand_range(8,15)

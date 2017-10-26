@@ -219,7 +219,7 @@ tags = ['touch'],
 basemana = 3,
 alwaysallowed = false,
 slavereqs = "globals.currentslave.arms in ['normal','fur_covered']",
-playerreqs = 'globals.partner.penis.number >= 1',
+playerreqs = 'globals.partner.penis != "none"',
 receive = false,
 lusteffect = 15,
 },
@@ -248,7 +248,7 @@ canbeforced = true,
 tags = ['touch','dom','cancum'],
 basemana = 2,
 alwaysallowed = false,
-slavereqs = 'globals.currentslave.pussy.has == true',
+slavereqs = 'globals.currentslave.vagina != "none"',
 playerreqs = 'true',
 receive = false,
 lusteffect = 35,
@@ -264,7 +264,7 @@ tags = ['oral','sub'],
 basemana = 3,
 alwaysallowed = false,
 slavereqs = 'true',
-playerreqs = 'globals.partner.penis.number >= 1',
+playerreqs = 'globals.partner.penis != "none"',
 receive = false,
 lusteffect = 20,
 },
@@ -278,8 +278,8 @@ canbeforced = false,
 tags = ['oral','touch','sub'],
 basemana = 4,
 alwaysallowed = false,
-slavereqs = 'globals.sizearray.find(globals.currentslave.tits.size) >= 2',
-playerreqs = 'globals.partner.penis.number >= 1',
+slavereqs = 'globals.sizearray.find(globals.currentslave.titssize) >= 2',
+playerreqs = 'globals.partner.penis != "none"',
 receive = false,
 lusteffect = 30,
 },
@@ -293,7 +293,7 @@ canbeforced = false,
 tags = ['touch','penis','cancum','dom'],
 basemana = 2,
 alwaysallowed = false,
-slavereqs = 'globals.currentslave.penis.number >= 1',
+slavereqs = 'globals.currentslave.penis != "none"',
 playerreqs = 'globals.partner.arms in ["normal","fur_covered"]',
 receive = true,
 lusteffect = 30,
@@ -324,7 +324,7 @@ tags = ['oral','sub'],
 basemana = 3,
 alwaysallowed = false,
 slavereqs = 'true',
-playerreqs = 'globals.partner.pussy.has == true',
+playerreqs = 'globals.partner.vagina != "none"',
 receive = false,
 lusteffect = 15,
 },
@@ -338,7 +338,7 @@ canbeforced = true,
 tags = ['touch','dom','penis','cancum'],
 basemana = 3,
 alwaysallowed = false,
-slavereqs = 'globals.currentslave.penis.number >= 1',
+slavereqs = 'globals.currentslave.penis != "none"',
 playerreqs = 'true',
 receive = true,
 lusteffect = 35,
@@ -353,8 +353,8 @@ canbeforced = false,
 tags = ['touch','dom','penis','cancum'],
 basemana = 4,
 alwaysallowed = false,
-slavereqs = 'globals.currentslave.penis.number >= 1',
-playerreqs = 'globals.sizearray.find(globals.partner.tits.size) >= 1',
+slavereqs = 'globals.currentslave.penis != "none"',
+playerreqs = 'globals.sizearray.find(globals.partner.titssize) >= 1',
 receive = true,
 lusteffect = 40,
 },
@@ -369,7 +369,7 @@ tags = ['touch','sub','fetish','degrading'],
 basemana = 4,
 alwaysallowed = false,
 slavereqs = 'globals.hairlengtharray.find(globals.currentslave.hairlength) >= 1',
-playerreqs = 'globals.partner.penis.number >= 1',
+playerreqs = 'globals.partner.penis != "none"',
 receive = false,
 lusteffect = 15,
 },
@@ -384,7 +384,7 @@ tags = ['touch','dom','fetish'],
 basemana = 4,
 alwaysallowed = false,
 slavereqs = 'true',
-playerreqs = 'globals.partner.penis.number >= 1',
+playerreqs = 'globals.partner.penis != "none"',
 receive = false,
 lusteffect = 15,
 },
@@ -414,7 +414,7 @@ tags = ['touch','sub','fetish','degrading'],
 basemana = 4,
 alwaysallowed = false,
 slavereqs = "globals.currentslave.ears != 'human'",
-playerreqs = 'globals.partner.penis.number >= 1',
+playerreqs = 'globals.partner.penis != "none"',
 receive = false,
 lusteffect = 20,
 },
@@ -429,7 +429,7 @@ tags = ['touch','fetish','degrading'],
 basemana = 5,
 alwaysallowed = false,
 slavereqs = 'globals.longtails.find(globals.currentslave.tail) >= 0',
-playerreqs = 'globals.partner.penis.number >= 1',
+playerreqs = 'globals.partner.penis != "none"',
 receive = false,
 lusteffect = 20,
 },
@@ -443,7 +443,7 @@ canbeforced = true,
 tags = ['touch','fetish','sub','penis','degrading','cancum'],
 basemana = 4,
 alwaysallowed = false,
-slavereqs = 'globals.currentslave.penis.number >= 1',
+slavereqs = 'globals.currentslave.penis != "none"',
 playerreqs = 'true',
 receive = false,
 lusteffect = 30,
@@ -473,7 +473,7 @@ canbeforced = true,
 tags = ['penetration','cancum','pussy'],
 basemana = 4,
 alwaysallowed = false,
-slavereqs = 'globals.currentslave.pussy.has == true',
+slavereqs = 'globals.currentslave.vagina != "none"',
 playerreqs = 'true',
 receive = false,
 lusteffect = 40,
@@ -503,8 +503,8 @@ canbeforced = true,
 tags = ['penis','cancum','selfpenetration'],
 basemana = 5,
 alwaysallowed = false,
-slavereqs = 'globals.currentslave.penis.number >= 1 || globals.currentslave.sexuals.unlocks.has("toys") == true',
-playerreqs = 'globals.partner.pussy.has == true',
+slavereqs = 'globals.currentslave.penis != "none" || globals.currentslave.sexuals.unlocks.has("toys") == true',
+playerreqs = 'globals.partner.vagina != "none"',
 receive = true,
 lusteffect = 35,
 },
@@ -518,7 +518,7 @@ canbeforced = false,
 tags = ['penis','cancum','dom'],
 basemana = 4,
 alwaysallowed = false,
-slavereqs = 'globals.currentslave.penis.number >= 1 || globals.currentslave.sexuals.unlocks.has("toys") == true',
+slavereqs = 'globals.currentslave.penis != "none" || globals.currentslave.sexuals.unlocks.has("toys") == true',
 playerreqs = 'true',
 receive = true,
 lusteffect = 35,
@@ -534,7 +534,7 @@ tags = ['fetish','degrading','cancum','sub'],
 basemana = 5,
 alwaysallowed = false,
 slavereqs = "globals.currentslave.mods.has('hollownipples') == true",
-playerreqs = 'globals.partner.penis.number >= 1',
+playerreqs = 'globals.partner.penis != "none" 1',
 receive = false,
 lusteffect = 35,
 },
@@ -653,7 +653,7 @@ canbeforced = false,
 tags = ['fetish'],
 basemana = 3,
 alwaysallowed = false,
-slavereqs = 'globals.currentslave.tits.lactation == true',
+slavereqs = 'globals.currentslave.lactation == true',
 playerreqs = 'true',
 receive = false,
 lusteffect = 20,
@@ -668,8 +668,8 @@ canbeforced = false,
 tags = ['fetish','cancum'],
 basemana = 3,
 alwaysallowed = false,
-slavereqs = 'globals.currentslave.penis.number >= 1',
-playerreqs = 'globals.partner.penis.number >= 1',
+slavereqs = 'globals.currentslave.penis != "none"',
+playerreqs = 'globals.partner.penis != "none"',
 receive = false,
 lusteffect = 35,
 },
@@ -683,8 +683,8 @@ canbeforced = true,
 tags = ['fetish','cancum'],
 basemana = 3,
 alwaysallowed = false,
-slavereqs = 'globals.currentslave.pussy.has == true',
-playerreqs = 'globals.partner.pussy.has == true',
+slavereqs = 'globals.currentslave.vagina != "none"',
+playerreqs = 'globals.partner.vagina != "none"',
 receive = false,
 lusteffect = 35,
 },
@@ -698,8 +698,8 @@ func pussysex(slave):
 		text += "$He agrees readily and without fuss, stripping and giving you full access to $his body. "
 	else:
 		text += " $He hesitates for a moment, but eventually agrees, stripping to give you full access to $his body. "
-	text += "You don't keep $him waiting for very long. Leaning down, you press your mouth against $his " + globals.fastif(slave.bodyshape == 'bestial', "muzzle", "own") + " eagerly tasting inside, even as $he starts to respond.  Your hands stroke over $his body, things growing more heated as you line up the tip of " +  globals.player.dictionaryplayer("$penis") + " sliding up and down $his lower lips. $He's already more than soaked, and you have no trouble at all parting $his folds and pushing into $his body. $He " + globals.fastif(slave.pussy.virgin == true, "winces rather hard, the resistance within $him breaking away a moment later as $he gasps, then", "") + globals.fastif(slave.sexuals.actions.pussy >= 4, " gives a lusty moan and", "") + " squirms under you as you start a steady pace of thrusts into $his body, holding $him to you as $his legs wrap around your back almost instinctively" + globals.fastif(slave.tail != "none", " and $his tail wraps around your leg", "" )+ ". $His insides are hot and wet against your " +  globals.player.dictionaryplayer("$penis") + ", feeling amazing as you slide in and out of $his body. " + globals.fastif(slave.pussy.virgin == true, "A small amount of pink tinting to the fluids around your connection prove it.  You've taken $his virginity. ", "")
-	text += "\n\nIt doesn't take long before you feel yourself nearing the end, and pick up the pace pounding into $his body, possessively kissing $him as you hold $him down. Taken by $his own instincts, $name moans into the kiss as $his whole body rocks under you. " +  globals.fastif(globals.player.penis.number >= 1, "$He clenches down a moment later, shivering as you feel $his walls start to squeeze and contract around you, almost begging you for your seed. " , "" ) + globals.fastif(slave.penis.number >= 1, "$His own dick twitches as well, messily splattering up $his stomach.", "") + globals.fastif(globals.player.penis.number >= 1, " Soon you slam in as deep as you can go and flooding $his core with your cum. ", "")
+	text += "You don't keep $him waiting for very long. Leaning down, you press your mouth against $his " + globals.fastif(slave.bodyshape == 'bestial', "muzzle", "own") + " eagerly tasting inside, even as $he starts to respond.  Your hands stroke over $his body, things growing more heated as you line up the tip of " +  globals.player.dictionaryplayer("$penis") + " sliding up and down $his lower lips. $He's already more than soaked, and you have no trouble at all parting $his folds and pushing into $his body. $He " + globals.fastif(slave.vagvirgin == true, "winces rather hard, the resistance within $him breaking away a moment later as $he gasps, then", "") + globals.fastif(slave.sexuals.actions.pussy >= 4, " gives a lusty moan and", "") + " squirms under you as you start a steady pace of thrusts into $his body, holding $him to you as $his legs wrap around your back almost instinctively" + globals.fastif(slave.tail != "none", " and $his tail wraps around your leg", "" )+ ". $His insides are hot and wet against your " +  globals.player.dictionaryplayer("$penis") + ", feeling amazing as you slide in and out of $his body. " + globals.fastif(slave.vagvirgin == true, "A small amount of pink tinting to the fluids around your connection prove it.  You've taken $his virginity. ", "")
+	text += "\n\nIt doesn't take long before you feel yourself nearing the end, and pick up the pace pounding into $his body, possessively kissing $him as you hold $him down. Taken by $his own instincts, $name moans into the kiss as $his whole body rocks under you. " +  globals.fastif(globals.player.penis != "none", "$He clenches down a moment later, shivering as you feel $his walls start to squeeze and contract around you, almost begging you for your seed. " , "" ) + globals.fastif(slave.penis != "none", "$His own dick twitches as well, messily splattering up $his stomach.", "") + globals.fastif(globals.player.penis != "none", " Soon you slam in as deep as you can go and flooding $his core with your cum. ", "")
 	return text
 
 func pussyrape(slave):
@@ -716,9 +716,9 @@ func pussyrape(slave):
 			text += "Forcing $his legs apart you open $his pussy to you. "
 	else:
 		text += "Grabbing $him by $his " + slave.legs + "legs you reveal $his pussy. "
-	text += "Pressing your " + globals.player.dictionaryplayer("$penis") + " against $his groin $he begs you not to do it. With a single thrust you slam your " +  globals.player.dictionaryplayer("$penis") + " all the way into $his slit. $He " + globals.fastif(slave.pussy.virgin == true, "screams in pain as your " + globals.player.dictionaryplayer("$penis") + " tears through $his virginity.", "yells out in protest at your sudden assault.") + "\n\n Wraping your arms about $him you hold $him in position as you thrust your " +  globals.player.dictionaryplayer("$penis") + " in and out of $his pussy with hard violent strokes. $He squirms trying to break free and get away but you hold on tightly. Tears start falling down $his cheeks and $he begs you to stop. $His desperation brings you closer to climax."
+	text += "Pressing your " + globals.player.dictionaryplayer("$penis") + " against $his groin $he begs you not to do it. With a single thrust you slam your " +  globals.player.dictionaryplayer("$penis") + " all the way into $his slit. $He " + globals.fastif(slave.vagvirgin == true, "screams in pain as your " + globals.player.dictionaryplayer("$penis") + " tears through $his virginity.", "yells out in protest at your sudden assault.") + "\n\n Wraping your arms about $him you hold $him in position as you thrust your " +  globals.player.dictionaryplayer("$penis") + " in and out of $his pussy with hard violent strokes. $He squirms trying to break free and get away but you hold on tightly. Tears start falling down $his cheeks and $he begs you to stop. $His desperation brings you closer to climax."
 	return text
-	
+
 func analsex(slave):
 	var text = "With a simple gesture, you order $name to strip, moving around behind $him as $he does. " 
 	if slave.sexuals.actions.ass >= 5:
@@ -739,11 +739,11 @@ func analsex(slave):
 	elif slave.tail != 'none':
 		text += "using your hand to keep $his tail shoved up onto $his back and "
 	text += "pounding hard into $his body. " 
-	if slave.sexuals.actions.size() >= 8 && slave.pussy.has == true: 
+	if slave.sexuals.actions.size() >= 8 && slave.vagina != "none": 
 		text += "It doesn't take $him long to start $his lustful moaning, $his hand sliding down to finger $himself as you plow $his rear. "
 	else:
 		text += "$He holds obediently steady, biting $his lower lip as you plow $him over and over again. "
-	text += "\n\nPicking up the pace, it doesn't take long before you feel like coming. " + globals.fastif(globals.player.penis.number >= 1, "Bottoming out in one hard push, you empty your seed into $his rectum, flooding $his bowels with hot liquid as shot after shot is released into $him. ", "") + "Feeling the hot cum rushing into $his pushes $him over the edge too, and $he shivers, as $his own juices slide down $his inner thighs" 
+	text += "\n\nPicking up the pace, it doesn't take long before you feel like coming. " + globals.fastif(globals.player.penis != "none", "Bottoming out in one hard push, you empty your seed into $his rectum, flooding $his bowels with hot liquid as shot after shot is released into $him. ", "") + "Feeling the hot cum rushing into $his pushes $him over the edge too, and $he shivers, as $his own juices slide down $his inner thighs" 
 	if slave.skincov == 'full_body_fur':
 		text += "saturating the fur with $his fluids"
 	elif slave.skincov == 'scales':
@@ -768,11 +768,11 @@ func analsexrapelike(slave):
 	text += "Please $master don't do this!\n\n"
 	text += "$name makes a feeble attemp to slip your grasp, as you work back and forth for a few thrusts, getting a healthy smear over $his rear hole before pressing the tip of your " + globals.player.dictionaryplayer("$penis") + " up against it and roughtly pushing into $his tight hole.  The suddenness causes $him to wince regardless as you waste no time bottoming out your length in $his ass.  You start a healthy rhythm, pounding hard into $his body.  "
 	
-	if slave.sexuals.actions.size() >= 8 && slave.pussy.has == true: 
+	if slave.sexuals.actions.size() >= 8 && slave.vagina != "none": 
 		text += "It doesn't take $him long to start $his lustful moaning, $his hand sliding down to finger $himself as you plow $his rear. "
 	else:
 		text += "$He squirms against you, biting $his lower lip as you plow $him over and over again. "
-	text += "\n\nPicking up the pace, it doesn't take long before you feel like coming. " + globals.fastif(globals.player.penis.number >= 1, "Bottoming out in one hard push, you empty your seed into $his rectum, flooding $his bowels with hot liquid as shot after shot is released into $him. ", "") + "Feeling the hot cum rushing into $his pushes $him over the edge too, and $he shivers, as $his own juices slide down $his inner thighs" 
+	text += "\n\nPicking up the pace, it doesn't take long before you feel like coming. " + globals.fastif(globals.player.penis != "none", "Bottoming out in one hard push, you empty your seed into $his rectum, flooding $his bowels with hot liquid as shot after shot is released into $him. ", "") + "Feeling the hot cum rushing into $his pushes $him over the edge too, and $he shivers, as $his own juices slide down $his inner thighs" 
 	if slave.skincov == 'full_body_fur':
 		text += "saturating the fur with $his fluids"
 	elif slave.skincov == 'scales':
@@ -828,10 +828,10 @@ func getscene(sexaction, slave, consensual, hole):
 			if slave.sex == i.notslavesex:
 				check = false
 		if i.has('titsize'):
-			if globals.sizearray.find(slave.tits.size) > globals.sizearray.find(i.titsize):
+			if globals.sizearray.find(slave.titssize) > globals.sizearray.find(i.titsize):
 				check = false
 		if i.has('nottitsize'):
-			if globals.sizearray.find(slave.tits.size) <= globals.sizearray.find(i.nottitsize):
+			if globals.sizearray.find(slave.titssize) <= globals.sizearray.find(i.nottitsize):
 				check = false
 		if i.has('loyaltyabove'):
 			if slave.loyal < i.loyaltyabove:
@@ -840,7 +840,7 @@ func getscene(sexaction, slave, consensual, hole):
 			if slave.loyal >= i.loyaltybelow:
 				check = false
 		if i.has('pchaspenis'):
-			if globals.player.penis.number == 0:
+			if globals.player.penis == "none":
 				check = false
 		if i.has('hole'):
 			if i.hole != hole:

@@ -17,6 +17,7 @@ augmentscales = {code = 'augmentscales', armor_cur = 2, armor_base = 2},
 augmentstr = {code = 'augmentstr', str_max = 2},
 augmentagi = {code = 'augmentagi', agi_max = 2},
 unnatural = {code = 'unnatural'},
+bodyguardeffect = {code = 'bodyguardeffect', armor_cur = 4, armor_base = 4, health_bonus = 0.2},
 bandaged = {code = 'bandaged', duration = 1},
 #tattoo effects
 nature1 = {code = 'nature1', beautytemp = 5},

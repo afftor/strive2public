@@ -82,7 +82,7 @@ costenergy = 3,
 costmana = 0,
 costother = '',
 attributes = ['damage', 'debuff'],
-reqs = {'level' : 1, 'stats.agi_cur' : 1}
+reqs = {'level' : 1, 'sagi' : 1}
 },
 protect = {
 name = 'Protect',
@@ -113,7 +113,7 @@ iconpressed = load("res://files/buttons/abils/Heal2.png"),
 learnable = true,
 requiredspell = 'heal',
 description = 'Restores some health to the target. Requires mana to use. ',
-usetext = '$name supports $targetname with healing spell. ',
+usetext = '$name supports $targetname with a [color=aqua]Healing Spell[/color]. ',
 target = 'ally',
 effect = null,
 can_miss = false,
@@ -125,7 +125,7 @@ costenergy = 0,
 costmana = 10,
 costother = '',
 attributes = [],
-reqs = {'level' : 1, 'stats.maf_cur' : 1}
+reqs = {'level' : 1, 'smaf' : 1}
 },
 sedation = {
 name = 'Sedation',
@@ -147,7 +147,7 @@ costenergy = 0,
 costmana = 10,
 costother = '',
 attributes = [],
-reqs = {'level' : 2, 'stats.maf_cur' : 1}
+reqs = {'level' : 2, 'smaf' : 1}
 },
 barrier = {
 name = 'Barrier',
@@ -169,7 +169,7 @@ costenergy = 0,
 costmana = 12,
 costother = '',
 attributes = ['buff'],
-reqs = {'level' : 2, 'stats.maf_cur' : 2}
+reqs = {'level' : 2, 'smaf' : 2}
 },
 shackle = {
 name = 'Shackle',
@@ -189,7 +189,7 @@ costenergy = 0,
 costmana = 10,
 costother = '',
 attributes = ['debuff'],
-reqs = {'level' : 3, 'stats.maf_cur' : 2}
+reqs = {'level' : 3, 'smaf' : 2}
 },
 mindblast = {
 name = 'Mind Blast',
@@ -208,7 +208,7 @@ costenergy = 3,
 costmana = 3,
 costother = '',
 attributes = ['damage'],
-reqs = {'level' : 2, 'stats.maf_cur' : 1}
+reqs = {'level' : 2, 'smaf' : 1}
 },
 acidspit = {
 name = 'Acid Spit',
@@ -227,7 +227,7 @@ costenergy = 0,
 costmana = 4,
 costother = '',
 attributes = ['damage','debuff'],
-reqs = {'level' : 4, 'stats.maf_cur' : 4}
+reqs = {'level' : 4, 'smaf' : 4}
 },
 heavystike = {
 name = 'Heavy Strike',
@@ -248,7 +248,7 @@ costenergy = 0,
 costmana = 0,
 costother = '',
 attributes = ['damage'],
-reqs = {'level' : 3, 'stats.str_cur' : 2}
+reqs = {'level' : 3, 'sstr' : 2}
 },
 aimedstrike = {
 name = 'Aimed Strike',
@@ -269,7 +269,7 @@ costenergy = 0,
 costmana = 0,
 costother = '',
 attributes = ['damage','physpen'],
-reqs = {'level' : 2, 'stats.agi_cur' : 2}
+reqs = {'level' : 2, 'sagi' : 2}
 },
 leechingstrike = {
 name = 'Leeching Strike',
@@ -290,7 +290,7 @@ costenergy = 0,
 costmana = 0,
 costother = '',
 attributes = ['damage', 'lifesteal'],
-reqs = {'level' : 4, 'stats.agi_cur' : 3, 'stats.maf_cur' : 2}
+reqs = {'level' : 4, 'sagi' : 3, 'smaf' : 2}
 },
 mindread = {
 name = 'Mind reading',
@@ -332,6 +332,49 @@ costmana = 0,
 costother = '',
 attributes = ['damage','allparty'],
 reqs = {level = 0}
+},
+stunattack = {
+name = 'Stun',
+code = 'stunattack',
+iconnorm = null,
+iconpressed = null,
+learnable = false,
+description = 'Attempts to attack chosen enemy.',
+usetext = '$name launches [color=aqua]Stun attack[/color] at $targetname. ',
+target = 'enemy',
+effect = 'stun',
+can_miss = true,
+power = 1,
+cooldown = 6,
+type = 'physical',
+price = 0,
+costenergy = 0,
+costmana = 0,
+costother = '',
+attributes = ['damage'],
+reqs = {level = 0}
+},
+webattack = {
+name = 'Shoot Web',
+code = 'webattack',
+iconnorm = null,
+iconpressed = null,
+learnable = false,
+description = 'Attempts to attack chosen enemy.',
+usetext = '$name [color=aqua]shoots web[/color] at $targetname. ',
+target = 'enemy',
+effect = 'enemyslow',
+can_miss = true,
+power = 1,
+accuracy = 0.8,
+cooldown = 4,
+type = 'physical',
+price = 0,
+costenergy = 0,
+costmana = 0,
+costother = '',
+attributes = ['damage'],
+reqs = {level = 0},
 },
 }
 
@@ -383,7 +426,22 @@ code = 'acidspiteffect',
 type = 'debuff',
 stats = [['armor', '-(3+,caster.magic,)']],
 },
+enemyslow = {
+duration = 3,
+name = "Slow",
+code = 'enemyslow',
+type = 'debuff',
+stats = [['speed', '-(5, )']],
+},
+stun = {
+duration = 1,
+name = "Stunned",
+code = 'stun',
+type = 'debuff',
+stats = [],
+},
 }
+
 func restorehealth(caster, target):
 	var text = ''
 	var value = 25 + (caster.magic*5)

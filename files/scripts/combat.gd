@@ -61,11 +61,10 @@ class fighter:
 				temp2 += str(i)
 			buff.stats[i[0]] = globals.evaluate(temp2)
 		var temptarget
-		if action.target == 'enemy':
+		if (action.target == 'enemy' && self.party == 'ally') || (self.party == 'enemy' && action.target in ['ally','self']):
 			temptarget = globals.get_tree().get_current_scene().get_node('combat').enemygroup[target]
 		else:
 			temptarget = globals.get_tree().get_current_scene().get_node('combat').playergroup[target]
-		
 		temptarget.getbuff(buff)
 	
 	
@@ -406,8 +405,8 @@ func clearpanels():
 
 func choosecharacter(combatant):
 	var newbutton
-	if combatant.state in ['chasing']:
-		get_node("warning").set_text(combatant.name + " can't act this turn.")
+	if combatant.state in ['chasing','stunned']:
+		get_node("warning").set_text(combatant.name + " can't act this turn: " + combatant.state.capitalize() + '. ')
 		get_node("warning").set_opacity(1)
 		get_node("grouppanel/groupline").get_child(playergroup.find(combatant)+1).set_pressed(false)
 		return
@@ -528,8 +527,8 @@ func actionexecute(actor, target, skill):
 	var text = ''
 	var damage
 	var group
-	var hit
-	var targetparty
+	var hit = 'hit'
+	var targetparty 
 	var targethealthinit = target.health
 	if skill.cooldown > 0:
 		actor.cooldowns[skill.code] = skill.cooldown
@@ -624,7 +623,7 @@ func actionexecute(actor, target, skill):
 			actor.energy = max(actor.energy - skill.costenergy,0)
 		elif skill.code == 'escape' && globals.get_tree().get_current_scene().get_node("explorationnode").launchonwin != null:
 			globals.get_tree().get_current_scene().popup("You can't escape from this fight")
-	if skill.effect != null:
+	if skill.effect != null && (skill.type == 'spell' || hit in ['precise','hit'] || skill.target in ['ally','self']):
 		actor.sendbuff()
 	if skill.code == 'heal':
 		globals.abilities.restorehealth(actor,target)
@@ -681,6 +680,8 @@ func hitchance(attacker, target):
 	var hit = ''
 	var attackspeed = attacker.speed
 	var targetspeed = target.speed
+	if attacker.action.has('accuracy'):
+		attackspeed = attackspeed*attacker.action.accuracy
 	if playergroup.find(target) >= 0:
 		if target.person.race.findn("cat") >= 0:
 			targetspeed += 4
@@ -757,14 +758,17 @@ func _on_confirm_pressed():
 						combatant.target = enemygroup.find(i)
 						continue
 	for combatant in enemygroup:
+		combatant.action = null
 		for i in combatant.cooldowns:
 			combatant.cooldowns[i] -= 1
 			if combatant.cooldowns[i] <= 0:
 				combatant.cooldowns.erase(i)
 		for i in combatant.abilities:
-			if combatant.cooldowns.has(i.code):
+			if combatant.cooldowns.has(i.code) || i.code == 'attack':
 				continue
 			combatant.action = i
+		if combatant.action == null:
+			combatant.action = combatant.abilities[0]
 		combatant.target = floor(rand_range(0,playergroup.size())-1)
 		if combatant.action.target == 'enemy' && combatant.state in ['normal']:
 			text += actionexecute(combatant, playergroup[combatant.target], combatant.action) + '\n'
@@ -836,7 +840,11 @@ func resolution(text = ''):
 					globals.state.playergroup.erase(i.person.id)
 				else:
 					globals.state.playergroup.erase(i.person.id)
+					for i in globals.state.playergroup:
+						globals.state.findslave(i).stress += rand_range(15,25)
 					globals.slaves.erase(slave)
+		elif i.effects.has("stun"):
+			i.state = 'stunned'
 		else:
 			i.action = null
 			i.target = null

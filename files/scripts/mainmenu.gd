@@ -136,14 +136,14 @@ func _on_Version_pressed():
 
 
 func _on_startrandom_pressed():
-	var newslave = globals.slavegen.newslave(globals.starting_pc_races[rand_range(0,globals.starting_pc_races.size())],'random','female','commoner')
+	var newslave = globals.newslave(globals.starting_pc_races[rand_range(0,globals.starting_pc_races.size())],'random','female','commoner')
 	newslave.obed = 100
 	newslave.loyal = 20
 	newslave.beautybase = 40
 	newslave.cleartraits()
 	newslave.work = 'forage'
 	globals.slaves = newslave
-	globals.player = globals.slavegen.newslave(globals.starting_pc_races[rand_range(0,globals.starting_pc_races.size())],'random','male','commoner')
+	globals.player = globals.newslave(globals.starting_pc_races[rand_range(0,globals.starting_pc_races.size())],'random','male','commoner')
 	globals.player.relatives.father = 0
 	globals.player.relatives.mother = 0
 	globals.player.ability.append('escape')
@@ -227,7 +227,7 @@ func charcreateinitiate():
 		i.connect("item_selected",self,'slaveoption', [i])
 	for i in get_tree().get_nodes_in_group("startoption"):
 		i.connect("pressed",self,'optiontoggle',[i])
-	globals.player = globals.slavegen.newslave('Human', 'teen', 'male')
+	globals.player = globals.newslave('Human', 'teen', 'male')
 	get_node("TextureFrame/newgame/stage6/virgin").connect("pressed", self, 'virginpress')
 
 func stageselect(button):
@@ -273,7 +273,7 @@ func advancestage(confirm = false):
 		get_node("TextureFrame/newgame/stage5").set_hidden(false)
 		stage5()
 	elif stage == 5:
-		globals.player = globals.slavegen.newslave(currentrace, currentage, currentsex, 'slave')
+		globals.player = globals.newslave(currentrace, currentage, currentsex, 'slave')
 		player = globals.player
 		player.hairstyle = 'straight'
 		player.cleartraits()
@@ -284,7 +284,7 @@ func advancestage(confirm = false):
 		stage7()
 		get_node("TextureFrame/newgame/stage7").set_hidden(false)
 	elif stage == 7:
-		startslave = globals.slavegen.newslave(slavetemplate.race, slavetemplate.age, slavetemplate.sex, 'poor')
+		startslave = globals.newslave(slavetemplate.race, slavetemplate.age, slavetemplate.sex, 'poor')
 		startslave.cleartraits()
 		startslave.beautybase = 40
 		stage8()
@@ -340,7 +340,7 @@ func _on_quickstart_pressed():
 	slavetemplate.race = globals.allracesarray[rand_range(0, globals.allracesarray.size())]
 	slavetemplate.age = agearray[rand_range(0,agearray.size())]
 	slavetemplate.sex = 'random'
-	startslave = globals.slavegen.newslave(slavetemplate.race, slavetemplate.age, slavetemplate.sex, 'poor')
+	startslave = globals.newslave(slavetemplate.race, slavetemplate.age, slavetemplate.sex, 'poor')
 	startslave.cleartraits()
 	_on_slaveconfirm_pressed()
 	
@@ -518,10 +518,10 @@ var femalesizes = ['flat','small','average','big','huge']
 func stage6():
 	for i in get_tree().get_nodes_in_group("lookline"):
 		i.set_text(player[i.get_name()])
-	get_node("TextureFrame/newgame/stage6/virgin").set_pressed(player.pussy.virgin)
-	var text = player.description_full(true)
+	get_node("TextureFrame/newgame/stage6/virgin").set_pressed(player.vagvirgin)
+	var text = player.description()
 	get_node("TextureFrame/newgame/stage6/chardescript").set_bbcode(text)
-	get_node("TextureFrame/newgame/stage6/virgin").set_disabled(!player.pussy.has)
+	get_node("TextureFrame/newgame/stage6/virgin").set_disabled(!player.vagina)
 	for i in get_tree().get_nodes_in_group('lookoption'):
 		i.clear()
 	var array = []
@@ -531,17 +531,17 @@ func stage6():
 		array = femalesizes
 	for i in array:
 		get_node("TextureFrame/newgame/stage6/ass").add_item(i)
-		if player.ass == i:
+		if player.asssize == i:
 			get_node("TextureFrame/newgame/stage6/ass").select(get_node("TextureFrame/newgame/stage6/ass").get_item_count()-1)
 		get_node("TextureFrame/newgame/stage6/tits").add_item(i)
-		if player.tits.size == i:
+		if player.titssize == i:
 			get_node("TextureFrame/newgame/stage6/tits").select(get_node("TextureFrame/newgame/stage6/tits").get_item_count()-1)
 	if player.sex != 'female':
 		get_node("TextureFrame/newgame/stage6/penis").set_disabled(false)
 		get_node("TextureFrame/newgame/stage6/balls").set_disabled(false)
 		for i in ['none','small', 'average', 'big']:
 			get_node("TextureFrame/newgame/stage6/penis").add_item(i)
-			if player.penis.size == i:
+			if player.penis == i:
 				get_node("TextureFrame/newgame/stage6/penis").select(get_node("TextureFrame/newgame/stage6/penis").get_item_count()-1)
 			get_node("TextureFrame/newgame/stage6/balls").add_item(i)
 			if player.balls == i:
@@ -600,7 +600,7 @@ func stage6():
 	get_node("TextureFrame/newgame/stage6/ears").add_item(player.ears.replace("_", " "))
 	get_node("TextureFrame/newgame/stage6/tail").set_disabled(true)
 	get_node("TextureFrame/newgame/stage6/tail").add_item(player.tail)
-	get_node("TextureFrame/newgame/stage6/penistype").add_item(player.penis.type)
+	get_node("TextureFrame/newgame/stage6/penistype").add_item(player.penistype)
 	get_node("TextureFrame/newgame/stage6/penistype").set_disabled(true)
 
 
@@ -608,9 +608,9 @@ func optionselect(item,button):
 	if !button.get_name() in ['penis','tits']:
 		player[button.get_name()] = button.get_item_text(item).replace(" ", "_")
 	elif button.get_name() == 'tits':
-		player.tits.size = button.get_item_text(item)
+		player.titssize = button.get_item_text(item)
 	elif button.get_name() == 'penis':
-		player.penis.size = button.get_item_text(item)
+		player.penis = button.get_item_text(item)
 	stage5change()
 
 var skindict = {
@@ -645,11 +645,7 @@ human = ['none'],
 }
 
 func stage5change():
-	var text
-	if stage != 7:
-		text = player.description_full(true)
-	else:
-		text = player.description_full()
+	var text = player.description()
 	get_node("TextureFrame/newgame/stage6/chardescript").set_bbcode(text)
 
 
@@ -667,7 +663,7 @@ func looklinetext(text):
 	stage5change()
 
 func virginpress():
-	player.pussy.virgin = get_node("TextureFrame/newgame/stage6/virgin").is_pressed()
+	if player.vagina == 'normal':player.vagvirgin = get_node("TextureFrame/newgame/stage6/virgin").is_pressed()
 	stage5change()
 
 func stage7():
@@ -693,7 +689,7 @@ func selectbackground(button):
 
 func _on_backgroundconfirm_pressed():
 	if player == null:
-		globals.player = globals.slavegen.newslave(currentrace, currentage, currentsex, 'slave')
+		globals.player = globals.newslave(currentrace, currentage, currentsex, 'slave')
 		player = globals.player
 		player.beautybase = 40
 		player.cleartraits()
@@ -800,7 +796,7 @@ func slaveoption(id, button):
 		slavetemplate.age = button.get_item_text(id)
 	elif button.get_name() == 'slavesex':
 		slavetemplate.sex = button.get_item_text(id)
-	startslave = globals.slavegen.newslave(slavetemplate.race, slavetemplate.age, slavetemplate.sex, 'poor')
+	startslave = globals.newslave(slavetemplate.race, slavetemplate.age, slavetemplate.sex, 'poor')
 	startslave.beautybase = 40
 	startslave.cleartraits()
 	stage8()

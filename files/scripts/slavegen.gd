@@ -13,7 +13,6 @@ static func getRaceFunction(name):
 	text = globals.races.call('Race'+temp)
 	return text
 
-#
 
 static func newslave(race, age, sex, origins = 'slave'):
 	var temp
@@ -91,6 +90,7 @@ static func newslave(race, age, sex, origins = 'slave'):
 		health_cur = 0,
 		health_max = 35,
 		health_base = 35,
+		health_bonus = 1,
 		energy_cur = 75,
 		energy_max = 100,
 		energy_mod = 0,
@@ -120,18 +120,18 @@ static func newslave(race, age, sex, origins = 'slave'):
 	slave.sexuals.actions.kiss = 0
 	slave.sexuals.actions.massage = 0
 	globals.assets.getSexFeatures(slave)
-	if slave.pussy.virgin == true:
-		slave.pussy.first = 'none'
-		if rand_range(0,1) >= 0.7:
-			slave.sexuals.unlocks.append('petting')
-			if rand_range(0,1) >= 0.5:
-				slave.sexuals.unlocks.append('oral')
-	elif slave.sex != 'male':
-		slave.pussy.first = 'unknown'
-		slave.sexuals.unlocks.append('petting')
-		slave.sexuals.unlocks.append('vaginal')
-		if rand_range(0,1) >= 0.5:
-			slave.sexuals.unlocks.append('oral')
+#	if slave.vagvirgn == true:
+#		slave.pussy.first = 'none'
+#		if rand_range(0,1) >= 0.7:
+#			slave.sexuals.unlocks.append('petting')
+#			if rand_range(0,1) >= 0.5:
+#				slave.sexuals.unlocks.append('oral')
+#	elif slave.sex != 'male':
+#		slave.pussy.first = 'unknown'
+#		slave.sexuals.unlocks.append('petting')
+#		slave.sexuals.unlocks.append('vaginal')
+#		if rand_range(0,1) >= 0.5:
+#			slave.sexuals.unlocks.append('oral')
 	if slave.race.find('Halfkin') >= 0 || (slave.race.find('Beastkin') >= 0 && globals.rules['furry'] == false):
 		slave.race = slave.race.replace('Beastkin', 'Halfkin')
 		slave.bodyshape = 'humanoid'

@@ -314,7 +314,7 @@ func frostfordcityhall(stage = 0):
 		globals.state.mainquest = 36
 	elif stage == 7:
 		text = textnode.MainQuestFrostfordZoeJoin
-		var slave = zoemake()
+		var slave = globals.characters.create("Zoe")
 		globals.slaves = slave
 	elif stage == 8:
 		text = textnode.MainQuestFrostfordZoeLeave
@@ -469,34 +469,6 @@ func zoesacrifice(slave):
 	
 	text = slave.dictionary(text) + "\n\n" + textnode.MainQuestFrostfordZoeHostage
 	globals.get_tree().get_current_scene().dialogue(state, self, text, buttons, sprite)
-
-
-func zoemake():
-	var slave = globals.slavegen.newslave('Beastkin Wolf', 'teen', 'female', 'noble')
-	slave.name = 'Zoe'
-	slave.surname = ''
-	slave.beautybase = 45
-	slave.haircolor = 'brown'
-	slave.hairlength = 'shoulder'
-	slave.hairstyle = 'straight'
-	slave.tits.size = 'average'
-	slave.ass = 'average'
-	slave.skin = 'fair'
-	slave.eyecolor = 'red'
-	slave.pussy.virgin = true
-	slave.pussy.first = 'none'
-	slave.stats.cour_base = 45
-	slave.stats.conf_base = 55
-	slave.stats.wit_base = 87
-	slave.stats.charm_base = 66
-	slave.height = 'average'
-	slave.furcolor = 'gray'
-	slave.obed = 90
-	slave.loyal = 25
-	slave.sexuals.unlocks = []
-	slave.cleartraits()
-	slave.smaf += 1
-	return slave
 
 #Sidequests
 
@@ -856,25 +828,7 @@ func calibanditcampwin():
 
 func calibanditcampchoice(choice):
 	var texttemp
-	var slave = globals.slavegen.newslave('Human', 'teen', 'female', 'commoner')
-	slave.name = 'Tia'
-	slave.surname = ''
-	slave.beautybase = 75
-	slave.haircolor = 'brown'
-	slave.hairlength = 'waist'
-	slave.hairstyle = 'straight'
-	slave.tits.size = 'small'
-	slave.ass = 'small'
-	slave.skin = 'fair'
-	slave.eyecolor = 'blue'
-	slave.pussy.virgin = true
-	slave.pussy.first = 'none'
-	slave.stats.cour_base = 23
-	slave.stats.conf_base = 31
-	slave.stats.wit_base = 55
-	slave.stats.charm_base = 82
-	slave.height = 'short'
-	slave.cleartraits()
+	var slave = globals.characters.create("Tia")
 	if choice == 1:
 		texttemp = textnode.CaliReturnGirl
 		globals.state.sidequests.cali = 21
@@ -882,7 +836,7 @@ func calibanditcampchoice(choice):
 		texttemp = textnode.CaliKidnapGirl
 		slave.obed += -100
 		slave.sleep = 'jail'
-		globals.get_tree().get_current_scene().get_node("explorationnode").enemycapture(slave)
+		globals.get_tree().get_current_scene().get_node("explorationnode").captureeffect(slave)
 		globals.state.sidequests.cali = 20
 	elif choice == 3:
 		texttemp = textnode.CaliSeduceGirl
@@ -1341,7 +1295,7 @@ func tishadecision(number):
 		text += "\n\n[color=green]You've earned 15 mana.\n\nTisha now belongs to you. [/color]"
 		globals.resources.mana += 15
 		state = false
-		var slave = maketisha()
+		var slave = globals.charactergallery.create("Tisha")
 		globals.slaves = slave
 	elif number == 6:
 		text = textnode.TishaEmilyLeaveFree
@@ -1390,33 +1344,6 @@ func tishadecision(number):
 		globals.slaves.erase(emily)
 	globals.get_tree().get_current_scene().rebuild_slave_list()
 	globals.get_tree().get_current_scene().dialogue(state,self,text,buttons,sprite)
-
-
-func maketisha():
-	var slave = globals.slavegen.newslave('Human', 'teen', 'female', 'commoner')
-	slave.name = 'Tisha'
-	slave.surname = 'Hale'
-	slave.unique = 'Tisha'
-	slave.beautybase = 80
-	slave.haircolor = 'auburn'
-	slave.hairlength = 'waist'
-	slave.hairstyle = 'braid'
-	slave.tits.size = 'big'
-	slave.ass = 'average'
-	slave.skin = 'fair'
-	slave.eyecolor = 'gray'
-	slave.pussy.virgin = false
-	slave.pussy.first = 'unknown'
-	slave.stats.cour_base = 65
-	slave.stats.conf_base = 58
-	slave.stats.wit_base = 39
-	slave.stats.charm_base = 71
-	slave.height = 'average'
-	slave.relatives.father = -1
-	slave.relatives.mother = 2
-	slave.imageportait = "res://files/images/tisha/tishaportrait.png"
-	slave.cleartraits()
-	return slave
 
 
 func emilyreturn():
@@ -1594,7 +1521,7 @@ func tishagornguild(stage = 0):
 		text = textnode.TishaGornBrand
 		sprite = [['tishashocked', 'pos1']]
 		globals.state.sidequests.emily = 101
-		var slave = maketisha()
+		var slave = globals.charactergallery.create("Tisha")
 		slave.brand = 'basic'
 		globals.slaves = slave
 		state = true
@@ -1644,7 +1571,7 @@ func tishagornguild(stage = 0):
 				i.tags.erase('nosex')
 		text = textnode.TishaOfferJob
 		sprite = [['tishanakedhappy', 'pos1']]
-		var slave = maketisha()
+		var slave = globals.charactergallery.create("Tisha")
 		slave.sexuals.unlocked = true
 		slave.sexuals.unlocks.append('petting')
 		slave.sexuals.unlocks.append('oral')
@@ -1731,7 +1658,7 @@ func chloeforest(stage = 0):
 					havegnomemember = true
 			if havegnomemember == false:
 				text = textnode.ChloeEncounter
-				if globals.spelldict.sedation.learned == true && globals.spelldict.sedation.manacost < globals.resources.mana:
+				if globals.spelldict.sedation.learned == true && globals.spelldict.sedation.manacost <= globals.resources.mana:
 					buttons.append({text = 'Cast Sedation',function = 'chloeforest',args = 1, disabled = false})
 				elif globals.spelldict.sedation.learned == true:
 					buttons.append({text = 'Cast Sedation',function = 'chloeforest',args = 1, disabled = true, tooltip = 'Not enough mana'})
@@ -1847,7 +1774,7 @@ func chloevillage(stage = 0):
 			if globals.state.decisions.find('chloeamnesia') >= 0:
 				text = textnode.ChloeAmnesia
 				globals.state.reputation.wimborn -= 10
-				var chloe = chloemake()
+				var chloe = globals.characters.create("Chloe")
 				chloe.loyal += 25
 				globals.slaves = chloe
 			if globals.state.decisions.find('chloecure') >= 0:
@@ -1860,7 +1787,7 @@ func chloevillage(stage = 0):
 		globals.resources.gold += 500
 	elif stage == 7:
 		text = textnode.ChloeTakeSelf
-		var chloe = chloemake()
+		var chloe = globals.characters.create("CHloe")
 		chloe.loyal += 25
 		chloe.sexuals.affection += 250
 		chloe.add_trait(globals.origins.trait('Sex-crazed'))
@@ -1886,7 +1813,7 @@ func chloevillage(stage = 0):
 			text = textnode.ChloeEmpty
 	elif stage == 9:
 		text = textnode.ChloeVisitAccept
-		var slave = chloemake()
+		var slave = globals.characters.create("Chloe")
 		slave.loyal = 35
 		globals.slaves = slave
 		globals.state.decisions.append('chloeleft')
@@ -1955,35 +1882,6 @@ func chloealchemy(stage = 0):
 		globals.state.sidequests.chloe = 9
 	globals.get_tree().get_current_scene().dialogue(true, self, text, buttons)
 
-
-
-func chloemake():
-	var chloetemp = globals.slavegen.newslave('Gnome', 'adult', 'female', 'commoner')
-	chloetemp.name = 'Chloe'
-	chloetemp.unique = 'Chloe'
-	chloetemp.surname = ''
-	chloetemp.tits.size = 'average'
-	chloetemp.ass = 'big'
-	chloetemp.beautybase = 60
-	chloetemp.hairlength = 'shoulder'
-	chloetemp.height = 'tiny'
-	chloetemp.haircolor = 'red'
-	chloetemp.eyecolor = 'green'
-	chloetemp.skin = 'fair'
-	chloetemp.hairstyle = 'ponytail'
-	chloetemp.pussy.virgin = false
-	chloetemp.pussy.first = 'unknown'
-	chloetemp.relatives.father = -1
-	chloetemp.relatives.mother = -1
-	chloetemp.sexuals.affection += 10
-	chloetemp.imageportait = 'res://files/images/chloe/chloeportrait.png'
-	chloetemp.stats.cour_base = 57
-	chloetemp.stats.conf_base = 34
-	chloetemp.stats.wit_base = 77
-	chloetemp.stats.charm_base = 51
-	chloetemp.cleartraits()
-	chloetemp.obed += 90
-	return chloetemp
 
 func aynerisforest(stage = 0):
 	var state = false
@@ -2062,7 +1960,7 @@ func aynerismarket(stage = 0):
 		buttons.append({text = 'Refuse', function = 'aynerismarket', args = 2})
 	elif stage == 1:
 		text = textnode.AynerisOfferJoin
-		var slave = aynerismake()
+		var slave = globals.characters.create("Ayneris")
 		globals.slaves = slave
 		globals.state.sidequests.ayneris = 5
 	elif stage == 2:
@@ -2073,36 +1971,3 @@ func aynerismarket(stage = 0):
 
 func aynerisnextstage():
 	globals.state.sidequests.ayneris += 1
-
-func aynerismake():
-	var slave = globals.slavegen.newslave('Elf', 'teen', 'female', 'noble')
-	slave.name = 'Ayneris'
-	slave.unique = 'Ayneris'
-	slave.surname = ''
-	slave.tits.size = 'average'
-	slave.ass = 'average'
-	slave.beautybase = 65
-	slave.hairlength = 'waist'
-	slave.height = 'average'
-	slave.haircolor = 'blond'
-	slave.eyecolor = 'blue'
-	slave.skin = 'fair'
-	slave.hairstyle = 'straight'
-	slave.pussy.virgin = false
-	slave.pussy.first = 'you'
-	slave.sexuals.unlocked = true
-	slave.relatives.father = -1
-	slave.relatives.mother = -1
-	slave.sexuals.affection += 10
-	slave.stats.cour_base = 65
-	slave.stats.conf_base = 88
-	slave.stats.wit_base = 51
-	slave.stats.charm_base = 48
-	slave.cleartraits()
-	slave.level = 2
-	slave.sagi = 2
-	slave.sstr = 1
-	slave.skillpoints = 2
-	slave.add_trait(globals.origins.trait('Masochist'))
-	slave.obed += 90
-	return slave
