@@ -230,19 +230,19 @@ func _on_confirmbutton_pressed():
 	var rape = get_node("togglerape").is_pressed()
 	var action = get_node("confirmbutton").get_meta('action')
 	
-	if rape == false && slave.traits.has("Sex-crazed") == false && !slave.spec in ['geisha','nympho'] :
+	if rape == false && slave.traits.find("Sex-crazed") < 0 && !slave.spec in ['geisha','nympho'] :
 		var difficulty = 0
-		if action.tags.find('degrading') >= 0 && slave.traits.has("Deviant") == false:
+		if action.tags.find('degrading') >= 0 && slave.traits.find("Deviant") < 0:
 			difficulty += 20
 		if action.tags.find('penetration') >= 0 && slave.pussy.virgin == true && action.tags.find('anal') < 0:
 			difficulty += 10
-		if action.tags.find('fetish') >= 0 && slave.traits.has("Deviant") == false && slave.traits.has("Pervert") == false && slave.traits.has("Slutty") == false:
+		if action.tags.find('fetish') >= 0 && slave.traits.find("Deviant") < 0 && slave.traits.find("Pervert") < 0 && slave.traits.find("Slutty") < 0:
 			difficulty += 15
-		if slave.traits.has("Prude") == true: 
+		if slave.traits.find("Prude") >= 0: 
 			difficulty += 10
 		if action.tags.find("anal") >= 0 || (get_node("descriptpanel/holebutton").is_hidden() == false && get_node("descriptpanel/holebutton").get_selected_ID() == 2):
 			difficulty += 15
-		if partner.sex == slave.sex && slave.traits.has("Bisexual") == false:
+		if partner.sex == slave.sex && slave.traits.find("Bisexual") < 0:
 			difficulty += 10
 		if (slave.relatives.father == 0 || slave.relatives.mother == 0):
 			difficulty += 10
@@ -341,14 +341,14 @@ func sexinitiate(secondtime = false):
 			else:
 				text += actiondescriptdict[action.code].swing
 	
-	if action.tags.find('degrading') >= 0 && (slave.traits.has("Deviant") == true || slave.spec == 'nympho'):
+	if action.tags.find('degrading') >= 0 && (slave.traits.find("Deviant") >= 0 || slave.spec == 'nympho'):
 		lusteffect = lusteffect*1.2
-	if action.tags.find('fetish') >= 0 && (slave.traits.has("Deviant") == true || slave.traits.has("Pervert") == true || slave.traits.has("Slutty") == true || slave.spec in ['geisha','nympho']):
+	if action.tags.find('fetish') >= 0 && (slave.traits.find("Deviant") >= 0 || slave.traits.find("Pervert") >= 0 || slave.traits.find("Slutty") >= 0 || slave.spec in ['geisha','nympho']):
 		lusteffect = lusteffect*1.3
-	if slave.traits.has("Prude") == true && (action.tags.find("fetish") >= 0 || action.tags.find("degrading") >= 0) : 
+	if slave.traits.find("Prude") >= 0 && (action.tags.find("fetish") >= 0 || action.tags.find("degrading") >= 0) : 
 		slave.stress += lusteffect
 		lusteffect = lusteffect*0.5
-	if partner.sex == slave.sex && slave.traits.has("Bisexual") == false && slave.traits.has("Sex-crazed") == false && !slave.spec in ['geisha','nympho']:
+	if partner.sex == slave.sex && slave.traits.find("Bisexual") < 0 && slave.traits.find("Sex-crazed") < 0 && !slave.spec in ['geisha','nympho']:
 		slave.stress += max(-20 + slave.conf, 0)
 		lusteffect = lusteffect*0.8
 		text += "\n\n[color=yellow]$name experience some discomfort by having sex with someone of $his own gender. [/color]"
@@ -358,12 +358,12 @@ func sexinitiate(secondtime = false):
 		slave.dom += lusteffect/8
 	
 	
-	if rape == true && (slave.traits.has("Likes it rough") == true || slave.traits.has("Sex-crazed") || slave.traits.has("Submissive") || slave.spec in ['geisha','nympho']):
+	if rape == true && (slave.traits.find("Likes it rough") >= 0 || slave.traits.find("Sex-crazed") >= 0 || slave.traits.find("Submissive") >= 0|| slave.spec in ['geisha','nympho']):
 		rapelike = true
 		slave.metrics.roughsexlike += 1
 	
-	if rape == true && slave.traits.has("Sex-crazed") == false:
-		if  slave.traits.has("Submissive") == false || slave.loyal < 40:
+	if rape == true && slave.traits.find("Sex-crazed") < 0:
+		if  slave.traits.find("Submissive") < 0 || slave.loyal < 40:
 			slave.stress += lusteffect/1.5
 	
 	if rapelike == true && rape == true:
@@ -437,7 +437,7 @@ func sexinitiate(secondtime = false):
 		slave.metrics.oral += 1
 	elif action.code in ['blowjobgive','oral','rimjobgive']:
 		partner.metrics.oral += 1
-	if action.code in ['frottage','tribadism'] && slave.traits.has('Bisexual') == false && rand_range(0,10) >= 2.5:
+	if action.code in ['frottage','tribadism'] && slave.traits.find('Bisexual') < 0 && rand_range(0,10) >= 2.5:
 		slave.add_trait(globals.origins.trait("Bisexual"))
 	if orgasm == true:
 		managain += 1
@@ -448,27 +448,27 @@ func sexinitiate(secondtime = false):
 		if action.code == 'pussytake':
 			globals.impregnation(partner, slave)
 		var counter = 0
-		if slave.traits.has("Prude") == true && (rand_range(0,1) >= 0.8 || slave.effects.has('entranced') == true) :
+		if slave.traits.find("Prude") >= 0 && (rand_range(0,1) >= 0.8 || slave.effects.has('entranced') == true) :
 			slave.trait_remove("Prude")
 			text += "\n\n[color=yellow]$name is no longer Prude. [/color]"
-		if action.tags.find("fetish") >= 0 && slave.traits.has("Pervert") == false  && (rand_range(0,1) >= 0.8 || slave.effects.has('entranced') == true):
+		if action.tags.find("fetish") >= 0 && slave.traits.find("Pervert") < 0  && (rand_range(0,1) >= 0.8 || slave.effects.has('entranced') == true):
 			slave.add_trait(globals.origins.trait("Pervert"))
 			counter += 1
-		if action.tags.find("degrading") >= 0 && slave.traits.has("Deviant") == false && (rand_range(0,1) >= 0.8 || slave.effects.has('entranced') == true):
+		if action.tags.find("degrading") >= 0 && slave.traits.find("Deviant") < 0 && (rand_range(0,1) >= 0.8 || slave.effects.has('entranced') == true):
 			slave.add_trait(globals.origins.trait("Deviant"))
 			counter += 1
-		if slave.sex == partner.sex && slave.traits.has("Bisexual") == false && (rand_range(0,1) >= 0.8 || slave.effects.has('entranced') == true):
+		if slave.sex == partner.sex && slave.traits.find("Bisexual") < 0 && (rand_range(0,1) >= 0.8 || slave.effects.has('entranced') == true):
 			slave.add_trait(globals.origins.trait("Bisexual"))
 			counter += 1
-		if rape == true && slave.traits.has("Likes it rough") == false && (rand_range(0,1) >= 0.8 || slave.effects.has('entranced') == true):
+		if rape == true && slave.traits.find("Likes it rough") < 0 && (rand_range(0,1) >= 0.8 || slave.effects.has('entranced') == true):
 			slave.add_trait(globals.origins.trait("Likes it rough"))
 			counter += 1
-		elif rape == true && slave.traits.has("Likes it rough") == true && rand_range(0,1) >= 0.9:
+		elif rape == true && slave.traits.find("Likes it rough") >= 0 && rand_range(0,1) >= 0.9:
 			slave.add_trait(globals.origins.trait("Submissive"))
 			counter += 1
 		if counter >= 1:
 			text += "\n\n[color=yellow]$name has adopted a new quirk. [/color]"
-		if action.tags.find("degrading") >= 0 && slave.traits.has("Deviant") == false && slave.spec != 'nympho':
+		if action.tags.find("degrading") >= 0 && slave.traits.find("Deviant") < 0 && slave.spec != 'nympho':
 			slave.stress += rand_range(15,20)
 	elif action.tags.find('cancum') >= 0 && ((rapelike == false && rape == false) || rapelike == true):
 		text += "\n\nBy the end, $name does not appear to be completely satisfied as $he wasn't able to cum. "
@@ -542,7 +542,7 @@ func sexinitiate(secondtime = false):
 					continue
 				if sexbuttons[i].tags.find("sub") >= 0 && slave.dom > 60:
 					continue
-				if sexbuttons[i].tags.find('degrading') >= 0 && slave.traits.has("Deviant") == false:
+				if sexbuttons[i].tags.find('degrading') >= 0 && slave.traits.find("Deviant") < 0:
 					continue
 				else:
 					array.append(sexbuttons[i])
@@ -985,7 +985,7 @@ func _on_announcerape_pressed():
 		return
 	var text = "You announce $name, that you will be using $him however you please not only in daily life, but also in bed with or without $his cooperation. "
 	slave.sexuals.unlocked = true
-	if !slave.traits.has("Sex-crazed") && !slave.traits.has("Submissive"):
+	if slave.traits.find("Sex-crazed") < 0 && slave.traits.find("Submissive") < 0:
 		text += "$He's seemingly shocked with your words. "
 		slave.loyal -= 30
 		slave.obed += -65

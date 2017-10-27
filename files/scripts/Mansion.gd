@@ -189,9 +189,9 @@ func _on_new_slave_button_pressed():
 	globals.state.mansionupgrades.mansionalchemy = 1
 	globals.state.mansionupgrades.mansionparlor = 1
 	globals.state.backpack.stackables.bandage = 1
-	for i in globals.characters.characters:
-		slave = globals.characters.create(i)
-		globals.slaves = slave
+	#for i in globals.characters.characters:
+	#	slave = globals.characters.create(i)
+	#	globals.slaves = slave
 
 func mansion():
 	_on_mansion_pressed()
@@ -431,7 +431,7 @@ func _on_end_pressed():
 						if workdict.has('dead') && workdict.dead == true:
 							deads_array.append({number = count, reason = workdict.text})
 							continue
-						if slave.traits.has("Clumsy") && get_node("MainScreen/slave_tab").jobdict[slave.work].tags.find("physical"):
+						if slave.traits.find("Clumsy") >= 0 && get_node("MainScreen/slave_tab").jobdict[slave.work].tags.find("physical"):
 							if workdict.has('gold'):
 								workdict.gold *= 0.7
 							if workdict.has('food'):
@@ -479,10 +479,10 @@ func _on_end_pressed():
 				if slave.health < 1:
 					text = slave.dictionary('[color=red]$name has died of starvation.[/color]\n')
 					deads_array.append({number = count, reason = text})
-			if slave.obed < 25 && slave.cour >= 50 && slave.rules.silence == false && slave.traits.has('Mute') == false && slave.sleep != 'jail' && slave.sleep != 'farm' && slave.brand != 'advanced'&& rand_range(0,1) > 0.5:
+			if slave.obed < 25 && slave.cour >= 50 && slave.rules.silence == false && slave.traits.find('Mute') < 0 && slave.sleep != 'jail' && slave.sleep != 'farm' && slave.brand != 'advanced'&& rand_range(0,1) > 0.5:
 				text0.set_bbcode(text0.get_bbcode()+slave.dictionary('$name dares to openly show $his disrespect towards you and instigates other servants. \n'))
 				for ii in globals.slaves:
-					if ii != slave && ii.loyal < 30 && ii.traits.has('Loner') == false:
+					if ii != slave && ii.loyal < 30 && ii.traits.find('Loner') < 0:
 						ii.obed += -(slave.charm/3)
 			if slave.obed < 50 && slave.loyal < 25 && slave.sleep != 'jail'&& slave.sleep != 'farm'&& slave.brand != 'advanced':
 				if rand_range(0,3) < 1 && globals.resources.gold > 34:
@@ -550,8 +550,8 @@ func _on_end_pressed():
 				else:
 					if globals.state.mansionupgrades.jailtreatment == 0:
 						slave.stress += slave.conf/10
-			if slave.lust >= 90 && slave.rules.masturbation == true && slave.traits.has('Sex-crazed') == false && (rand_range(0,10)>7 || slave.effects.has('stimulated')):
-				slave.add_trait(globals.origins.trait('Sex-crazed'))
+			if slave.lust >= 90 && slave.rules.masturbation == true && slave.traits.find('Sex-crazed') < 0 && (rand_range(0,10)>7 || slave.effects.has('stimulated')):
+				slave.add_trait('Sex-crazed')
 				text0.set_bbcode(text0.get_bbcode() + slave.dictionary("[color=yellow]Left greatly excited and prohibited from masturbating, $name desperate state led $him to become insanely obsessed with sex.[/color]\n"))
 			#Races
 			if slave.race == 'Elf':
@@ -562,7 +562,7 @@ func _on_end_pressed():
 			elif slave.race == 'Slime':
 				slave.toxicity = -200
 			#Traits
-			if slave.traits.has("Uncivilized"):
+			if slave.traits.find("Uncivilized") >= 0:
 				for i in globals.slaves:
 					if i.spec == 'tamer' && (i.work == slave.work || i.work in ['rest','headgirl','jailer']):
 						slave.obed += 30
@@ -570,18 +570,18 @@ func _on_end_pressed():
 						if rand_range(0,100) < 10:
 							slave.trait_remove("Uncivilized")
 							text0.set_bbcode(text0.get_bbcode() + i.dictionary("[color=green]$name managed to lift ") + slave.dictionary("$name out of $his wild behavior and turn into a socially functioning person.[/color]\n "))
-			if slave.traits.has("Clingy") && slave.attention > 75 && rand_range(0,2) > 1:
+			if slave.traits.find("Clingy") >= 0 && slave.attention > 75 && rand_range(0,2) > 1:
 				slave.obed -= rand_range(10,30)
 				slave.loyal -= rand_range(1,5)
 				text0.set_bbcode(text0.get_bbcode() + slave.dictionary("[color=yellow]$name is annoyed by you paying no attention to $him. [/color]\n"))
-			if slave.traits.has('Pliable') == true:
+			if slave.traits.find('Pliable') >= 0:
 				if slave.sexuals.affection >= 90:
 					slave.trait_remove('Pliable')
-					slave.add_trait(globals.origins.trait('Devoted'))
+					slave.add_trait('Devoted')
 					text0.set_bbcode(text0.get_bbcode() + slave.dictionary('[color=green]$name has become Devoted. $His willpower strengthened.[/color]\n'))
 				elif slave.sexuals.actions.size() >= 12:
 					slave.trait_remove('Pliable')
-					slave.add_trait(globals.origins.trait('Slutty'))
+					slave.add_trait('Slutty')
 					text0.set_bbcode(text0.get_bbcode() + slave.dictionary('[color=green]$name has become Slutty. $His willpower strengthened.[/color]\n'))
 			#Rules and clothes effect
 			if slave.rules.contraception == true:
@@ -643,14 +643,14 @@ func _on_end_pressed():
 				slave.toxicity = -rand_range(1,5)
 			if slave.gear.armor == null && slave.gear.costume == null:
 				slave.obed += rand_range(10,20)
-				if slave.traits.has('Pervert') == false && slave.traits.has('Sex-crazed') == false && slave.conf > 40:
+				if slave.traits.find('Pervert') >= 0 && slave.traits.find('Sex-crazed') < 0 && slave.conf > 40:
 					slave.stress += rand_range(10,15)
 					text2.set_bbcode(text2.get_bbcode() + slave.dictionary("Your denial of upper clothing to $name causes $him to take you more seriously, but $he certainly is stressed out having to walk around almost naked.\n"))
 				else:
 					text2.set_bbcode(text2.get_bbcode() + slave.dictionary("Your denial of upper clothing to $name causes $him to take you more seriously, however, it does not seem that $he's feels too bothered about being almost naked.\n"))
 			if slave.gear.underwear == null:
 				slave.lust = rand_range(5,10)
-				if slave.traits.has('Pervert') == false && slave.traits.has('Sex-crazed') == false:
+				if slave.traits.find('Pervert') < 0 && slave.traits.find('Sex-crazed') < 0:
 					slave.obed -= rand_range(10,20)
 					text2.set_bbcode(text2.get_bbcode() + slave.dictionary("Wearing no underwear causes $name to become more open to dirty behavior, although $he does not seem to be very happy about it.\n"))
 				else:
@@ -737,7 +737,7 @@ func _on_end_pressed():
 		if headgirl.spec == 'executor':
 			headgirlconf = 100
 		for i in globals.slaves:
-			if i != headgirl && i.traits.has('Loner') == false && i.away.duration < 1 && i.sleep != 'jail' && i.sleep != 'farm':
+			if i != headgirl && i.traits.find('Loner') < 0 && i.away.duration < 1 && i.sleep != 'jail' && i.sleep != 'farm':
 				headgirl.xp += 3
 				if i.obed < 65 && globals.state.headgirlbehavior == 'strict':
 					var obedbase = i.obed

@@ -704,7 +704,7 @@ func pussysex(slave):
 
 func pussyrape(slave):
 	var text = ''
-	if slave.traits.has('Likes it rough'):
+	if slave.traits.find('Likes it rough') >= 0:
 		text += "$name makes a show of struggling "
 	else:
 		text += "$name struggles "

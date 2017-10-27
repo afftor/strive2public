@@ -994,7 +994,7 @@ func captureslave(slave):
 	if globals.state.backpack.stackables.rope <= 0:
 		globals.state.backpack.stackables.erase('rope')
 	if slave.race in ['Lamia','Arachna','Harpy','Nereid','Slime','Scylla','Dryad','Fairy']:
-		slave.add_trait(globals.origins.trait('Uncivilized'))
+		slave.add_trait('Uncivilized')
 	captureeffect(slave)
 	if defeated.names[defeated.units.find(slave)] == 'Captured':
 		if currentzone.tags.find("wimborn") >= 0:

@@ -201,7 +201,7 @@ charm = 92,
 level = 5,
 skillpoints = 14,
 obed = 90,
-traits = ['ascetic']
+traits = ['Ascetic']
 },
 Zoe = {
 basics = ['Beastkin Wolf', 'teen', 'female', 'noble'],

@@ -502,7 +502,7 @@ class slave:
 	var penisvirgin = true
 	var preg = {fertility = 0, has_womb = true, duration = 0, baby = null}
 	var rules = {'silence':false, 'pet':false, 'contraception':false, 'aphrodisiac':false, 'masturbation':false, 'nudity':false, 'betterfood':false, 'personalbath':false,'cosmetics':false,'pocketmoney':false}
-	var traits = {}
+	var traits = []
 	var relatives = {father = -1, mother = -1, siblings = [], children =[]}
 	var gear = {costume = null, underwear = null, armor = null, weapon = null, accessory = null}
 	var genes = {}
@@ -615,11 +615,18 @@ class slave:
 	var smaf setget maf_set,maf_get
 	var send setget end_set,end_get
 	
+	func get_traits():
+		var array = []
+		for i in traits:
+			array.append(globals.origins.trait(i))
+		return array
+	
 	func add_trait(trait, remove = false):
+		trait = globals.origins.trait(trait)
 		var conflictexists = false
 		var text = ""
 		var traitexists = false
-		for i in traits.values():
+		for i in get_traits():
 			if i.name == trait.name:
 				traitexists = true
 			for ii in i.conflict:
@@ -629,7 +636,7 @@ class slave:
 		if traitexists || conflictexists:
 			print("Can't apply: trait exists or conflicting with another trait")
 		else:
-			traits[trait.name] = trait
+			traits.append(trait.name)
 			if globals.get_tree().get_current_scene().has_node("infotext") && globals.slaves.find(self) >= 0 && away.at != 'hidden':
 				text += self.dictionary("[color=yellow]$name acquired new trait: " + trait.name + "[/color] ")
 				globals.get_tree().get_current_scene().infotext(text)
@@ -639,7 +646,7 @@ class slave:
 	func trait_remove(trait):
 		var text = ''
 		trait = globals.origins.trait(trait)
-		if !traits.has(trait.name):
+		if traits.find(trait.name) < 0:
 			return
 		traits.erase(trait.name)
 		if trait['effect'].empty() != true:
@@ -676,8 +683,8 @@ class slave:
 	
 	func cleartraits():
 		spec = null
-		for i in traits.values():
-			trait_remove(i.name)
+		for i in traits:
+			trait_remove(i)
 		for i in ['str_base','agi_base', 'maf_base', 'end_base','str_cur','agi_cur', 'maf_cur', 'end_cur']:
 			stats[i] = 0
 		skillpoints = 2

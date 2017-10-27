@@ -1021,7 +1021,7 @@ nurture = {
 code = 'nurture',
 name = 'Nurture',
 number = 3,
-reqs = "slave.traits.has('Regressed') == true",
+reqs = "slave.traits.find('Regressed') >= 0",
 description = "[color=yellow]This option will neutralize Regressed trait.[/color]",
 price = 150,
 confirm = "You leave $name in the custody of guild trainers, who will train $him among other slaves and prepare for your domain."
@@ -1911,7 +1911,6 @@ func emily(state = 1):
 		sprites = [['emilyhappy','pos1']]
 		main.dialogue(true, self, text, buttons, sprites)
 		var emily = globals.characters.create('Emily')
-		emily.cleartraits()
 		globals.state.upcomingevents.append({code = 'tishaappearance',duration =7})
 		globals.slaves = emily
 		backstreets()

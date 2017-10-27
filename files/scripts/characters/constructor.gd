@@ -144,8 +144,8 @@ func get_caste(slave, caste):
 			slave.skillpoints -= 1
 		spin -= 1
 	
-	slave.add_trait(globals.origins.traits('any'))
-	if slave.traits.has("Fickle") == true:
+	slave.add_trait(globals.origins.traits('any').name)
+	if slave.traits.find("Fickle") >= 0:
 		slave.sexuals.unlocks.append("swing")
 
 func tohalfkin(slave):

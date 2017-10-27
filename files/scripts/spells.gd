@@ -218,7 +218,7 @@ func mindreadeffect():
 		text = text + '\n$name still strongly fears your punishment.'
 	if slave.traits.size() >= 0:
 		text += '\n$name has corresponding traits:'
-		for i in slave.traits.values():
+		for i in slave.traits:
 			text += ' ' +i.name
 		text += '.'
 	if slave.preg.duration > 0:

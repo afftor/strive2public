@@ -67,13 +67,13 @@ func _on_slave_tab_visibility_changed():
 	for i in get_node("stats/traits/traitlist").get_children():
 		if i != get_node("stats/traits/traitlist/Label"):
 			i.free()
-#	for i in slave.traits.values():
-#		label = get_node("stats/traits/traitlist/Label").duplicate()
-#		get_node("stats/traits/traitlist").add_child(label)
-#		label.set_hidden(false)
-#		label.set_text(i.name)
-#		label.connect("mouse_enter", self, 'traittooltip', [i])
-#		label.connect("mouse_exit", self, 'traittooltiphide')
+	for i in slave.get_traits():
+		label = get_node("stats/traits/traitlist/Label").duplicate()
+		get_node("stats/traits/traitlist").add_child(label)
+		label.set_hidden(false)
+		label.set_text(i.name)
+		label.connect("mouse_enter", self, 'traittooltip', [i])
+		label.connect("mouse_exit", self, 'traittooltiphide')
 	for i in get_node("stats/abilities/abilitylist").get_children():
 		if i != get_node("stats/abilities/abilitylist/Label"):
 			i.set_hidden(true)
