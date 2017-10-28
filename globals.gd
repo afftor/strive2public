@@ -5,7 +5,7 @@ var itemdict = {}
 var spelldict = {}
 var effectdict = {}
 var guildslaves = {wimborn = [], gorn = [], frostford = [], umbra = []}
-var gameversion = 5200
+var gameversion = 5300
 var state = progress.new()
 var developmode = false
 var gameloaded = false
@@ -23,6 +23,7 @@ var repeatables = load("res://files/scripts/repeatable_quests.gd").new()
 var abilities = load("res://files/scripts/abilities.gd").new()
 var effects = load("res://files/scripts/effects.gd").new()
 var events = load("res://files/scripts/events.gd").new()
+var questtext = events.textnode
 var racefile = load("res://files/scripts/characters/races.gd").new()
 var characters = load("res://files/scripts/characters/customcharacters.gd").new()
 var races = racefile.races
@@ -32,7 +33,9 @@ var jobs = load("res://files/scripts/jobs&specs.gd").new()
 var mansionupgrades = load("res://files/scripts/mansionupgrades.gd").new()
 var gallery = load("res://files/scripts/gallery.gd").new()
 var slavedialogues = load("res://files/scripts/slavedialogues.gd").new()
-var questtext = events.textnode
+
+var modsfile = load("res://mods/init.gd").new()
+
 var slaves = [] setget slaves_set
 var starting_pc_races = ['Human', 'Elf', 'Dark Elf', 'Orc', 'Demon', 'Beastkin Cat', 'Beastkin Wolf', 'Beastkin Fox', 'Halfkin Cat', 'Halfkin Wolf', 'Halfkin Fox', 'Taurus']
 var wimbornraces = ['Human', 'Elf', 'Dark Elf', 'Demon', 'Beastkin Cat', 'Beastkin Wolf','Beastkin Tanuki','Beastkin Bunny', 'Halfkin Cat', 'Halfkin Wolf', 'Halfkin Tanuki','Halfkin Bunny','Taurus','Fairy']
@@ -101,6 +104,7 @@ func _init():
 	effectdict = effects.effectlist 
 	if rules.custommouse == false:
 		Input.set_custom_mouse_cursor(null)
+	
 
 
 func loadsettings():
@@ -140,10 +144,18 @@ func loadsettings():
 	temp = storedsettings.folders
 	for i in temp:
 		setfolders[i] = temp[i]
+	if storedsettings.has('savelist') == false:
+		overwritesettings()
+		settings.open_encrypted_with_pass("user://progressdata", File.READ, 'tehpass')
+		storedsettings = settings.get_var()
+	temp = storedsettings.savelist
+	for i in temp:
+		savelist[i] = temp[i]
 	settings.close()
 
 var charactergallery = gallery.charactergallery
 var setfolders = {portraits = 'user://portraits/', fullbody = 'user://bodies/'} setget savefolders
+var savelist = {}
 
 func savefolders(value):
 	overwritesettings()
@@ -154,7 +166,7 @@ func overwritesettings():
 	settings.store_line(var2str(rules))
 	settings.close()
 	settings.open_encrypted_with_pass("user://progressdata", File.WRITE, 'tehpass')
-	var data = {chars = charactergallery, folders = setfolders}
+	var data = {chars = charactergallery, folders = setfolders, savelist = savelist}
 	settings.store_var(data)
 	settings.close()
 
@@ -500,6 +512,7 @@ class slave:
 	var penistype = 'human'
 	var penisextra = false
 	var penisvirgin = true
+	var pubichair = 'clean'
 	var preg = {fertility = 0, has_womb = true, duration = 0, baby = null}
 	var rules = {'silence':false, 'pet':false, 'contraception':false, 'aphrodisiac':false, 'masturbation':false, 'nudity':false, 'betterfood':false, 'personalbath':false,'cosmetics':false,'pocketmoney':false}
 	var traits = []
@@ -1394,7 +1407,7 @@ func save():
 		dict.slaves.append(inst2dict(i))
 	for i in state.babylist:
 		dict.babylist.append(inst2dict(i))
-	dict.player = inst2dict(player)
+	dict.player = inst2dict(player) 
 	return dict
 
 func save_game(var savename):
@@ -1404,8 +1417,18 @@ func save_game(var savename):
 		dir.make_dir("user://saves")
 	savegame.open(savename, File.WRITE)
 	var nodedata = save()
+	var date = OS.get_datetime()
+	for i in date:
+		if date[i] < 10:
+			date[i] = '0' + str(date[i])
+		else:
+			date[i] = str(date[i])
+	var entry = {name = "Master " + player.name + ", Day " + str(resources.day) + ', Gold ' + str(resources.gold) + ', Slaves: ' + str(slavecount()), path = savename, date = date.hour + ":" + date.minute + " " + date.day + '.' + date.month + '.' + date.year}
+	savelist[savename] = entry
+	overwritesettings()
 	savegame.store_line(nodedata.to_json())
 	savegame.close()
+	get_tree().get_current_scene().infotext("[color=green]Game Saved.[/color]")
 
 func load_game(filename):
 	var savegame = File.new()

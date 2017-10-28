@@ -126,8 +126,8 @@ func _ready():
 	if globals.gameloaded == false && globals.developmode == false:
 		_on_buttonpanel_mouse_enter()
 		get_node("buttonpanel/leavenode").set_hidden(true)
-	
-	
+	elif globals.gameloaded == true:
+		infotext("[color=green]Game Loaded.[/color]")
 
 
 
@@ -1229,11 +1229,20 @@ func _on_SavePanel_visibility_changed():
 	var dir = Directory.new()
 	if dir.dir_exists("user://saves") == false:
 		dir.make_dir("user://saves")
-	for i in globals.dir_contents():
+	var savefiles = globals.dir_contents()
+	for i in globals.savelist:
+		if savefiles.find(i) < 0:
+			globals.savelist.erase(i)
+	for i in savefiles:
 		node = get_node("menucontrol/menupanel/SavePanel/ScrollContainer/savelist/Button").duplicate()
 		node.set_hidden(false)
+		if globals.savelist.has(i):
+			node.get_node("date").set_text(globals.savelist[i].date)
+			node.get_node("info").set_text(i.replacen("user://saves/",'') + "      " + globals.savelist[i].name)
+		else:
+			node.get_node("info").set_text(i.replacen("user://saves/",'') + "      " + "This save has no info about it.")
 		get_node("menucontrol/menupanel/SavePanel/ScrollContainer/savelist").add_child(node)
-		node.set_text(i.replacen("user://saves/",''))
+		#node.set_text(i.replacen("user://saves/",''))
 		node.set_meta("name", i)
 		node.connect('pressed', self, 'loadchosen', [node])
 

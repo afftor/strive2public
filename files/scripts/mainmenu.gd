@@ -33,6 +33,7 @@ func _ready():
 	if globals.rules.oldresize == true:
 		get_tree().set_screen_stretch(1, 1080, Vector2(1080,600))
 	charcreateinitiate()
+	globals.modsfile._ready()
 
 var maintheme = globals.musicdict.maintheme
 
@@ -80,8 +81,13 @@ func _on_SavePanel_visibility_changed():
 	for i in globals.dir_contents():
 		node = get_node("TextureFrame/SavePanel/ScrollContainer/savelist/Button").duplicate()
 		node.set_hidden(false)
+		if globals.savelist.has(i):
+			node.get_node("date").set_text(globals.savelist[i].date)
+			node.get_node("info").set_text(i.replacen("user://saves/",'') + "      " + globals.savelist[i].name)
+		else:
+			node.get_node("info").set_text(i.replacen("user://saves/",'') + "      " + "This save has no info about it.")
 		get_node("TextureFrame/SavePanel/ScrollContainer/savelist").add_child(node)
-		node.set_text(i.replacen("user://saves/",''))
+		#node.set_text(i.replacen("user://saves/",''))
 		node.set_meta('text', i)
 		node.connect('pressed', self, 'loadchosen', [node])
 
