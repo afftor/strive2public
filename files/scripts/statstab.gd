@@ -339,10 +339,8 @@ func unlocksex():
 			difficulty -= 10
 		if slave.relatives.father == 0 || slave.relatives.mother == 0:
 			difficulty -= 10
-		for i in slave.traits.values():
-			if i.tags.find('sexual') && i.name != 'Prude':
-				difficulty += 2
-			elif i.name == 'Prude':
+		for i in slave.traits:
+			if i == 'Prude':
 				difficulty -= 5
 		if difficulty <= 30:
 			text += "[color=yellow]— Sorry, $master, but I don't think I'm ready for this. [/color]\n\nIt seems something holds $name back and $he does not like you enough. "

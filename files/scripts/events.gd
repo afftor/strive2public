@@ -1141,8 +1141,10 @@ func sexscene(value):
 		sprite = [['chloenakedshy', 'pos1']]
 		text = textnode.ChloeGroveFound + '\n\n' + textnode.ChloeGroveSex
 	elif value == "aynerispunish":
+		sprite = [['aynerisangry','pos1']]
 		text = textnode.AynerisPunish1
 	elif value == "aynerissex":
+		sprite = [['aynerisangry','pos1']]
 		text = textnode.AynerisPunish2
 	elif value == "mapleflirt":
 		sprite = [['fairy', 'pos1']]
@@ -1739,7 +1741,7 @@ func chloevillage(stage = 0):
 		globals.state.upcomingevents.append({code = 'chloemissing', duration = 7})
 		if globals.abilities.abilitydict.has('entrancement') == true:
 			globals.player.ability.append('entrancement')
-		if globals.player.penis.number >= 1:
+		if globals.player.penis != 'none':
 			text = textnode.ChloeShaliqTakeMana
 		else:
 			text = "Chloe gleams with joy, happily smiling as she runs off to put her new possession away.\n\n[color=aqua]You have learned the Entrancement Spell.[/color]"
@@ -1887,7 +1889,7 @@ func aynerisforest(stage = 0):
 	var state = false
 	var text = ''
 	var buttons = []
-	var sprites = []
+	var sprites = [['aynerispissed','pos1']]
 	if stage == 0:
 		if globals.state.sidequests.ayneris == 0:
 			text = textnode.AynerisMeet1
@@ -1933,6 +1935,7 @@ func ayneriswin():
 	var sprites = []
 	globals.get_tree().get_current_scene().get_node("explorationnode").zoneenter("amberguardforest")
 	if globals.state.sidequests.ayneris == 0:
+		sprites = [['aynerisangry','pos1']]
 		globals.charactergallery.ayneris.unlocked = true
 		globals.state.sidequests.ayneris = 1
 		text = textnode.AynerisWin1
@@ -1940,6 +1943,7 @@ func ayneriswin():
 		buttons.append({text = 'Leave', function = 'aynerisforest', args = 3})
 	elif globals.state.sidequests.ayneris in [1,2]:
 		text = textnode.AynerisWin2
+		sprites = [['aynerisangry','pos1']]
 		if globals.state.sidequests.ayneris == 1:
 			buttons.append({text = 'Punish', function = 'aynerisforest', args = 2})
 		else:
@@ -1956,14 +1960,17 @@ func aynerismarket(stage = 0):
 	if stage == 0:
 		state = false
 		text = textnode.AynerisMeet3
+		sprites = [['aynerispissed','pos1']]
 		buttons.append({text = 'Accept', function = 'aynerismarket', args = 1})
 		buttons.append({text = 'Refuse', function = 'aynerismarket', args = 2})
 	elif stage == 1:
+		sprites = [['aynerisneutral','pos1']]
 		text = textnode.AynerisOfferJoin
 		var slave = globals.characters.create("Ayneris")
 		globals.slaves = slave
 		globals.state.sidequests.ayneris = 5
 	elif stage == 2:
+		sprites = [['aynerisangry','pos1']]
 		text = textnode.AynerisIgnore
 		globals.state.sidequests.ayneris = 6
 		

@@ -25,7 +25,6 @@ var effects = load("res://files/scripts/effects.gd").new()
 var events = load("res://files/scripts/events.gd").new()
 var questtext = events.textnode
 var racefile = load("res://files/scripts/characters/races.gd").new()
-var characters = load("res://files/scripts/characters/customcharacters.gd").new()
 var races = racefile.races
 var names = racefile.names
 var dailyevents = load("res://files/scripts/dailyevents.gd").new()
@@ -33,6 +32,7 @@ var jobs = load("res://files/scripts/jobs&specs.gd").new()
 var mansionupgrades = load("res://files/scripts/mansionupgrades.gd").new()
 var gallery = load("res://files/scripts/gallery.gd").new()
 var slavedialogues = load("res://files/scripts/slavedialogues.gd").new()
+var characters = gallery
 
 var modsfile = load("res://mods/init.gd").new()
 
@@ -50,7 +50,7 @@ var partner
 #var clothes = load("res://files/scripts/clothes.gd").costumelist()
 #var underwear = load("res://files/scripts/clothes.gd").underwearlist()
 
-var spritedict = characters.sprites
+var spritedict = gallery.sprites
 var musicdict = {
 combat1 = load("res://files/music/Corruption.ogg"),
 combat2 = load("res://files/music/Crossing_the_Chasm.ogg"),
@@ -180,8 +180,6 @@ func newslave(race, age, sex, origins = 'slave'):
 	return constructor.newslave(race, age, sex, origins)
 
 func slaves_set(slave):
-	slave.stats.health_max = 35 + slave.stats.end_cur*20
-	slave.health = 100
 	slave.originstrue = slave.origins
 	slave.gear.costume = 'clothcommon'
 	slave.gear.underwear = 'underwearplain'
@@ -1109,9 +1107,9 @@ class slave:
 			price = price*1.2
 		if sex == 'futanari':
 			price = price*1.1
-		for i in traits.values():
-			if i.tags.find('detrimental') >= 0:
-				price = price*0.80
+#		for i in traits.values():
+#			if i.tags.find('detrimental') >= 0:
+#				price = price*0.80
 		if race == 'Elf' || race == 'Dark Elf' || race == 'Orc' || race == 'Goblin'||race == 'Gnome':
 			price = price*1.5
 		elif race == 'Drow'|| race == 'Demon' || race == 'Seraph':
@@ -1540,6 +1538,8 @@ func weightedrandom(array): #array must be made out of dictionaries with {value 
 				return i[0]
 			counter += i[1]
 
+func randomfromarray(array):
+	return array[rand_range(0,array.size())]
 
 func buildportrait(node, slave):
 	var array = ['race','hairlength','ears'] #add more pieces of layers in order they should be added

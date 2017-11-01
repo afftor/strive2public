@@ -38,7 +38,7 @@ static func newslave(race, age, sex, origins = 'slave'):
 	else:
 		slave.mindage = age
 	slave.sex = sex
-	if slave.sex == 'random': slave.sex = globals.assets.getRandomSex()
+	if slave.sex == 'random': slave.sex = globals.assets.getrandomsex()
 	globals.assets.getRandomName(slave)
 	slave.stats = {
 		str_cur = 0,

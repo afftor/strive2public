@@ -1,0 +1,510 @@
+[gd_scene load_steps=10 format=1]
+
+[ext_resource path="res://files/theme.tres" type="Theme" id=1]
+[ext_resource path="res://files/scripts/newsexsystem.gd" type="Script" id=2]
+[ext_resource path="res://files/buttons/Panel.png" type="Texture" id=3]
+
+[sub_resource type="StyleBoxTexture" id=1]
+
+content_margin/left = -1.0
+content_margin/right = -1.0
+content_margin/top = -1.0
+content_margin/bottom = -1.0
+texture = ExtResource( 3 )
+margin/left = 15.0
+margin/right = 15.0
+margin/top = 10.0
+margin/bottom = 10.0
+expand_margin/left = 0.0
+expand_margin/right = 0.0
+expand_margin/top = 0.0
+expand_margin/bottom = 0.0
+draw_center = true
+
+[sub_resource type="StyleBoxTexture" id=2]
+
+content_margin/left = -1.0
+content_margin/right = -1.0
+content_margin/top = -1.0
+content_margin/bottom = -1.0
+margin/left = 0.0
+margin/right = 0.0
+margin/top = 0.0
+margin/bottom = 0.0
+expand_margin/left = 0.0
+expand_margin/right = 0.0
+expand_margin/top = 0.0
+expand_margin/bottom = 0.0
+draw_center = true
+
+[sub_resource type="StyleBoxTexture" id=3]
+
+content_margin/left = -1.0
+content_margin/right = -1.0
+content_margin/top = -1.0
+content_margin/bottom = -1.0
+margin/left = 0.0
+margin/right = 0.0
+margin/top = 0.0
+margin/bottom = 0.0
+expand_margin/left = 0.0
+expand_margin/right = 0.0
+expand_margin/top = 0.0
+expand_margin/bottom = 0.0
+draw_center = true
+
+[sub_resource type="StyleBoxTexture" id=4]
+
+content_margin/left = -1.0
+content_margin/right = -1.0
+content_margin/top = -1.0
+content_margin/bottom = -1.0
+margin/left = 0.0
+margin/right = 0.0
+margin/top = 0.0
+margin/bottom = 0.0
+expand_margin/left = 0.0
+expand_margin/right = 0.0
+expand_margin/top = 0.0
+expand_margin/bottom = 0.0
+draw_center = true
+
+[sub_resource type="StyleBoxTexture" id=5]
+
+content_margin/left = -1.0
+content_margin/right = -1.0
+content_margin/top = -1.0
+content_margin/bottom = -1.0
+margin/left = 0.0
+margin/right = 0.0
+margin/top = 0.0
+margin/bottom = 0.0
+expand_margin/left = 0.0
+expand_margin/right = 0.0
+expand_margin/top = 0.0
+expand_margin/bottom = 0.0
+draw_center = true
+
+[sub_resource type="StyleBoxTexture" id=6]
+
+content_margin/left = -1.0
+content_margin/right = -1.0
+content_margin/top = -1.0
+content_margin/bottom = -1.0
+margin/left = 0.0
+margin/right = 0.0
+margin/top = 0.0
+margin/bottom = 0.0
+expand_margin/left = 0.0
+expand_margin/right = 0.0
+expand_margin/top = 0.0
+expand_margin/bottom = 0.0
+draw_center = true
+
+[node name="Control" type="Control"]
+
+anchor/right = 1
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+theme/theme = ExtResource( 1 )
+margin/left = 0.0
+margin/top = 0.0
+margin/right = -5.0
+margin/bottom = -3.0
+script/script = ExtResource( 2 )
+
+[node name="Panel" type="Panel" parent="."]
+
+anchor/right = 1
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 15.0
+margin/top = 10.0
+margin/right = 16.0
+margin/bottom = 26.0
+
+[node name="sceneeffects" type="RichTextLabel" parent="Panel"]
+
+anchor/left = 1
+anchor/right = 1
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 264.0
+margin/top = 30.0
+margin/right = 21.0
+margin/bottom = 47.0
+bbcode/enabled = true
+bbcode/bbcode = ""
+visible_characters = -1
+
+[node name="sceneeffects1" type="RichTextLabel" parent="Panel"]
+
+anchor/top = 1
+anchor/right = 1
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 14.0
+margin/top = 115.0
+margin/right = 160.0
+margin/bottom = 17.0
+bbcode/enabled = true
+bbcode/bbcode = ""
+visible_characters = -1
+
+[node name="GridContainer" type="ScrollContainer" parent="Panel"]
+
+anchor/right = 1
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = false
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 19.0
+margin/top = 61.0
+margin/right = 256.0
+margin/bottom = 347.0
+scroll/horizontal = true
+scroll/vertical = true
+
+[node name="GridContainer" type="GridContainer" parent="Panel/GridContainer"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = false
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 0.0
+margin/bottom = 0.0
+columns = 3
+
+[node name="Button" type="Button" parent="Panel/GridContainer/GridContainer"]
+
+visibility/visible = false
+rect/min_size = Vector2( 200, 20 )
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 200.0
+margin/bottom = 39.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Caress"
+flat = false
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Panel"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = false
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 17.0
+margin/top = 19.0
+margin/right = 655.0
+margin/bottom = 59.0
+alignment = 0
+
+[node name="caress" type="Button" parent="Panel/HBoxContainer"]
+
+rect/min_size = Vector2( 100, 0 )
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 100.0
+margin/bottom = 40.0
+toggle_mode = true
+enabled_focus_mode = 2
+shortcut = null
+text = "Caress"
+flat = false
+
+[node name="fucking" type="Button" parent="Panel/HBoxContainer"]
+
+rect/min_size = Vector2( 100, 0 )
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 104.0
+margin/top = 0.0
+margin/right = 204.0
+margin/bottom = 40.0
+toggle_mode = true
+enabled_focus_mode = 2
+shortcut = null
+text = "Fucking"
+flat = false
+
+[node name="tools" type="Button" parent="Panel/HBoxContainer"]
+
+rect/min_size = Vector2( 100, 0 )
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 208.0
+margin/top = 0.0
+margin/right = 308.0
+margin/bottom = 40.0
+toggle_mode = true
+enabled_focus_mode = 2
+shortcut = null
+text = "Tools"
+flat = false
+
+[node name="SM" type="Button" parent="Panel/HBoxContainer"]
+
+rect/min_size = Vector2( 100, 0 )
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 312.0
+margin/top = 0.0
+margin/right = 412.0
+margin/bottom = 40.0
+toggle_mode = true
+enabled_focus_mode = 2
+shortcut = null
+text = "SM"
+flat = false
+
+[node name="humiliation" type="Button" parent="Panel/HBoxContainer"]
+
+rect/min_size = Vector2( 100, 0 )
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 416.0
+margin/top = 0.0
+margin/right = 525.0
+margin/bottom = 40.0
+toggle_mode = true
+enabled_focus_mode = 2
+shortcut = null
+text = "Humiliation"
+flat = false
+
+[node name="other" type="Button" parent="Panel/HBoxContainer"]
+
+rect/min_size = Vector2( 100, 0 )
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 529.0
+margin/top = 0.0
+margin/right = 629.0
+margin/bottom = 40.0
+toggle_mode = true
+enabled_focus_mode = 2
+shortcut = null
+text = "Other"
+flat = false
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel"]
+
+editor/display_folded = true
+anchor/top = 3
+anchor/bottom = 3
+focus/ignore_mouse = false
+focus/stop_mouse = false
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 91.0
+margin/top = 45.5
+margin/right = 550.0
+margin/bottom = -165.5
+custom_constants/separation = -1
+alignment = 0
+
+[node name="Panel" type="Panel" parent="Panel/VBoxContainer"]
+
+visibility/visible = false
+rect/min_size = Vector2( 0, 35 )
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 459.0
+margin/bottom = 35.0
+custom_styles/panel = SubResource( 1 )
+
+[node name="name" type="Label" parent="Panel/VBoxContainer/Panel"]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 9.0
+margin/top = 8.0
+margin/right = 62.0
+margin/bottom = 24.0
+text = "Name"
+clip_text = true
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="sex" type="Label" parent="Panel/VBoxContainer/Panel"]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 69.0
+margin/top = 8.0
+margin/right = 109.0
+margin/bottom = 24.0
+text = "Sex"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="sens" type="Label" parent="Panel/VBoxContainer/Panel"]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 209.0
+margin/top = 8.0
+margin/right = 252.0
+margin/bottom = 24.0
+text = "Climax"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="lube" type="Label" parent="Panel/VBoxContainer/Panel"]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 279.0
+margin/top = 8.0
+margin/right = 319.0
+margin/bottom = 24.0
+text = "Lube"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="lust" type="Label" parent="Panel/VBoxContainer/Panel"]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 339.0
+margin/top = 8.0
+margin/right = 379.0
+margin/bottom = 24.0
+text = "Lust"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="mood" type="Label" parent="Panel/VBoxContainer/Panel"]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 399.0
+margin/top = 8.0
+margin/right = 439.0
+margin/bottom = 24.0
+text = "Mood"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="give" type="Button" parent="Panel/VBoxContainer/Panel"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 106.0
+margin/top = 2.0
+margin/right = 148.0
+margin/bottom = 32.0
+custom_styles/hover = SubResource( 2 )
+custom_styles/pressed = SubResource( 3 )
+custom_styles/focus = SubResource( 4 )
+custom_styles/disabled = SubResource( 5 )
+custom_styles/normal = SubResource( 6 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+custom_colors/font_color_hover = Color( 0.557155, 0.149261, 0.570313, 1 )
+custom_colors/font_color_pressed = Color( 0.171875, 1, 0, 1 )
+toggle_mode = true
+enabled_focus_mode = 2
+shortcut = null
+text = "X"
+flat = false
+
+[node name="take" type="Button" parent="Panel/VBoxContainer/Panel"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 152.0
+margin/top = 2.0
+margin/right = 194.0
+margin/bottom = 32.0
+custom_styles/hover = SubResource( 2 )
+custom_styles/pressed = SubResource( 3 )
+custom_styles/focus = SubResource( 4 )
+custom_styles/disabled = SubResource( 5 )
+custom_styles/normal = SubResource( 6 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+custom_colors/font_color_hover = Color( 0.557155, 0.149261, 0.570313, 1 )
+custom_colors/font_color_pressed = Color( 0.171875, 1, 0, 1 )
+toggle_mode = true
+enabled_focus_mode = 2
+shortcut = null
+text = "X"
+flat = false
+
+[node name="Button" type="Button" parent="Panel"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 635.0
+margin/top = 505.0
+margin/right = 791.0
+margin/bottom = 544.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Stop"
+flat = false
+
+

@@ -190,7 +190,7 @@ func questarray():
 	code = '014',
 	shortdescription = "A rich kid desires a new toy.",
 	description = "A fairly simple note requests a $race girl from a rich and well-bred background as a birthday present for their son. Hastily scribbled in one corner of the paper you can see 'MUST HAVE BIG BOOBS' in another style of handwriting. ",
-	reqs = [['obed','gte', 90], ['sex','eq', 'female'],['tits.size','gte',3]],
+	reqs = [['obed','gte', 90], ['sex','eq', 'female'],['titssize','gte',3]],
 	reqstemp = [['race','eq',commonrace()]],
 	time = round(rand_range(6,8)),
 	reward = round(rand_range(50,60))*10,

@@ -356,8 +356,6 @@ __meta__ = {
 
 [node name="stats" type="Tabs" parent="."]
 
-editor/display_folded = true
-visibility/visible = false
 anchor/right = 1
 anchor/bottom = 1
 focus/ignore_mouse = false
@@ -372,7 +370,6 @@ script/script = ExtResource( 3 )
 
 [node name="statspanel" parent="stats" instance=ExtResource( 4 )]
 
-editor/display_folded = true
 anchor/left = 0
 anchor/bottom = 0
 margin/left = -15.0
@@ -396,24 +393,24 @@ margin/bottom = 65.0
 
 [node name="sagi" parent="stats/statspanel"]
 
-margin/left = 108.0
-margin/top = 66.0
-margin/right = 81.0
-margin/bottom = 94.0
+margin/left = 108.5
+margin/top = 64.0
+margin/right = 81.5
+margin/bottom = 92.0
 
 [node name="smaf" parent="stats/statspanel"]
 
-margin/left = 108.0
-margin/top = 92.0
-margin/right = 81.0
-margin/bottom = 120.0
+margin/left = 108.5
+margin/top = 91.0
+margin/right = 81.5
+margin/bottom = 119.0
 
 [node name="send" parent="stats/statspanel"]
 
-margin/left = 108.0
-margin/top = 117.0
-margin/right = 81.0
-margin/bottom = 145.0
+margin/left = 108.5
+margin/top = 118.0
+margin/right = 81.5
+margin/bottom = 146.0
 
 [node name="Label1" parent="stats/statspanel"]
 
@@ -424,31 +421,31 @@ margin/bottom = 31.0
 
 [node name="cour" parent="stats/statspanel"]
 
-margin/left = -53.0
+margin/left = -53.5
 margin/top = 37.0
-margin/right = -80.0
+margin/right = -80.5
 margin/bottom = 65.0
 
 [node name="conf" parent="stats/statspanel"]
 
-margin/left = -54.0
-margin/top = 66.0
-margin/right = -81.0
-margin/bottom = 94.0
+margin/left = -53.5
+margin/top = 64.0
+margin/right = -80.5
+margin/bottom = 92.0
 
 [node name="wit" parent="stats/statspanel"]
 
-margin/left = -54.0
-margin/top = 92.0
-margin/right = -81.0
-margin/bottom = 120.0
+margin/left = -53.5
+margin/top = 91.0
+margin/right = -80.5
+margin/bottom = 119.0
 
 [node name="charm" parent="stats/statspanel"]
 
-margin/left = -54.0
-margin/top = 117.0
-margin/right = -81.0
-margin/bottom = 145.0
+margin/left = -53.5
+margin/top = 118.0
+margin/right = -80.5
+margin/bottom = 146.0
 
 [node name="leveltext" parent="stats/statspanel"]
 
@@ -1314,7 +1311,6 @@ caret/caret_blink_speed = 0.65
 
 [node name="inspect" type="Tabs" parent="."]
 
-editor/display_folded = true
 visibility/visible = false
 anchor/right = 1
 anchor/bottom = 1
@@ -1512,6 +1508,8 @@ stretch_mode = 6
 
 [node name="customization" type="Tabs" parent="."]
 
+editor/display_folded = true
+visibility/visible = false
 anchor/right = 1
 anchor/bottom = 1
 focus/ignore_mouse = false
@@ -2761,6 +2759,7 @@ max_lines_visible = -1
 
 [node name="tattoopanel" type="PopupPanel" parent="customization"]
 
+visibility/visible = false
 anchor/left = 3
 anchor/top = 3
 anchor/right = 3

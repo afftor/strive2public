@@ -139,7 +139,7 @@ func _on_new_slave_button_pressed():
 	var slave = globals.newslave(testslaverace[rand_range(0,testslaverace.size())], testslaveage, testslavegender, testslaveorigin[rand_range(0,testslaveorigin.size())])
 	slave.obed += 200
 	slave.loyal += 100
-	slave.xp += 0
+	slave.xp += 9990
 	slave.sexuals.affection = 200
 	#slave.sexuals.unlocked = true
 	#for i in get_node("MainScreen/slave_tab/sexual").sexbuttons:
@@ -189,9 +189,9 @@ func _on_new_slave_button_pressed():
 	globals.state.mansionupgrades.mansionalchemy = 1
 	globals.state.mansionupgrades.mansionparlor = 1
 	globals.state.backpack.stackables.bandage = 1
-	#for i in globals.characters.characters:
-	#	slave = globals.characters.create(i)
-	#	globals.slaves = slave
+	for i in globals.characters.characters:
+		slave = globals.characters.create(i)
+		globals.slaves = slave
 
 func mansion():
 	_on_mansion_pressed()
@@ -1377,6 +1377,10 @@ func _on_music_finished():
 		music_set("mansion")
 
 
+
+func _on_mansionbutton_pressed():
+	_on_mansion_pressed()
+	_on_buttonpanel_mouse_enter()
 
 func _on_mansion_pressed():
 	var textnode = get_node("MainScreen/mansion/mansioninfo")
@@ -3119,3 +3123,4 @@ func imageselect(mode = 'portrait', slave = globals.currentslave):
 		get_node("imageselect").chooseimage()
 	else:
 		popup("Sorry, this option can't be utilized in HTML5 Version. ")
+

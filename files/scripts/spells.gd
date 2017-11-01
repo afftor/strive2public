@@ -219,7 +219,7 @@ func mindreadeffect():
 	if slave.traits.size() >= 0:
 		text += '\n$name has corresponding traits:'
 		for i in slave.traits:
-			text += ' ' +i.name
+			text += ' ' + i
 		text += '.'
 	if slave.preg.duration > 0:
 		text += "\nPregnancy: " + str(slave.preg.duration)

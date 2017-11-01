@@ -1929,7 +1929,7 @@ func brothel(slave = null):
 	maintext.set_bbcode(text)
 	var array = [{name = 'Return', function = 'backstreets'}]
 	if globals.state.sidequests.brothel == 0:
-		array.insert(0,{name = 'Ask about letting your servants work here', function = 'brothelquest'})
+		array.insert(0,{name = 'Request your servants work here', function = 'brothelquest'})
 	elif globals.state.sidequests.brothel == 1:
 		if slave == null:
 			array.insert(0,{name = 'Offer slave for quest', function = 'selectslavebrothelquest'})
@@ -2035,7 +2035,7 @@ var captureeselected
 func selectcaptured(slave):
 	captureeselected = slave
 	get_node("playergroupdetails/capturedslave").popup()
-	get_node("playergroupdetails/capturedslave/RichTextLabel").set_bbcode(slave.description_small(true))
+	get_node("playergroupdetails/capturedslave/RichTextLabel").set_bbcode(slave.description(true))
 	get_node("playergroupdetails/capturedslave/capturedteleport").set_disabled(!(globals.state.backpack.stackables.has("teleportseal") && globals.state.backpack.stackables.teleportseal >= 1))
 	
 	get_node("playergroupdetails/capturedslave/capturedmindread").set_disabled(globals.resources.mana < globals.spelldict.mindread.manacost)

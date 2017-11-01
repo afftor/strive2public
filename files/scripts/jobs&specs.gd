@@ -436,7 +436,8 @@ func multitem(slave):
 	var itemtext = ''
 	var array2 = []
 	for i in ingredlist:
-		array.append(i)
+		if !(i in ['fluidsubstanceing','taintedessenceing'] && globals.state.mainquest < 17):
+			array.append(i)
 	while count < array.size():
 		array.remove(rand_range(0,array.size()))
 	for i in array:
@@ -483,14 +484,17 @@ func getspec(slave):
 func ingreditem(slave):
 	var ingnumber = 1
 	var ingrange = [1,3]
-	var inglist = ingredlist
 	var finalitems = {}
 	var item
 	var text = ''
 	var temptext = ''
+	var itemarray = []
+	for i in ingredlist:
+		if !(i in ['fluidsubstanceing','taintedessenceing'] && globals.state.mainquest < 17):
+			itemarray.append(i)
 	while ingnumber >= 1:
 		ingnumber -= 1
-		item = ingredlist[rand_range(0,ingredlist.size())]
+		item = itemarray[rand_range(0,itemarray.size())]
 		finalitems[item] = round(rand_range(ingrange[0], ingrange[1]))
 	for i in finalitems:
 		item = globals.itemdict[i]
@@ -826,7 +830,7 @@ func artistwimborn(slave):
 	var text
 	var gold
 	text ="$name worked in town as a public entertainer.\n"
-	gold = rand_range(1,5) + slave.cour/4 + slave.charm/3 + slave.sagi*15 + slave.beauty/3.5
+	gold = rand_range(1,5) + slave.cour/7 + slave.charm/4 + slave.sagi*20 + slave.beauty/3
 	if slave.race == 'Nereid':
 		gold = gold*1.25
 	if slave.traits.has('Pretty voice') == true:

@@ -65,6 +65,7 @@ func newslave(race, age, sex, origins = 'slave'):
 		globals.currentslave = slave
 		if globals.evaluate(globals.jobs.specs[spec].reqs) == true:
 			slave.spec = spec
+	slave.health = 100
 	return slave
 
 func changerace(slave, race = null):

@@ -216,7 +216,7 @@ func forestfind(stage = 0):
 	var age = ['child','teen']
 	var origins = ['slave','poor','commoner']
 	if stage == 0:
-		slave2 = globals.slavegen.newslave(globals.wimbornraces[rand_range(0,globals.wimbornraces.size())], age[rand_range(0, age.size())], 'random', origins[rand_range(0, origins.size())])
+		slave2 = globals.newslave(globals.wimbornraces[rand_range(0,globals.wimbornraces.size())], age[rand_range(0, age.size())], 'random', origins[rand_range(0, origins.size())])
 		showntext = slave.dictionary(eventstext[currentevent][stage])
 		showntext += slave2.description_small() + " What would you like to do with $him?"
 		tempbuttons = [[slave2.dictionary('Imprison the $child'), 1], [slave2.dictionary('Return $him to town (-25 energy)'),2], [slave2.dictionary("Don't bother with $him"), 3]]
@@ -469,7 +469,7 @@ func escapedslave(stage = 0):
 	var age = ['adult','teen']
 	var origins = ['slave','poor']
 	if stage == 0:
-		slave2 = globals.slavegen.newslave(globals.wimbornraces[rand_range(0,globals.wimbornraces.size())], age[rand_range(0, age.size())], 'random', origins[rand_range(0, origins.size())])
+		slave2 = globals.newslave(globals.wimbornraces[rand_range(0,globals.wimbornraces.size())], age[rand_range(0, age.size())], 'random', origins[rand_range(0, origins.size())])
 		tempbuttons = [[slave2.dictionary("Keep $him to yourself"),1],[slave2.dictionary("Return $him to the city (-25 energy)"),2], ["Ignore", 3]]
 	if stage == 1:
 		globals.slaves = slave2
@@ -525,7 +525,7 @@ func devotedevent(stage = 0):
 	var origins = ['slave','poor', 'commoner']
 	showntext = slave.dictionary(eventstext[currentevent][stage])
 	if stage == 0:
-		slave2 = globals.slavegen.newslave(globals.wimbornraces[rand_range(0,globals.wimbornraces.size())], 'random', 'random', origins[rand_range(0, origins.size())])
+		slave2 = globals.newslave(globals.wimbornraces[rand_range(0,globals.wimbornraces.size())], 'random', 'random', origins[rand_range(0, origins.size())])
 		showntext += '\n' + slave2.description_small()
 		tempbuttons = [["Accept",1],["Reject",2]]
 	if stage == 1:

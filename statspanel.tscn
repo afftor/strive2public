@@ -84,7 +84,6 @@ max_lines_visible = -1
 
 [node name="sstr" type="TextureFrame" parent="."]
 
-editor/display_folded = true
 anchor/left = 3
 anchor/right = 3
 focus/ignore_mouse = true
@@ -143,7 +142,6 @@ flat = false
 
 [node name="sagi" type="TextureFrame" parent="."]
 
-editor/display_folded = true
 anchor/left = 3
 anchor/right = 3
 focus/ignore_mouse = true
@@ -202,7 +200,6 @@ flat = false
 
 [node name="smaf" type="TextureFrame" parent="."]
 
-editor/display_folded = true
 anchor/left = 3
 anchor/right = 3
 focus/ignore_mouse = true
@@ -261,7 +258,6 @@ flat = false
 
 [node name="send" type="TextureFrame" parent="."]
 
-editor/display_folded = true
 anchor/left = 3
 anchor/right = 3
 focus/ignore_mouse = true
@@ -338,7 +334,6 @@ max_lines_visible = -1
 
 [node name="cour" type="TextureFrame" parent="."]
 
-editor/display_folded = true
 anchor/left = 3
 anchor/right = 3
 focus/ignore_mouse = true
@@ -379,7 +374,6 @@ margin/bottom = 27.0
 
 [node name="conf" type="TextureFrame" parent="."]
 
-editor/display_folded = true
 anchor/left = 3
 anchor/right = 3
 focus/ignore_mouse = true
@@ -420,7 +414,6 @@ margin/bottom = 27.0
 
 [node name="wit" type="TextureFrame" parent="."]
 
-editor/display_folded = true
 anchor/left = 3
 anchor/right = 3
 focus/ignore_mouse = true
@@ -428,9 +421,9 @@ focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
 margin/left = -13.0
-margin/top = 98.0
+margin/top = 101.0
 margin/right = -40.0
-margin/bottom = 126.0
+margin/bottom = 129.0
 texture = ExtResource( 10 )
 stretch_mode = 0
 
@@ -461,7 +454,6 @@ margin/bottom = 27.0
 
 [node name="charm" type="TextureFrame" parent="."]
 
-editor/display_folded = true
 anchor/left = 3
 anchor/right = 3
 focus/ignore_mouse = true
@@ -469,9 +461,9 @@ focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
 margin/left = -13.0
-margin/top = 123.0
+margin/top = 130.0
 margin/right = -40.0
-margin/bottom = 151.0
+margin/bottom = 158.0
 texture = ExtResource( 11 )
 stretch_mode = 0
 
