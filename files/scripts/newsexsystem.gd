@@ -1,10 +1,13 @@
 extends Node
 
+var parser = load("res://files/scripts/sexdescriptions.gd").new()
+
 var participants = []
 var givers = []
 var takers = []
-var turns
+var turns = 0
 var actions = []
+var ongoingactions = []
 
 var selectedcategory = 'caress'
 var categories = {caress = [], fucking = [], tools = [], SM = [], humiliation = [], other = []}
@@ -19,10 +22,12 @@ func _ready():
 	
 	turns = 20
 	var i = 5
-	while i > 0 :
+	while i > 0:
 		i -= 1
-		var slave = globals.newslave(getrandomfromarray(globals.allracesarray), 'random', 'female')
+		var slave = globals.newslave(globals.allracesarray[rand_range(0,globals.allracesarray.size())], 'random', 'female')
 		var newmember = member.new()
+		newmember.loyalty = slave.loyal
+		newmember.submission = slave.obed
 		newmember.person = slave
 		newmember.sex = slave.sex
 		newmember.name = slave.name_short()
@@ -54,6 +59,7 @@ func rebuildparticipantslist():
 		elif takers.find(i) >= 0:
 			newnode.get_node("take").set_pressed(true)
 		newnode.set_meta("slave", i)
+		newnode.get_node("sex").set_text(i.person.sex)
 		newnode.get_node("give").connect("pressed",self,'switchsides',[newnode, 'give'])
 		newnode.get_node("take").connect("pressed",self,'switchsides',[newnode, 'take'])
 	var text = ''
@@ -67,18 +73,25 @@ func rebuildparticipantslist():
 		newnode.set_hidden(false)
 		newnode.set_text(i.getname())
 		newnode.connect("pressed",self,'startscene',[i])
+		if i.canlast == true:
+			newnode.get_node("continue").set_hidden(false)
+			newnode.get_node("continue").connect("pressed",self,'startscenecontinue',[i])
+	for i in ongoingactions:
+		text += decoder(i.scene.getongoingname(i.givers,i.takers), i.givers, i.takers) + ' [url='+str(ongoingactions.find(i))+'][Interrupt][/url]\n'
 	for i in givers:
 		text += '[color=yellow]' + i.name + '[/color], '
 	if givers.size() == 0:
 		text += '[...] '
 	text += 'will do it ... to '
-		
 	for i in takers:
 		text += '[color=aqua]' + i.name + '[/color], '
 	if takers.size() == 0:
 		text += "[...]"
 	else:
 		text = text.substr(0, text.length() -2)+ '. '
+	
+	
+	
 	get_node("Panel/sceneeffects1").set_bbcode(text)
 
 
@@ -96,15 +109,55 @@ func switchsides(panel, side):
 		takers.append(slave)
 	rebuildparticipantslist()
 
-func startscene(scenescript):
+func startscene(scenescript, cont = false):
+	var textdict = {mainevent = '', repeats = '', orgasms = ''}
 	scenescript.givers = givers
 	scenescript.takers = takers
-	var text = decoder(scenescript.initiate())
+	textdict.mainevent = decoder(scenescript.initiate(), givers, takers)
 	if scenescript.has_method('reaction'):
 		for i in takers:
-			text += '\n' + decoder(dictionary(i, scenescript.reaction(i)))
-	get_node("Panel/sceneeffects").set_bbcode(text)
+			textdict.mainevent += '\n' + decoder(parser.dictionary(i, scenescript.reaction(i)), givers, takers)
+	var dict = {scene = scenescript, takers = [] + takers, givers = [] + givers}
+	var sceneexists = false
+	for i in ongoingactions:
+		if i.givers == givers && i.takers == takers && i.scene == scenescript:
+			sceneexists = true
+		else:
+			textdict.repeats += decoder(i.scene.getongoingdescription(givers, takers), i.givers, i.takers) + '\n'
+	textdict.repeats = textdict.repeats.replace("[/color]", "").replace("[color=yellow]", "").replace("[color=aqua]", "")
+	if cont == true && sceneexists == false: 
+		ongoingactions.append(dict)
+		for i in givers:
+			if scenescript.giverpart != '':
+				i[scenescript.giverpart] = scenescript
+		for i in takers:
+			i[scenescript.takerpart] = ongoingactions
+	for i in givers+takers:
+		i.lastaction = dict
+	for i in givers:
+		i.lust += scenescript.givereffects.lust
+		i.sens += scenescript.givereffects.sens
+	for i in takers:
+		i.lust += scenescript.targeteffects.lust
+		i.sens += scenescript.targeteffects.sens
+	for i in participants:
+		if i.sens >= 100:
+			textdict.orgasms += orgasm(i)
+	get_node("Panel/sceneeffects").set_bbcode(textdict.mainevent + "\n\n" + textdict.repeats + "\n\n" + textdict.orgasms)
+	rebuildparticipantslist()
 
+func startscenecontinue(scenescript):
+	startscene(scenescript, true)
+
+func orgasm(member):
+	member.sens = member.sens/3
+	var text = '\n'
+	if member.person.penis == 'none':
+		text += "[color=#ff5df8]" + member.name + " reaches climax, shaking from pleasure... [/color]"
+	else:
+		text +=  "[color=#ff5df8]" + member.name + "'s semen pours onto the floor... [/color]"
+	member.orgasms += 1
+	return text
 
 class member:
 	var name
@@ -113,125 +166,42 @@ class member:
 	var submission
 	var loyalty
 	var lust = 0
-	var sens
+	var sens = 0
 	var lube = 0
 	var role
 	var sex
+	var orgasms = 0
+	var lastaction
 	
 	var energy = 100
 	
 	var knowledge
 	
-	var caress = 0
-	var mouth = 0
-	var boobs = 0
-	var pussy = 0
-	var ass = 0
-	var cock = 0
-	var clit = 0
+	var giving = []
+	var taking = []
 	
-func dictionary(member, text):
-	text = text.replace('[name]', '[color=yellow]' + member.name + '[/color]' if givers.find(member) >= 0 else '[color=aqua]' + member.name + '[/color]')
-	text = text.replace('[his]', 'his' if member.person.sex == 'male' else 'her')
-	text = text.replace('[body]', body(member))
-	return text
-
-
-#For expressions in brackets: 1 refers to givers, 2 refers to takers and checks if groups consist of 1 or more persons to pick up correct references. 
-#[name1] and [name2] build name lists of those parties, while [name] refers to specific person from any side (generally used in reactions)
-#expressions without brackets tend to refer only to specific person and build their description or pronounce parts. [body] will try to add some random adjectives depending on character's traits.
-#[his], [he] etc will be replaced with female pronouns if referred character is not male
-#[his1] can be also replaced with their and will refer to group
-
-func decoder(text):
-	var reg = RegEx.new()
-	text = text.replace('[is1]', is(1)).replace('[is2]',is(2))
-	text = text.replace('[has1]', has(1)).replace('[has2]',has(2))
-	text = text.replace('[name1]', names(1)).replace('[name2]', names(2))
-	text = text.replace('[him1]', him(1)).replace('[him2]', him(2))
-	text = text.replace('[his1]', his(1)).replace('[his2]', his(2))
-	text = text.replace('[%1y]', 'y' if givers.size() == 1 else 'ies').replace('[%2y]', 'y' if takers.size() == 1 else 'ies')
-	text = text.replace('[%1s]', 's' if givers.size() == 1 else '').replace('[%2s]', 's' if takers.size() == 1 else '')
-	text = text.replace('[%1es]', 'es' if givers.size() == 1 else '').replace('[%2es]', 'es' if takers.size() == 1 else '')
+	var vagina
+	var penis
+	var mouth
+	var ass
 	
-	#experimental
-	text = text.replace('[body1]', body(givers[0])).replace('[body2]', body(takers[0]))
-	
-	return text
 
 
-func is(group):
-	group = getgroupfromnumber(group)
-	if group.size() == 1:
-		return 'is'
-	else:
-		return 'are'
-
-func has(group):
-	group = getgroupfromnumber(group)
-	if group.size() == 1:
-		return 'has'
-	else:
-		return 'have'
-
-func his(group):
-	group = getgroupfromnumber(group)
-	if group.size() == 1:
-		if group[0].sex == 'male':
-			return 'his'
-		else:
-			return 'her'
-	else:
-		return 'their'
-
-func him(group):
-	group = getgroupfromnumber(group)
-	if group.size() == 1:
-		if group[0].sex == 'male':
-			return 'him'
-		else:
-			return 'her'
-	else:
-		return 'their'
-
-func names(group):
-	group = getgroupfromnumber(group)
-	var text = ''
-	for i in group:
-		if group == givers:
-			text += '[color=yellow]' + i.name + '[/color]'
-			if i != givers.back() && givers.find(i) != givers.size()-2:
-				text += ', '
-			elif givers.find(i) == givers.size()-2:
-				text += " and "
-		else:
-			text += '[color=aqua]' + i.name + '[/color]'
-			if i != takers.back() && takers.find(i) != takers.size()-2:
-				text += ', '
-			elif takers.find(i) == takers.size()-2:
-				text += " and "
-	#text = text.substr(0, text.length() -2)+ ''
-	return text
+func decoder(text, givers, takers):
+	return parser.decoder(text, givers, takers)
 
 
-func body(member):
-	var array = ['']
-	var person = member.person
-	if person.age == 'child':
-		array += ["small", "petite", "slender", "dainty"]
-	elif person.height in ['shortstack','petite']:
-		array += ["small","petite","shorty"]
-	if person.age in ['adult','teen']:
-		array += ["well-rounded","voluptuous","seductive","curvaceous","shapely"]
-	#add later# array += ["sexy","seductive","lovely","erotic","alluring","captivating","enticing"]
-	
-	return getrandomfromarray(array) + ' body'
+func _on_sceneeffects1_meta_clicked( meta ):
+	stopongoingaction(meta)
 
-func getgroupfromnumber(number):
-	if number == 1:
-		return givers
-	else:
-		return takers
-
-func getrandomfromarray(array):
-	return array[rand_range(0, array.size())]
+func stopongoingaction(meta):
+	var action
+	if typeof(meta) == TYPE_STRING:
+		action = ongoingactions[int(meta)]
+	for i in action.givers:
+		if action.scene.giverpart != '':
+			i[action.scene.giverpart] = null
+	for i in action.takers:
+		i[action.scene.takerpart] = null
+	ongoingactions.erase(action)
+	rebuildparticipantslist()

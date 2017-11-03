@@ -532,7 +532,7 @@ func _on_end_pressed():
 				slave.energy += rand_range(25,45)+ slave.stats.end_cur*6
 				slave.sexuals.affection += round(rand_range(1,2))
 				if slave.loyal > 30:
-					slave.stress += -(slave.loyal/7)
+					slave.stress -= slave.loyal/7
 				if slave.lust > 40 && slave.sexuals.unlocked == true && slave.pussy.virgin == false && slave.tags.find('nosex') < 0:
 					text2.set_bbcode(text2.get_bbcode() + slave.dictionary('$name went down on you being unable to calm $his lust.\n'))
 					slave.lust = -rand_range(10,15)

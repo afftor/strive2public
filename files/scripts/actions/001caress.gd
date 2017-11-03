@@ -1,29 +1,24 @@
 extends Node
 
 var category = 'caress'
-var takers
+var code = 'caress'
 var givers
-var slave
-
-
+var takers
+var canlast = false
+var givereffects = {lust = 50, sens = 0}
+var targeteffects = {lust = 50, sens = 50}
 
 func getname():
 	return "Caress"
+
+func getongoingname(givers, takers):
+	return "[name1] stroking [name2] bod[%2y]."
 
 func requirements():
 	var valid = true
 	if takers.size() < 1 || givers.size() < 1:
 		valid = false
 	return valid
-
-func effect():
-	var raweffect = 50
-	for i in givers + takers:
-		i.lust += raweffect
-		i.caress += raweffect
-		i.boobs += raweffect
-		if givers.size()+takers.size() == 2:
-			i.mouth += raweffect
 
 
 
@@ -39,7 +34,7 @@ func initiate():
 
 func reaction(member):
 	var text = ''
-	var pleasure = member.mouth + member.caress + member.boobs
+	var pleasure = member.sens
 	if member.energy == 0:
 		text = "[name] lies unconscious, trembling slightly."
 	elif pleasure < 100:

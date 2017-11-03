@@ -138,7 +138,7 @@ focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
-margin/left = 264.0
+margin/left = 376.0
 margin/top = 30.0
 margin/right = 21.0
 margin/bottom = 47.0
@@ -157,7 +157,7 @@ size_flags/horizontal = 2
 size_flags/vertical = 2
 margin/left = 14.0
 margin/top = 115.0
-margin/right = 160.0
+margin/right = 443.0
 margin/bottom = 17.0
 bbcode/enabled = true
 bbcode/bbcode = ""
@@ -206,6 +206,24 @@ toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
 text = "Caress"
+flat = false
+
+[node name="continue" type="Button" parent="Panel/GridContainer/GridContainer/Button"]
+
+visibility/visible = false
+hint/tooltip = "continuous"
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 162.0
+margin/top = 0.0
+margin/right = 202.0
+margin/bottom = 39.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "∞"
 flat = false
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Panel"]
@@ -506,5 +524,7 @@ enabled_focus_mode = 2
 shortcut = null
 text = "Stop"
 flat = false
+
+[connection signal="meta_clicked" from="Panel/sceneeffects1" to="." method="_on_sceneeffects1_meta_clicked"]
 
 
