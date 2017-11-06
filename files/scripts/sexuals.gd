@@ -159,9 +159,9 @@ func updateinfo():
 	if slave.obed < 50:
 		text = text + "\n$name's poor behavior makes cooperation unlikable. "
 	
-	if slave.dom < 40:
+	if slave.asser < 40:
 		text += "\n$name acts fairly timid and expects you to take intiative and ready to serve, rather than being served. "
-	elif slave.dom > 60:
+	elif slave.asser > 60:
 		text += "\n$name acts more assertive towards you and seemingly finds more pleasure in being served, rather than serving $himself. "
 	
 	text += "\nChosen partner: "
@@ -246,13 +246,13 @@ func _on_confirmbutton_pressed():
 			difficulty += 10
 		if (slave.relatives.father == 0 || slave.relatives.mother == 0):
 			difficulty += 10
-		if action.tags.find('sub') >= 0 && slave.dom > 60:
+		if action.tags.find('sub') >= 0 && slave.asser > 60:
 			difficulty += 10
-		elif action.tags.find('sub') >= 0 && slave.dom < 40:
+		elif action.tags.find('sub') >= 0 && slave.asser < 40:
 			difficulty -= 15
-		elif action.tags.find('dom') >= 0 && slave.dom < 40:
+		elif action.tags.find('dom') >= 0 && slave.asser < 40:
 			difficulty += 10
-		elif action.tags.find('dom') >= 0 && slave.dom > 60:
+		elif action.tags.find('dom') >= 0 && slave.asser > 60:
 			difficulty -= 10
 		difficulty -= slave.lust/5 + slave.sexuals.actions.size()
 		difficulty += max(80-slave.obed, 0) + max(15-slave.loyal, 0)
@@ -289,6 +289,7 @@ var nakedspritesdict = {
 	Maple = {cons = 'fairynaked', rape = 'fairynaked', clothcons = 'fairy', clothrape = 'fairy'},
 	Yris = {cons = 'yrisnormalnaked', rape = 'yrisshocknaked', clothcons = 'yrisnormal', clothrape = 'yrisshock'},
 	Ayneris = {cons = 'aynerisneutralnaked', rape = 'aynerisangrynaked', clothcons = 'aynerisneutral', clothrape = 'aynerisangry'},
+	Zoe = {cons = "zoehappynaked", rape = 'zoesadnaked', clothcons = 'zoehappy', clothrape = 'zoesad'},
 	}
 
 func sexinitiate(secondtime = false):
@@ -354,9 +355,9 @@ func sexinitiate(secondtime = false):
 		lusteffect = lusteffect*0.8
 		text += "\n\n[color=yellow]$name experience some discomfort by having sex with someone of $his own gender. [/color]"
 	if action.tags.find('sub') >= 0:
-		slave.dom -= lusteffect/8
+		slave.asser -= lusteffect/8
 	elif action.tags.find('dom') >= 0:
-		slave.dom += lusteffect/8
+		slave.asser += lusteffect/8
 	
 	
 	if rape == true && (slave.traits.find("Likes it rough") >= 0 || slave.traits.find("Sex-crazed") >= 0 || slave.traits.find("Submissive") >= 0|| slave.spec in ['geisha','nympho']):
@@ -539,9 +540,9 @@ func sexinitiate(secondtime = false):
 		var array = []
 		for i in slave.sexuals.actions:
 			if sexbuttons[i].tags.find('cancum') >= 0 &&  globals.evaluate(sexbuttons[i].playerreqs) && globals.evaluate(sexbuttons[i].slavereqs) && ((sexbuttons[i].receive == true && globals.rules.receiving == true) || sexbuttons[i].receive == false ):
-				if sexbuttons[i].tags.find('dom') >= 0 && slave.dom < 40:
+				if sexbuttons[i].tags.find('dom') >= 0 && slave.asser < 40:
 					continue
-				if sexbuttons[i].tags.find("sub") >= 0 && slave.dom > 60:
+				if sexbuttons[i].tags.find("sub") >= 0 && slave.asser > 60:
 					continue
 				if sexbuttons[i].tags.find('degrading') >= 0 && slave.traits.find("Deviant") < 0:
 					continue

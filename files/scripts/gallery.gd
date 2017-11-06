@@ -36,7 +36,7 @@ unlocked = false, name = 'Yris', descript = chardescript.yris, sprite = 'yrisnor
 scenes = [{code = 'yrisblowjob', name = 'First Bet', unlocked = false, text = 'Her bets can be tough'}, {code = 'yrissex', name = 'Second Bet', unlocked = false, text = 'Eventual success'}, {code = 'yrissex2', name = 'Third Bet', unlocked = false, text = 'A Breakthrough'}]
 },
 zoe = {
-unlocked = false, name = 'Zoe', descript = chardescript.zoe, sprite = 'null', naked = 'null', nakedunlocked = false,
+unlocked = false, name = 'Zoe', descript = chardescript.zoe, sprite = 'zoeneutral', naked = 'zoeneutralnaked', nakedunlocked = false,
 scenes = []
 },
 ayneris = {
@@ -268,6 +268,7 @@ traits = ['Ascetic']
 Zoe = {
 basics = ['Beastkin Wolf', 'teen', 'female', 'noble'],
 name = 'Zoe',
+unique = 'Zoe',
 surname = '',
 beautybase = 45,
 haircolor = 'brown',
@@ -286,6 +287,7 @@ height = 'average',
 furcolor = 'gray',
 obed = 90,
 loyal = 25,
+imageportait = 'res://files/images/zoe/zoeportrait.png',
 smaf = 1,
 },
 }
@@ -340,5 +342,11 @@ aynerispissed = load("res://files/images/ayneris/aynerispissed.png"),
 aynerisneutralnaked = load("res://files/images/ayneris/aynerisneutralnaked.png"),
 aynerisangrynaked = load("res://files/images/ayneris/aynerisangrynaked.png"),
 aynerispissednaked = load("res://files/images/ayneris/aynerispissednaked.png"),
+zoeneutral = load("res://files/images/zoe/zoeneutral.png"),
+zoeneutralnaked = load("res://files/images/zoe/zoeneutralnaked.png"),
+zoehappy = load("res://files/images/zoe/zoehappy.png"),
+zoehappynaked = load("res://files/images/zoe/zoehappynaked.png"),
+zoesad = load("res://files/images/zoe/zoesad.png"),
+zoesadnaked = load("res://files/images/zoe/zoesadnaked.png"),
 }
 

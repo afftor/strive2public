@@ -268,10 +268,12 @@ func frostfordcityhall(stage = 0):
 			buttons.append({text = "Fire Theron", function = 'frostfordcityhall', args = 5})
 			buttons.append({text = "Leave", function = 'frostfordcityhall', args = 4})
 		elif globals.state.mainquest == 31:
+			sprite = ['zoeneutral','pos1','opac']
 			text = textnode.MainQuestFrostfordTheronZoeReturn
 			globals.state.mainquest = 32
 		elif globals.state.mainquest == 33:
 			text = textnode.MainQuestFrostfordZoeAliveReturn
+			sprite = ['zoeneutral','pos1','opac']
 			state = false
 			buttons.append({text = "Invite Zoe to join you", function = "frostfordcityhall", args = 7})
 			buttons.append({text = "Say her goodbye", function = "frostfordcityhall", args = 8})
@@ -289,15 +291,18 @@ func frostfordcityhall(stage = 0):
 			globals.state.mainquest = 36
 	elif stage == 1:
 		text = textnode.MainQuestFrostfordCityhallZoe
+		sprite = ['zoeneutral','pos1','opac']
 		state = false
 		globals.charactergallery.zoe.unlocked = true
 		buttons.append({text = 'Accept', function = "frostfordcityhall", args = 2})
 		buttons.append({text = 'Refuse', function = "frostfordcityhall", args = 3})
 	elif stage == 2:
 		text = textnode.MainQuestFrostfordCityhallZoeAccept
+		sprite = ['zoehappy','pos1']
 		globals.state.sidequests.zoe = 1
 	elif stage == 3:
 		text = textnode.MainQuestFrostfordCityhallZoeRefuse
+		sprite = ['zoesad','pos1']
 		globals.state.sidequests.zoe = 100
 	elif stage == 4:
 		globals.get_tree().get_current_scene().close_dialogue()
@@ -314,9 +319,11 @@ func frostfordcityhall(stage = 0):
 		globals.state.mainquest = 36
 	elif stage == 7:
 		text = textnode.MainQuestFrostfordZoeJoin
+		sprite = ['zoehappy','pos1']
 		var slave = globals.characters.create("Zoe")
 		globals.slaves = slave
 	elif stage == 8:
+		sprite = ['zoeneutral','pos1']
 		text = textnode.MainQuestFrostfordZoeLeave
 	globals.get_tree().get_current_scene().get_node("explorationnode").zoneenter('frostford')
 	globals.get_tree().get_current_scene().dialogue(state, self, text, buttons, sprite)
@@ -338,6 +345,7 @@ func frostforddryad():
 			buttons.append({text = "Fight", function = 'dryadfight', args = 0})
 		else:
 			text = textnode.MainQuestFrostfordForestReturnWithZoe
+			sprite = ['zoeneutral','pos1','opac']
 			state = false
 			buttons.append({text = 'Continue', function = "frostforddryadzoe", args = 0})
 	elif globals.state.mainquest == 32:
@@ -346,6 +354,7 @@ func frostforddryad():
 			globals.itemdict.fluidsubstanceing.amount -= 5
 			globals.resources.food -= 500
 			text = textnode.MainQuestFrostfordForestReturnZoe
+			sprite = ['zoeneutral','pos1','opac']
 			buttons.append({text = "Fight", function = 'dryadfight', args = 2})
 			state = false
 		else:
@@ -360,6 +369,7 @@ func frostforddryadzoe(stage = 0):
 	var buttons = []
 	if stage == 0:
 		text = textnode.MainQuestFrostfordForestReturnWithZoe2
+		sprite = ['zoeneutral','pos1','opac']
 		globals.state.mainquest = 31
 	globals.get_tree().get_current_scene().dialogue(state, self, text, buttons, sprite)
 
@@ -464,6 +474,7 @@ func zoesacrifice(slave):
 	if zoealive == true:
 		globals.state.mainquest = 33
 		text += textnode.MainQuestFrostfordZoeAlive
+		sprite = ['zoesad','pos1','opac']
 	else:
 		globals.state.mainquest = 34
 	

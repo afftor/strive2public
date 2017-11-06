@@ -7,6 +7,8 @@ var takers
 var canlast = false
 var givereffects = {lust = 50, sens = 0}
 var targeteffects = {lust = 50, sens = 50}
+var giverpart = ''
+var takerpart = ''
 
 func getname():
 	return "Caress"

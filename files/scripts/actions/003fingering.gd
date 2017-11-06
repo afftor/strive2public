@@ -24,7 +24,7 @@ func requirements():
 	if takers.size() < 1 || givers.size() < 1 || givers.size() + takers.size() > 2:
 		valid = false
 	for i in takers:
-		if i.vagina != null:
+		if i.vagina != null || i.person.vagina == 'none':
 			valid = false
 	return valid
 
@@ -53,12 +53,11 @@ func reaction(member):
 	elif pleasure < 3000:
 		text += "[name] makes a lovely moan of pleasure from the vaginal stimulation."
 	elif pleasure < 6000:
-		text += "[name] rocks %HIS_HER(LOCAL:1)% hips with desire for more vaginal stimulation."
+		text += "[name] rocks [his] hips with desire for more vaginal stimulation."
 	elif pleasure < 10000:
 		text += "[name] cries out in pleasure from the vagina stimulation, and shakes [his] hips for more."
 	else:
 		text += "[name] trembles and moans, completely overwhelmed by the vaginal stimulation."
-
 	
 	return text
 

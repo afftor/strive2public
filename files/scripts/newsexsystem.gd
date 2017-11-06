@@ -15,6 +15,8 @@ var categories = {caress = [], fucking = [], tools = [], SM = [], humiliation = 
 
 func _ready():
 	for i in globals.dir_contents('res://files/scripts/actions'):
+		if i.find('.gd') < 0:
+			continue
 		var newaction = load(i).new()
 		categories[newaction.category].append(newaction)
 	for i in get_node("Panel/HBoxContainer").get_children():
@@ -24,7 +26,7 @@ func _ready():
 	var i = 5
 	while i > 0:
 		i -= 1
-		var slave = globals.newslave(globals.allracesarray[rand_range(0,globals.allracesarray.size())], 'random', 'female')
+		var slave = globals.newslave(globals.allracesarray[rand_range(0,globals.allracesarray.size())], 'random', 'futanari')
 		var newmember = member.new()
 		newmember.loyalty = slave.loyal
 		newmember.submission = slave.obed
@@ -33,8 +35,13 @@ func _ready():
 		newmember.name = slave.name_short()
 		participants.append(newmember)
 	changecategory('caress')
+	clearstate()
 	rebuildparticipantslist()
 
+func clearstate():
+	givers.clear()
+	takers.clear()
+	givers.append(participants[0])
 
 func changecategory(name):
 	selectedcategory = name
@@ -54,6 +61,7 @@ func rebuildparticipantslist():
 		newnode.set_hidden(false)
 		get_node("Panel/VBoxContainer").add_child(newnode)
 		newnode.get_node("name").set_text(i.person.dictionary('$name'))
+		newnode.get_node("name").connect("pressed",self,"slavedescription",[i])
 		if givers.find(i) >= 0:
 			newnode.get_node("give").set_pressed(true)
 		elif takers.find(i) >= 0:
@@ -76,8 +84,6 @@ func rebuildparticipantslist():
 		if i.canlast == true:
 			newnode.get_node("continue").set_hidden(false)
 			newnode.get_node("continue").connect("pressed",self,'startscenecontinue',[i])
-	for i in ongoingactions:
-		text += decoder(i.scene.getongoingname(i.givers,i.takers), i.givers, i.takers) + ' [url='+str(ongoingactions.find(i))+'][Interrupt][/url]\n'
 	for i in givers:
 		text += '[color=yellow]' + i.name + '[/color], '
 	if givers.size() == 0:
@@ -89,11 +95,17 @@ func rebuildparticipantslist():
 		text += "[...]"
 	else:
 		text = text.substr(0, text.length() -2)+ '. '
+	text += "\n\n"
+	for i in ongoingactions:
+		text += decoder(i.scene.getongoingname(i.givers,i.takers), i.givers, i.takers) + ' [url='+str(ongoingactions.find(i))+'][Interrupt][/url]\n'
+	
 	
 	
 	
 	get_node("Panel/sceneeffects1").set_bbcode(text)
 
+func slavedescription(member):
+	get_node("Panel/sceneeffects").set_bbcode(member.person.description())
 
 func switchsides(panel, side):
 	var slave = panel.get_meta('slave')
@@ -125,13 +137,16 @@ func startscene(scenescript, cont = false):
 		else:
 			textdict.repeats += decoder(i.scene.getongoingdescription(givers, takers), i.givers, i.takers) + '\n'
 	textdict.repeats = textdict.repeats.replace("[/color]", "").replace("[color=yellow]", "").replace("[color=aqua]", "")
-	if cont == true && sceneexists == false: 
-		ongoingactions.append(dict)
-		for i in givers:
-			if scenescript.giverpart != '':
-				i[scenescript.giverpart] = scenescript
-		for i in takers:
-			i[scenescript.takerpart] = ongoingactions
+	for i in givers:
+		if scenescript.giverpart != '':
+			if i[scenescript.giverpart] != null:
+				stopongoingaction(i[scenescript.giverpart])
+			i[scenescript.giverpart] = dict
+	for i in takers:
+		if scenescript.takerpart != '':
+			if i[scenescript.takerpart] != null:
+				stopongoingaction(i[scenescript.takerpart])
+			i[scenescript.takerpart] = dict
 	for i in givers+takers:
 		i.lastaction = dict
 	for i in givers:
@@ -143,6 +158,15 @@ func startscene(scenescript, cont = false):
 	for i in participants:
 		if i.sens >= 100:
 			textdict.orgasms += orgasm(i)
+	if cont == true && sceneexists == false: 
+		ongoingactions.append(dict)
+	else:
+		for i in givers:
+			if scenescript.giverpart != '':
+				i[scenescript.giverpart] = null
+		for i in takers:
+			if scenescript.takerpart != '':
+				i[scenescript.takerpart] = null
 	get_node("Panel/sceneeffects").set_bbcode(textdict.mainevent + "\n\n" + textdict.repeats + "\n\n" + textdict.orgasms)
 	rebuildparticipantslist()
 
@@ -151,11 +175,37 @@ func startscenecontinue(scenescript):
 
 func orgasm(member):
 	member.sens = member.sens/3
+	var scene
+	var text2 = ""
 	var text = '\n'
+	var party
 	if member.person.penis == 'none':
-		text += "[color=#ff5df8]" + member.name + " reaches climax, shaking from pleasure... [/color]"
+		text += "[color=#ff5df8]" + member.name + " reaches climax, shaking from pleasure. [/color]"
 	else:
-		text +=  "[color=#ff5df8]" + member.name + "'s semen pours onto the floor... [/color]"
+		if member.penis == null:
+			text += "[color=#ff5df8][color=yellow]" + member.name + "[/color]'s semen pours onto the floor. [/color]"
+		elif member.penis != null:
+			scene = member.penis
+		if scene != null:
+			if scene.givers.find(member) >= 0:
+				party = 'giver'
+			elif scene.takers.find(member) >= 0:
+				party = 'takers'
+			if party == 'giver':
+				text2 = scene.scene.takerpart.replace('anus', 'asshole').replace('vagina','pussy')
+				text = "[color=#ff5df8][name1]'s {^semen:seed:cum} {^pours:flows:pumps} into [name2]'s " + text2 + '. [/color]'
+				if scene.scene.takerpart == 'vagina':
+					for i in scene.takers:
+						globals.impregnation(i.person, member.person)
+				text = decoder(text, [member], scene.takers)
+			else:
+				text2 = scene.scene.giverpart.replace('anus', 'asshole').replace('vagina','pussy')
+				text = "[color=#ff5df8][name2]'s {^semen:seed:cum} {^pours:flows:pumps} into [name1]'s " + text2 + '. [/color]'
+				if scene.scene.giverpart == 'vagina':
+					for i in scene.givers:
+						globals.impregnation(i.person, member.person)
+				text = decoder(text, [member], scene.givers)
+	
 	member.orgasms += 1
 	return text
 
@@ -183,9 +233,7 @@ class member:
 	var vagina
 	var penis
 	var mouth
-	var ass
-	
-
+	var anus
 
 func decoder(text, givers, takers):
 	return parser.decoder(text, givers, takers)
@@ -198,6 +246,8 @@ func stopongoingaction(meta):
 	var action
 	if typeof(meta) == TYPE_STRING:
 		action = ongoingactions[int(meta)]
+	elif typeof(meta) == TYPE_DICTIONARY:
+		action = meta
 	for i in action.givers:
 		if action.scene.giverpart != '':
 			i[action.scene.giverpart] = null
@@ -205,3 +255,9 @@ func stopongoingaction(meta):
 		i[action.scene.takerpart] = null
 	ongoingactions.erase(action)
 	rebuildparticipantslist()
+
+
+
+func _on_passbutton_pressed():
+	clearstate()
+	startscene(categories.other[0])

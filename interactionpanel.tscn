@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=1]
+[gd_scene load_steps=15 format=1]
 
 [ext_resource path="res://files/theme.tres" type="Theme" id=1]
 [ext_resource path="res://files/scripts/newsexsystem.gd" type="Script" id=2]
@@ -101,6 +101,86 @@ expand_margin/top = 0.0
 expand_margin/bottom = 0.0
 draw_center = true
 
+[sub_resource type="StyleBoxTexture" id=7]
+
+content_margin/left = -1.0
+content_margin/right = -1.0
+content_margin/top = -1.0
+content_margin/bottom = -1.0
+margin/left = 0.0
+margin/right = 0.0
+margin/top = 0.0
+margin/bottom = 0.0
+expand_margin/left = 0.0
+expand_margin/right = 0.0
+expand_margin/top = 0.0
+expand_margin/bottom = 0.0
+draw_center = true
+
+[sub_resource type="StyleBoxTexture" id=8]
+
+content_margin/left = -1.0
+content_margin/right = -1.0
+content_margin/top = -1.0
+content_margin/bottom = -1.0
+margin/left = 0.0
+margin/right = 0.0
+margin/top = 0.0
+margin/bottom = 0.0
+expand_margin/left = 0.0
+expand_margin/right = 0.0
+expand_margin/top = 0.0
+expand_margin/bottom = 0.0
+draw_center = true
+
+[sub_resource type="StyleBoxTexture" id=9]
+
+content_margin/left = -1.0
+content_margin/right = -1.0
+content_margin/top = -1.0
+content_margin/bottom = -1.0
+margin/left = 0.0
+margin/right = 0.0
+margin/top = 0.0
+margin/bottom = 0.0
+expand_margin/left = 0.0
+expand_margin/right = 0.0
+expand_margin/top = 0.0
+expand_margin/bottom = 0.0
+draw_center = true
+
+[sub_resource type="StyleBoxTexture" id=10]
+
+content_margin/left = -1.0
+content_margin/right = -1.0
+content_margin/top = -1.0
+content_margin/bottom = -1.0
+margin/left = 0.0
+margin/right = 0.0
+margin/top = 0.0
+margin/bottom = 0.0
+expand_margin/left = 0.0
+expand_margin/right = 0.0
+expand_margin/top = 0.0
+expand_margin/bottom = 0.0
+draw_center = true
+
+[sub_resource type="StyleBoxTexture" id=11]
+
+content_margin/left = -1.0
+content_margin/right = -1.0
+content_margin/top = -1.0
+content_margin/bottom = -1.0
+margin/left = 0.0
+margin/right = 0.0
+margin/top = 0.0
+margin/bottom = 0.0
+expand_margin/left = 0.0
+expand_margin/right = 0.0
+expand_margin/top = 0.0
+expand_margin/bottom = 0.0
+draw_center = true
+
 [node name="Control" type="Control"]
 
 anchor/right = 1
@@ -131,6 +211,23 @@ margin/bottom = 26.0
 
 [node name="sceneeffects" type="RichTextLabel" parent="Panel"]
 
+anchor/right = 1
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 15.0
+margin/top = 267.0
+margin/right = 525.0
+margin/bottom = 83.0
+bbcode/enabled = true
+bbcode/bbcode = "Text1
+"
+visible_characters = -1
+
+[node name="sceneeffects1" type="RichTextLabel" parent="Panel"]
+
 anchor/left = 1
 anchor/right = 1
 anchor/bottom = 1
@@ -138,29 +235,12 @@ focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
-margin/left = 376.0
-margin/top = 30.0
-margin/right = 21.0
-margin/bottom = 47.0
+margin/left = 509.0
+margin/top = 312.0
+margin/right = 16.0
+margin/bottom = 83.0
 bbcode/enabled = true
-bbcode/bbcode = ""
-visible_characters = -1
-
-[node name="sceneeffects1" type="RichTextLabel" parent="Panel"]
-
-anchor/top = 1
-anchor/right = 1
-anchor/bottom = 1
-focus/ignore_mouse = false
-focus/stop_mouse = true
-size_flags/horizontal = 2
-size_flags/vertical = 2
-margin/left = 14.0
-margin/top = 115.0
-margin/right = 443.0
-margin/bottom = 17.0
-bbcode/enabled = true
-bbcode/bbcode = ""
+bbcode/bbcode = "Text2"
 visible_characters = -1
 
 [node name="GridContainer" type="ScrollContainer" parent="Panel"]
@@ -173,7 +253,7 @@ size_flags/horizontal = 2
 size_flags/vertical = 2
 margin/left = 19.0
 margin/top = 61.0
-margin/right = 256.0
+margin/right = 567.0
 margin/bottom = 347.0
 scroll/horizontal = true
 scroll/vertical = true
@@ -188,7 +268,7 @@ margin/left = 0.0
 margin/top = 0.0
 margin/right = 0.0
 margin/bottom = 0.0
-columns = 3
+columns = 2
 
 [node name="Button" type="Button" parent="Panel/GridContainer/GridContainer"]
 
@@ -207,11 +287,13 @@ enabled_focus_mode = 2
 shortcut = null
 text = "Caress"
 flat = false
+clip_text = true
+align = 0
 
 [node name="continue" type="Button" parent="Panel/GridContainer/GridContainer/Button"]
 
 visibility/visible = false
-hint/tooltip = "continuous"
+hint/tooltip = "repeating"
 focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
@@ -274,6 +356,7 @@ flat = false
 
 [node name="tools" type="Button" parent="Panel/HBoxContainer"]
 
+visibility/visible = false
 rect/min_size = Vector2( 100, 0 )
 focus/ignore_mouse = false
 focus/stop_mouse = true
@@ -291,14 +374,15 @@ flat = false
 
 [node name="SM" type="Button" parent="Panel/HBoxContainer"]
 
+visibility/visible = false
 rect/min_size = Vector2( 100, 0 )
 focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
-margin/left = 312.0
+margin/left = 208.0
 margin/top = 0.0
-margin/right = 412.0
+margin/right = 308.0
 margin/bottom = 40.0
 toggle_mode = true
 enabled_focus_mode = 2
@@ -308,14 +392,15 @@ flat = false
 
 [node name="humiliation" type="Button" parent="Panel/HBoxContainer"]
 
+visibility/visible = false
 rect/min_size = Vector2( 100, 0 )
 focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
-margin/left = 416.0
+margin/left = 312.0
 margin/top = 0.0
-margin/right = 525.0
+margin/right = 421.0
 margin/bottom = 40.0
 toggle_mode = true
 enabled_focus_mode = 2
@@ -325,14 +410,15 @@ flat = false
 
 [node name="other" type="Button" parent="Panel/HBoxContainer"]
 
+visibility/visible = false
 rect/min_size = Vector2( 100, 0 )
 focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
-margin/left = 529.0
+margin/left = 208.0
 margin/top = 0.0
-margin/right = 629.0
+margin/right = 308.0
 margin/bottom = 40.0
 toggle_mode = true
 enabled_focus_mode = 2
@@ -342,17 +428,17 @@ flat = false
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Panel"]
 
-editor/display_folded = true
-anchor/top = 3
-anchor/bottom = 3
+anchor/left = 1
+anchor/right = 1
+anchor/bottom = 1
 focus/ignore_mouse = false
 focus/stop_mouse = false
 size_flags/horizontal = 2
 size_flags/vertical = 2
-margin/left = 91.0
-margin/top = 45.5
-margin/right = 550.0
-margin/bottom = -165.5
+margin/left = 503.0
+margin/top = 28.0
+margin/right = 44.0
+margin/bottom = 266.0
 custom_constants/separation = -1
 alignment = 0
 
@@ -370,21 +456,32 @@ margin/right = 459.0
 margin/bottom = 35.0
 custom_styles/panel = SubResource( 1 )
 
-[node name="name" type="Label" parent="Panel/VBoxContainer/Panel"]
+[node name="name" type="Button" parent="Panel/VBoxContainer/Panel"]
 
-focus/ignore_mouse = true
+focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 0
 margin/left = 9.0
-margin/top = 8.0
-margin/right = 62.0
-margin/bottom = 24.0
+margin/top = 6.0
+margin/right = 66.0
+margin/bottom = 25.0
+custom_styles/hover = SubResource( 2 )
+custom_styles/pressed = SubResource( 3 )
+custom_styles/focus = SubResource( 4 )
+custom_styles/disabled = SubResource( 5 )
+custom_styles/normal = SubResource( 6 )
+custom_colors/font_color_disabled = Color( 1, 1, 1, 1 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+custom_colors/font_color_hover = Color( 0.03125, 1, 0, 1 )
+custom_colors/font_color_pressed = Color( 0.171875, 1, 0, 1 )
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
 text = "Name"
+flat = false
 clip_text = true
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
+align = 0
 
 [node name="sex" type="Label" parent="Panel/VBoxContainer/Panel"]
 
@@ -397,6 +494,7 @@ margin/top = 8.0
 margin/right = 109.0
 margin/bottom = 24.0
 text = "Sex"
+clip_text = true
 percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
@@ -412,6 +510,7 @@ margin/top = 8.0
 margin/right = 252.0
 margin/bottom = 24.0
 text = "Climax"
+clip_text = true
 percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
@@ -427,6 +526,7 @@ margin/top = 8.0
 margin/right = 319.0
 margin/bottom = 24.0
 text = "Lube"
+clip_text = true
 percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
@@ -442,6 +542,7 @@ margin/top = 8.0
 margin/right = 379.0
 margin/bottom = 24.0
 text = "Lust"
+clip_text = true
 percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
@@ -457,6 +558,7 @@ margin/top = 8.0
 margin/right = 439.0
 margin/bottom = 24.0
 text = "Mood"
+clip_text = true
 percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
@@ -471,11 +573,11 @@ margin/left = 106.0
 margin/top = 2.0
 margin/right = 148.0
 margin/bottom = 32.0
-custom_styles/hover = SubResource( 2 )
-custom_styles/pressed = SubResource( 3 )
-custom_styles/focus = SubResource( 4 )
-custom_styles/disabled = SubResource( 5 )
-custom_styles/normal = SubResource( 6 )
+custom_styles/hover = SubResource( 7 )
+custom_styles/pressed = SubResource( 8 )
+custom_styles/focus = SubResource( 9 )
+custom_styles/disabled = SubResource( 10 )
+custom_styles/normal = SubResource( 11 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 custom_colors/font_color_hover = Color( 0.557155, 0.149261, 0.570313, 1 )
 custom_colors/font_color_pressed = Color( 0.171875, 1, 0, 1 )
@@ -495,11 +597,11 @@ margin/left = 152.0
 margin/top = 2.0
 margin/right = 194.0
 margin/bottom = 32.0
-custom_styles/hover = SubResource( 2 )
-custom_styles/pressed = SubResource( 3 )
-custom_styles/focus = SubResource( 4 )
-custom_styles/disabled = SubResource( 5 )
-custom_styles/normal = SubResource( 6 )
+custom_styles/hover = SubResource( 7 )
+custom_styles/pressed = SubResource( 8 )
+custom_styles/focus = SubResource( 9 )
+custom_styles/disabled = SubResource( 10 )
+custom_styles/normal = SubResource( 11 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 custom_colors/font_color_hover = Color( 0.557155, 0.149261, 0.570313, 1 )
 custom_colors/font_color_pressed = Color( 0.171875, 1, 0, 1 )
@@ -509,22 +611,48 @@ shortcut = null
 text = "X"
 flat = false
 
-[node name="Button" type="Button" parent="Panel"]
+[node name="stopbutton" type="Button" parent="Panel"]
 
+anchor/left = 1
+anchor/top = 1
+anchor/right = 1
+anchor/bottom = 1
 focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
-margin/left = 635.0
-margin/top = 505.0
-margin/right = 791.0
-margin/bottom = 544.0
+margin/left = 205.0
+margin/top = 66.0
+margin/right = 49.0
+margin/bottom = 27.0
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
 text = "Stop"
 flat = false
 
+[node name="passbutton" type="Button" parent="Panel"]
+
+anchor/left = 1
+anchor/top = 1
+anchor/right = 1
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 378.0
+margin/top = 66.0
+margin/right = 222.0
+margin/bottom = 27.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Pass"
+flat = false
+
 [connection signal="meta_clicked" from="Panel/sceneeffects1" to="." method="_on_sceneeffects1_meta_clicked"]
+
+[connection signal="pressed" from="Panel/passbutton" to="." method="_on_passbutton_pressed"]
 
 

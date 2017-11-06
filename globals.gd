@@ -498,6 +498,8 @@ class slave:
 	var beautybase = 0 setget beautybase_set
 	var beautytemp = 0 
 	
+	var lewdness = 0
+	var asser = 0
 	var lactation = false
 	var titsextra = 0
 	var titsextradeveloped = false
@@ -508,7 +510,7 @@ class slave:
 	var penis = 'none'
 	var balls = 'none'
 	var penistype = 'human'
-	var penisextra = false
+	var penisextra = 0
 	var penisvirgin = true
 	var pubichair = 'clean'
 	var preg = {fertility = 0, has_womb = true, duration = 0, baby = null}
@@ -584,9 +586,6 @@ class slave:
 		stress_max = 150,
 		stress_min = 0,
 		stress_mod = 0,
-		dom_cur = 0.0,
-		dom_max = 100,
-		dom_min = 0,
 		tox_cur = 0.0,
 		tox_max = 100,
 		tox_min = 0,
@@ -618,7 +617,6 @@ class slave:
 	var wit setget wit_set,wit_get
 	var charm setget charm_set,charm_get
 	var lust setget lust_set,lust_get
-	var dom setget dom_set,dom_get
 	var toxicity setget tox_set,tox_get
 	var energy setget energy_set,energy_get
 	var sstr setget str_set,str_get
@@ -855,9 +853,6 @@ class slave:
 		else:
 			stats.lust_cur = max(min(stats.lust_cur + value,stats.lust_max),stats.lust_min)
 	
-	func dom_set(value):
-		stats.dom_cur = min(max(value, stats.dom_min), stats.dom_max)
-	
 	func str_set(value):
 		stats.str_cur = min(value-stats.str_mod, stats.str_max)
 	
@@ -902,8 +897,6 @@ class slave:
 	func lust_get():
 		return stats.lust_cur
 	
-	func dom_get():
-		return stats.dom_cur
 	
 	func tox_get():
 		return stats.tox_cur
@@ -1203,7 +1196,7 @@ func impregnation(mother, father = null, anyfather = false):
 		else:
 			father = globals.newslave('randomany', 'random', gender[rand_range(0,gender.size())])
 	else:
-		if father.penis.number < 1:
+		if father.penis == 'none':
 			return
 		realfather = father.id
 	if mother.preg.has_womb == false || mother.preg.duration > 0 || mother == father:
