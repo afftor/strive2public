@@ -498,12 +498,15 @@ class slave:
 	var beautybase = 0 setget beautybase_set
 	var beautytemp = 0 
 	
+	var assertive = 0
+	var pubichair = 'clean'
+	
 	var lewdness = 0
-	var asser = 0
 	var lactation = false
 	var titsextra = 0
 	var titsextradeveloped = false
-	var vagina = true
+	var consent = false
+	var vagina = 'normal'
 	var vagvirgin = true
 	var mouthvirgin = true
 	var assvirgin = true
@@ -512,7 +515,12 @@ class slave:
 	var penistype = 'human'
 	var penisextra = 0
 	var penisvirgin = true
-	var pubichair = 'clean'
+	var sensvagina = 0
+	var sensmouth = 0
+	var senspenis = 0
+	var sensanal = 0
+	var knowntechniques = []
+	
 	var preg = {fertility = 0, has_womb = true, duration = 0, baby = null}
 	var rules = {'silence':false, 'pet':false, 'contraception':false, 'aphrodisiac':false, 'masturbation':false, 'nudity':false, 'betterfood':false, 'personalbath':false,'cosmetics':false,'pocketmoney':false}
 	var traits = []
@@ -524,6 +532,7 @@ class slave:
 	var work = 'rest'
 	var sleep = ''
 	var farmoutcome = false
+	
 	var ability = ['attack','protect']
 	var abilityactive = ['attack','protect']
 	var customdesc = ''

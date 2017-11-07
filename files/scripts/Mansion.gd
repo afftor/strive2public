@@ -189,9 +189,9 @@ func _on_new_slave_button_pressed():
 	globals.state.mansionupgrades.mansionalchemy = 1
 	globals.state.mansionupgrades.mansionparlor = 1
 	globals.state.backpack.stackables.bandage = 1
-	for i in globals.characters.characters:
-		slave = globals.characters.create(i)
-		globals.slaves = slave
+#	for i in globals.characters.characters:
+#		slave = globals.characters.create(i)
+#		globals.slaves = slave
 
 func mansion():
 	_on_mansion_pressed()
@@ -554,9 +554,9 @@ func _on_end_pressed():
 				slave.add_trait('Sex-crazed')
 				text0.set_bbcode(text0.get_bbcode() + slave.dictionary("[color=yellow]Left greatly excited and prohibited from masturbating, $name desperate state led $him to become insanely obsessed with sex.[/color]\n"))
 			#Races
-			if slave.race == 'Elf':
-				slave.dom = -200
-				slave.dom = slave.conf
+#			if slave.race == 'Elf':
+#				slave.dom = -200
+#				slave.dom = slave.conf
 			elif slave.race == 'Orc':
 				slave.health += 15
 			elif slave.race == 'Slime':

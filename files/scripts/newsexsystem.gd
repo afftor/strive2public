@@ -33,6 +33,11 @@ func _ready():
 		newmember.person = slave
 		newmember.sex = slave.sex
 		newmember.name = slave.name_short()
+		newmember.svagina = slave.sensvagina
+		newmember.smouth = slave.sensmouth
+		newmember.spenis = slave.senspenis
+		newmember.sanus = slave.sensanal
+		newmember.lewdness = slave.lewdness
 		participants.append(newmember)
 	changecategory('caress')
 	clearstate()
@@ -67,7 +72,9 @@ func rebuildparticipantslist():
 		elif takers.find(i) >= 0:
 			newnode.get_node("take").set_pressed(true)
 		newnode.set_meta("slave", i)
-		newnode.get_node("sex").set_text(i.person.sex)
+		#newnode.get_node("sex").set_text(i.person.sex)
+		#newnode.get_node("lust").set_text(str(i.lust))
+		#newnode.get_node("sens").set_text(str(i.sens))
 		newnode.get_node("give").connect("pressed",self,'switchsides',[newnode, 'give'])
 		newnode.get_node("take").connect("pressed",self,'switchsides',[newnode, 'take'])
 	var text = ''
@@ -123,6 +130,8 @@ func switchsides(panel, side):
 
 func startscene(scenescript, cont = false):
 	var textdict = {mainevent = '', repeats = '', orgasms = ''}
+	var effect = 0
+	var pain = 0
 	scenescript.givers = givers
 	scenescript.takers = takers
 	textdict.mainevent = decoder(scenescript.initiate(), givers, takers)
@@ -149,15 +158,42 @@ func startscene(scenescript, cont = false):
 			i[scenescript.takerpart] = dict
 	for i in givers+takers:
 		i.lastaction = dict
-	for i in givers:
-		i.lust += scenescript.givereffects.lust
-		i.sens += scenescript.givereffects.sens
+	
+	for i in givers: #Lust - mental desire, sens - physical excitement, pain - physical refusal, exposure - mental refusal, lewdness - mental anticipation
+		if scenescript.givereffects.has('pain'):
+			pain = max(0, scenescript.givereffects.pain-i.lube*5)
+		else:
+			pain = 0
+		var value = max(scenescript.givereffects.sens/2, scenescript.givereffects.sens - i.pain/4) - pain 
+		
+		if scenescript.giverpart != '':
+			i['s'+scenescript.giverpart] += clamp(value/50,0.2,5)
+			value = value*max(1,i['s'+scenescript.giverpart]/100)
+		if i.sens + value < i.sens:
+			i.lust += scenescript.givereffects.lust/2
+		else:
+			i.lust += scenescript.givereffects.lust + i.lewd/25
+		i.sens += value
 	for i in takers:
-		i.lust += scenescript.targeteffects.lust
-		i.sens += scenescript.targeteffects.sens
+		if scenescript.targeteffects.has('pain'):
+			pain = max(0, scenescript.targeteffects.pain-i.lube*5)
+		else:
+			pain = 0
+		var value = max(scenescript.targeteffects.sens/2, scenescript.targeteffects.sens - i.pain/4) - pain 
+		
+		if scenescript.takerpart != '':
+			i['s'+scenescript.takerpart] += clamp(value/50,0.2,5)
+			value = value*max(1,i['s'+scenescript.takerpart]/100)
+		if i.sens + value < i.sens:
+			i.lust += scenescript.targeteffects.lust/2
+		else:
+			i.lust += scenescript.targeteffects.lust + i.lewd/25
+		i.sens += value
 	for i in participants:
-		if i.sens >= 100:
+		if i.sens >= 1000:
 			textdict.orgasms += orgasm(i)
+	
+	
 	if cont == true && sceneexists == false: 
 		ongoingactions.append(dict)
 	else:
@@ -167,6 +203,7 @@ func startscene(scenescript, cont = false):
 		for i in takers:
 			if scenescript.takerpart != '':
 				i[scenescript.takerpart] = null
+	
 	get_node("Panel/sceneeffects").set_bbcode(textdict.mainevent + "\n\n" + textdict.repeats + "\n\n" + textdict.orgasms)
 	rebuildparticipantslist()
 
@@ -179,6 +216,8 @@ func orgasm(member):
 	var text2 = ""
 	var text = '\n'
 	var party
+	if member.person.vagina != 'none':
+		member.lube += rand_range(1,2)
 	if member.person.penis == 'none':
 		text += "[color=#ff5df8]" + member.name + " reaches climax, shaking from pleasure. [/color]"
 	else:
@@ -193,6 +232,8 @@ func orgasm(member):
 				party = 'takers'
 			if party == 'giver':
 				text2 = scene.scene.takerpart.replace('anus', 'asshole').replace('vagina','pussy')
+				if scene.scene.code == 'handjob':
+					text2 = 'face[%1s]'
 				text = "[color=#ff5df8][name1]'s {^semen:seed:cum} {^pours:flows:pumps} into [name2]'s " + text2 + '. [/color]'
 				if scene.scene.takerpart == 'vagina':
 					for i in scene.takers:
@@ -200,6 +241,8 @@ func orgasm(member):
 				text = decoder(text, [member], scene.takers)
 			else:
 				text2 = scene.scene.giverpart.replace('anus', 'asshole').replace('vagina','pussy')
+				if scene.scene.code == 'handjob':
+					text2 = 'face[%1s]'
 				text = "[color=#ff5df8][name2]'s {^semen:seed:cum} {^pours:flows:pumps} into [name1]'s " + text2 + '. [/color]'
 				if scene.scene.giverpart == 'vagina':
 					for i in scene.givers:
@@ -218,10 +261,19 @@ class member:
 	var lust = 0
 	var sens = 0
 	var lube = 0
+	var pain = 0
+	var lewd = 0
+	var exposure = 0
 	var role
 	var sex
 	var orgasms = 0
 	var lastaction
+	
+	var svagina
+	var smouth
+	var spenis
+	var sanus
+	var lewdness
 	
 	var energy = 100
 	

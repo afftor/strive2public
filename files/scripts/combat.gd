@@ -860,7 +860,6 @@ func resolution(text = ''):
 		set_process(false)
 		for i in playergroup:
 			i.person.stats.energy_cur = i.energy
-			i.person.energy = 0
 			i.person.stats.health_cur = i.health
 		get_tree().get_current_scene().get_node("explorationnode").enemyleave()
 		get_tree().get_current_scene().popup('You hastly escape from the fight. ')

@@ -454,9 +454,9 @@ func zoesacrifice(slave):
 		globals.state.decisions.append('zoeselfsacrifice')
 		zoealive = true
 	else:
-		if slave.send + slave.smaf < 6:
+		if slave.send + slave.smaf < 4:
 			condition = 'bad'
-		elif slave.send + slave.smaf < 8:
+		elif slave.send + slave.smaf < 7:
 			condition = 'medium'
 		else:
 			condition = 'strong' 
@@ -464,8 +464,10 @@ func zoesacrifice(slave):
 		text = textnode.MainQuestFrostfordZoeSelf
 	elif condition == 'bad':
 		text = textnode.MainQuestFrostfordZoeWeak
+		globals.slaves.erase(slave)
 	elif condition == 'medium':
 		text = textnode.MainQuestFrostfordZoeMed
+		globals.slaves.erase(slave)
 		zoealive = true
 	elif condition == 'strong':
 		text = textnode.MainQuestFrostfordZoeStrong
