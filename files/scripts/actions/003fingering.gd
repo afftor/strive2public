@@ -14,50 +14,44 @@ func getname(state = null):
 	return "Fingering"
 
 func getongoingname(givers, takers):
-	return "[name1] finger[%1s] [name2]'s pussy."
+	return "[name1] finger[s/1] [names2] puss[y/ies2]."
 
 func getongoingdescription(givers, takers):
-	return "[name1] thrusts [his1] fingers in and out of [name2] [pussy2]. "
+	return "[name1] thrust[s/1] [his1] fingers in and out of [names2] [pussy2]."
 
 func requirements():
 	var valid = true
-	if takers.size() < 1 || givers.size() < 1 || givers.size() + takers.size() > 2:
+	if takers.size() < 1 || givers.size() < 1 || givers.size() + takers.size() > 3:
 		valid = false
 	for i in takers:
 		if i.vagina != null || i.person.vagina == 'none':
 			valid = false
 	return valid
 
-
-
 func initiate():
 	var text = ''
-	if takers[0].person.vagvirgin == true:
-		text += "[name1] inserts [his1] fingers into [name2] [pussy2], and can feel [his2] hymen..."
-	elif takers[0].lube > 5:
-		text += "[name1] easily slips [his1] fingers into [name2] drenched [pussy2]..."
+	if takers[0].lube > 5:
+		text += "[name1] {^easily:effortlessly} {^get:work:slip:slide}[s/1] [his1] fingers into [names2] [pussy2]"
 	else:
-		text += "[name1] slowly gets [his1] fingers inside [name2] [pussy2]..."
+		text += "[name1] {^slowly:carefully} {^get:work:slip:slide}[s/1] [his1] fingers into [names2] [pussy2]"
+	if takers[0].person.vagvirgin == true:
+		text += ", {^probing inside:pumping [his1] fingers:stimulating the enterance} without breaking [his2] hymen[/s2]."
+	else:
+		text += ", {^driving:pumping:pushing} [his1] fingers in and out."
 	return text
-
 
 func reaction(member):
 	var text = ''
-	var pleasure = member.sens
 	if member.energy == 0:
-		text += "[name] moans unconsciously from the vaginal stimulation."
-	elif pleasure < 300:
-		text += "[name] still isn't ready for this, and winces with pain from the vaginal stimulation."
-	elif pleasure < 1000:
-		text += "[name] isn't quite comfortable with the vaginal stimulation but is showing signs of pleasure."
-	elif pleasure < 3000:
-		text += "[name] makes a lovely moan of pleasure from the vaginal stimulation."
-	elif pleasure < 6000:
-		text += "[name] rocks [his] hips with desire for more vaginal stimulation."
-	elif pleasure < 10000:
-		text += "[name] cries out in pleasure from the vagina stimulation, and shakes [his] hips for more."
+		text = "[names2] [pussy2] {^trembles:twitches}, {^responding:reacting} to {^the stimulation:[names1] fingers:[names1] caress} even in [his2] unconcious state."
+	#elif member.consent == false:
+		#TBD
+	elif member.sens < 100:
+		text = "[names2] [pussy2] {^presents:gives} some resistance to {^the intrusion:[names1] fingers:[names1] caress}{^, still somewhat unprepared:, not yet fully prepared:}."
+	elif member.sens < 300:
+		text = "[names2] [pussy2] {^begins:starts} to {^respond:react} to the {^sensation:feeling} of {^[names1] fingers:[names1] caress}."
+	elif member.sens < 600:
+		text = "[names2] [pussy2] {^trembles:quivers} in {^response:reaction} to the {^sensation:feeling} of {^[names1] fingers:[names1] caress}, [his2] arousal {^made clear:apparent:clearly showing}."
 	else:
-		text += "[name] trembles and moans, completely overwhelmed by the vaginal stimulation."
-	
+		text = "[names2] [pussy2] {^violently trembles:clenches:quivers} with every movement of [names1] fingers{^ as [he2] rapidly near[s/2] orgasm: as [he2] approach[es/2] orgasm: as [he2] edge[es/2] toward orgasm:}."
 	return text
-

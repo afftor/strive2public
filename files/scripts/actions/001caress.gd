@@ -10,11 +10,11 @@ var targeteffects = {lust = 50, sens = 50}
 var giverpart = ''
 var takerpart = ''
 
-func getname():
+func getname(state = null):
 	return "Caress"
 
 func getongoingname(givers, takers):
-	return "[name1] stroking [name2] bod[%2y]."
+	return "[name1] caress[es/1] [names2] [body2]."
 
 func requirements():
 	var valid = true
@@ -22,34 +22,42 @@ func requirements():
 		valid = false
 	return valid
 
-
-
 func initiate():
 	var text = ''
-	text = "[name1] gently stroke[%1s] and caress[%1es] [name2]'s bod[%2y]"
-	if givers.size() == 1 && takers.size() == 1:
-		text += " while kissing [him2]"
-	if takers.size() == 1:
-		text = text.replace("bod[%2y]", '[body2]')
-	text += '.\n'
-	return text
+	var kissable = true
+	var temparray = []
+	for i in givers:
+		if i.mouth != null:
+			kissable = false
+	temparray += ["[name1] {^gently:tenderly:carefully} {^stroke:fondle:cuddle:massage}[s/1] and {^caress[es/1]:rub[s/1]} [names2] [body2]"]
+	temparray += ["[name1] {^run:rub:work}[s/1] [his1] hands all {^over:along:around} [names2] [body2]"]
+	text += temparray[rand_range(0,temparray.size())]
+	temparray.clear()
+	if kissable:
+		temparray += [", kissing [him2] all over"]
+		temparray += [", kissing and teasing [him2] with [his1] tongue[/s1]"]
+		temparray += [", {^planting:laying} small kisses {^all over:as [he1] go[es/1]}"]
+		text += temparray[rand_range(0,temparray.size())]
+		temparray.clear()
+	else:
+		temparray += [", {^hitting:touching} all the right spots"]
+		temparray += [", {^thoroughly:expertly} pleasuring [him2]"]
+		text += temparray[rand_range(0,temparray.size())]
+		temparray.clear()
+	return text + '.'
 
 func reaction(member):
 	var text = ''
-	var pleasure = member.sens
 	if member.energy == 0:
-		text = "[name] lies unconscious, trembling slightly."
-	elif pleasure < 100:
-		text = "[name] doesn't feel much pleasure from being caressed."
-	elif pleasure < 300:
-		text = "[name] starts to tremble from the pleasure of being caressed."
-	elif pleasure < 1000:
-		text = "[name] shivers from the pleasure of being caressed."
-	elif pleasure < 3000:
-		text = "[name] is in a clear state of pleasure, and begins panting."
-	elif pleasure < 6000:
-		text = "[name] feels intense pleasure from being caressed, and wraps [his] arms around partner's neck."
+		text = "[name2] lie[s/2] unconscious, {^trembling:twitching} {^slightly :}as [his2] body {^responds:reacts} to {^the stimulation:[names1] touch:[names1] caress}."
+	#elif member.consent == false:
+		#TBD
+	elif member.sens < 100:
+		text = "[name2] {^show:give}[s/2] little {^response:reaction} to {^the stimulation:[names1] touch:[names1] caress}."
+	elif member.sens < 300:
+		text = "[name2] {^begin:start}[s/2] to {^respond:react} to {^the stimulation:[names1] touch:[names1] caress}."
+	elif member.sens < 600:
+		text = "[name2] {^revel:bask}[s/2] in {^the stimulation:[names1] touch:[names1] caress}{^, [his2] arousal clearly showing:, becoming more and more excited:}."
 	else:
-		text = "[name]'s [body] twists with pleasure as [he] begs for more."
-	
+		text = "[names2] body {^trembles:quivers} {^at the slightest touch:with every touch:each time [name1] touch[es/1] [him2]}{^ as [he2] rapidly near[s/2] orgasm: as [he2] approach[es/2] orgasm: as [he2] edge[es/2] toward orgasm:}."
 	return text

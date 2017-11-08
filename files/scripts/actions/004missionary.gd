@@ -14,38 +14,33 @@ func getname(state = null):
 	return "Missionary"
 
 func getongoingname(givers, takers):
-	return "[name1] fuck[%1s] [name2] in the missionary position."
+	return "[name1] fuck[s/1] [name2] in the missionary position."
 
 func getongoingdescription(givers, takers):
-	return "[name1] continues fucking [name2] [pussy2] in missionary position. "
+	return "[name1] continue[s/1] fucking [names2] [pussy2] in the missionary position."
 
 func requirements():
 	var valid = true
 	if takers.size() != 1 || givers.size() != 1:
 		valid = false
-	
 	elif !givers[0].penis in [takers[0].vagina, takers[0].anus] && (takers[0].vagina != null || givers[0].penis != null || takers[0].person.vagina == 'none' || givers[0].person.penis == 'none'):
 		valid = false
 	return valid
 
-
-
 func initiate():
 	var text = ''
-	
-	text = "[name1] lays [name2] down on [his2] back, parting [his2] thighs to expose [his2] [pussy2]. [name2]'s [labia2] envelop [name1]'s [penis1] as [he1] "
+	text = "[name1] lay[s/1] [name2] down on [his2] back, parting [his2] thighs to expose [his2] [pussy2]. [names2] [labia2] envelop [names1] [penis1] as [he1]"
 	if takers[0].person.vagvirgin == true:
-		text += "rips open [partner2]'s hymen. "
+		text += " rip[s/1] open [partners2] hymen."
 		takers[0].person.vagvirgin = false
 	else:
-		text += "pushes [his1] [penis1] deep into [partner2]'s [pussy2]. "
-	text += "[name2]'s body twitches, as [his2] [pussy2] gets stretched by [name1]'s [penis1]. "
-	
+		text += " push[es/1] [his1] [penis1] deep into [partners2] [pussy2]."
+	text += " [names2] bod[y/ies2] twitch[es/2] as [his2] [pussy2] get[s/2] stretched by [names1] [penis1]."
 	return text
 
 
-func reaction(member):
-	var text = ''
-	var pleasure = member.sens
-	return text
+#func reaction(member):
+#	var text = ''
+#	var pleasure = member.sens
+#	return text
 

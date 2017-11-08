@@ -71,6 +71,7 @@ func clearstate():
 	givers.clear()
 	takers.clear()
 	givers.append(participants[0])
+	globals.player = participants[0] #for "You" testing
 
 func changecategory(name):
 	selectedcategory = name
@@ -160,18 +161,22 @@ func startscene(scenescript, cont = false):
 	var pain = 0
 	scenescript.givers = givers
 	scenescript.takers = takers
+	
 	textdict.mainevent = decoder(scenescript.initiate(), givers, takers)
+	
 	if scenescript.has_method('reaction'):
 		for i in takers:
-			textdict.mainevent += '\n' + decoder(parser.dictionary(i, scenescript.reaction(i)), givers, takers)
-	var dict = {scene = scenescript, takers = [] + takers, givers = [] + givers}
+			textdict.mainevent += '\n' + decoder(scenescript.reaction(i), givers, [i])
+	
 	var sceneexists = false
 	for i in ongoingactions:
 		if i.givers == givers && i.takers == takers && i.scene == scenescript:
 			sceneexists = true
 		else:
-			textdict.repeats += decoder(i.scene.getongoingdescription(givers, takers), i.givers, i.takers) + '\n'
-	textdict.repeats = textdict.repeats.replace("[/color]", "").replace("[color=yellow]", "").replace("[color=aqua]", "")
+			textdict.repeats += '\n' + decoder(i.scene.getongoingdescription(givers, takers), i.givers, i.takers)
+	
+	var dict = {scene = scenescript, takers = [] + takers, givers = [] + givers}
+	
 	for i in givers:
 		if scenescript.giverpart != '':
 			if i[scenescript.giverpart] != null:
@@ -182,8 +187,6 @@ func startscene(scenescript, cont = false):
 			if i[scenescript.takerpart] != null:
 				stopongoingaction(i[scenescript.takerpart])
 			i[scenescript.takerpart] = dict
-	for i in givers+takers:
-		i.lastaction = dict
 	
 	for i in givers: #Lust - mental desire, sens - physical excitement, pain - physical refusal, exposure - mental refusal, lewdness - mental anticipation
 		if scenescript.givereffects.has('pain'):
@@ -217,11 +220,15 @@ func startscene(scenescript, cont = false):
 		i.sens += value
 	for i in participants:
 		if i.sens >= 1000:
-			textdict.orgasms += orgasm(i)
-	
+			textdict.orgasms += '\n' + orgasm(i)
+		if i in givers+takers:
+			i.lastaction = dict
+		elif not i.lastaction in ongoingactions:
+			i.lastaction = null
 	
 	if cont == true && sceneexists == false: 
 		ongoingactions.append(dict)
+		
 	else:
 		for i in givers:
 			if scenescript.giverpart != '':
@@ -230,7 +237,7 @@ func startscene(scenescript, cont = false):
 			if scenescript.takerpart != '':
 				i[scenescript.takerpart] = null
 	
-	get_node("Panel/sceneeffects").set_bbcode(textdict.mainevent + "\n\n" + textdict.repeats + "\n\n" + textdict.orgasms)
+	get_node("Panel/sceneeffects").set_bbcode(textdict.mainevent + textdict.repeats + textdict.orgasms)
 	rebuildparticipantslist()
 
 func startscenecontinue(scenescript):
@@ -239,44 +246,101 @@ func startscenecontinue(scenescript):
 func orgasm(member):
 	member.sens = member.sens/3
 	var scene
-	var text2 = ""
-	var text = '\n'
-	var party
+	var text
+	var temptext
+	var penistext
+	var vaginatext
+	member.orgasms += 1
+	#vagina present
 	if member.person.vagina != 'none':
 		member.lube += rand_range(1,2)
-	if member.person.penis == 'none':
-		text += "[color=#ff5df8]" + member.name + " reaches climax, shaking from pleasure. [/color]"
-	else:
-		if member.penis == null:
-			text += "[color=#ff5df8][color=yellow]" + member.name + "[/color]'s semen pours onto the floor. [/color]"
-		elif member.penis != null:
-			scene = member.penis
-		if scene != null:
+		#vagina in use, find scene
+		if member.vagina != null:
+			scene = member.vagina
+			#vagina in giver slot
 			if scene.givers.find(member) >= 0:
-				party = 'giver'
+				if randf() < 0.4:
+					vaginatext = "[name1] feel[s/1] a {^sudden :intense ::}{^jolt of electricity:warmth:wave of pleasure} and [his1]"
+				else:
+					vaginatext = "[names1]"
+				if scene.scene.takerpart == 'penis':
+					vaginatext += " [pussy1] {^squeezes:writhes around:clamps down on} [names2] [penis2] as [he1] reach[es/1] {^climax:orgasm}."
+				else:
+					vaginatext += " [pussy1] {^convulses:twitches:quivers} {^in euphoria:in exstacy:with pleasure} as [he1] reach[es/1] {^climax:orgasm}."
+				vaginatext = decoder(vaginatext, [member], scene.takers)
+			#vagina is in taker slot
 			elif scene.takers.find(member) >= 0:
-				party = 'takers'
-			if party == 'giver':
-				text2 = scene.scene.takerpart.replace('anus', 'asshole').replace('vagina','pussy')
+				if randf() < 0.4:
+					vaginatext = "[name2] feel[s/2] a {^sudden :intense ::}{^jolt of electricity:warmth:wave of pleasure} and [his2]"
+				else:
+					vaginatext = "[names2]"
+				if scene.scene.giverpart == 'penis':
+					vaginatext += " [pussy2] {^squeezes:writhes around:clamps down on} [names1] [penis1] as [he2] reach[es/2] {^climax:orgasm}."
+				else:
+					vaginatext += " [pussy2] {^convulses:twitches:quivers} {^in euphoria:in exstacy:with pleasure} as [he2] reach[es/2] {^climax:orgasm}."
+				vaginatext = decoder(vaginatext, scene.givers, [member])
+			#no default conditon
+	#penis present
+	if member.person.penis != 'none':
+		#penis in use, find scene
+		if member.penis != null:
+			scene = member.penis
+			#penis in giver slot
+			if scene.givers.find(member) >= 0:
+				if randf() < 0.4:
+					penistext = "[name1] feel[s/1] a wave of {^pleasure:euphoria:heat} {^run:course} through [his1] [penis1] and [his1]"
+				else:
+					penistext = "[names1] hips {^buck:thrust:jerk} forward and a {^thick :hot :}{^jet:load:batch} of"
+				if scene.scene.takerpart == '':
+					penistext += " {^semen:seed:cum} {^pours onto:shoots onto:falls to} the {^ground:floor} as [he1] ejaculate[s/1]."
+				elif ['anus','vagina','mouth'].has(scene.scene.takerpart):
+					temptext = scene.scene.takerpart.replace('anus', '[anus2]').replace('vagina','[pussy2]')
+					penistext += " {^semen:seed:cum} {^pours:flows:pumps} into [names2] " + temptext + " as [he1] ejaculate[s/1]."
+					if scene.scene.takerpart == 'vagina':
+						for i in scene.takers:
+							globals.impregnation(i.person, member.person)
+				penistext = decoder(penistext, [member], scene.takers)
+			#penis in taker slot
+			elif scene.takers.find(member) >= 0:
+				if randf() < 0.4:
+					penistext = "[name2] feel[s/2] a wave of {^pleasure:euphoria:heat} {^run:course} through [his2] [penis2] and [his2]"
+				else:
+					penistext = "[names2] hips {^buck:thrust:jerk} forward and a {^thick :hot :}{^jet:load:batch} of"
 				if scene.scene.code == 'handjob':
-					text2 = 'face[%1s]'
-				text = "[color=#ff5df8][name1]'s {^semen:seed:cum} {^pours:flows:pumps} into [name2]'s " + text2 + '. [/color]'
-				if scene.scene.takerpart == 'vagina':
-					for i in scene.takers:
-						globals.impregnation(i.person, member.person)
-				text = decoder(text, [member], scene.takers)
+					penistext += " {^semen:seed:cum} {^sprays onto:shoots all over:covers} [names1] face[/s1] as [he2] ejaculate[s/2]."
+				elif scene.scene.giverpart == '':
+					penistext += " {^semen:seed:cum} {^pours onto:sprays onto:falls to} the {^ground:floor} as [he2] ejaculate[s/2]."
+				elif ['anus','vagina','mouth'].has(scene.scene.giverpart):
+					temptext = scene.scene.giverpart.replace('anus', '[anus1]').replace('vagina','[pussy1]')
+					penistext += " {^semen:seed:cum} {^pours:flows:pumps} into [names1] " + temptext + " as [he2] ejaculate[s/2]."
+					if scene.scene.giverpart == 'vagina':
+						for i in scene.givers:
+							globals.impregnation(i.person, member.person)
+				penistext = decoder(penistext, scene.givers, [member])
+		#orgasm without penis, secondary ejaculation
+		else:
+			if randf() < 0.4:
+				penistext = "[name2] {^twist:quiver:writhe}[s/2] in {^pleasure:euphoria:extacy} as"
 			else:
-				text2 = scene.scene.giverpart.replace('anus', 'asshole').replace('vagina','pussy')
-				if scene.scene.code == 'handjob':
-					text2 = 'face[%1s]'
-				text = "[color=#ff5df8][name2]'s {^semen:seed:cum} {^pours:flows:pumps} into [name1]'s " + text2 + '. [/color]'
-				if scene.scene.giverpart == 'vagina':
-					for i in scene.givers:
-						globals.impregnation(i.person, member.person)
-				text = decoder(text, [member], scene.givers)
-	
-	member.orgasms += 1
-	return text
+				penistext = "[name2] {^can't hold back any longer:reach[es/2] [his2] limit} and"
+			penistext += " {^a jet of :a rope of :}{^semen:cum} {^fires:squirts:shoots} from {^the tip of :}[his2] {^neglected :throbbing ::}[penis2]."
+			penistext = decoder(penistext, null, [member])
+	if vaginatext != null && penistext != null:
+		text = vaginatext + " " + penistext
+	elif penistext != null:
+		text = penistext
+	elif vaginatext != null:
+		text = vaginatext
+	#final default condition
+	else:
+		if randf() < 0.4:
+			temptext = "[name2] feel[s/2] a {^sudden :intense ::}{^jolt of electricity:warmth:wave of pleasure} and [his2]"
+		else:
+			temptext = "[names2]"
+		temptext += " {^entire :whole :}body {^twists:quivers:writhes} in {^pleasure:euphoria:extacy} as [he2] reach[es/2] {^climax:orgasm}."
+		text = decoder(temptext, null, [member])
+	return "[color=#ff5df8]" + text + "[/color]"
+
 
 class member:
 	var name
@@ -294,6 +358,7 @@ class member:
 	var sex
 	var orgasms = 0
 	var lastaction
+	var consent = true
 	
 	var svagina
 	var smouth

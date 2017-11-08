@@ -17,38 +17,39 @@ func getname(state = null):
 		return "Kiss"
 
 func getongoingname(givers, takers):
-	return "[name1] kiss[%1es] [name2]."
+	return "[name1] kiss[es/1] [name2]."
 
 func getongoingdescription(givers, takers):
+	var temparray = []
 	if givers.size() + takers.size() == 2:
-		return "[name1] and [name2] passionately exchange saliva, biting and sucking each other's lips. "
+		temparray += ["[name1] and [name2] {^passionately :eagerly :}{^press together:exchange saliva:kiss}, {^showing no sign of separating from each others lips:coiling each others tongues together:biting and sucking each other's lips}."]
+	elif givers.size() == 2:
+		temparray += ["[name1] {^passionately :eagerly :}{^exchange[s/1] saliva with:kiss[es/1]:make[s/1] out with} [name2], {^savoring the taste of [his2] lips:trying [his1] best to share}."]
 	else:
-		if givers.size() >= 1:
-			return "[name1] and [name2] kiss and entwine thier tongues together.  "
-		else:
-			return "[name2] and [name1] kiss and entwine thier tongues together. "
+		temparray += ["[name1] {^passionately :eagerly :}{^exchange[s/1] saliva with:kiss[es/1]:make[s/1] out with} [name2], {^savoring the taste of [his2] lips:trying [his1] best keep both satisfied}."]
+	return temparray[rand_range(0,temparray.size())]
 
 func requirements():
 	var valid = true
 	if takers.size() < 1 || givers.size() < 1 || givers.size() + takers.size() > 3:
 		valid = false
-	for i in givers+takers:
-		if i.mouth != null:
-			valid = false
+	else:
+		for i in givers+takers:
+			if i.mouth != null:
+				valid = false
 	return valid
 
-
-
 func initiate():
-	var text = ''
+	var temparray = []
 	if givers.size() == 2:
-		text += "[name1] take turns french kissing [name2] and licking [his2] face..."
-	elif takers.size() == 2:
-		text += "[name1] takes turns intertwining [his1] tongue with [name2], as they ask for kisses..."
+		temparray += ["[name1] take[s/1] turns {^french :}kissing [name2] and licking {^all around :}[his2] face[/s2]."]
+		temparray += ["[name1] take[s/1] turns coiling [his1] tongue[/s1] inside [names2] mouth[/s2] and [he2] {^eagerly:enthusiastically} return[s/2] the gesture."]
 	else:
-		text += "[name1] grabs [name2] and kisses [him2], entangling tongues in every way possible.\n"
-		if takers[0].lust > 50 || takers[0].person.loyal >= 50:
-			text += "[name2] enthusiastically returns the kiss with a dreamy expression on [his2] face..."
-	return text
-
-
+		temparray += ["[name1] {^french :}kiss[es/1] [name2], licking {^all around :}[his2] face[/s2]."]
+		temparray += ["[name1] coil[s/1] [his1] tongue[/s1] inside [names2] mouth[/s2] and [he2] {^eagerly:enthusiastically} return[s/2] the gesture."]
+	temparray += ["[name1] grab[s/1] [name2] and {^deeply :}kiss[es/1] [him2], {^driving [his1] tongue[/s1] into [his2] mouth[/s2]:eagerly tasting [his2] lips}."]
+	return temparray[rand_range(0,temparray.size())]
+	
+	#move this to reaction
+	#if takers[0].lust > 50 || takers[0].person.loyal >= 50:
+	#	text += "[name2] enthusiastically returns the kiss with a dreamy expression on [his2] face..."
