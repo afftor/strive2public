@@ -762,8 +762,8 @@ func _on_applybutton_pressed():
 	else:
 		globals.itemdict.magicessenceing.amount -= 1
 		globals.itemdict.supply.amount -= 1
-	counttattoos()
 	slave.tattoo[selectedpart] = tattootheme
+	counttattoos()
 	var tattooDict = {currentlevel = slavetattoos[slave.tattoo[selectedpart]]}
 	if tattoolevels[tattootheme].has(tattooDict.currentlevel-1) && tattoolevels[tattootheme].has(tattooDict.currentlevel):
 		slave.add_effect(globals.effectdict[tattoolevels[tattootheme][tattooDict.currentlevel-1].effect],true)

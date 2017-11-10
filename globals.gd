@@ -690,7 +690,7 @@ class slave:
 	func xp_set(value):
 		var difference = value - realxp
 		realxp += max(difference/max(level,1),1)
-		realxp = round(max(min(realxp, 100),0))
+		realxp = round(clamp(realxp, 0, 100))
 		if realxp >= 100 && self == globals.player:
 			levelup()
 	
@@ -1038,8 +1038,11 @@ class slave:
 		string = string.replace('appears', 'appear')
 		return string
 	
-	func description(forself = false):
+	func description():
 		return globals.description.getslavedescription(self)
+	
+	func descriptionsmall():
+		return globals.description.getslavedescription(self, 'compact')
 	
 	func status():
 		return globals.description.getstatus(self)
@@ -1109,9 +1112,9 @@ class slave:
 			price = price*1.2
 		if sex == 'futanari':
 			price = price*1.1
-#		for i in traits.values():
-#			if i.tags.find('detrimental') >= 0:
-#				price = price*0.80
+		for i in get_traits():
+			if i.tags.find('detrimental') >= 0:
+				price = price*0.80
 		if race == 'Elf' || race == 'Dark Elf' || race == 'Orc' || race == 'Goblin'||race == 'Gnome':
 			price = price*1.5
 		elif race == 'Drow'|| race == 'Demon' || race == 'Seraph':

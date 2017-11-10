@@ -537,6 +537,7 @@ align = 0
 
 [node name="playergrouppanel" type="Panel" parent="."]
 
+editor/display_folded = true
 anchor/top = 1
 anchor/right = 1
 anchor/bottom = 1
@@ -787,7 +788,6 @@ max_lines_visible = -1
 
 [node name="slavebuypanel" type="Control" parent="."]
 
-editor/display_folded = true
 visibility/visible = false
 anchor/right = 1
 anchor/bottom = 1

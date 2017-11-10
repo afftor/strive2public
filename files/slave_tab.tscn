@@ -356,6 +356,7 @@ __meta__ = {
 
 [node name="stats" type="Tabs" parent="."]
 
+editor/display_folded = true
 anchor/right = 1
 anchor/bottom = 1
 focus/ignore_mouse = false
@@ -370,6 +371,7 @@ script/script = ExtResource( 3 )
 
 [node name="statspanel" parent="stats" instance=ExtResource( 4 )]
 
+editor/display_folded = true
 anchor/left = 0
 anchor/bottom = 0
 margin/left = -15.0

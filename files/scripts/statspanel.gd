@@ -51,14 +51,14 @@ func show():
 	if !slave.traits.empty():
 		text = "$name has trait(s): "
 		var text2 = ''
-#		for i in slave.traits:
-#			text2 += '[url=' + i + ']' + i + "[/url]"
-#			if slave.traits[i].tags.find('sexual') >= 0:
-#				text2 = "[color=#ff00bf]" + text2 + '[/color]'
-#			elif slave.traits[i].tags.find('detrimental') >= 0:
-#				text2 = "[color=red]" + text2 + '[/color]'
-#			text2 += ', '
-#			text += text2
+		for i in slave.get_traits():
+			text2 += '[url=' + i.name + ']' + i.name + "[/url]"
+			if i.tags.find('sexual') >= 0:
+				text2 = "[color=#ff00bf]" + text2 + '[/color]'
+			elif i.tags.find('detrimental') >= 0:
+				text2 = "[color=red]" + text2 + '[/color]'
+			text2 += ', '
+			text += text2
 		text = text.substr(0, text.length() - 2) + '.'
 	get_node("traittext").set_bbcode(slave.dictionary(text))
 	if mode == 'full':

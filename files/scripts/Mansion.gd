@@ -141,11 +141,12 @@ func _on_new_slave_button_pressed():
 	slave.loyal += 100
 	slave.xp += 9990
 	slave.sexuals.affection = 200
+	slave.consent = true
 	#slave.sexuals.unlocked = true
 	#for i in get_node("MainScreen/slave_tab/sexual").sexbuttons:
 	#	slave.sexuals.actions[i] = 0
 	slave.lust = 100
-	slave.tattoo.face = 'nature'
+	#slave.tattoo.face = 'nature'
 	slave.attention = 70
 	slave.skillpoints = 100
 	for i in ['conf','cour','charm','wit']:
@@ -1238,9 +1239,11 @@ func _on_SavePanel_visibility_changed():
 		node.set_hidden(false)
 		if globals.savelist.has(i):
 			node.get_node("date").set_text(globals.savelist[i].date)
-			node.get_node("info").set_text(i.replacen("user://saves/",'') + "      " + globals.savelist[i].name)
+			node.get_node("name").set_text(i.replacen("user://saves/",''))
+			node.get_node("info").set_text(globals.savelist[i].name)
 		else:
-			node.get_node("info").set_text(i.replacen("user://saves/",'') + "      " + "This save has no info about it.")
+			node.get_node("name").set_text(i.replacen("user://saves/",''))
+			node.get_node("info").set_text("This save has no info about it.")
 		get_node("menucontrol/menupanel/SavePanel/ScrollContainer/savelist").add_child(node)
 		#node.set_text(i.replacen("user://saves/",''))
 		node.set_meta("name", i)
@@ -1442,10 +1445,10 @@ func _on_mansion_pressed():
 			headgirl = true
 			text = text + i.dictionary('$name is your headgirl.')
 	if (globals.slaves.size() >= 8 && headgirl == true) || globals.developmode == true:
-		get_node("MainScreen/mansion/headgirl").set_hidden(false)
+		get_node("charlistcontrol/headgirl").set_hidden(false)
 		get_node("MainScreen/mansion/slavelist").set_hidden(false)
 	else:
-		get_node("MainScreen/mansion/headgirl").set_hidden(true)
+		get_node("charlistcontrol/headgirl").set_hidden(true)
 		get_node("MainScreen/mansion/slavelist").set_hidden(true)
 	if globals.state.farm >= 3:
 		get_node("buttonpanel/VBoxContainer/farm").set_disabled(false)
@@ -2417,7 +2420,7 @@ func showracedescriptsimple(race):
 
 func _on_orderbutton_pressed():
 	for i in get_tree().get_nodes_in_group("sortbutton"):
-		if get_node("charlistcontrol/CharList/orderbutton").is_pressed() == true:
+		if get_node("charlistcontrol/orderbutton").is_pressed() == true:
 			i.set_hidden(false)
 		else:
 			i.set_hidden(true)
@@ -3123,4 +3126,118 @@ func imageselect(mode = 'portrait', slave = globals.currentslave):
 		get_node("imageselect").chooseimage()
 	else:
 		popup("Sorry, this option can't be utilized in HTML5 Version. ")
+
+#Sex & interactions
+
+
+func _on_sexbutton_pressed():
+	sexselect()
+
+var sexarray = ['sex','rape','prison rape']
+var sexmode = 'sex'
+
+func sexselect():
+	var newbutton
+	get_node("sexselect").set_hidden(false)
+	get_node("sexselect/selectbutton").set_text(sexmode.capitalize())
+	sexslaves.clear()
+	sexassist.clear()
+	for i in get_node("sexselect/ScrollContainer1/VBoxContainer").get_children() + get_node("sexselect/ScrollContainer/VBoxContainer").get_children():
+		if i.get_name() != 'Button':
+			i.set_hidden(true)
+			i.queue_free()
+	for i in globals.slaves:
+		if sexmode == 'sex':
+			if i.consent == false || i.away.duration > 0 || i.sleep in ['jail','farm']:
+				continue
+			newbutton = get_node("sexselect/ScrollContainer/VBoxContainer/Button").duplicate()
+			get_node("sexselect/ScrollContainer/VBoxContainer").add_child(newbutton)
+			newbutton.set_text(i.dictionary('$name'))
+			newbutton.set_hidden(false)
+			newbutton.connect("pressed",self,'selectsexslave',[newbutton, i])
+		elif sexmode == 'rape':
+			if i.away.duration > 0 || i.sleep in ['jail','farm']:
+				continue
+			newbutton = get_node("sexselect/ScrollContainer/VBoxContainer/Button").duplicate()
+			get_node("sexselect/ScrollContainer/VBoxContainer").add_child(newbutton)
+			newbutton.set_text(i.dictionary('$name'))
+			newbutton.set_hidden(false)
+			newbutton.connect("pressed",self,'selectsexslave',[newbutton, i])
+			if i.consent == false:
+				continue
+			newbutton = get_node("sexselect/ScrollContainer/VBoxContainer/Button").duplicate()
+			get_node("sexselect/ScrollContainer1/VBoxContainer").add_child(newbutton)
+			newbutton.set_text(i.dictionary('$name'))
+			newbutton.set_hidden(false)
+			newbutton.connect("pressed",self,'selectassist',[newbutton, i])
+		elif sexmode == 'prison rape':
+			if i.away.duration == 0 && i.sleep == 'jail':
+				newbutton = get_node("sexselect/ScrollContainer/VBoxContainer/Button").duplicate()
+				get_node("sexselect/ScrollContainer/VBoxContainer").add_child(newbutton)
+				newbutton.set_text(i.dictionary('$name'))
+				newbutton.set_hidden(false)
+				newbutton.connect("pressed",self,'selectsexslave',[newbutton, i])
+			elif i.away.duration == 0 && i.sleep in ['jail','farm'] && i.consent == true:
+				newbutton = get_node("sexselect/ScrollContainer/VBoxContainer/Button").duplicate()
+				get_node("sexselect/ScrollContainer1/VBoxContainer").add_child(newbutton)
+				newbutton.set_text(i.dictionary('$name'))
+				newbutton.set_hidden(false)
+				newbutton.connect("pressed",self,'selectassist',[newbutton, i])
+	updatedescription()
+
+func _on_selectbutton_pressed():
+	sexmode = sexarray[sexarray.find(sexmode)+1] if sexarray.size() > sexarray.find(sexmode)+1 else sexarray[0]
+	sexselect()
+
+var sexslaves = []
+var sexassist = []
+
+func selectsexslave(button, slave):
+	if button.is_pressed():
+		sexslaves.append(slave)
+	else:
+		sexslaves.erase(slave)
+	updatedescription()
+
+func selectassist(button, slave):
+	if button.is_pressed():
+		sexassist.append(slave)
+	else:
+		sexassist.erase(slave)
+	updatedescription()
+
+func updatedescription():
+	var text = ''
+	
+	if sexmode == 'sex':
+		if sexslaves.size() <= 1:
+			text += "[center][color=yellow]Consensual Sex[/color][/center]"
+		elif sexslaves.size() in [2,3]:
+			text += "[center][color=yellow]Group sex[/color][/center]"
+		else:
+			text += "[center][color=yellow]Orgy[/color][/center]"
+			text += "\n[color=aqua]Aphrodite's Brew[/color] is required to initialize an orgy. "
+		text += "\nConsent is required from participants. \nCurrent participants: "
+		for i in sexslaves:
+			text += i.dictionary('$name') + ", "
+		text = text.substr(0, text.length() - 2) + '.\nClick start to initiate.'
+	elif sexmode == 'rape':
+		pass
+	elif sexmode == 'prisonrape':
+		pass
+	
+	
+	if sexslaves.size() >= 4 && sexmode == 'sex':
+		get_node("sexselect/startbutton").set_disabled(globals.itemdict.aphroditebrew.amount < 1)
+	else:
+		get_node("sexselect/startbutton").set_disabled(false)
+	get_node("sexselect/sextext").set_bbcode(text)
+
+
+func _on_startbutton_pressed():
+	pass # replace with function body
+
+func _on_cancelbutton_pressed():
+	get_node("sexselect").set_hidden(true)
+
 

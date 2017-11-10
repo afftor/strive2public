@@ -1,7 +1,7 @@
 extends Node
 
 var category = 'caress'
-var code = 'blowjob'
+var code = 'cunnilingus'
 var givers
 var takers
 var canlast = true

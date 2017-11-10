@@ -1,16 +1,20 @@
-[gd_scene load_steps=16 format=1]
+[gd_scene load_steps=20 format=1]
 
 [ext_resource path="res://files/scripts/residentslinescript.gd" type="Script" id=1]
-[ext_resource path="res://files/buttons/stats.png" type="Texture" id=2]
-[ext_resource path="res://files/buttons/statsdown.png" type="Texture" id=3]
-[ext_resource path="res://files/buttons/inspect.png" type="Texture" id=4]
-[ext_resource path="res://files/buttons/inspectdown.png" type="Texture" id=5]
-[ext_resource path="res://files/buttons/dig-dug.png" type="Texture" id=6]
-[ext_resource path="res://files/buttons/dig-dug (1).png" type="Texture" id=7]
-[ext_resource path="res://files/buttons/sex.png" type="Texture" id=8]
-[ext_resource path="res://files/buttons/sexdown.png" type="Texture" id=9]
-[ext_resource path="res://mainfont.tres" type="DynamicFont" id=10]
-[ext_resource path="res://files/buttons/icons/stress/2.png" type="Texture" id=11]
+[ext_resource path="res://files/buttons/arrows/up-press.png" type="Texture" id=2]
+[ext_resource path="res://files/buttons/arrows/up.png" type="Texture" id=3]
+[ext_resource path="res://files/buttons/arrows/down.png" type="Texture" id=4]
+[ext_resource path="res://files/buttons/arrows/down-press.png" type="Texture" id=5]
+[ext_resource path="res://files/buttons/stats.png" type="Texture" id=6]
+[ext_resource path="res://files/buttons/statsdown.png" type="Texture" id=7]
+[ext_resource path="res://files/buttons/inspect.png" type="Texture" id=8]
+[ext_resource path="res://files/buttons/inspectdown.png" type="Texture" id=9]
+[ext_resource path="res://files/buttons/dig-dug.png" type="Texture" id=10]
+[ext_resource path="res://files/buttons/dig-dug (1).png" type="Texture" id=11]
+[ext_resource path="res://files/buttons/sex.png" type="Texture" id=12]
+[ext_resource path="res://files/buttons/sexdown.png" type="Texture" id=13]
+[ext_resource path="res://mainfont.tres" type="DynamicFont" id=14]
+[ext_resource path="res://files/buttons/icons/stress/2.png" type="Texture" id=15]
 
 [sub_resource type="StyleBoxTexture" id=1]
 
@@ -90,7 +94,7 @@ custom_constants/separation = 5
 alignment = 0
 script/script = ExtResource( 1 )
 
-[node name="topbutton" type="Button" parent="." groups=[
+[node name="topbutton" type="TextureButton" parent="." groups=[
 "sortbutton",
 ]]
 
@@ -104,14 +108,16 @@ size_flags/vertical = 2
 margin/left = 0.0
 margin/top = 0.0
 margin/right = 25.0
-margin/bottom = 25.0
+margin/bottom = 100.0
 toggle_mode = false
-enabled_focus_mode = 0
+enabled_focus_mode = 2
 shortcut = null
-text = "T"
-flat = false
+textures/normal = ExtResource( 2 )
+params/resize_mode = 0
+params/scale = Vector2( 0.25, 0.25 )
+params/stretch_mode = 0
 
-[node name="upbutton" type="Button" parent="." groups=[
+[node name="upbutton" type="TextureButton" parent="." groups=[
 "sortbutton",
 ]]
 
@@ -122,17 +128,19 @@ focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
-margin/left = 30.0
+margin/left = 0.0
 margin/top = 0.0
-margin/right = 55.0
-margin/bottom = 25.0
+margin/right = 25.0
+margin/bottom = 100.0
 toggle_mode = false
 enabled_focus_mode = 0
 shortcut = null
-text = "U"
-flat = false
+textures/normal = ExtResource( 3 )
+params/resize_mode = 0
+params/scale = Vector2( 0.25, 0.25 )
+params/stretch_mode = 0
 
-[node name="downbutton" type="Button" parent="." groups=[
+[node name="downbutton" type="TextureButton" parent="." groups=[
 "sortbutton",
 ]]
 
@@ -143,17 +151,19 @@ focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
-margin/left = 30.0
+margin/left = 0.0
 margin/top = 0.0
-margin/right = 55.0
-margin/bottom = 25.0
+margin/right = 25.0
+margin/bottom = 100.0
 toggle_mode = false
 enabled_focus_mode = 0
 shortcut = null
-text = "D"
-flat = false
+textures/normal = ExtResource( 4 )
+params/resize_mode = 0
+params/scale = Vector2( 0.25, 0.25 )
+params/stretch_mode = 0
 
-[node name="bottombutton" type="Button" parent="." groups=[
+[node name="bottombutton" type="TextureButton" parent="." groups=[
 "sortbutton",
 ]]
 
@@ -167,12 +177,14 @@ size_flags/vertical = 2
 margin/left = 0.0
 margin/top = 0.0
 margin/right = 25.0
-margin/bottom = 25.0
+margin/bottom = 100.0
 toggle_mode = false
 enabled_focus_mode = 0
 shortcut = null
-text = "B"
-flat = false
+textures/normal = ExtResource( 5 )
+params/resize_mode = 0
+params/scale = Vector2( 0.25, 0.25 )
+params/stretch_mode = 0
 
 [node name="actionbuttons" type="HBoxContainer" parent="."]
 
@@ -183,8 +195,8 @@ size_flags/vertical = 2
 size_flags/stretch_ratio = 0.0
 margin/left = 0.0
 margin/top = 0.0
-margin/right = 137.0
-margin/bottom = 25.0
+margin/right = 109.0
+margin/bottom = 100.0
 custom_constants/separation = 3
 alignment = 0
 
@@ -198,12 +210,12 @@ size_flags/vertical = 2
 margin/left = 0.0
 margin/top = 0.0
 margin/right = 25.6
-margin/bottom = 25.6
+margin/bottom = 100.0
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
-textures/normal = ExtResource( 2 )
-textures/hover = ExtResource( 3 )
+textures/normal = ExtResource( 6 )
+textures/hover = ExtResource( 7 )
 params/resize_mode = 0
 params/scale = Vector2( 0.1, 0.1 )
 params/stretch_mode = 0
@@ -218,12 +230,12 @@ size_flags/vertical = 2
 margin/left = 28.0
 margin/top = 0.0
 margin/right = 53.6
-margin/bottom = 25.6
+margin/bottom = 100.0
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
-textures/normal = ExtResource( 4 )
-textures/hover = ExtResource( 5 )
+textures/normal = ExtResource( 8 )
+textures/hover = ExtResource( 9 )
 params/resize_mode = 0
 params/scale = Vector2( 0.1, 0.1 )
 params/stretch_mode = 0
@@ -238,12 +250,12 @@ size_flags/vertical = 2
 margin/left = 56.0
 margin/top = 0.0
 margin/right = 81.6
-margin/bottom = 25.6
+margin/bottom = 100.0
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
-textures/normal = ExtResource( 6 )
-textures/hover = ExtResource( 7 )
+textures/normal = ExtResource( 10 )
+textures/hover = ExtResource( 11 )
 params/resize_mode = 0
 params/scale = Vector2( 0.1, 0.1 )
 params/stretch_mode = 0
@@ -258,12 +270,12 @@ size_flags/vertical = 2
 margin/left = 84.0
 margin/top = 0.0
 margin/right = 109.6
-margin/bottom = 25.6
+margin/bottom = 100.0
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
-textures/normal = ExtResource( 8 )
-textures/hover = ExtResource( 9 )
+textures/normal = ExtResource( 12 )
+textures/hover = ExtResource( 13 )
 params/resize_mode = 0
 params/scale = Vector2( 0.1, 0.1 )
 params/stretch_mode = 0
@@ -275,10 +287,10 @@ focus/stop_mouse = false
 size_flags/horizontal = 2
 size_flags/vertical = 2
 size_flags/stretch_ratio = 0.0
-margin/left = 142.0
+margin/left = 114.0
 margin/top = 0.0
-margin/right = 287.0
-margin/bottom = 25.0
+margin/right = 259.0
+margin/bottom = 100.0
 custom_constants/separation = 45
 alignment = 1
 
@@ -290,14 +302,14 @@ focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 0
 margin/left = 0.0
-margin/top = 1.0
+margin/top = 39.0
 margin/right = 145.0
-margin/bottom = 23.0
+margin/bottom = 61.0
 custom_styles/hover = SubResource( 1 )
 custom_styles/pressed = SubResource( 2 )
 custom_styles/focus = SubResource( 3 )
 custom_styles/normal = SubResource( 4 )
-custom_fonts/font = ExtResource( 10 )
+custom_fonts/font = ExtResource( 14 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 custom_colors/font_color_hover = Color( 0, 1, 0.882813, 1 )
 custom_colors/font_color_pressed = Color( 1, 1, 1, 1 )
@@ -315,10 +327,10 @@ focus/stop_mouse = false
 size_flags/horizontal = 2
 size_flags/vertical = 2
 size_flags/stretch_ratio = 0.0
-margin/left = 292.0
+margin/left = 264.0
 margin/top = 0.0
-margin/right = 321.0
-margin/bottom = 25.0
+margin/right = 293.0
+margin/bottom = 100.0
 custom_constants/separation = 2
 alignment = 2
 
@@ -348,7 +360,7 @@ size_flags/vertical = 2
 margin/left = 0.0
 margin/top = 0.0
 margin/right = 0.0
-margin/bottom = 25.0
+margin/bottom = 100.0
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
@@ -380,7 +392,7 @@ size_flags/vertical = 2
 margin/left = 2.0
 margin/top = 0.0
 margin/right = 2.0
-margin/bottom = 25.0
+margin/bottom = 100.0
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
@@ -397,11 +409,11 @@ size_flags/vertical = 2
 margin/left = 4.0
 margin/top = 0.0
 margin/right = 29.0
-margin/bottom = 25.0
+margin/bottom = 100.0
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
-textures/normal = ExtResource( 11 )
+textures/normal = ExtResource( 15 )
 params/resize_mode = 0
 params/stretch_mode = 5
 

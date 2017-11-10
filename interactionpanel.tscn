@@ -1,13 +1,9 @@
-[gd_scene load_steps=20 format=1]
+[gd_scene load_steps=16 format=1]
 
 [ext_resource path="res://files/theme.tres" type="Theme" id=1]
 [ext_resource path="res://files/scripts/newsexsystem.gd" type="Script" id=2]
 [ext_resource path="res://files/buttons/Panel.png" type="Texture" id=3]
-[ext_resource path="res://files/buttons/sexicons/16.png" type="Texture" id=4]
-[ext_resource path="res://files/buttons/sexicons/17.png" type="Texture" id=5]
-[ext_resource path="res://files/buttons/sexicons/6.png" type="Texture" id=6]
-[ext_resource path="res://files/buttons/sexicons/11.png" type="Texture" id=7]
-[ext_resource path="res://files/buttons/sexicons/1.png" type="Texture" id=8]
+[ext_resource path="res://files/buttons/sexicons/time.png" type="Texture" id=4]
 
 [sub_resource type="StyleBoxTexture" id=1]
 
@@ -488,9 +484,23 @@ flat = false
 clip_text = true
 align = 0
 
+[node name="sex" type="TextureFrame" parent="Panel/VBoxContainer/Panel"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 76.0
+margin/top = 7.0
+margin/right = 98.0
+margin/bottom = 27.0
+expand = true
+stretch_mode = 6
+
 [node name="sens" type="TextureFrame" parent="Panel/VBoxContainer/Panel"]
 
-focus/ignore_mouse = true
+hint/tooltip = "arousal"
+focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
@@ -498,27 +508,13 @@ margin/left = 214.0
 margin/top = 5.0
 margin/right = 241.0
 margin/bottom = 30.0
-texture = ExtResource( 4 )
-expand = true
-stretch_mode = 6
-
-[node name="sex" type="TextureFrame" parent="Panel/VBoxContainer/Panel"]
-
-focus/ignore_mouse = true
-focus/stop_mouse = true
-size_flags/horizontal = 2
-size_flags/vertical = 2
-margin/left = 74.0
-margin/top = 5.0
-margin/right = 101.0
-margin/bottom = 30.0
-texture = ExtResource( 5 )
 expand = true
 stretch_mode = 6
 
 [node name="lust" type="TextureFrame" parent="Panel/VBoxContainer/Panel"]
 
-focus/ignore_mouse = true
+hint/tooltip = "lust"
+focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
@@ -526,13 +522,13 @@ margin/left = 335.0
 margin/top = 4.0
 margin/right = 370.0
 margin/bottom = 31.0
-texture = ExtResource( 6 )
 expand = true
 stretch_mode = 6
 
 [node name="lube" type="TextureFrame" parent="Panel/VBoxContainer/Panel"]
 
-focus/ignore_mouse = true
+hint/tooltip = "lubrication (easies insertion pain)"
+focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
@@ -540,7 +536,6 @@ margin/left = 278.0
 margin/top = 4.0
 margin/right = 304.0
 margin/bottom = 33.0
-texture = ExtResource( 7 )
 expand = true
 stretch_mode = 6
 
@@ -581,7 +576,7 @@ custom_colors/font_color_pressed = Color( 0.171875, 1, 0, 1 )
 toggle_mode = true
 enabled_focus_mode = 2
 shortcut = null
-text = "X"
+text = "give"
 flat = false
 
 [node name="take" type="Button" parent="Panel/VBoxContainer/Panel"]
@@ -605,7 +600,7 @@ custom_colors/font_color_pressed = Color( 0.171875, 1, 0, 1 )
 toggle_mode = true
 enabled_focus_mode = 2
 shortcut = null
-text = "X"
+text = "take"
 flat = false
 
 [node name="stopbutton" type="Button" parent="Panel"]
@@ -662,7 +657,7 @@ margin/left = 483.0
 margin/top = 94.0
 margin/right = 443.0
 margin/bottom = 50.0
-texture = ExtResource( 8 )
+texture = ExtResource( 4 )
 expand = true
 stretch_mode = 6
 

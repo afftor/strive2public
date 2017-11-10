@@ -207,7 +207,7 @@ func mindreadeffect():
 	var spell = globals.spelldict.mindread
 	var text = ''
 	globals.resources.mana -= spell.manacost
-	text = "You peer into $name's soul. $He is of " + slave.origins + " origins. \nObedience: " + str(round(slave.obed)) + ', Stress: '+ str(round(slave.stress)) + ', Loyalty: ' + str(round(slave.loyal)) + ', Lust: '+ str(round(slave.lust)) + ', Courage: ' + str(round(slave.cour)) + ', Confidence: ' + str(round(slave.conf)) + ', Wit: '+ str(round(slave.wit)) + ', Charm: ' + str(round(slave.charm)) + ", Toxicity: " + str(floor(slave.toxicity)) + ", Dominance: " + str(floor(slave.dom)) 
+	text = "You peer into $name's soul. $He is of " + slave.origins + " origins. \nObedience: " + str(round(slave.obed)) + ', Stress: '+ str(round(slave.stress)) + ', Loyalty: ' + str(round(slave.loyal)) + ', Lust: '+ str(round(slave.lust)) + ', Courage: ' + str(round(slave.cour)) + ', Confidence: ' + str(round(slave.conf)) + ', Wit: '+ str(round(slave.wit)) + ', Charm: ' + str(round(slave.charm)) + ", Toxicity: " + str(floor(slave.toxicity)) 
 	text += "\nStrength: " + str(slave.sstr) + ", Agility: " + str(slave.sagi) + ", Magic Affinity: " + str(slave.smaf) + ", Endurance: " + str(slave.send)
 	text += "\nBase Beauty: " + str(slave.beautybase) + ', Temporal Beauty: ' + str(slave.beautytemp)
 	if slave.effects.has('captured') == true:

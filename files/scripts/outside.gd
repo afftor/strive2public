@@ -9,6 +9,22 @@ onready var questtext = globals.questtext
 var location = ''
 var questgiveawayslave
 
+func _ready():
+	set_process_input(true)
+	if globals.guildslaves.wimborn.size() < 2:
+		var rand = round(rand_range(4,6))
+		newslaveinguild(rand, 'wimborn')
+	if globals.guildslaves.gorn.size() < 2:
+		var rand = round(rand_range(4,6))
+		newslaveinguild(rand, 'gorn')
+	if globals.guildslaves.frostford.size() < 2:
+		var rand = round(rand_range(4,6))
+		newslaveinguild(rand, 'frostford')
+	if globals.guildslaves.umbra.size() < 4:
+		var rand = round(rand_range(4,6))
+		newslaveinguild(rand, 'umbra')
+
+
 func _input(event):
 	if main.get_node("screenchange/AnimationPlayer").is_playing() == true && main.get_node("screenchange").is_visible():
 		return
@@ -210,21 +226,6 @@ func outskirts():
 
 
 ############## SLAVE GUILD
-func _ready():
-	set_process_input(true)
-	if globals.guildslaves.wimborn.size() < 2:
-		var rand = round(rand_range(4,6))
-		newslaveinguild(rand, 'wimborn')
-	if globals.guildslaves.gorn.size() < 2:
-		var rand = round(rand_range(4,6))
-		newslaveinguild(rand, 'gorn')
-	if globals.guildslaves.frostford.size() < 2:
-		var rand = round(rand_range(4,6))
-		newslaveinguild(rand, 'frostford')
-	if globals.guildslaves.umbra.size() < 4:
-		var rand = round(rand_range(4,6))
-		newslaveinguild(rand, 'umbra')
-
 
 
 func newslaveinguild(number, town = 'wimborn'):
@@ -436,7 +437,7 @@ func selectslavebuy(slave):
 	if slave.vagvirgin == true:
 		text += "After a gesture, $name reveals to you $his [color=aqua]virgin[/color] pussy. \n\n"
 	text += "As you finish inspection, you are being reminded, that you can purchase $him for mere [color=yellow]"+str(price)+ " gold[/color].[/color] "
-	maintext.set_bbcode(slave.description() + '\n\n[color=#ff5df8]'+ slave.dictionary(text))
+	maintext.set_bbcode(slave.descriptionsmall() + '\n\n[color=#ff5df8]'+ slave.dictionary(text))
 	if globals.resources.gold < price:
 		get_node("slavebuypanel/purchasebutton").set_disabled(true)
 	else:
@@ -2083,7 +2084,7 @@ func _on_quicksell_pressed():
 	for i in globals.state.capturedgroup:
 		array.append(i)
 	for i in array:
-		gold += round(max(i.calculateprice()*0.3,10))
+		gold += round(max(i.calculateprice()*0.3,10))+10
 		globals.state.capturedgroup.erase(i)
 	main.popup('You furtively delivered your captives to the local slaver guild. This earned you [color=yellow]' + str(gold) + '[/color] gold. ')
 	globals.resources.gold += gold

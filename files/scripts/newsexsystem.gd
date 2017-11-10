@@ -9,6 +9,30 @@ var turns = 0
 var actions = []
 var ongoingactions = []
 
+var sexicons = {
+female = load("res://files/buttons/sexicons/female.png"),
+male = load("res://files/buttons/sexicons/male.png"),
+futanari = load("res://files/buttons/sexicons/futa.png"),
+}
+var statsicons = {
+lub1 = load("res://files/buttons/sexicons/lub1.png"),
+lub2 = load("res://files/buttons/sexicons/lub2.png"),
+lub3 = load("res://files/buttons/sexicons/lub3.png"),
+lub4 = load("res://files/buttons/sexicons/lub4.png"),
+lub5 = load("res://files/buttons/sexicons/lub5.png"),
+lust1 = load("res://files/buttons/sexicons/lust1.png"),
+lust2 = load("res://files/buttons/sexicons/lust2.png"),
+lust3 = load("res://files/buttons/sexicons/lust3.png"),
+lust4 = load("res://files/buttons/sexicons/lust4.png"),
+lust5 = load("res://files/buttons/sexicons/lust5.png"),
+sens1 = load("res://files/buttons/sexicons/sens1.png"),
+sens2 = load("res://files/buttons/sexicons/sens2.png"),
+sens3 = load("res://files/buttons/sexicons/sens3.png"),
+sens4 = load("res://files/buttons/sexicons/sens4.png"),
+sens5 = load("res://files/buttons/sexicons/sens5.png"),
+}
+
+
 var selectedcategory = 'caress'
 var categories = {caress = [], fucking = [], tools = [], SM = [], humiliation = [], other = []}
 
@@ -26,7 +50,7 @@ func _ready():
 	var i = 5
 	while i > 0:
 		i -= 1
-		var slave = globals.newslave(globals.allracesarray[rand_range(0,globals.allracesarray.size())], 'random', 'futanari')
+		var slave = globals.newslave(globals.allracesarray[rand_range(0,globals.allracesarray.size())], 'random', 'random')
 		var newmember = member.new()
 		newmember.loyalty = slave.loyal
 		newmember.submission = slave.obed
@@ -72,9 +96,11 @@ func rebuildparticipantslist():
 		elif takers.find(i) >= 0:
 			newnode.get_node("take").set_pressed(true)
 		newnode.set_meta("slave", i)
-		#newnode.get_node("sex").set_text(i.person.sex)
-		#newnode.get_node("lust").set_text(str(i.lust))
-		#newnode.get_node("sens").set_text(str(i.sens))
+		newnode.get_node("sex").set_texture(sexicons[i.person.sex])
+		newnode.get_node("sex").set_tooltip(i.person.sex)
+		newnode.get_node("lust").set_texture(statsicons['lust' + str(max(1,ceil(i.lust/200)))])
+		newnode.get_node("sens").set_texture(statsicons['sens' + str(max(1,ceil(i.sens/200)))])
+		newnode.get_node("lube").set_texture(statsicons['lub' + str(max(1,ceil(i.lube/2)))])
 		newnode.get_node("give").connect("pressed",self,'switchsides',[newnode, 'give'])
 		newnode.get_node("take").connect("pressed",self,'switchsides',[newnode, 'take'])
 	var text = ''

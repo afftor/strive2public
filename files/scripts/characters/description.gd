@@ -1,8 +1,10 @@
 extends Node
 
 var slave
+var showmode = 'default'
 
 func getslavedescription(tempslave, mode = 'default'):
+	showmode = mode
 	slave = tempslave
 	var text = basics() + features() + genitals() + mods() + tattoo() + piercing()
 	text = slave.dictionary(text)
@@ -13,16 +15,20 @@ func getslavedescription(tempslave, mode = 'default'):
 	return text
 
 func basics():
-	var text = "[url=basic][color=#d1b970]Basics:[/color][/url] "
-	if globals.state.descriptsettings.basic == true:
+	var text = ''
+	if showmode == 'default':
+		text += "[url=basic][color=#d1b970]Basics:[/color][/url] "
+	if globals.state.descriptsettings.basic == true || showmode != 'default':
 		text += entry() + race() + getdescription('bodyshape') + getdescription('age') + getbeauty()
 	else:
 		text += "[color=yellow]$name, [url=race]" + slave.race + "[/url], " + slave.age.capitalize() +'[/color]. '
 	return text
 
 func features():
-	var text = '\n[url=appearance][color=#d1b970]Appearance:[/color][/url] '
-	if globals.state.descriptsettings.appearance == true:
+	var text = '\n'
+	if showmode == 'default':
+		text += '[url=appearance][color=#d1b970]Appearance:[/color][/url] '
+	if globals.state.descriptsettings.appearance == true || showmode != 'default':
 		text = "\n" + text
 		text += getdescription('hairlength') + getdescription('hairstyle') + getdescription("eyecolor") + getdescription("eyeshape") + getdescription('horns') + getdescription('ears') + getdescription('skin') + getdescription("skincov") + getdescription("wings") + getdescription("tail") + getdescription("height")
 	else:
@@ -30,8 +36,10 @@ func features():
 	return text
 
 func genitals():
-	var text = '\n[url=genitals][color=#d1b970]Privates:[/color][/url] '
-	if globals.state.descriptsettings.genitals == true:
+	var text = '\n'
+	if showmode == 'default':
+		text += '[url=genitals][color=#d1b970]Privates:[/color][/url] '
+	if globals.state.descriptsettings.genitals == true || showmode != 'default':
 		text = "\n" + text + getdescription("titssize") + gettitsextra() + getdescription("asssize") + lowergenitals()
 		if slave.preg.duration > 24:
 			text += "\n\nThe unborn child forces $his belly to protrude massively; $he is going to give birth soon."
@@ -99,7 +107,7 @@ func piercing():
 		text += '$His cock has a [color=aqua]stud[/color] in it. '
 	
 	if text != '':
-		if globals.state.descriptsettings.piercing == true:
+		if globals.state.descriptsettings.piercing == true || showmode != 'default':
 			text = "\n\n[url=piercing][color=#d1b970]Piercing:[/color][/url] " + text
 		else:
 			text = "\n[url=piercing][color=#d1b970]Piercing:[/color][/url] Omitted."
@@ -128,7 +136,7 @@ func tattoo():
 		if slave.tattoo.ass != 'none' && slave.tattooshow.ass == true:
 			text += tattoosdescript.ass.start + '[color=yellow]' + tattoooptions[slave.tattoo.ass].name + '[/color]' + tattoosdescript.ass.end + tattoooptions[slave.tattoo.ass].descript + '. '
 	if text != '':
-		if globals.state.descriptsettings.tattoo == true: 
+		if globals.state.descriptsettings.tattoo == true || showmode != 'default': 
 			text = "\n\n[url=tattoo][color=#d1b970]Tattoos:[/color][/url] " + text
 		else:
 			text = "\n[url=tattoo][color=#d1b970]Tattoos:[/color][/url] Omitted."

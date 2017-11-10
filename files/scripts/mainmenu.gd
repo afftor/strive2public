@@ -83,9 +83,11 @@ func _on_SavePanel_visibility_changed():
 		node.set_hidden(false)
 		if globals.savelist.has(i):
 			node.get_node("date").set_text(globals.savelist[i].date)
-			node.get_node("info").set_text(i.replacen("user://saves/",'') + "      " + globals.savelist[i].name)
+			node.get_node("name").set_text(i.replacen("user://saves/",''))
+			node.get_node("info").set_text(globals.savelist[i].name)
 		else:
-			node.get_node("info").set_text(i.replacen("user://saves/",'') + "      " + "This save has no info about it.")
+			node.get_node("name").set_text(i.replacen("user://saves/",''))
+			node.get_node("info").set_text("This save has no info about it.")
 		get_node("TextureFrame/SavePanel/ScrollContainer/savelist").add_child(node)
 		#node.set_text(i.replacen("user://saves/",''))
 		node.set_meta('text', i)

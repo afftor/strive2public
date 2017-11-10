@@ -818,7 +818,7 @@ func slaverbuy():
 	globals.get_tree().get_current_scene().popup("You purchase slavers' captive and return to mansion. " )
 
 func inspectenemy():
-	globals.get_tree().get_current_scene().popup(enemygroup.captured.description())
+	globals.get_tree().get_current_scene().popup(enemygroup.captured.descriptionsmall())
 
 func mindreadcapturee(state = 'encounter'):
 	globals.get_tree().get_current_scene().get_node("spellnode").slave = enemygroup.captured
@@ -1140,7 +1140,7 @@ func itemtooltiphide():
 
 
 func defeatedselected(slave):
-	get_tree().get_current_scene().popup(slave.description())
+	get_tree().get_current_scene().popup(slave.descriptionsmall())
 
 
 func defeatedchoice(ID, slave, node):
