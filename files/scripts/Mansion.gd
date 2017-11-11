@@ -3131,17 +3131,17 @@ func imageselect(mode = 'portrait', slave = globals.currentslave):
 
 
 func _on_sexbutton_pressed():
+	sexslaves.clear()
+	sexassist.clear()
 	sexselect()
 
-var sexarray = ['sex','rape','prison rape']
+var sexarray = ['sex','abuse']
 var sexmode = 'sex'
 
 func sexselect():
 	var newbutton
 	get_node("sexselect").set_hidden(false)
 	get_node("sexselect/selectbutton").set_text(sexmode.capitalize())
-	sexslaves.clear()
-	sexassist.clear()
 	for i in get_node("sexselect/ScrollContainer1/VBoxContainer").get_children() + get_node("sexselect/ScrollContainer/VBoxContainer").get_children():
 		if i.get_name() != 'Button':
 			i.set_hidden(true)
@@ -3154,40 +3154,37 @@ func sexselect():
 			get_node("sexselect/ScrollContainer/VBoxContainer").add_child(newbutton)
 			newbutton.set_text(i.dictionary('$name'))
 			newbutton.set_hidden(false)
+			if sexslaves.find(i) >= 0:
+				newbutton.set_pressed(true)
 			newbutton.connect("pressed",self,'selectsexslave',[newbutton, i])
-		elif sexmode == 'rape':
-			if i.away.duration > 0 || i.sleep in ['jail','farm']:
+		elif sexmode == 'abuse':
+			if i.away.duration > 0 || i.sleep in ['farm']:
 				continue
 			newbutton = get_node("sexselect/ScrollContainer/VBoxContainer/Button").duplicate()
 			get_node("sexselect/ScrollContainer/VBoxContainer").add_child(newbutton)
 			newbutton.set_text(i.dictionary('$name'))
 			newbutton.set_hidden(false)
+			if sexslaves.find(i) >= 0:
+				newbutton.set_pressed(true)
+			elif sexslaves.size() > 0:
+				newbutton.set_disabled(true)
 			newbutton.connect("pressed",self,'selectsexslave',[newbutton, i])
-			if i.consent == false:
+			if i.consent == false || sexslaves.find(i) >= 0:
 				continue
 			newbutton = get_node("sexselect/ScrollContainer/VBoxContainer/Button").duplicate()
 			get_node("sexselect/ScrollContainer1/VBoxContainer").add_child(newbutton)
 			newbutton.set_text(i.dictionary('$name'))
 			newbutton.set_hidden(false)
+			if sexassist.find(i) >= 0:
+				newbutton.set_pressed(true)
+			elif sexassist.size() > 0:
+				newbutton.set_disabled(true)
 			newbutton.connect("pressed",self,'selectassist',[newbutton, i])
-		elif sexmode == 'prison rape':
-			if i.away.duration == 0 && i.sleep == 'jail':
-				newbutton = get_node("sexselect/ScrollContainer/VBoxContainer/Button").duplicate()
-				get_node("sexselect/ScrollContainer/VBoxContainer").add_child(newbutton)
-				newbutton.set_text(i.dictionary('$name'))
-				newbutton.set_hidden(false)
-				newbutton.connect("pressed",self,'selectsexslave',[newbutton, i])
-			elif i.away.duration == 0 && i.sleep in ['jail','farm'] && i.consent == true:
-				newbutton = get_node("sexselect/ScrollContainer/VBoxContainer/Button").duplicate()
-				get_node("sexselect/ScrollContainer1/VBoxContainer").add_child(newbutton)
-				newbutton.set_text(i.dictionary('$name'))
-				newbutton.set_hidden(false)
-				newbutton.connect("pressed",self,'selectassist',[newbutton, i])
 	updatedescription()
 
 func _on_selectbutton_pressed():
 	sexmode = sexarray[sexarray.find(sexmode)+1] if sexarray.size() > sexarray.find(sexmode)+1 else sexarray[0]
-	sexselect()
+	_on_sexbutton_pressed()
 
 var sexslaves = []
 var sexassist = []
@@ -3195,16 +3192,18 @@ var sexassist = []
 func selectsexslave(button, slave):
 	if button.is_pressed():
 		sexslaves.append(slave)
+		if sexassist.find(slave) >= 0:
+			sexassist.erase(slave)
 	else:
 		sexslaves.erase(slave)
-	updatedescription()
+	sexselect()
 
 func selectassist(button, slave):
 	if button.is_pressed():
 		sexassist.append(slave)
 	else:
 		sexassist.erase(slave)
-	updatedescription()
+	sexselect()
 
 func updatedescription():
 	var text = ''
@@ -3220,12 +3219,17 @@ func updatedescription():
 		text += "\nConsent is required from participants. \nCurrent participants: "
 		for i in sexslaves:
 			text += i.dictionary('$name') + ", "
-		text = text.substr(0, text.length() - 2) + '.\nClick start to initiate.'
-	elif sexmode == 'rape':
-		pass
-	elif sexmode == 'prisonrape':
-		pass
-	
+		text = text.substr(0, text.length() - 2) + '.\nClick Start to initiate.'
+	elif sexmode == 'abuse':
+		text += "[center][color=yellow]Rape[/color][/center]"
+		text += "\nRequires a target and an optional assistant. Can be initiated with prisoners. \nCurrent target: "
+		for i in sexslaves:
+			text += i.dictionary('$name') + ". " 
+		text += "\nCurrent assistant: "
+		for i in sexassist:
+			text += i.dictionary('$name') + ". "
+		text += '\nClick Start to initiate.'
+		get_node("sexselect/startbutton").set_disabled(sexslaves.size() == 1 && sexassist.size() <= 1)
 	
 	if sexslaves.size() >= 4 && sexmode == 'sex':
 		get_node("sexselect/startbutton").set_disabled(globals.itemdict.aphroditebrew.amount < 1)
