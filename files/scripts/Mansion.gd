@@ -136,6 +136,7 @@ func _on_new_slave_button_pressed():
 	for i in globals.state.tutorial:
 		globals.state.tutorial[i] = true
 	music_set('mansion')
+	globals.state.capturedgroup.append(globals.newslave(testslaverace[rand_range(0,testslaverace.size())], testslaveage, testslavegender, testslaveorigin[rand_range(0,testslaveorigin.size())]))
 	var slave = globals.newslave(testslaverace[rand_range(0,testslaverace.size())], testslaveage, testslavegender, testslaveorigin[rand_range(0,testslaveorigin.size())])
 	slave.obed += 200
 	slave.loyal += 100
@@ -177,7 +178,7 @@ func _on_new_slave_button_pressed():
 	globals.player.energy += 100
 	globals.player.xp += 50
 	globals.resources.upgradepoints += 100
-	for i in ['armorchain','weaponclaymore','clothpet','clothninja','clothmiko']:
+	for i in ['armorchain','weaponclaymore','clothpet','clothninja','clothkimono']:
 		var tmpitem = get_node("itemnode").createunstackable(i)
 		globals.state.unstackables[str(tmpitem.id)] = tmpitem
 	globals.state.sidequests.brothel = 1
@@ -1198,7 +1199,7 @@ func _on_cancelsaveload_pressed():
 var yesbutton = {target = null, function = null}
 
 func yesnopopup(text, yesfunc, target = self):
-	if yesbutton.target != null:
+	if yesbutton.target != null && get_node("menucontrol/yesnopopup/HBoxContainer/yesbutton").is_connected("pressed",yesbutton.target, yesbutton.function):
 		get_node("menucontrol/yesnopopup/HBoxContainer/yesbutton").disconnect("pressed",yesbutton.target,yesbutton.function)
 	get_node("menucontrol/yesnopopup/HBoxContainer/yesbutton").connect('pressed',target,yesfunc,[],4)
 	yesbutton.target = target

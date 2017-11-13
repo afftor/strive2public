@@ -23,6 +23,7 @@ func _ready():
 	if globals.guildslaves.umbra.size() < 4:
 		var rand = round(rand_range(4,6))
 		newslaveinguild(rand, 'umbra')
+	#get_node("playergroupdetails/TabContainer").connect("visibility_changed", self, "_on_TabContainer_tab_changed")
 
 
 func _input(event):
@@ -111,7 +112,7 @@ func playergrouppanel():
 		charpanel.get_node("stress").set_text("SR:" + str(round(slave.stress)))
 		charpanel.get_node("health").set_text('HP:' +str(round(slave.health)) + '/' + str(slave.stats.health_max))
 		charpanel.get_node("energy").set_text('EN:'+str(round(slave.energy)) + '/' + str(slave.stats.energy_max))
-		charpanel.get_node("utilitypanel").connect("popup_hide", globals, 'hidetooltip')
+		#charpanel.get_node("utilitypanel").connect("popup_hide", globals, 'hidetooltip')
 
 
 func utilitypanel(panel):
@@ -157,38 +158,6 @@ func utilitypanel(panel):
 		newbutton.connect("mouse_enter", globals, 'showtooltip', [text])
 		newbutton.connect("mouse_exit", globals, 'hidetooltip')
 
-func useitem(item, slave):
-	globals.state.backpack.stackables[item.code] -= 1
-	if globals.state.backpack.stackables[item.code] <= 1:
-		globals.state.backpack.stackables.erase(item.code)
-	if item.code == 'bandage':
-		if slave.effects.has('bandaged') == false:
-			get_parent().infotext(slave.dictionary("[color=green]Bandage used on $name.[/color]"))
-			slave.health += slave.stats.health_max/2.5
-			slave.add_effect(globals.effectdict.bandaged)
-		else:
-			get_parent().infotext(slave.dictionary("[color=green]Bandage used on $name with reduced efficiency.[/color]"))
-			slave.health += slave.stats.health_max/5
-	elif item.code == 'teleportseal':
-		if slave == globals.player:
-			get_parent().popup("After activating Teleportation Seal, you appear inside of your mansion, leaving your party behind. Hopefully they will find a way back in near time. ")
-			for i in globals.state.playergroup:
-				globals.state.findslave(i).away.duration = round(rand_range(1,3))
-			mansion()
-		else:
-			get_parent().popup(slave.dictionary("After activating Teleportation Seal, $name slowly dissipates in bright sparkles."))
-			globals.state.playergroup.erase(slave.id)
-	globals.hidetooltip()
-	playergrouppanel()
-
-func usespell(spell, slave):
-	get_tree().get_current_scene().get_node('spellnode').slave = slave
-	if spell.code == 'heal':
-		get_tree().get_current_scene().get_node('spellnode').healeffect()
-	elif spell.code == 'invigorate':
-		get_tree().get_current_scene().get_node('spellnode').invigorateeffect()
-	globals.hidetooltip()
-	playergrouppanel()
 
 
 func town():
@@ -336,7 +305,7 @@ func slaveguildfairy(stage = 0):
 		maintext.set_bbcode(globals.player.dictionary(text))
 		return
 	elif stage == 1:
-		if globals.player.penis.number < 1:
+		if globals.player.penis == 'none':
 			main.popup("This option requires player character to have a penis. ")
 			return
 		if globals.state.sidequests.maple == 1:
@@ -1975,32 +1944,61 @@ func _on_questlog_pressed():
 	get_tree().get_current_scene()._on_questlog_pressed()
 
 
+var backpackselecteditem
+var partyselectedslave
 
-
-func _on_details_pressed():
+func _on_details_pressed(empty = null):
 	var newbutton
+	backpackselecteditem = null
+	partyselectedslave = null
+	if get_node("playergroupdetails/TabContainer").is_connected('tab_changed',self,'_on_details_pressed') == false:
+		get_node("playergroupdetails/TabContainer").connect("tab_changed",self,"_on_details_pressed")
 	get_node("playergroupdetails").popup()
 	get_node("playergroupdetails/itemdescript").set_bbcode("")
-	for i in get_node("playergroupdetails/slavecontainer/HBoxContainer/").get_children() + get_node("playergroupdetails/itemcontainer/VBoxContainer").get_children():
+	get_node("playergroupdetails/discardbutton").set_disabled(true)
+	get_node("playergroupdetails/usebutton").set_disabled(true)
+	for i in get_node("playergroupdetails/TabContainer/Captured Slaves/HBoxContainer/").get_children() + get_node("playergroupdetails/itemcontainer/VBoxContainer").get_children() + get_node("playergroupdetails/TabContainer/Party/HBoxContainer").get_children():
 		if i.get_name() != 'Button':
 			i.set_hidden(true)
 			i.queue_free()
 	for i in globals.state.capturedgroup:
-		newbutton = get_node("playergroupdetails/slavecontainer/HBoxContainer/Button").duplicate()
-		get_node("playergroupdetails/slavecontainer/HBoxContainer/").add_child(newbutton)
+		newbutton = get_node("playergroupdetails/TabContainer/Captured Slaves/HBoxContainer/Button").duplicate()
+		get_node("playergroupdetails/TabContainer/Captured Slaves/HBoxContainer/").add_child(newbutton)
 		newbutton.set_hidden(false)
+		newbutton.set_meta("slave", i)
+		newbutton.get_node("setfree").connect("pressed",self,'freecaptured', [i])
+		newbutton.get_node("inspect").connect("pressed",self,'inspectslave', [i])
 		newbutton.set_text(i.race + " " + i.sex.capitalize() + " " + i.age.capitalize() + ", Grade: " + i.origins.capitalize())
-		newbutton.connect("pressed",self,'selectcaptured',[i])
+		newbutton.connect("pressed",self,'selectpartymember',[i])
+	
+	var slave = globals.player
+	newbutton = get_node("playergroupdetails/TabContainer/Party/HBoxContainer/Button").duplicate()
+	get_node("playergroupdetails/TabContainer/Party/HBoxContainer/").add_child(newbutton)
+	newbutton.set_hidden(false)
+	newbutton.set_meta("slave", slave)
+	newbutton.set_text(slave.dictionary("$name, HP: ") + str(slave.health) + '/' + str(slave.stats.health_max)  + ", EN: " + str(slave.energy) + '/' + str(slave.stats.energy_max))
+	newbutton.connect("pressed",self,'selectpartymember',[slave])
+	
+	for i in globals.state.playergroup:
+		slave = globals.state.findslave(i)
+		newbutton = get_node("playergroupdetails/TabContainer/Party/HBoxContainer/Button").duplicate()
+		get_node("playergroupdetails/TabContainer/Party/HBoxContainer/").add_child(newbutton)
+		newbutton.set_hidden(false)
+		newbutton.set_meta("slave", slave)
+		newbutton.set_text(slave.dictionary("$name, HP: ") + str(slave.health) + '/' + str(slave.stats.health_max)  + ", EN: " + str(slave.energy) + '/' + str(slave.stats.energy_max))
+		newbutton.connect("pressed",self,'selectpartymember',[slave])
+	
 	for i in globals.state.backpack.stackables:
 		var item = globals.itemdict[i]
 		newbutton = get_node("playergroupdetails/itemcontainer/VBoxContainer/Button").duplicate()
 		get_node("playergroupdetails/itemcontainer/VBoxContainer").add_child(newbutton)
 		newbutton.set_hidden(false)
+		newbutton.get_node("name").set_text(item.name)
+		newbutton.set_meta("item", item)
 		newbutton.get_node("amount").set_text(str(globals.state.backpack.stackables[i]))
 		if item.icon != null:
 			newbutton.get_node("icon").set_texture(item.icon)
-		newbutton.connect("mouse_enter",self,'itemtooltip',[item])
-		newbutton.connect("pressed",self,'itembackpackdrop', [item])
+		newbutton.connect("pressed",self,'itembackpackselect', [item])
 	calculateweight()
 	if !get_parent().get_node("explorationnode").currentzone.code in ['wimborn','gorn','frostford', 'amberguard']:
 		get_node("playergroupdetails/return").set_disabled(true)
@@ -2018,13 +2016,78 @@ func _on_details_pressed():
 		get_node("playergroupdetails/quicksell").set_disabled(true)
 		get_node("playergroupdetails/quicksell").set_tooltip("Requires Slaver's guild present nearby. ")
 
+func selectpartymember(slave):
+	partyselectedslave = slave
+	for i in get_node("playergroupdetails/TabContainer/Party/HBoxContainer").get_children() + get_node("playergroupdetails/TabContainer/Captured Slaves/HBoxContainer").get_children():
+		if i.get_name() == 'Button' || i.get_meta('slave') != slave:
+			i.set_pressed(false)
+		else:
+			i.set_pressed(true)
+	if backpackselecteditem != null:
+		itembackpackselect(backpackselecteditem)
+
 func itemtooltip(item):
-	var text ='[center]' + item.name + '[/center]\n' + item.description + '\nWeight: ' + str(item.weight)+  '\n\n[color=red]Click to discard'
-	if item.code in ['bandage', 'teleportseal']:
-		text += '\n\n[color=yellow]To use on party members click on their respective panel. [/color]'
+	var text ='[center]' + item.name + '[/center]\n' + item.description + '\n\nWeight: ' + str(item.weight)
+	if item.code == 'teleportseal' && partyselectedslave == globals.player:
+		text += '\n\n[color=red]Your captured slaves will be freed and your party will take time to return home on their own. [/color]'
 	get_node("playergroupdetails/itemdescript").set_bbcode(text)
 
-func itembackpackdrop(item):
+func itembackpackselect(item):
+	backpackselecteditem = item
+	for i in get_node("playergroupdetails/itemcontainer/VBoxContainer").get_children():
+		i.set_pressed(false) if i.get_name() == 'Button' || i.get_meta("item") != item else i.set_pressed(true)
+	get_node("playergroupdetails/discardbutton").set_disabled(false)
+	if item.code in ['bandage','teleportseal'] && partyselectedslave != null:
+		get_node("playergroupdetails/usebutton").set_disabled(false)
+	else:
+		get_node("playergroupdetails/usebutton").set_disabled(true)
+	itemtooltip(item)
+
+
+func useitem(item, slave):
+	globals.state.backpack.stackables[item.code] -= 1
+	if globals.state.backpack.stackables[item.code] <= 1:
+		globals.state.backpack.stackables.erase(item.code)
+	if item.code == 'bandage':
+		if slave.effects.has('bandaged') == false:
+			get_parent().infotext(slave.dictionary("[color=green]Bandage used on $name.[/color]"))
+			slave.health += slave.stats.health_max/2.5
+			slave.add_effect(globals.effectdict.bandaged)
+		else:
+			get_parent().infotext(slave.dictionary("[color=green]Bandage used on $name with reduced efficiency.[/color]"))
+			slave.health += slave.stats.health_max/5
+	elif item.code == 'teleportseal':
+		if slave == globals.player:
+			get_parent().popup("After activating Teleportation Seal, you appear inside of your mansion, leaving your party behind. Hopefully they will find a way back in near time. ")
+			for i in globals.state.playergroup:
+				globals.state.findslave(i).away.duration = round(rand_range(1,3))
+			mansion()
+		elif globals.slaves.find(slave) >= 0:
+			get_parent().popup(slave.dictionary("After activating Teleportation Seal, $name slowly dissipates in bright sparkles."))
+			globals.state.playergroup.erase(slave.id)
+		else:
+			if globals.count_sleepers().jail < globals.state.mansionupgrades.jailcapacity:
+				captureeselected.sleep = 'jail'
+			globals.state.capturedgroup.erase(captureeselected)
+	playergrouppanel()
+	_on_details_pressed()
+
+
+func usespell(spell, slave):
+	get_tree().get_current_scene().get_node('spellnode').slave = slave
+	if spell.code == 'heal':
+		get_tree().get_current_scene().get_node('spellnode').healeffect()
+	elif spell.code == 'invigorate':
+		get_tree().get_current_scene().get_node('spellnode').invigorateeffect()
+	globals.hidetooltip()
+	playergrouppanel()
+
+
+func _on_usebutton_pressed():
+	useitem(backpackselecteditem, partyselectedslave)
+
+func _on_discardbutton_pressed():
+	var item = backpackselecteditem
 	globals.state.backpack.stackables[item.code] -= 1
 	get_tree().get_current_scene().infotext('[color=red]Discarded '+item.name + '.[/color]')
 	if globals.state.backpack.stackables[item.code] <= 0:
@@ -2055,27 +2118,25 @@ func _on_closegroup_pressed():
 func _on_capturedclose_pressed():
 	get_node("playergroupdetails/capturedslave").set_hidden(true)
 
-func _on_capturedfree_pressed():
+func inspectslave(slave):
+	get_tree().get_current_scene().popup(slave.descriptionsmall())
+
+func freecaptured(slave):
+	partyselectedslave = slave
+	get_tree().get_current_scene().yesnopopup("Free this slave?", 'freetrue',self)
+
+func freetrue():
 	get_node("playergroupdetails/capturedslave").set_hidden(true)
-	globals.state.capturedgroup.erase(captureeselected)
+	globals.state.capturedgroup.erase(partyselectedslave)
+	get_tree().get_current_scene().infotext('[color=yellow]You have released '+ partyselectedslave.name + '.[/color]')
 	_on_details_pressed()
-	get_tree().get_current_scene().infotext('[color=yellow]You have released '+captureeselected.name + '.[/color]')
 
 func _on_capturedmindread_pressed():
 	get_node("playergroupdetails/capturedslave").set_hidden(true)
 	get_tree().get_current_scene().get_node("spellnode").slave = captureeselected
 	get_tree().get_current_scene().get_node("spellnode").mindreadeffect()
 
-func _on_capturedteleport_pressed():
-	globals.slaves = captureeselected
-	globals.state.backpack.stackables.teleportseal -= 1
-	if globals.state.backpack.stackables.teleportseal < 1:
-		globals.state.backpack.stackables.erase('teleportseal')
-	if globals.count_sleepers().jail < globals.state.mansionupgrades.jailcapacity:
-		captureeselected.sleep = 'jail'
-	get_node("playergroupdetails/capturedslave").set_hidden(true)
-	globals.state.capturedgroup.erase(captureeselected)
-	_on_details_pressed()
+
 
 func _on_quicksell_pressed():
 	var text = ''
@@ -2090,8 +2151,8 @@ func _on_quicksell_pressed():
 	globals.resources.gold += gold
 	_on_details_pressed()
 
-
 func _on_return_pressed():
 	globals.resources.gold -= 25
 	mansion()
 	get_node("playergroupdetails").set_hidden(true)
+
