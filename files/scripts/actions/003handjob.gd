@@ -14,17 +14,17 @@ func getname(state = null):
 	return "Handjob"
 
 func getongoingname(givers, takers):
-	return "[name1] give[%1s] a handjob to [name2]."
+	return "[name1] give[s/1] [a /1]handjob[/s1] to [name2]."
 
 func getongoingdescription(givers, takers):
-	if givers.size() + takers.size() == 2:
-		return "[name1] strokes [name2]'s [penis2]. "
-	else:
-		return "[name1] work on [name2]'s cocks with [his1] mouth. "
+	var temparray = []
+	temparray += ["[name1] {^steadily :rhythmically :carefully :}{^massage:stroke:rub:jerk}[s/1] [names2] [penis2]{^, trying to maintain eye contact:, studying [his2] reactions:}."]
+	temparray += ["[name1] {^massage:work:stroke:rub}[s/1] {^up and down the length of:all along:the shaft[/s2] of} [names2] [penis2] with [his1] hands."]
+	return temparray[rand_range(0,temparray.size())]
 
 func requirements():
 	var valid = true
-	if takers.size() != 1 || givers.size() != 1:
+	if takers.size() < 1 || givers.size() < 1 || givers.size() + takers.size() > 3:
 		valid = false
 	else:
 		for i in takers:
@@ -32,16 +32,8 @@ func requirements():
 				valid = false
 	return valid
 
-
-
 func initiate():
-	var text = ''
-	if givers.size() + takers.size() == 2:
-		text += "[name1] grips [name2]'s [penis2] and stroke[%1s] it intensely."
-	return text
-
-
-func reaction(member):
-	var text = ''
-	return text
-
+	var temparray = []
+	temparray += ["[name1] {^grip:grab:seize}[s/1] [names2] [penis2] and {^massage:stroke:rub:jerk}[s/1] [it2] with {^inensity:intense focus:fervor:passion}."]
+	temparray += ["[name1] {^tease[s/1]:brush[es/1] against} the {^tip:shaft:base}[/s2] of [names2] [penis2] with [his1] fingertips as [he1] begin[s/1] {^servicing:stroking:milking:attending} [it2] with [his1] hands."]
+	return temparray[rand_range(0,temparray.size())]

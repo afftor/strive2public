@@ -191,9 +191,11 @@ func _on_new_slave_button_pressed():
 	globals.state.mansionupgrades.mansionalchemy = 1
 	globals.state.mansionupgrades.mansionparlor = 1
 	globals.state.backpack.stackables.bandage = 1
-#	for i in globals.characters.characters:
-#		slave = globals.characters.create(i)
-#		globals.slaves = slave
+	for i in globals.characters.characters:
+		slave = globals.characters.create(i)
+		slave.loyal = 100
+		slave.lust = 100
+		globals.slaves = slave
 
 func mansion():
 	_on_mansion_pressed()
@@ -3142,7 +3144,7 @@ var sexmode = 'sex'
 func sexselect():
 	var newbutton
 	get_node("sexselect").set_hidden(false)
-	get_node("sexselect/selectbutton").set_text(sexmode.capitalize())
+	get_node("sexselect/selectbutton").set_text('Mode: ' + sexmode.capitalize())
 	for i in get_node("sexselect/ScrollContainer1/VBoxContainer").get_children() + get_node("sexselect/ScrollContainer/VBoxContainer").get_children():
 		if i.get_name() != 'Button':
 			i.set_hidden(true)
@@ -3234,13 +3236,21 @@ func updatedescription():
 	
 	if sexslaves.size() >= 4 && sexmode == 'sex':
 		get_node("sexselect/startbutton").set_disabled(globals.itemdict.aphroditebrew.amount < 1)
+	elif sexslaves.size() == 0:
+		get_node("sexselect/startbutton").set_disabled(true)
 	else:
 		get_node("sexselect/startbutton").set_disabled(false)
 	get_node("sexselect/sextext").set_bbcode(text)
 
 
 func _on_startbutton_pressed():
-	pass # replace with function body
+	get_node("Navigation").set_hidden(true)
+	get_node("buttonpanel").set_hidden(true)
+	get_node('MainScreen').set_hidden(true)
+	get_node("charlistcontrol").set_hidden(true)
+	get_node("interactions").startsequence([globals.player] + sexslaves + sexassist)
+	get_node("interactions").set_hidden(false)
+	get_node("sexselect").set_hidden(true)
 
 func _on_cancelbutton_pressed():
 	get_node("sexselect").set_hidden(true)

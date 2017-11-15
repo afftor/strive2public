@@ -181,7 +181,7 @@ func gooutside():
 		yield(main, 'animfinished')
 	main.music_set('wimborn')
 	main.checkplayergroup()
-	get_parent().get_node("Navigation").set_hidden(true)
+	main.get_node("Navigation").set_hidden(true)
 	main.get_node("buttonpanel").set_hidden(true)
 	main.get_node('MainScreen').set_hidden(true)
 	main.get_node("charlistcontrol").set_hidden(true)
@@ -1945,19 +1945,23 @@ func _on_questlog_pressed():
 
 
 var backpackselecteditem
+var backpackselectedspell
 var partyselectedslave
 
 func _on_details_pressed(empty = null):
 	var newbutton
 	backpackselecteditem = null
 	partyselectedslave = null
+	backpackselectedspell = null
 	if get_node("playergroupdetails/TabContainer").is_connected('tab_changed',self,'_on_details_pressed') == false:
 		get_node("playergroupdetails/TabContainer").connect("tab_changed",self,"_on_details_pressed")
-	get_node("playergroupdetails").popup()
-	get_node("playergroupdetails/itemdescript").set_bbcode("")
-	get_node("playergroupdetails/discardbutton").set_disabled(true)
-	get_node("playergroupdetails/usebutton").set_disabled(true)
-	for i in get_node("playergroupdetails/TabContainer/Captured Slaves/HBoxContainer/").get_children() + get_node("playergroupdetails/itemcontainer/VBoxContainer").get_children() + get_node("playergroupdetails/TabContainer/Party/HBoxContainer").get_children():
+	if get_node("playergroupdetails/Panel/TabContainer").is_connected('tab_changed',self,'_on_details_pressed') == false:
+		get_node("playergroupdetails/Panel/TabContainer").connect("tab_changed",self,"_on_details_pressed")
+	get_node("playergroupdetails").set_hidden(false)
+	get_node("playergroupdetails/Panel/itemdescript").set_bbcode("")
+	get_node("playergroupdetails/Panel/discardbutton").set_disabled(true)
+	get_node("playergroupdetails/Panel/usebutton").set_disabled(true)
+	for i in get_node("playergroupdetails/TabContainer/Captured Slaves/HBoxContainer/").get_children() + get_node("playergroupdetails/Panel/TabContainer/Items/VBoxContainer").get_children() + get_node("playergroupdetails/TabContainer/Party/HBoxContainer").get_children() + get_node("playergroupdetails/Panel/TabContainer/Spells/VBoxContainer").get_children():
 		if i.get_name() != 'Button':
 			i.set_hidden(true)
 			i.queue_free()
@@ -1990,8 +1994,8 @@ func _on_details_pressed(empty = null):
 	
 	for i in globals.state.backpack.stackables:
 		var item = globals.itemdict[i]
-		newbutton = get_node("playergroupdetails/itemcontainer/VBoxContainer/Button").duplicate()
-		get_node("playergroupdetails/itemcontainer/VBoxContainer").add_child(newbutton)
+		newbutton = get_node("playergroupdetails/Panel/TabContainer/Items/VBoxContainer/Button").duplicate()
+		get_node("playergroupdetails/Panel/TabContainer/Items/VBoxContainer").add_child(newbutton)
 		newbutton.set_hidden(false)
 		newbutton.get_node("name").set_text(item.name)
 		newbutton.set_meta("item", item)
@@ -2000,21 +2004,32 @@ func _on_details_pressed(empty = null):
 			newbutton.get_node("icon").set_texture(item.icon)
 		newbutton.connect("pressed",self,'itembackpackselect', [item])
 	calculateweight()
-	if !get_parent().get_node("explorationnode").currentzone.code in ['wimborn','gorn','frostford', 'amberguard']:
+	
+	for i in ['heal','mindread','invigorate']:
+		var spell = globals.spelldict[i]
+		if spell.learned == false:
+			continue
+		newbutton = get_node("playergroupdetails/Panel/TabContainer/Spells/VBoxContainer/Button").duplicate()
+		get_node("playergroupdetails/Panel/TabContainer/Spells/VBoxContainer").add_child(newbutton)
+		newbutton.set_hidden(false)
+		newbutton.get_node("name").set_text(spell.name)
+		newbutton.get_node("cost").set_text(str(spell.manacost))
+		newbutton.set_meta('spell', spell)
+		newbutton.connect("pressed",self,'spellbackpackselect',[spell])
+	
+	if !get_parent().get_node("explorationnode").currentzone.code in ['wimborn','gorn','frostford', 'amberguard'] || globals.resources.gold <= 25:
 		get_node("playergroupdetails/return").set_disabled(true)
-		get_node("playergroupdetails/return").set_tooltip("Can only be activated in big settlements. ")
-	elif globals.resources.gold <= 25:
-		get_node("playergroupdetails/return").set_disabled(true)
-		get_node("playergroupdetails/return").set_tooltip("Not enough gold.")
 	else:
 		get_node("playergroupdetails/return").set_disabled(false)
-		get_node("playergroupdetails/return").set_tooltip("")
 	if get_parent().get_node("explorationnode").currentzone.code in ['wimborn','gorn','frostford'] && globals.state.capturedgroup.size() > 0:
 		get_node("playergroupdetails/quicksell").set_disabled(false)
-		get_node("playergroupdetails/quicksell").set_tooltip("")
 	else:
 		get_node("playergroupdetails/quicksell").set_disabled(true)
-		get_node("playergroupdetails/quicksell").set_tooltip("Requires Slaver's guild present nearby. ")
+	if get_node("playergroupdetails/Panel/TabContainer").get_current_tab() == 1:
+		get_node("playergroupdetails/Panel/discardbutton").set_hidden(true)
+	else:
+		get_node("playergroupdetails/Panel/discardbutton").set_hidden(false)
+
 
 func selectpartymember(slave):
 	partyselectedslave = slave
@@ -2026,22 +2041,31 @@ func selectpartymember(slave):
 	if backpackselecteditem != null:
 		itembackpackselect(backpackselecteditem)
 
-func itemtooltip(item):
+func itembackpackselect(item):
+	backpackselecteditem = item
+	for i in get_node("playergroupdetails/Panel/TabContainer/Items/VBoxContainer").get_children():
+		i.set_pressed(false) if i.get_name() == 'Button' || i.get_meta("item") != item else i.set_pressed(true)
+	get_node("playergroupdetails/Panel/discardbutton").set_disabled(false)
+	if item.code in ['bandage','teleportseal'] && partyselectedslave != null:
+		get_node("playergroupdetails/Panel/usebutton").set_disabled(false)
+	else:
+		get_node("playergroupdetails/Panel/usebutton").set_disabled(true)
 	var text ='[center]' + item.name + '[/center]\n' + item.description + '\n\nWeight: ' + str(item.weight)
 	if item.code == 'teleportseal' && partyselectedslave == globals.player:
 		text += '\n\n[color=red]Your captured slaves will be freed and your party will take time to return home on their own. [/color]'
-	get_node("playergroupdetails/itemdescript").set_bbcode(text)
+	get_node("playergroupdetails/Panel/itemdescript").set_bbcode(text)
 
-func itembackpackselect(item):
-	backpackselecteditem = item
-	for i in get_node("playergroupdetails/itemcontainer/VBoxContainer").get_children():
-		i.set_pressed(false) if i.get_name() == 'Button' || i.get_meta("item") != item else i.set_pressed(true)
-	get_node("playergroupdetails/discardbutton").set_disabled(false)
-	if item.code in ['bandage','teleportseal'] && partyselectedslave != null:
-		get_node("playergroupdetails/usebutton").set_disabled(false)
+func spellbackpackselect(spell):
+	backpackselectedspell = spell
+	for i in get_node("playergroupdetails/Panel/TabContainer/Spells/VBoxContainer").get_children():
+		i.set_pressed(false) if i.get_name() == 'Button' || i.get_meta("spell") != spell else i.set_pressed(true)
+	get_node("playergroupdetails/Panel/discardbutton").set_disabled(false)
+	if globals.resources.mana >= spell.manacost && partyselectedslave != null:
+		get_node("playergroupdetails/Panel/usebutton").set_disabled(false)
 	else:
-		get_node("playergroupdetails/usebutton").set_disabled(true)
-	itemtooltip(item)
+		get_node("playergroupdetails/Panel/usebutton").set_disabled(true)
+	var text ='[center]' + spell.name + '[/center]\n' + spell.description + '\n\nMana Cost: ' + str(spell.manacost)
+	get_node("playergroupdetails/Panel/itemdescript").set_bbcode(text)
 
 
 func useitem(item, slave):
@@ -2079,12 +2103,17 @@ func usespell(spell, slave):
 		get_tree().get_current_scene().get_node('spellnode').healeffect()
 	elif spell.code == 'invigorate':
 		get_tree().get_current_scene().get_node('spellnode').invigorateeffect()
-	globals.hidetooltip()
+	elif spell.code == 'mindread' && slave != globals.player:
+		get_tree().get_current_scene().get_node('spellnode').mindreadeffect()
+	_on_details_pressed()
 	playergrouppanel()
 
 
 func _on_usebutton_pressed():
-	useitem(backpackselecteditem, partyselectedslave)
+	if get_node("playergroupdetails/Panel/TabContainer").get_current_tab() == 0:
+		useitem(backpackselecteditem, partyselectedslave)
+	else:
+		usespell(backpackselectedspell, partyselectedslave)
 
 func _on_discardbutton_pressed():
 	var item = backpackselecteditem

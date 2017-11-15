@@ -440,7 +440,7 @@ func sexinitiate(secondtime = false):
 	elif action.code in ['blowjobgive','oral','rimjobgive']:
 		partner.metrics.oral += 1
 	if action.code in ['frottage','tribadism'] && slave.traits.find('Bisexual') < 0 && rand_range(0,10) >= 2.5:
-		slave.add_trait(globals.origins.trait("Bisexual"))
+		slave.add_trait("Bisexual")
 	if orgasm == true:
 		managain += 1
 		slave.metrics.orgasm += 1
@@ -454,19 +454,19 @@ func sexinitiate(secondtime = false):
 			slave.trait_remove("Prude")
 			text += "\n\n[color=yellow]$name is no longer Prude. [/color]"
 		if action.tags.find("fetish") >= 0 && slave.traits.find("Pervert") < 0  && (rand_range(0,1) >= 0.8 || slave.effects.has('entranced') == true):
-			slave.add_trait(globals.origins.trait("Pervert"))
+			slave.add_trait("Pervert")
 			counter += 1
 		if action.tags.find("degrading") >= 0 && slave.traits.find("Deviant") < 0 && (rand_range(0,1) >= 0.8 || slave.effects.has('entranced') == true):
-			slave.add_trait(globals.origins.trait("Deviant"))
+			slave.add_trait("Deviant")
 			counter += 1
 		if slave.sex == partner.sex && slave.traits.find("Bisexual") < 0 && (rand_range(0,1) >= 0.8 || slave.effects.has('entranced') == true):
-			slave.add_trait(globals.origins.trait("Bisexual"))
+			slave.add_trait("Bisexual")
 			counter += 1
 		if rape == true && slave.traits.find("Likes it rough") < 0 && (rand_range(0,1) >= 0.8 || slave.effects.has('entranced') == true):
-			slave.add_trait(globals.origins.trait("Likes it rough"))
+			slave.add_trait("Likes it rough")
 			counter += 1
 		elif rape == true && slave.traits.find("Likes it rough") >= 0 && rand_range(0,1) >= 0.9:
-			slave.add_trait(globals.origins.trait("Submissive"))
+			slave.add_trait("Submissive")
 			counter += 1
 		if counter >= 1:
 			text += "\n\n[color=yellow]$name has adopted a new quirk. [/color]"

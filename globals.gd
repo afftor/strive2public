@@ -498,7 +498,7 @@ class slave:
 	var beautybase = 0 setget beautybase_set
 	var beautytemp = 0 
 	
-	var assertive = 0
+	var asser = 0
 	var pubichair = 'clean'
 	
 	var lewdness = 0

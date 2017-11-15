@@ -14,10 +14,10 @@ func getname(state = null):
 	return "Missionary Anal"
 
 func getongoingname(givers, takers):
-	return "[name1] fuck[%1s] [name2]'s butt in the missionary position."
+	return "[name1] fuck[s/1] [names2] ass[/es2] in the missionary position."
 
 func getongoingdescription(givers, takers):
-	return "[name1] continues fucking [name2] [anus2] in missionary position. "
+	return "[name1] continue[s/1] fucking [names2] [anus2] in the missionary position."
 
 func requirements():
 	var valid = true
@@ -31,17 +31,18 @@ func requirements():
 
 func initiate():
 	var text = ''
-	
-	text = "[name2] invites [name1] and lies back onto the bedding, presenting [his2] [body2] to [him1]. [name2] digs [his2] nails into the bedding, as [name1] pushes [him1]self downward into [partner2]'s [anus2]. [name2]'s toes curl as their hips noisily smack together. "
+	text = "[name1] lay[s/1] [name2] down on [his2] back, parting [his2] thighs to expose [his2] [anus2]. [names2] [ass2] envelop [names1] [penis1] as [he1]"
 	if takers[0].person.assvirgin == true:
+		text += " break[s/1] in [partners2] virgin butthole[/s2]."
 		takers[0].person.assvirgin = false
-	
-	
+	else:
+		text += " push[es/1] [his1] [penis1] deep into [partners2] [anus2]."
+	text += " [names2] bod[y/ies2] twitch[es/2] as [his2] [anus2] get[s/2] stretched by [names1] [penis1]."
 	return text
 
 
-func reaction(member):
-	var text = ''
-	var pleasure = member.sens
-	return text
+#func reaction(member):
+#	var text = ''
+#	var pleasure = member.sens
+#	return text
 

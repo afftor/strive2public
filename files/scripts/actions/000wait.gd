@@ -25,13 +25,5 @@ func requirements():
 		valid = false
 	return valid
 
-
-
 func initiate():
-	var text = ''
-	text += "[name1] rest[%1s] and observe[%1s] others... "
-
-	return text
-
-
-
+	return "[name1] rest[s/1] for a bit and wait[s/1]... "
