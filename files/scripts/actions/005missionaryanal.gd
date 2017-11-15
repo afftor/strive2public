@@ -11,7 +11,10 @@ var giverpart = 'penis'
 var takerpart = 'anus'
 
 func getname(state = null):
-	return "Missionary Anal"
+	if givers[0].person.penis == 'none':
+		return "Missionary Pegging"
+	else:
+		return "Missionary Anal"
 
 func getongoingname(givers, takers):
 	return "[name1] fuck[s/1] [names2] ass[/es2] in the missionary position."
@@ -32,9 +35,9 @@ func requirements():
 func initiate():
 	var text = ''
 	text = "[name1] lay[s/1] [name2] down on [his2] back, parting [his2] thighs to expose [his2] [anus2]. [names2] [ass2] envelop [names1] [penis1] as [he1]"
-	if takers[0].person.vagvirgin == true:
+	if takers[0].person.assvirgin == true:
 		text += " break[s/1] in [partners2] virgin butthole[/s2]."
-		takers[0].person.vagvirgin = false
+		takers[0].person.assvirgin = false
 	else:
 		text += " push[es/1] [his1] [penis1] deep into [partners2] [anus2]."
 	text += " [names2] bod[y/ies2] twitch[es/2] as [his2] [anus2] get[s/2] stretched by [names1] [penis1]."

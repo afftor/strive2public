@@ -202,6 +202,7 @@ func startscene(scenescript, cont = false):
 			i.lust += scenescript.givereffects.lust/2
 		else:
 			i.lust += scenescript.givereffects.lust + i.lewd/25
+		i.lust = min(1000, i.lust)
 		i.sens += value
 	for i in takers:
 		if scenescript.targeteffects.has('pain'):
@@ -217,6 +218,7 @@ func startscene(scenescript, cont = false):
 			i.lust += scenescript.targeteffects.lust/2
 		else:
 			i.lust += scenescript.targeteffects.lust + i.lewd/25
+		i.lust = min(1000, i.lust)
 		i.sens += value
 	for i in participants:
 		if i.sens >= 1000:
@@ -237,7 +239,7 @@ func startscene(scenescript, cont = false):
 			if scenescript.takerpart != '':
 				i[scenescript.takerpart] = null
 	
-	get_node("Panel/sceneeffects").set_bbcode(textdict.mainevent + textdict.repeats + textdict.orgasms)
+	get_node("Panel/sceneeffects").set_bbcode(textdict.mainevent + "\n" + textdict.repeats + "\n" + textdict.orgasms)
 	rebuildparticipantslist()
 
 func startscenecontinue(scenescript):
@@ -260,7 +262,7 @@ func orgasm(member):
 			#vagina in giver slot
 			if scene.givers.find(member) >= 0:
 				if randf() < 0.4:
-					vaginatext = "[name1] feel[s/1] a {^sudden :intense ::}{^jolt of electricity:warmth:wave of pleasure} and [his1]"
+					vaginatext = "[name1] feel[s/1] a {^sudden :intense ::}{^jolt of electricity:heat:wave of pleasure} and [his1]"
 				else:
 					vaginatext = "[names1]"
 				if scene.scene.takerpart == 'penis':
@@ -271,7 +273,7 @@ func orgasm(member):
 			#vagina is in taker slot
 			elif scene.takers.find(member) >= 0:
 				if randf() < 0.4:
-					vaginatext = "[name2] feel[s/2] a {^sudden :intense ::}{^jolt of electricity:warmth:wave of pleasure} and [his2]"
+					vaginatext = "[name2] feel[s/2] a {^sudden :intense ::}{^jolt of electricity:heat:wave of pleasure} and [his2]"
 				else:
 					vaginatext = "[names2]"
 				if scene.scene.giverpart == 'penis':
@@ -334,7 +336,7 @@ func orgasm(member):
 	#final default condition
 	else:
 		if randf() < 0.4:
-			temptext = "[name2] feel[s/2] a {^sudden :intense ::}{^jolt of electricity:warmth:wave of pleasure} and [his2]"
+			temptext = "[name2] feel[s/2] a {^sudden :intense ::}{^jolt of electricity:heat:wave of pleasure} and [his2]"
 		else:
 			temptext = "[names2]"
 		temptext += " {^entire :whole :}body {^twists:quivers:writhes} in {^pleasure:euphoria:extacy} as [he2] reach[es/2] {^climax:orgasm}."
