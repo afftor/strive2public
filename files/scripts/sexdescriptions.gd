@@ -32,13 +32,13 @@ func decoder(text, tempgivers = null, temptakers = null):
 	text = text.replace('[a /1]', '' if givers.size() >= 2 else 'a ').replace('[a /2]', '' if takers.size() >= 2 else 'a ')
 	text = text.replace('[it1]', 'them' if givers.size() >= 2 else 'it').replace('[it2]', 'them' if takers.size() >= 2 else 'it')
 	#these are for verbs, format is (single/multiple(group))
-	text = text.replace('[ies/y1]', 'y' if givers.size() >= 2 or givers[0] == globals.player else 'y').replace('[ies/y2]', 'y' if takers.size() >= 2 or takers[0] == globals.player else 'y')
-	text = text.replace('[s/1]', '' if givers.size() >= 2 or givers[0] == globals.player else 's').replace('[s/2]', '' if takers.size() >= 2 or takers[0] == globals.player else 's')
-	text = text.replace('[es/1]', '' if givers.size() >= 2 or givers[0] == globals.player else 'es').replace('[es/2]', '' if takers.size() >= 2 or takers[0] == globals.player else 'es')
-	text = text.replace('[is1]', 'are' if givers.size() >= 2 or givers[0] == globals.player else 'is').replace('[is2]', 'are' if takers.size() >= 2 or takers[0] == globals.player else 'is')
-	text = text.replace('[am1]', 'are' if givers.size() >= 2 or givers[0] == globals.player else 'am').replace('[am2]', 'are' if takers.size() >= 2 or takers[0] == globals.player else 'am')
-	text = text.replace('[has1]', 'have' if givers.size() >= 2 or givers[0] == globals.player else 'has').replace('[has2]', 'have' if takers.size() >= 2 or takers[0] == globals.player else 'has')
-	text = text.replace('[was1]', 'were' if givers.size() >= 2 or givers[0] == globals.player else 'was').replace('[was2]', 'were' if takers.size() >= 2 or takers[0] == globals.player else 'was')
+	text = text.replace('[ies/y1]', 'y' if givers.size() >= 2 or givers[0].person == globals.player else 'y').replace('[ies/y2]', 'y' if takers.size() >= 2 or takers[0].person == globals.player else 'y')
+	text = text.replace('[s/1]', '' if givers.size() >= 2 or givers[0].person == globals.player else 's').replace('[s/2]', '' if takers.size() >= 2 or takers[0].person == globals.player else 's')
+	text = text.replace('[es/1]', '' if givers.size() >= 2 or givers[0].person == globals.player else 'es').replace('[es/2]', '' if takers.size() >= 2 or takers[0].person == globals.player else 'es')
+	text = text.replace('[is1]', 'are' if givers.size() >= 2 or givers[0].person == globals.player else 'is').replace('[is2]', 'are' if takers.size() >= 2 or takers[0].person == globals.player else 'is')
+	text = text.replace('[am1]', 'are' if givers.size() >= 2 or givers[0].person == globals.player else 'am').replace('[am2]', 'are' if takers.size() >= 2 or takers[0].person == globals.player else 'am')
+	text = text.replace('[has1]', 'have' if givers.size() >= 2 or givers[0].person == globals.player else 'has').replace('[has2]', 'have' if takers.size() >= 2 or takers[0].person == globals.player else 'has')
+	text = text.replace('[was1]', 'were' if givers.size() >= 2 or givers[0].person == globals.player else 'was').replace('[was2]', 'were' if takers.size() >= 2 or takers[0].person == globals.player else 'was')
 	#body parts and character descriptions
 	text = text.replace('[partner1]', partner(givers)).replace('[partner2]', partner(takers))
 	text = text.replace('[partners1]', partners(givers)).replace('[partners2]', partners(takers))
@@ -99,14 +99,14 @@ func dictionary(member, text):
 
 func is(group):
 	group = getgroupfromnumber(group)
-	if group.size() == 1 && group[0] != globals.player:
+	if group.size() == 1 && group[0].person != globals.player:
 		return 'is'
 	else:
 		return 'are'
 
 func has(group):
 	group = getgroupfromnumber(group)
-	if group.size() == 1 && group[0] != globals.player:
+	if group.size() == 1 && group[0].person != globals.player:
 		return 'has'
 	else:
 		return 'have'
@@ -114,7 +114,7 @@ func has(group):
 func he(group):
 	group = getgroupfromnumber(group)
 	for i in group:
-		if i == globals.player:
+		if i.person == globals.player:
 			if group.size() == 1:
 				return 'you'
 			elif group.size() == 2:
@@ -134,7 +134,7 @@ func he(group):
 func himself(group):
 	group = getgroupfromnumber(group)
 	for i in group:
-		if i == globals.player:
+		if i.person == globals.player:
 			if group.size() == 1:
 				return 'yourself'
 			else:
@@ -150,7 +150,7 @@ func himself(group):
 func his(group):
 	group = getgroupfromnumber(group)
 	for i in group:
-		if i == globals.player:
+		if i.person == globals.player:
 			return 'your'
 	if group.size() == 1:
 		if group[0].sex == 'male':
@@ -163,7 +163,7 @@ func his(group):
 func him(group):
 	group = getgroupfromnumber(group)
 	for i in group:
-		if i == globals.player:
+		if i.person == globals.player:
 			if group.size() == 1:
 				return 'you'
 			elif group.size() == 2:
@@ -186,7 +186,7 @@ func name(group):
 	for i in group:
 		if group == givers:
 			text += '[color=yellow]'
-			if i == globals.player:
+			if i.person == globals.player:
 				text += 'you'
 			else:
 				text += i.name
@@ -197,7 +197,7 @@ func name(group):
 				text += ' and '
 		else:
 			text += '[color=aqua]'
-			if i == globals.player:
+			if i.person == globals.player:
 				text += 'you'
 			else:
 				text += i.name
@@ -214,7 +214,7 @@ func names(group):
 	for i in group:
 		if group == givers:
 			text += '[color=yellow]'
-			if i == globals.player:
+			if i.person == globals.player:
 				if group.size() == 1:
 					text += 'your'
 				else:
@@ -228,7 +228,7 @@ func names(group):
 				text += ' and '
 		else:
 			text += '[color=aqua]'
-			if i == globals.player:
+			if i.person == globals.player:
 				if group.size() == 1:
 					text += 'your'
 				else:
@@ -240,7 +240,7 @@ func names(group):
 				text += ', '
 			elif takers.find(i) == takers.size()-2:
 				text += ' and '
-	if group.size() > 1 or group[0] != globals.player:
+	if group.size() > 1 or (group.size() > 0 && group[0].person != globals.player):
 		text += "'s"
 	return text
 
@@ -437,7 +437,7 @@ func partner(group):
 	var tarray = []
 	var boygirl = ''
 	for i in group:
-		if i == globals.player && group.size() == 1:
+		if i.person == globals.player && group.size() == 1:
 			return "you"
 		var mp = i.person
 		array1 = []
@@ -511,7 +511,7 @@ func partners(group):
 	var tarray = []
 	var boygirl = ''
 	for i in group:
-		if i == globals.player && group.size() == 1:
+		if i.person == globals.player && group.size() == 1:
 			return "your"
 		var mp = i.person
 		array1 = []

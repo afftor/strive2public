@@ -698,6 +698,20 @@ class slave:
 	func xp_get():
 		return realxp
 	
+	func getessence():
+		var essence
+		if race in ['Demon', 'Arachna', 'Lamia']:
+			essence = 'taintedessenceing'
+		elif race in ['Fairy', 'Drow', 'Dragonkin']:
+			essence = 'magicessenceing'
+		elif race == 'Dryad':
+			essence = 'natureessenceing'
+		elif race in ['Harpy', 'Centaur'] || race.find('Beastkin') >= 0 || race.find('Halfkin') >= 0:
+			essence = 'bestialessenceing'
+		elif race in ['Slime','Nereid', "Scylla"]:
+			essence = 'fluidsubstanceing'
+		return essence
+	
 	
 	func cleartraits():
 		spec = null

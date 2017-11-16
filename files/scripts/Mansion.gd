@@ -191,11 +191,11 @@ func _on_new_slave_button_pressed():
 	globals.state.mansionupgrades.mansionalchemy = 1
 	globals.state.mansionupgrades.mansionparlor = 1
 	globals.state.backpack.stackables.bandage = 1
-	for i in globals.characters.characters:
-		slave = globals.characters.create(i)
-		slave.loyal = 100
-		slave.lust = 100
-		globals.slaves = slave
+#	for i in globals.characters.characters:
+#		slave = globals.characters.create(i)
+#		slave.loyal = 100
+#		slave.lust = 100
+#		globals.slaves = slave
 
 func mansion():
 	_on_mansion_pressed()
@@ -3244,11 +3244,16 @@ func updatedescription():
 
 
 func _on_startbutton_pressed():
+	var mode = 'normal'
+	if sexmode == 'abuse':
+		mode = 'rape'
+		get_node("interactions").startsequence([globals.player] + sexassist, mode, sexslaves)
+	else:
+		get_node("interactions").startsequence([globals.player] + sexslaves + sexassist, mode)
 	get_node("Navigation").set_hidden(true)
 	get_node("buttonpanel").set_hidden(true)
 	get_node('MainScreen').set_hidden(true)
 	get_node("charlistcontrol").set_hidden(true)
-	get_node("interactions").startsequence([globals.player] + sexslaves + sexassist)
 	get_node("interactions").set_hidden(false)
 	get_node("sexselect").set_hidden(true)
 

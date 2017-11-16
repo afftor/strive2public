@@ -708,6 +708,7 @@ anchor/left = 1
 anchor/top = 1
 anchor/right = 1
 anchor/bottom = 1
+hint/tooltip = "Scene ends when time is left"
 focus/ignore_mouse = true
 focus/stop_mouse = true
 size_flags/horizontal = 2
@@ -735,10 +736,66 @@ percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
 
+[node name="Control" type="Control" parent="."]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = -35.0
+margin/top = -15.0
+margin/right = 1108.0
+margin/bottom = 636.0
+
+[node name="Panel" type="Panel" parent="Control"]
+
+anchor/right = 1
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 265.0
+margin/top = 81.0
+margin/right = 261.0
+margin/bottom = 215.0
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Control/Panel"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 53.0
+margin/top = 33.0
+margin/right = 553.0
+margin/bottom = 264.0
+bbcode/enabled = true
+bbcode/bbcode = ""
+visible_characters = -1
+
+[node name="finishbutton" type="Button" parent="Control/Panel"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 231.0
+margin/top = 289.0
+margin/right = 384.0
+margin/bottom = 328.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Finish"
+flat = false
+
 [connection signal="meta_clicked" from="Panel/sceneeffects1" to="." method="_on_sceneeffects1_meta_clicked"]
 
 [connection signal="pressed" from="Panel/stopbutton" to="." method="_on_stopbutton_pressed"]
 
 [connection signal="pressed" from="Panel/passbutton" to="." method="_on_passbutton_pressed"]
+
+[connection signal="pressed" from="Control/Panel/finishbutton" to="." method="_on_finishbutton_pressed"]
 
 
