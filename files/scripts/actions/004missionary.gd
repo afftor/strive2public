@@ -70,7 +70,7 @@ func output(valid_lines):
 		checks += ['virgin']
 	#assign consent
 	for i in takers:
-		if i.consent == false:
+		if i.mode == 'forced':
 			consent = false
 	#link with ongoingactions
 	if givers[0][giverpart] != null:

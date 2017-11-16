@@ -1,9 +1,10 @@
-[gd_scene load_steps=16 format=1]
+[gd_scene load_steps=18 format=1]
 
 [ext_resource path="res://files/theme.tres" type="Theme" id=1]
 [ext_resource path="res://files/scripts/newsexsystem.gd" type="Script" id=2]
-[ext_resource path="res://files/buttons/Panel.png" type="Texture" id=3]
-[ext_resource path="res://files/buttons/sexicons/time.png" type="Texture" id=4]
+[ext_resource path="res://files/buttons/menupanel.png" type="Texture" id=3]
+[ext_resource path="res://files/buttons/Panel.png" type="Texture" id=4]
+[ext_resource path="res://files/buttons/sexicons/time.png" type="Texture" id=5]
 
 [sub_resource type="StyleBoxTexture" id=1]
 
@@ -12,8 +13,8 @@ content_margin/right = -1.0
 content_margin/top = -1.0
 content_margin/bottom = -1.0
 texture = ExtResource( 3 )
-margin/left = 15.0
-margin/right = 15.0
+margin/left = 10.0
+margin/right = 10.0
 margin/top = 10.0
 margin/bottom = 10.0
 expand_margin/left = 0.0
@@ -28,10 +29,11 @@ content_margin/left = -1.0
 content_margin/right = -1.0
 content_margin/top = -1.0
 content_margin/bottom = -1.0
-margin/left = 0.0
-margin/right = 0.0
-margin/top = 0.0
-margin/bottom = 0.0
+texture = ExtResource( 4 )
+margin/left = 15.0
+margin/right = 15.0
+margin/top = 10.0
+margin/bottom = 10.0
 expand_margin/left = 0.0
 expand_margin/right = 0.0
 expand_margin/top = 0.0
@@ -182,6 +184,22 @@ expand_margin/top = 0.0
 expand_margin/bottom = 0.0
 draw_center = true
 
+[sub_resource type="StyleBoxTexture" id=12]
+
+content_margin/left = -1.0
+content_margin/right = -1.0
+content_margin/top = -1.0
+content_margin/bottom = -1.0
+margin/left = 0.0
+margin/right = 0.0
+margin/top = 0.0
+margin/bottom = 0.0
+expand_margin/left = 0.0
+expand_margin/right = 0.0
+expand_margin/top = 0.0
+expand_margin/bottom = 0.0
+draw_center = true
+
 [node name="Control" type="Control"]
 
 anchor/right = 1
@@ -205,10 +223,24 @@ focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
-margin/left = 15.0
-margin/top = 10.0
-margin/right = 16.0
-margin/bottom = 26.0
+margin/left = 27.0
+margin/top = 23.0
+margin/right = 25.0
+margin/bottom = 31.0
+
+[node name="Panel" type="Panel" parent="Panel"]
+
+anchor/right = 1
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 1.0
+margin/top = 269.0
+margin/right = 0.0
+margin/bottom = 88.0
+custom_styles/panel = SubResource( 1 )
 
 [node name="sceneeffects" type="RichTextLabel" parent="Panel"]
 
@@ -219,13 +251,28 @@ focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
 margin/left = 15.0
-margin/top = 267.0
+margin/top = 284.0
 margin/right = 525.0
-margin/bottom = 83.0
+margin/bottom = 109.0
 bbcode/enabled = true
 bbcode/bbcode = "Text1
 "
 visible_characters = -1
+percent_visible = 1.0
+
+[node name="VSeparator" type="VSeparator" parent="Panel"]
+
+anchor/left = 1
+anchor/right = 1
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 538.0
+margin/top = 277.0
+margin/right = 498.0
+margin/bottom = 96.0
 
 [node name="sceneeffects1" type="RichTextLabel" parent="Panel"]
 
@@ -236,13 +283,14 @@ focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
-margin/left = 509.0
-margin/top = 312.0
-margin/right = 16.0
-margin/bottom = 83.0
+margin/left = 507.0
+margin/top = 284.0
+margin/right = 14.0
+margin/bottom = 111.0
 bbcode/enabled = true
 bbcode/bbcode = "Text2"
 visible_characters = -1
+percent_visible = 1.0
 
 [node name="GridContainer" type="ScrollContainer" parent="Panel"]
 
@@ -311,6 +359,7 @@ flat = false
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Panel"]
 
+editor/display_folded = true
 focus/ignore_mouse = false
 focus/stop_mouse = false
 size_flags/horizontal = 2
@@ -427,37 +476,49 @@ shortcut = null
 text = "Other"
 flat = false
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Panel"]
+[node name="ScrollContainer" type="ScrollContainer" parent="Panel"]
 
 anchor/left = 1
 anchor/right = 1
-anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 529.0
+margin/top = 23.0
+margin/right = 19.0
+margin/bottom = 253.0
+scroll/horizontal = false
+scroll/vertical = true
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel/ScrollContainer"]
+
 focus/ignore_mouse = false
 focus/stop_mouse = false
 size_flags/horizontal = 2
 size_flags/vertical = 2
-margin/left = 503.0
-margin/top = 28.0
-margin/right = 44.0
-margin/bottom = 266.0
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 0.0
+margin/bottom = 0.0
 custom_constants/separation = -1
 alignment = 0
 
-[node name="Panel" type="Panel" parent="Panel/VBoxContainer"]
+[node name="Panel" type="Panel" parent="Panel/ScrollContainer/VBoxContainer"]
 
 visibility/visible = false
-rect/min_size = Vector2( 0, 35 )
+rect/min_size = Vector2( 500, 35 )
 focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
 margin/left = 0.0
 margin/top = 0.0
-margin/right = 459.0
+margin/right = 500.0
 margin/bottom = 35.0
-custom_styles/panel = SubResource( 1 )
+custom_styles/panel = SubResource( 2 )
 
-[node name="name" type="Button" parent="Panel/VBoxContainer/Panel"]
+[node name="name" type="Button" parent="Panel/ScrollContainer/VBoxContainer/Panel"]
 
 focus/ignore_mouse = false
 focus/stop_mouse = true
@@ -467,11 +528,11 @@ margin/left = 9.0
 margin/top = 6.0
 margin/right = 66.0
 margin/bottom = 25.0
-custom_styles/hover = SubResource( 2 )
-custom_styles/pressed = SubResource( 3 )
-custom_styles/focus = SubResource( 4 )
-custom_styles/disabled = SubResource( 5 )
-custom_styles/normal = SubResource( 6 )
+custom_styles/hover = SubResource( 3 )
+custom_styles/pressed = SubResource( 4 )
+custom_styles/focus = SubResource( 5 )
+custom_styles/disabled = SubResource( 6 )
+custom_styles/normal = SubResource( 7 )
 custom_colors/font_color_disabled = Color( 1, 1, 1, 1 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 custom_colors/font_color_hover = Color( 0.03125, 1, 0, 1 )
@@ -484,7 +545,7 @@ flat = false
 clip_text = true
 align = 0
 
-[node name="sex" type="TextureFrame" parent="Panel/VBoxContainer/Panel"]
+[node name="sex" type="TextureFrame" parent="Panel/ScrollContainer/VBoxContainer/Panel"]
 
 focus/ignore_mouse = false
 focus/stop_mouse = true
@@ -497,7 +558,7 @@ margin/bottom = 27.0
 expand = true
 stretch_mode = 6
 
-[node name="sens" type="TextureFrame" parent="Panel/VBoxContainer/Panel"]
+[node name="sens" type="TextureFrame" parent="Panel/ScrollContainer/VBoxContainer/Panel"]
 
 hint/tooltip = "arousal"
 focus/ignore_mouse = false
@@ -511,7 +572,7 @@ margin/bottom = 30.0
 expand = true
 stretch_mode = 6
 
-[node name="lust" type="TextureFrame" parent="Panel/VBoxContainer/Panel"]
+[node name="lust" type="TextureFrame" parent="Panel/ScrollContainer/VBoxContainer/Panel"]
 
 hint/tooltip = "lust"
 focus/ignore_mouse = false
@@ -525,7 +586,7 @@ margin/bottom = 31.0
 expand = true
 stretch_mode = 6
 
-[node name="lube" type="TextureFrame" parent="Panel/VBoxContainer/Panel"]
+[node name="lube" type="TextureFrame" parent="Panel/ScrollContainer/VBoxContainer/Panel"]
 
 hint/tooltip = "lubrication (easies insertion pain)"
 focus/ignore_mouse = false
@@ -539,7 +600,7 @@ margin/bottom = 33.0
 expand = true
 stretch_mode = 6
 
-[node name="mood" type="Label" parent="Panel/VBoxContainer/Panel"]
+[node name="mood" type="Label" parent="Panel/ScrollContainer/VBoxContainer/Panel"]
 
 focus/ignore_mouse = true
 focus/stop_mouse = true
@@ -555,7 +616,7 @@ percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
 
-[node name="give" type="Button" parent="Panel/VBoxContainer/Panel"]
+[node name="give" type="Button" parent="Panel/ScrollContainer/VBoxContainer/Panel"]
 
 focus/ignore_mouse = false
 focus/stop_mouse = true
@@ -565,11 +626,11 @@ margin/left = 106.0
 margin/top = 2.0
 margin/right = 148.0
 margin/bottom = 32.0
-custom_styles/hover = SubResource( 7 )
-custom_styles/pressed = SubResource( 8 )
-custom_styles/focus = SubResource( 9 )
-custom_styles/disabled = SubResource( 10 )
-custom_styles/normal = SubResource( 11 )
+custom_styles/hover = SubResource( 8 )
+custom_styles/pressed = SubResource( 9 )
+custom_styles/focus = SubResource( 10 )
+custom_styles/disabled = SubResource( 11 )
+custom_styles/normal = SubResource( 12 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 custom_colors/font_color_hover = Color( 0.557155, 0.149261, 0.570313, 1 )
 custom_colors/font_color_pressed = Color( 0.171875, 1, 0, 1 )
@@ -579,7 +640,7 @@ shortcut = null
 text = "give"
 flat = false
 
-[node name="take" type="Button" parent="Panel/VBoxContainer/Panel"]
+[node name="take" type="Button" parent="Panel/ScrollContainer/VBoxContainer/Panel"]
 
 focus/ignore_mouse = false
 focus/stop_mouse = true
@@ -589,11 +650,11 @@ margin/left = 152.0
 margin/top = 2.0
 margin/right = 194.0
 margin/bottom = 32.0
-custom_styles/hover = SubResource( 7 )
-custom_styles/pressed = SubResource( 8 )
-custom_styles/focus = SubResource( 9 )
-custom_styles/disabled = SubResource( 10 )
-custom_styles/normal = SubResource( 11 )
+custom_styles/hover = SubResource( 8 )
+custom_styles/pressed = SubResource( 9 )
+custom_styles/focus = SubResource( 10 )
+custom_styles/disabled = SubResource( 11 )
+custom_styles/normal = SubResource( 12 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 custom_colors/font_color_hover = Color( 0.557155, 0.149261, 0.570313, 1 )
 custom_colors/font_color_pressed = Color( 0.171875, 1, 0, 1 )
@@ -649,6 +710,7 @@ anchor/left = 1
 anchor/top = 1
 anchor/right = 1
 anchor/bottom = 1
+hint/tooltip = "Scene ends when time is left"
 focus/ignore_mouse = true
 focus/stop_mouse = true
 size_flags/horizontal = 2
@@ -657,7 +719,7 @@ margin/left = 483.0
 margin/top = 94.0
 margin/right = 443.0
 margin/bottom = 50.0
-texture = ExtResource( 4 )
+texture = ExtResource( 5 )
 expand = true
 stretch_mode = 6
 
@@ -676,8 +738,69 @@ percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
 
+[node name="Control" type="Control" parent="."]
+
+editor/display_folded = true
+visibility/visible = false
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = -35.0
+margin/top = -15.0
+margin/right = 1108.0
+margin/bottom = 636.0
+
+[node name="Panel" type="Panel" parent="Control"]
+
+anchor/right = 1
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 265.0
+margin/top = 81.0
+margin/right = 261.0
+margin/bottom = 215.0
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Control/Panel"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 53.0
+margin/top = 33.0
+margin/right = 553.0
+margin/bottom = 264.0
+bbcode/enabled = true
+bbcode/bbcode = ""
+visible_characters = -1
+percent_visible = 1.0
+
+[node name="finishbutton" type="Button" parent="Control/Panel"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 231.0
+margin/top = 289.0
+margin/right = 384.0
+margin/bottom = 328.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Finish"
+flat = false
+
 [connection signal="meta_clicked" from="Panel/sceneeffects1" to="." method="_on_sceneeffects1_meta_clicked"]
 
+[connection signal="pressed" from="Panel/stopbutton" to="." method="_on_stopbutton_pressed"]
+
 [connection signal="pressed" from="Panel/passbutton" to="." method="_on_passbutton_pressed"]
+
+[connection signal="pressed" from="Control/Panel/finishbutton" to="." method="_on_finishbutton_pressed"]
 
 

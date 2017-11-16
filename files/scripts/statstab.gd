@@ -521,7 +521,7 @@ func action(actionname):
 			text = text + "\nDuring the procedure $name twitches and climaxes, unable to hold back $his excitement."
 			slave.lust = -rand_range(8,15)
 			if rand_range(1,10) > 7 || slave.effects.has('entranced') == true:
-				slave.add_trait(globals.origins.trait('Masochist'))
+				slave.add_trait('Masochist')
 		if slave.traits.has('Masochist'):
 			slave.sexuals.affection += round(rand_range(1,3))
 		slave.stress += rand_range(15,25)

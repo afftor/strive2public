@@ -8,6 +8,7 @@ var takers = []
 var turns = 0
 var actions = []
 var ongoingactions = []
+var location
 
 var sexicons = {
 female = load("res://files/buttons/sexicons/female.png"),
@@ -37,6 +38,42 @@ var selectedcategory = 'caress'
 var categories = {caress = [], fucking = [], tools = [], SM = [], humiliation = [], other = []}
 
 
+class member:
+	var name
+	var person
+	var mood
+	var submission
+	var loyalty
+	var lust = 0
+	var sens = 0
+	var lube = 0
+	var pain = 0
+	var lewd = 0
+	var exposure = 0
+	var role
+	var sex
+	var orgasms = 0
+	var lastaction
+	
+	var svagina
+	var smouth
+	var spenis
+	var sanus
+	var lewdness
+	
+	var energy = 100
+	
+	var knowledge
+	
+	var giving = []
+	var taking = []
+	
+	var vagina
+	var penis
+	var mouth
+	var anus
+	var mode = 'normal'
+
 func _ready():
 	for i in globals.dir_contents('res://files/scripts/actions'):
 		if i.find('.gd') < 0:
@@ -46,11 +83,32 @@ func _ready():
 	for i in get_node("Panel/HBoxContainer").get_children():
 		i.connect("pressed",self,'changecategory',[i.get_name()])
 	
-	turns = 20
 	var i = 5
-	while i > 0:
-		i -= 1
-		var slave = globals.newslave(globals.allracesarray[rand_range(0,globals.allracesarray.size())], 'random', 'random')
+	if globals.player.name == '':
+		while i > 0:
+			i -= 1
+			var slave = globals.newslave(globals.allracesarray[rand_range(0,globals.allracesarray.size())], 'random', 'random')
+			var newmember = member.new()
+			newmember.loyalty = slave.loyal
+			newmember.submission = slave.obed
+			newmember.person = slave
+			newmember.sex = slave.sex
+			newmember.name = slave.name_short()
+			newmember.svagina = slave.sensvagina
+			newmember.smouth = slave.sensmouth
+			newmember.spenis = slave.senspenis
+			newmember.sanus = slave.sensanal
+			newmember.lewdness = slave.lewdness
+			participants.append(newmember)
+		turns = 20
+		changecategory('caress')
+		clearstate()
+		rebuildparticipantslist()
+
+func startsequence(actors, mode = null, secondactors = []):
+	participants.clear()
+	get_node("Control").set_hidden(true)
+	for slave in actors:
 		var newmember = member.new()
 		newmember.loyalty = slave.loyal
 		newmember.submission = slave.obed
@@ -63,15 +121,36 @@ func _ready():
 		newmember.sanus = slave.sensanal
 		newmember.lewdness = slave.lewdness
 		participants.append(newmember)
+	
+	if mode == 'rape':
+		for slave in secondactors:
+			var newmember = member.new()
+			newmember.loyalty = slave.loyal
+			newmember.submission = slave.obed
+			newmember.person = slave
+			newmember.sex = slave.sex
+			newmember.name = slave.name_short()
+			newmember.svagina = slave.sensvagina
+			newmember.smouth = slave.sensmouth
+			newmember.spenis = slave.senspenis
+			newmember.sanus = slave.sensanal
+			newmember.lewdness = slave.lewdness
+			newmember.mode = 'forced'
+			participants.append(newmember)
+	
+	get_node("Panel/sceneeffects").set_bbcode("You bring selected participants into your bedroom. ")
+	turns = 20
 	changecategory('caress')
 	clearstate()
 	rebuildparticipantslist()
+	
 
 func clearstate():
 	givers.clear()
 	takers.clear()
-	givers.append(participants[0])
-	globals.player = participants[0] #for "You" testing
+	if givers.size() >= 1:
+		givers.append(participants[0])
+	#globals.player = participants[0] #for "You" testing
 
 func changecategory(name):
 	selectedcategory = name
@@ -82,14 +161,14 @@ func changecategory(name):
 
 func rebuildparticipantslist():
 	var newnode
-	for i in get_node("Panel/VBoxContainer").get_children() + get_node("Panel/GridContainer/GridContainer").get_children():
+	for i in get_node("Panel/ScrollContainer/VBoxContainer").get_children() + get_node("Panel/GridContainer/GridContainer").get_children():
 		if !i.get_name() in ['Panel', 'Button']:
 			i.set_hidden(true)
 			i.queue_free()
 	for i in participants:
-		newnode = get_node("Panel/VBoxContainer/Panel").duplicate()
+		newnode = get_node("Panel/ScrollContainer/VBoxContainer/Panel").duplicate()
 		newnode.set_hidden(false)
-		get_node("Panel/VBoxContainer").add_child(newnode)
+		get_node("Panel/ScrollContainer/VBoxContainer").add_child(newnode)
 		newnode.get_node("name").set_text(i.person.dictionary('$name'))
 		newnode.get_node("name").connect("pressed",self,"slavedescription",[i])
 		if givers.find(i) >= 0:
@@ -104,6 +183,9 @@ func rebuildparticipantslist():
 		newnode.get_node("lube").set_texture(statsicons['lub' + str(max(1,ceil(i.lube/2)))])
 		newnode.get_node("give").connect("pressed",self,'switchsides',[newnode, 'give'])
 		newnode.get_node("take").connect("pressed",self,'switchsides',[newnode, 'take'])
+		if i.mode == 'forced':
+			newnode.get_node("name").set("custom_colors/font_color", Color(1,0,0))
+			newnode.get_node("name").set_tooltip("Forced")
 	var text = ''
 	for i in categories[selectedcategory]:
 		i.givers = givers
@@ -133,13 +215,20 @@ func rebuildparticipantslist():
 	for i in ongoingactions:
 		text += decoder(i.scene.getongoingname(i.givers,i.takers), i.givers, i.takers) + ' [url='+str(ongoingactions.find(i))+'][Interrupt][/url]\n'
 	
+	if givers.size() == 0:
+		get_node("Panel/passbutton").set_disabled(true)
+	else:
+		get_node("Panel/passbutton").set_disabled(false)
 	
-	
+	get_node("TextureFrame/Label").set_text(str(turns))
 	
 	get_node("Panel/sceneeffects1").set_bbcode(text)
+	
+	if turns == 0:
+		endencounter()
 
 func slavedescription(member):
-	get_node("Panel/sceneeffects").set_bbcode(member.person.description())
+	get_parent().popup(member.person.descriptionsmall())
 
 func switchsides(panel, side):
 	var slave = panel.get_meta('slave')
@@ -164,6 +253,8 @@ func startscene(scenescript, cont = false):
 	
 	textdict.mainevent = decoder(scenescript.initiate(), givers, takers)
 	
+	turns -= 1
+	
 	if scenescript.has_method('reaction'):
 		for i in takers:
 			textdict.mainevent += '\n' + decoder(scenescript.reaction(i), givers, [i])
@@ -174,7 +265,7 @@ func startscene(scenescript, cont = false):
 			sceneexists = true
 		else:
 			textdict.repeats += '\n' + decoder(i.scene.getongoingdescription(givers, takers), i.givers, i.takers)
-	
+	textdict.repeats = textdict.repeats.replace("[color=yellow]", '').replace('[color=aqua]', '').replace('[/color]','')
 	var dict = {scene = scenescript, takers = [] + takers, givers = [] + givers}
 	
 	for i in givers:
@@ -246,13 +337,17 @@ func startscenecontinue(scenescript):
 	startscene(scenescript, true)
 
 func orgasm(member):
-	member.sens = member.sens/3
+	member.sens = member.sens/4
 	var scene
 	var text
 	var temptext
 	var penistext
 	var vaginatext
 	member.orgasms += 1
+	if participants.size() == 2 && member.person != globals.player:
+		member.person.loyal += rand_range(1,4)
+	elif member.person != globals.player:
+		member.person.loyal += rand_range(1,2)
 	#vagina present
 	if member.person.vagina != 'none':
 		member.lube += rand_range(1,2)
@@ -343,43 +438,6 @@ func orgasm(member):
 		text = decoder(temptext, null, [member])
 	return "[color=#ff5df8]" + text + "[/color]"
 
-
-class member:
-	var name
-	var person
-	var mood
-	var submission
-	var loyalty
-	var lust = 0
-	var sens = 0
-	var lube = 0
-	var pain = 0
-	var lewd = 0
-	var exposure = 0
-	var role
-	var sex
-	var orgasms = 0
-	var lastaction
-	var consent = true
-	
-	var svagina
-	var smouth
-	var spenis
-	var sanus
-	var lewdness
-	
-	var energy = 100
-	
-	var knowledge
-	
-	var giving = []
-	var taking = []
-	
-	var vagina
-	var penis
-	var mouth
-	var anus
-
 func decoder(text, givers, takers):
 	return parser.decoder(text, givers, takers)
 
@@ -404,5 +462,41 @@ func stopongoingaction(meta):
 
 
 func _on_passbutton_pressed():
-	clearstate()
 	startscene(categories.other[0])
+
+func _on_stopbutton_pressed():
+	endencounter()
+
+func endencounter():
+	var mana = 0
+	var totalmana = 0
+	var text = ''
+	for i in participants:
+		text += i.person.dictionary("$name: Orgasms - ") + str(i.orgasms) 
+		if i.orgasms >= 1:
+			if i.person.stats.maf_cur*20 > rand_range(0,100) && i.getessence() != null:
+				text += ", Ingredient gained: [color=yellow]" + globals.itemdict[i.getessence()].name + "[/color]"
+				globals.itemdict[i.getessence()].amount += 1
+			mana += round(i.orgasms*4 + rand_range(1,2))
+		else:
+			mana += round(rand_range(1,3))
+		if i.person.race == 'Dark Elf':
+			mana = round(mana*1.2)
+		if i.person.spec == 'nympho':
+			mana += 2
+		totalmana += mformula(mana, totalmana)
+	totalmana = round(totalmana)
+	text += "\nEarned mana: " + str(totalmana)
+	
+	globals.resources.mana += totalmana 
+	
+	get_node("Control").set_hidden(false)
+	get_node("Control/Panel/RichTextLabel").set_bbcode(text)
+
+func mformula(gain, mana):
+    return mana + gain * max(0, mana/(mana-300)+1)
+
+
+func _on_finishbutton_pressed():
+	set_hidden(true)
+	get_parent()._on_mansion_pressed()

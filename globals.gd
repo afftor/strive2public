@@ -498,7 +498,7 @@ class slave:
 	var beautybase = 0 setget beautybase_set
 	var beautytemp = 0 
 	
-	var assertive = 0
+	var asser = 0
 	var pubichair = 'clean'
 	
 	var lewdness = 0
@@ -697,6 +697,20 @@ class slave:
 	
 	func xp_get():
 		return realxp
+	
+	func getessence():
+		var essence
+		if race in ['Demon', 'Arachna', 'Lamia']:
+			essence = 'taintedessenceing'
+		elif race in ['Fairy', 'Drow', 'Dragonkin']:
+			essence = 'magicessenceing'
+		elif race == 'Dryad':
+			essence = 'natureessenceing'
+		elif race in ['Harpy', 'Centaur'] || race.find('Beastkin') >= 0 || race.find('Halfkin') >= 0:
+			essence = 'bestialessenceing'
+		elif race in ['Slime','Nereid', "Scylla"]:
+			essence = 'fluidsubstanceing'
+		return essence
 	
 	
 	func cleartraits():
