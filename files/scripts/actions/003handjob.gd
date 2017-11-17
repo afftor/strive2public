@@ -32,6 +32,29 @@ func requirements():
 				valid = false
 	return valid
 
+func givereffect(member):
+	var result
+	var effects = {lust = 50, lewd = 1}
+	if member.consent == true || (member.person.traits.find("Likes it rough") >= 0 && member.lewdness >= 30):
+		result = 'good'
+	elif member.person.traits.find("Likes it rough") >= 0:
+		result = 'average'
+	else:
+		result = 'bad'
+	return [result, effects]
+
+func takereffect(member):
+	var result
+	var effects = {lust = 75, sens = 120, lewd =1}
+	if member.consent == true || (member.person.traits.find("Likes it rough") >= 0 && member.lewdness >= 30):
+		result = 'good'
+	elif member.person.traits.find("Likes it rough") >= 0:
+		result = 'average'
+	else:
+		result = 'bad'
+	return [result, effects]
+
+
 func initiate():
 	var temparray = []
 	temparray += ["[name1] {^grip:grab:seize}[s/1] [names2] [penis2] and {^massage:stroke:rub:jerk}[s/1] [it2] with {^inensity:intense focus:fervor:passion}."]

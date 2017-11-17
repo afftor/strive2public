@@ -16,7 +16,7 @@ ayda = "Resident alchemist in Gorn's Palace. Though she prefers to keep to herse
 
 var charactergallery = { 
 emily = {
-unlocked = false, name = 'Emily Hale', descript = chardescript.emily, sprite = 'emily2normal', naked = 'emilynakedhappy', nakedunlocked = false,
+unlocked = false, name = 'Emily Hale', descript = chardescript.emily, sprite = 'emily2happy', naked = 'emilynakedhappy', nakedunlocked = false,
 scenes = [{code = 'emilyshowersex', name = 'Hazy first day', unlocked = false, text = "Spiked taste of adult life"}, {code = 'showerrape', name = 'Harsh Reception', unlocked = false, text = 'Forceful approach'}, {code = 'tishaemilysex', name = 'Sisters Love', unlocked = false, text = 'Let two sisters bond with each other'}]
 },
 tisha = {
@@ -301,7 +301,7 @@ melissafriendly = load("res://files/images/melissafriendly.png"),
 melissaneutral = load("res://files/images/melissaneutral.png"),
 melissaworried = load("res://files/images/melissaworried.png"),
 emilyhappy = load("res://files/images/emily/emilyhappy.png"),
-emilynormal = load("res://files/images/emily/emilynormal.png"),
+emilynormal = load("res://files/images/emily/emilyneutral.png"),
 emily2normal = load("res://files/images/emily/emily2neutral.png"),
 emily2happy = load("res://files/images/emily/emily2happy.png"),
 emily2worried = load("res://files/images/emily/emily2worried.png"),
