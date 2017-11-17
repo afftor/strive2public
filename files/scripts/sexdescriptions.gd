@@ -17,40 +17,75 @@ func decoder(text, tempgivers = null, temptakers = null):
 	if takers.size() == 0:
 		takers = givers
 	
-	text = text.replace('[is1]', is(1)).replace('[is2]',is(2))
-	text = text.replace('[has1]', has(1)).replace('[has2]',has(2))
-	text = text.replace('[name1]', name(1)).replace('[name2]', name(2))
-	text = text.replace('[names1]', names(1)).replace('[names2]', names(2))
-	text = text.replace('[he1]', he(1)).replace('[he2]', he(2))
-	text = text.replace('[him1]', him(1)).replace('[him2]', him(2))
-	text = text.replace('[himself1]', himself(1)).replace('[himself2]', himself(2))
-	text = text.replace('[his1]', his(1)).replace('[his2]', his(2))
-	#these are for nouns, format is (single/multiple(group))
-	text = text.replace('[y/ies1]', 'ies' if givers.size() >= 2 else 'y').replace('[y/ies2]', 'ies' if takers.size() >= 2 else 'y')
-	text = text.replace('[/s1]', 's' if givers.size() >= 2 else '').replace('[/s2]', 's' if takers.size() >= 2 else '')
-	text = text.replace('[/es1]', 'es' if givers.size() >= 2 else '').replace('[/es2]', 'es' if takers.size() >= 2 else '')
-	text = text.replace('[a /1]', '' if givers.size() >= 2 else 'a ').replace('[a /2]', '' if takers.size() >= 2 else 'a ')
-	text = text.replace('[it1]', 'them' if givers.size() >= 2 else 'it').replace('[it2]', 'them' if takers.size() >= 2 else 'it')
-	#these are for verbs, format is (single/multiple(group))
-	text = text.replace('[ies/y1]', 'y' if givers.size() >= 2 or givers[0].person == globals.player else 'y').replace('[ies/y2]', 'y' if takers.size() >= 2 or takers[0].person == globals.player else 'y')
-	text = text.replace('[s/1]', '' if givers.size() >= 2 or givers[0].person == globals.player else 's').replace('[s/2]', '' if takers.size() >= 2 or takers[0].person == globals.player else 's')
-	text = text.replace('[es/1]', '' if givers.size() >= 2 or givers[0].person == globals.player else 'es').replace('[es/2]', '' if takers.size() >= 2 or takers[0].person == globals.player else 'es')
-	text = text.replace('[is1]', 'are' if givers.size() >= 2 or givers[0].person == globals.player else 'is').replace('[is2]', 'are' if takers.size() >= 2 or takers[0].person == globals.player else 'is')
-	text = text.replace('[am1]', 'are' if givers.size() >= 2 or givers[0].person == globals.player else 'am').replace('[am2]', 'are' if takers.size() >= 2 or takers[0].person == globals.player else 'am')
-	text = text.replace('[has1]', 'have' if givers.size() >= 2 or givers[0].person == globals.player else 'has').replace('[has2]', 'have' if takers.size() >= 2 or takers[0].person == globals.player else 'has')
-	text = text.replace('[was1]', 'were' if givers.size() >= 2 or givers[0].person == globals.player else 'was').replace('[was2]', 'were' if takers.size() >= 2 or takers[0].person == globals.player else 'was')
-	#body parts and character descriptions
-	text = text.replace('[partner1]', partner(givers)).replace('[partner2]', partner(takers))
-	text = text.replace('[partners1]', partners(givers)).replace('[partners2]', partners(takers))
-	text = text.replace('[body1]', 'bodies' if givers.size() >= 2 else body(givers[0])).replace('[body2]', 'bodies' if takers.size() >= 2 else body(takers[0]))
-	text = text.replace('[pussy1]', 'pussies' if givers.size() >= 2 else pussy(givers[0])).replace('[pussy2]', 'pussies' if takers.size() >= 2 else pussy(takers[0]))
-	text = text.replace('[penis1]', penis(givers)).replace('[penis2]', penis(takers))
-	text = text.replace('[labia1]', 'labia' if givers.size() >= 2 else labia(givers[0])).replace('[labia2]', 'labia' if takers.size() >= 2 else labia(takers[0]))
-	text = text.replace('[ass1]', ass(givers)).replace('[ass2]', ass(takers))
-	text = text.replace('[anus1]', 'anuses' if givers.size() >= 2 else anus(givers[0])).replace('[anus2]', 'anuses' if takers.size() >= 2 else anus(takers[0]))
-	
-	#split parse results
+	#split before parse
 	text = splitrand(text)
+	
+	#dictionary of replacements
+	var replacements = {
+		#state verbs
+		'[is1]' : 'are' if givers.size() >= 2 or givers[0].person == globals.player else 'is',
+		'[is2]' : 'are' if takers.size() >= 2 or takers[0].person == globals.player else 'is',
+		'[has1]' : 'have' if givers.size() >= 2 or givers[0].person == globals.player else 'has',
+		'[has2]' : 'have' if takers.size() >= 2 or takers[0].person == globals.player else 'has',
+		'[was1]' : 'were' if givers.size() >= 2 or givers[0].person == globals.player else 'was',
+		'[was2]' : 'were' if takers.size() >= 2 or takers[0].person == globals.player else 'was',
+		#verb endings
+		'[ies/y1]' : 'y' if givers.size() >= 2 or givers[0].person == globals.player else 'ies',
+		'[ies/y2]' : 'y' if takers.size() >= 2 or takers[0].person == globals.player else 'ies',
+		'[s/1]' : '' if givers.size() >= 2 or givers[0].person == globals.player else 's',
+		'[s/2]' : '' if takers.size() >= 2 or takers[0].person == globals.player else 's',
+		'[es/1]' : '' if givers.size() >= 2 or givers[0].person == globals.player else 'es',
+		'[es/2]' : '' if takers.size() >= 2 or takers[0].person == globals.player else 'es',
+		#nouns
+		'[y/ies1]' : 'ies' if givers.size() >= 2 else 'y',
+		'[y/ies2]' : 'ies' if takers.size() >= 2 else 'y',
+		'[/s1]' : 's' if givers.size() >= 2 else '',
+		'[/s2]' : 's' if takers.size() >= 2 else '',
+		'[/es1]' : 'es' if givers.size() >= 2 else '',
+		'[/es2]' : 'es' if takers.size() >= 2 else '',
+		'[a /1]' : '' if givers.size() >= 2 else 'a ',
+		'[a /2]' : '' if takers.size() >= 2 else 'a ',
+		'[an /1]' : '' if givers.size() >= 2 else 'an ',
+		'[an /2]' : '' if takers.size() >= 2 else 'an ',
+		#pronouns
+		'[it1]' : 'them' if givers.size() >= 2 else 'it',
+		'[it2]' : 'them' if takers.size() >= 2 else 'it',
+		'[he1]' : he(givers),
+		'[he2]' : he(takers),
+		'[him1]' : him(givers),
+		'[him2]' : him(takers),
+		'[himself1]' : himself(givers),
+		'[himself2]' : himself(takers),
+		'[his1]' : his(givers),
+		'[his2]' : his(takers),
+		#proper nouns
+		'[name1]' : name(givers),
+		'[name2]' : name(takers),
+		'[names1]' : names(givers),
+		'[names2]' : names(takers),
+		'[partner1]' : partner(givers),
+		'[partner2]' : partner(takers),
+		'[partners1]' : partners(givers),
+		'[partners2]' : partners(takers),
+		#body parts
+		'[pussy1]' : pussy(givers),
+		'[pussy2]' : pussy(takers),
+		'[penis1]' : penis(givers),
+		'[penis2]' : penis(takers),
+		'[ass1]' : ass(givers),
+		'[ass2]' : ass(takers),
+		#unfinished
+		'[body1]' : 'bodies' if givers.size() >= 2 else body(givers[0]),
+		'[body2]' : 'bodies' if takers.size() >= 2 else body(takers[0]),
+		'[labia1]' : 'labia' if givers.size() >= 2 else labia(givers[0]),
+		'[labia2]' : 'labia' if takers.size() >= 2 else labia(takers[0]),
+		'[anus1]' : 'anuses' if givers.size() >= 2 else anus(givers[0]),
+		'[anus2]' : 'anuses' if takers.size() >= 2 else anus(takers[0]),
+	}
+	
+	#replace
+	for i in replacements:
+		text = text.replace(i, replacements[i])
 	
 	#handle capitalization
 	text = capitallogic(text)
@@ -62,7 +97,7 @@ func decoder(text, tempgivers = null, temptakers = null):
 func splitrand(text):
 	while text.find("{^") >= 0:
 		var temptext = text.substr(text.find("{^"), text.find("}")+1 - text.find("{^"))
-		text = text.replace(temptext, temptext.split(":")[rand_range(0, temptext.split(":").size())].replace("{^", "").replace("}",""))
+		text = text.replace(temptext, temptext.split(":")[randi()%temptext.split(":").size()].replace("{^", "").replace("}",""))
 	return text
 
 #capitalize the first letter in text and those after strings in the array clookfor
@@ -96,23 +131,7 @@ func dictionary(member, text):
 	text = text.replace('[body]', body(member))
 	return text
 
-
-func is(group):
-	group = getgroupfromnumber(group)
-	if group.size() == 1 && group[0].person != globals.player:
-		return 'is'
-	else:
-		return 'are'
-
-func has(group):
-	group = getgroupfromnumber(group)
-	if group.size() == 1 && group[0].person != globals.player:
-		return 'has'
-	else:
-		return 'have'
-
 func he(group):
-	group = getgroupfromnumber(group)
 	for i in group:
 		if i.person == globals.player:
 			if group.size() == 1:
@@ -132,7 +151,6 @@ func he(group):
 		return 'they'
 
 func himself(group):
-	group = getgroupfromnumber(group)
 	for i in group:
 		if i.person == globals.player:
 			if group.size() == 1:
@@ -148,7 +166,6 @@ func himself(group):
 		return 'themselves'
 
 func his(group):
-	group = getgroupfromnumber(group)
 	for i in group:
 		if i.person == globals.player:
 			return 'your'
@@ -161,7 +178,6 @@ func his(group):
 		return 'their'
 
 func him(group):
-	group = getgroupfromnumber(group)
 	for i in group:
 		if i.person == globals.player:
 			if group.size() == 1:
@@ -181,7 +197,6 @@ func him(group):
 		return 'them'
 
 func name(group):
-	group = getgroupfromnumber(group)
 	var text = ''
 	for i in group:
 		if group == givers:
@@ -209,7 +224,6 @@ func name(group):
 	return text
 
 func names(group):
-	group = getgroupfromnumber(group)
 	var text = ''
 	for i in group:
 		if group == givers:
@@ -442,6 +456,9 @@ func partner(group):
 		var mp = i.person
 		array1 = []
 		array2 = []
+		#body
+		if mp.preg.duration > 1:
+			array1 += ["pregnant","gravid"]
 		#age
 		if mp.age == 'child':
 			array1 += ["small","young","adolescent"]
@@ -468,9 +485,19 @@ func partner(group):
 			array1 += ['horny', 'excited']
 		#boy/girl
 		if mp.sex == 'male':
-			boygirl = 'boy' if group.size() == 1 else 'boys'
+			if mp.age == 'adult':
+				boygirl = 'man' if group.size() == 1 else 'men'
+				if group.size() >= 2:
+					boygirl = 'boy' if group.size() == 1 else 'boys'
+			else:
+				boygirl = 'boy' if group.size() == 1 else 'boys'
 		else:
-			boygirl = 'girl' if group.size() == 1 else 'girls'
+			if mp.age == 'adult':
+				boygirl = 'woman' if group.size() == 1 else 'women'
+				if group.size() >= 2:
+					boygirl = 'girl' if group.size() == 1 else 'girls'
+			else:
+				boygirl = 'girl' if group.size() == 1 else 'girls'
 		array2 += [boygirl]
 		#race
 		for i in racenames:
@@ -516,6 +543,9 @@ func partners(group):
 		var mp = i.person
 		array1 = []
 		array2 = []
+		#body
+		if mp.preg.duration > 1:
+			array1 += ["pregnant","gravid"]
 		#age
 		if mp.age == 'child':
 			array1 += ["small","young","adolescent"]
@@ -542,9 +572,19 @@ func partners(group):
 			array1 += ['horny', 'excited']
 		#boy/girl
 		if mp.sex == 'male':
-			boygirl = "boy's" if group.size() == 1 else "boys'"
+			if mp.age == 'adult':
+				boygirl = "man's" if group.size() == 1 else "men's"
+				if group.size() >= 2:
+					boygirl = "boy's" if group.size() == 1 else "boys'"
+			else:
+				boygirl = "boy's" if group.size() == 1 else "boys'"
 		else:
-			boygirl = "girl's" if group.size() == 1 else "girls'"
+			if mp.age == 'adult':
+				boygirl = "woman's" if group.size() == 1 else "women's"
+				if group.size() >= 2:
+					boygirl = "girl's" if group.size() == 1 else "girls'"
+			else:
+				boygirl = "girl's" if group.size() == 1 else "girls'"
 		array2 += [boygirl]
 		#race
 		for i in racenames:
@@ -658,26 +698,58 @@ func penis(group):
 		return getrandomfromarray(marray1) + " " + getrandomfromarray(marray2)
 
 
-func pussy(member):
-	var array = []
-	var array2 = ["vagina","pussy","cunt","slit"]
-	var person = member.person
-	if person.vagvirgin == true:
-		array += ["virgin","virginal","unused"]
-	if person.pubichair == 'clean':
-		if person.age == 'child':
-			array += ["smooth","hairless","pubeless","bald"]
+func pussy(group):
+	var array1 = []
+	var array2 = []
+	var marray1 = null
+	var marray2 = null
+	var tarray = []
+	for i in group:
+		array1 = []
+		array2 = ["vagina","pussy","cunt"] if group.size() == 1 else ["vaginas","pussies","cunts"]
+		var mp = i.person
+		#body
+		if i.lube > 5:
+			array1 += ["wet","slick","dripping"]
+		if mp.preg.has_womb == true && mp.preg.duration == 0:
+			array1 += ["fertile"]
+		if mp.vagvirgin == true:
+			array1 += ["virgin","virginal","unused"]
+		if mp.pubichair == 'clean':
+			if mp.age == 'child':
+				array1 += ["smooth","hairless","pubeless","bald"]
+			else:
+				array1 += ["smoothly shaved","hairless","pubeless","shaved"]
+		#age
+		if mp.age == 'child':
+			array1 += ["childish","immature","girlish","youthful","undeveloped"]
+		elif mp.age == 'teen':
+			array1 += ["girlish","youthful","developing"]
 		else:
-			array += ["smoothly shaved","hairless","pubeless","shaved"]
-	if person.age == 'child':
-		array += ["childish","immature","undeveloped"]
-	elif person.age == 'teen':
-		array += ["girlish","youthful","undeveloped"]
+			array1 += ["womanly","mature","developed"]
+		#race
+		if mp.bodyshape == 'halfhorse':
+			array1 += ["muscular","horse","horse"]
+		else:
+			array2 += ["slit"] if group.size() == 1 else ["slits"]
+		#for multiple people, only incude shared
+		if marray1 == null:
+			marray1 = array1
+			marray2 = array2
+		else:
+			tarray = [] + marray1
+			for i in tarray:
+				if not array1.has(i):
+					marray1.erase(i)
+			tarray = [] + marray2
+			for i in tarray:
+				if not array2.has(i):
+					marray2.erase(i)
+	#30% of time do not use descriptors
+	if  randf() < 0.3 || marray1 == []:
+		return getrandomfromarray(marray2)
 	else:
-		array += ["womanly","mature","developed"]
-	
-	
-	return getrandomfromarray(array) + " " + getrandomfromarray(array2)
+		return getrandomfromarray(marray1) + " " + getrandomfromarray(marray2)
 
 func labia(member):
 	var array = ["labia","pussy lips","genitals","folds"]
@@ -773,16 +845,9 @@ func anus(member):
 		array += ["rosy","mature"]
 	return getrandomfromarray(array) + " " + getrandomfromarray(array2)
 
-
-func getgroupfromnumber(number):
-	if number == 1:
-		return givers
-	else:
-		return takers
-
 func getrandomfromarray(array):
 	if array != []:
-		return array[rand_range(0, array.size())]
+		return array[randi()%array.size()]
 	else:
 		print("empty array passed to getrandomfromarray(array)")
 		return ""

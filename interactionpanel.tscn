@@ -258,6 +258,7 @@ bbcode/enabled = true
 bbcode/bbcode = "Text1
 "
 visible_characters = -1
+percent_visible = 1.0
 
 [node name="VSeparator" type="VSeparator" parent="Panel"]
 
@@ -289,6 +290,7 @@ margin/bottom = 111.0
 bbcode/enabled = true
 bbcode/bbcode = "Text2"
 visible_characters = -1
+percent_visible = 1.0
 
 [node name="GridContainer" type="ScrollContainer" parent="Panel"]
 
@@ -738,6 +740,7 @@ max_lines_visible = -1
 
 [node name="Control" type="Control" parent="."]
 
+editor/display_folded = true
 visibility/visible = false
 focus/ignore_mouse = false
 focus/stop_mouse = true
@@ -774,6 +777,7 @@ margin/bottom = 264.0
 bbcode/enabled = true
 bbcode/bbcode = ""
 visible_characters = -1
+percent_visible = 1.0
 
 [node name="finishbutton" type="Button" parent="Control/Panel"]
 
