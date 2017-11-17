@@ -191,11 +191,11 @@ func _on_new_slave_button_pressed():
 	globals.state.mansionupgrades.mansionalchemy = 1
 	globals.state.mansionupgrades.mansionparlor = 1
 	globals.state.backpack.stackables.bandage = 1
-#	for i in globals.characters.characters:
-#		slave = globals.characters.create(i)
-#		slave.loyal = 100
-#		slave.lust = 100
-#		globals.slaves = slave
+	for i in globals.characters.characters:
+		slave = globals.characters.create(i)
+		slave.loyal = 100
+		slave.lust = 100
+		globals.slaves = slave
 
 func mansion():
 	_on_mansion_pressed()
@@ -3160,6 +3160,9 @@ func sexselect():
 			if sexslaves.find(i) >= 0:
 				newbutton.set_pressed(true)
 			newbutton.connect("pressed",self,'selectsexslave',[newbutton, i])
+			if i.lastinteractionday == globals.resources.day:
+				newbutton.set_disabled(true)
+				newbutton.set_tooltip(i.dictionary('You have already interacted with $name today.'))
 		elif sexmode == 'abuse':
 			if i.away.duration > 0 || i.sleep in ['farm']:
 				continue
@@ -3183,6 +3186,9 @@ func sexselect():
 			elif sexassist.size() > 0:
 				newbutton.set_disabled(true)
 			newbutton.connect("pressed",self,'selectassist',[newbutton, i])
+			if i.lastinteractionday == globals.resources.day:
+				newbutton.set_disabled(true)
+				newbutton.set_tooltip(i.dictionary('You have already interacted with $name today.'))
 	updatedescription()
 
 func _on_selectbutton_pressed():

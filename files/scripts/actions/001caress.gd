@@ -22,6 +22,28 @@ func requirements():
 		valid = false
 	return valid
 
+func givereffect(member):
+	var result
+	var effects = {lust = 50}
+	if member.consent == true || (member.person.traits.find("Likes it rough") >= 0 && member.lewdness >= 20):
+		result = 'good'
+	elif member.person.traits.find("Likes it rough") >= 0:
+		result = 'average'
+	else:
+		result = 'bad'
+	return [result, effects]
+
+func takereffect(member):
+	var result
+	var effects = {lust = 50, sens = 75}
+	if member.consent == true || (member.person.traits.find("Likes it rough") >= 0 && member.lewdness >= 20):
+		result = 'good'
+	elif member.person.traits.find("Likes it rough") >= 0:
+		result = 'average'
+	else:
+		result = 'bad'
+	return [result, effects]
+
 func initiate():
 	var text = ''
 	var kissable = true
@@ -54,9 +76,9 @@ func reaction(member):
 		#TBD
 	elif member.sens < 100:
 		text = "[name2] {^show:give}[s/2] little {^response:reaction} to {^the stimulation:[names1] touch:[names1] caress}."
-	elif member.sens < 300:
+	elif member.sens < 400:
 		text = "[name2] {^begin:start}[s/2] to {^respond:react} to {^the stimulation:[names1] touch:[names1] caress}."
-	elif member.sens < 600:
+	elif member.sens < 800:
 		text = "[name2] {^revel:bask}[s/2] in {^the stimulation:[names1] touch:[names1] caress}{^, [his2] arousal clearly showing:, becoming more and more excited:}."
 	else:
 		text = "[names2] body {^trembles:quivers} {^at the slightest touch:with every touch:each time [name1] touch[es/1] [him2]}{^ as [he2] rapidly near[s/2] orgasm: as [he2] approach[es/2] orgasm: as [he2] edge[es/2] toward orgasm:}."

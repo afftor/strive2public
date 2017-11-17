@@ -27,6 +27,30 @@ func requirements():
         valid = false
     return valid
 
+func givereffect(member):
+	var result
+	var effects = {lust = 100, sens = 100, lewd = 1}
+	if member.consent == true || (member.person.traits.find("Likes it rough") >= 0 && member.lewdness >= 30):
+		result = 'good'
+	elif member.person.traits.find("Likes it rough") >= 0:
+		result = 'average'
+	else:
+		result = 'bad'
+	return [result, effects]
+
+func takereffect(member):
+	var result
+	var effects = {lust = 100, sens = 100, lewd = 1}
+	if (member.consent == true || member.person.traits.find("Likes it rough") >= 0) && member.lewdness >= 30 && member.lube >= 3:
+		result = 'good'
+	elif (member.consent == true || member.person.traits.find("Likes it rough") >= 0):
+		result = 'average'
+	else:
+		result = 'bad'
+	if member.lube < 3:
+		effects.pain += 3
+	return [result, effects]
+
 func initiate():
 	var text = ''
 	text = "[name1] lay[s/1] [name2] down on [his2] back, parting [his2] thighs to expose [his2] [pussy2]. [names2] [labia2] envelop [names1] [penis1] as [he1]"
