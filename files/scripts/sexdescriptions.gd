@@ -30,8 +30,8 @@ func decoder(text, tempgivers = null, temptakers = null):
 		'[was1]' : 'were' if givers.size() >= 2 or givers[0].person == globals.player else 'was',
 		'[was2]' : 'were' if takers.size() >= 2 or takers[0].person == globals.player else 'was',
 		#verb endings
-		'[ies/y1]' : 'y' if givers.size() >= 2 or givers[0].person == globals.player else 'y',
-		'[ies/y2]' : 'y' if takers.size() >= 2 or takers[0].person == globals.player else 'y',
+		'[ies/y1]' : 'y' if givers.size() >= 2 or givers[0].person == globals.player else 'ies',
+		'[ies/y2]' : 'y' if takers.size() >= 2 or takers[0].person == globals.player else 'ies',
 		'[s/1]' : '' if givers.size() >= 2 or givers[0].person == globals.player else 's',
 		'[s/2]' : '' if takers.size() >= 2 or takers[0].person == globals.player else 's',
 		'[es/1]' : '' if givers.size() >= 2 or givers[0].person == globals.player else 'es',
