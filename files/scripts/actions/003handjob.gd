@@ -35,7 +35,7 @@ func requirements():
 func givereffect(member):
 	var result
 	var effects = {lust = 50, lewd = 1}
-	if member.consent == true || (member.person.traits.find("Likes it rough") >= 0 && member.lewdness >= 30):
+	if member.consent == true || (member.person.traits.find("Likes it rough") >= 0 && member.lewd >= 30):
 		result = 'good'
 	elif member.person.traits.find("Likes it rough") >= 0:
 		result = 'average'
@@ -46,7 +46,7 @@ func givereffect(member):
 func takereffect(member):
 	var result
 	var effects = {lust = 75, sens = 120, lewd =1}
-	if member.consent == true || (member.person.traits.find("Likes it rough") >= 0 && member.lewdness >= 30):
+	if member.consent == true || (member.person.traits.find("Likes it rough") >= 0 && member.lewd >= 30):
 		result = 'good'
 	elif member.person.traits.find("Likes it rough") >= 0:
 		result = 'average'

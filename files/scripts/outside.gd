@@ -1300,6 +1300,8 @@ func spellbuttonpressed(spell):
 
 func _on_learnspellbutton_pressed():
 	var spell = spellselected
+	if spell == null:
+		return
 	globals.resources.gold -= spell.price
 	main.popup('You have learned new spell: ' + spell.name)
 	spell.learned = true
@@ -1433,6 +1435,7 @@ func shopbuy():
 	
 	get_node("shoppanel/itempanel/buysellbutton").set_text('Buy')
 	get_node("shoppanel/itempanel/buysellbutton").set_hidden(true)
+	get_node("shoppanel/itempanel/buysellbackpack").set_hidden(true)
 	get_node("shoppanel/itempanel/itemdescript").set_bbcode('')
 	get_node("shoppanel/itempanel/iconbig").set_hidden(true)
 	
@@ -1476,6 +1479,7 @@ func shopsell():
 	
 	get_node("shoppanel/itempanel/buysellbutton").set_text('Sell')
 	get_node("shoppanel/itempanel/buysellbutton").set_hidden(true)
+	get_node("shoppanel/itempanel/buysellbackpack").set_hidden(true)
 	get_node("shoppanel/itempanel/iconbig").set_hidden(true)
 	for item in globals.itemdict:
 		array.append(item)
@@ -1533,29 +1537,30 @@ func selectshopitem(tempitem, unstuck = null):
 	text = "[center]" + item.name + "[/center]\n"
 	if mode == 'buy':
 		text +=  "Price: [color=yellow]" + str(item.cost) + "[/color]"
+		get_node("shoppanel/itempanel/buysellbackpack").set_hidden(item.type == 'dummy')
 	else:
 		text +=  "Selling Price: [color=yellow]" + str(round(item.cost/5)) + "[/color]"
 	if item.type != 'dummy' && item.type != 'gear':
 		text += "\nIn Possession: " + str(item.amount)
 	text += "\n\n" + item.description
-	if item.code.find('teleport') >= 0:
+	if item.code.find('teleport') >= 0 && item.code != 'teleportseal':
 		get_node("shoppanel/itempanel/buysellbutton/SpinBox").set_hidden(true)
 		get_node("shoppanel/itempanel/buysellbutton/SpinBox").set_val(1)
 	else:
 		get_node("shoppanel/itempanel/buysellbutton/SpinBox").set_hidden(false)
-	if item.type == 'gear':
-		if item.icon != null:
-			get_node("shoppanel/itempanel/iconbig").set_hidden(false)
-			if typeof(item.icon) == TYPE_STRING:
-				get_node("shoppanel/itempanel/iconbig").set_texture(globals.itemdict[item.code].icon)
-			else:
-				get_node("shoppanel/itempanel/iconbig").set_texture(item.icon)
+	#if item.type == 'gear':
+	if item.icon != null:
+		get_node("shoppanel/itempanel/iconbig").set_hidden(false)
+		if typeof(item.icon) == TYPE_STRING:
+			get_node("shoppanel/itempanel/iconbig").set_texture(globals.itemdict[item.code].icon)
 		else:
-			get_node("shoppanel/itempanel/iconbig").set_hidden(true)
-		if item.effect.size() > 0:
-			text += "\n\n[color=green]Effects: [/color]"
-			for i in item.effect:
-				text += '\n' + i.descript
+			get_node("shoppanel/itempanel/iconbig").set_texture(item.icon)
+	else:
+		get_node("shoppanel/itempanel/iconbig").set_hidden(true)
+	if item.type == 'gear' && item.effect.size() > 0:
+		text += "\n\n[color=green]Effects: [/color]"
+		for i in item.effect:
+			text += '\n' + i.descript
 	if item.code in ["supply",'teleportwimborn','teleportgorn','teleportfrostford','teleportamberguard','teleportumbra']:
 		get_node("shoppanel/itempanel/iconbig").set_hidden(false)
 		get_node("shoppanel/itempanel/iconbig").set_texture(item.icon)
@@ -1563,27 +1568,41 @@ func selectshopitem(tempitem, unstuck = null):
 	get_node("shoppanel/itempanel/buysellbutton").set_hidden(false)
 	if mode == 'buy' && item.cost > globals.resources.gold:
 		get_node("shoppanel/itempanel/buysellbutton").set_disabled(true)
+		get_node("shoppanel/itempanel/buysellbackpack").set_disabled(true)
 	else:
 		get_node("shoppanel/itempanel/buysellbutton").set_disabled(false)
+		get_node("shoppanel/itempanel/buysellbackpack").set_disabled(false)
 	if mode == 'sell' && unstuck == null:
 		if item.amount <= 0:
 			shopsell()
 
 
-func _on_buysellbutton_pressed():
+func _on_buysellbutton_pressed(backpack = false):
 	var item = selecteditem.get_meta("item")
 	var amount = get_node("shoppanel/itempanel/buysellbutton/SpinBox").get_val()
 	if mode == 'buy':
 		if amount*item.cost > globals.resources.gold:
 			get_parent().infotext("[color=red]Not enough gold[/color]")
 			return
+		if backpack == true && item.has('weight') && globals.state.calculateweight().currentweight + amount*item.weight > globals.state.calculateweight().maxweight:
+			get_parent().infotext("[color=red]Not enough carry capacity[/color]")
+			return
 		if item.type != 'gear':
-			item.amount += amount
+			if backpack == false:
+				item.amount += amount
+			else:
+				if globals.state.backpack.stackables.has(item.code):
+					globals.state.backpack.stackables[item.code] += 1
+				else:
+					globals.state.backpack.stackables[item.code] = 1
 		elif item.type == 'gear':
 			var counter = amount
 			while counter >= 1:
 				var tmpitem = get_parent().get_node("itemnode").createunstackable(item.code)
-				globals.state.unstackables[str(tmpitem.id)] = tmpitem
+				if backpack == false:
+					globals.state.unstackables[str(tmpitem.id)] = tmpitem
+				else:
+					globals.state.backpack.unstackables.append(tmpitem)
 				counter -= 1
 				get_parent().infotext("[color=green]Obtained: " + item.name + "[/color]")
 		if item.code in ['food']:
@@ -1609,6 +1628,12 @@ func _on_buysellbutton_pressed():
 			globals.resources.gold += round(item.cost/5)
 			globals.state.unstackables.erase(tempitem.id)
 		selectshopitem(selecteditem)
+
+
+
+func _on_buysellbackpack_pressed():
+	_on_buysellbutton_pressed(true)
+	
 
 
 func shopclose():
@@ -1779,7 +1804,7 @@ func sebastianorder():
 	else:
 		var slave = globals.state.sebastianslave
 		var array = [{name = "Pay", function = "sebastianpay"}, {name = "Refuse", function = "sebastianrefuse"}]
-		maintext.set_bbcode("After few moments, Sebastian presents to you a chained " + slave.race + slave.dictionary(" $child, who still looks pretty rebellious.\n\n— Got you what you asked for!\n\nYou slowly inspect $him.") + slave.description_full() + "\n\n— I would like to receive " + str(slave.calculateprice()) + slave.dictionary(" gold for my service. If you don't want $him, it's fine, since I can find another buyer in huge town like this."))
+		maintext.set_bbcode("After few moments, Sebastian presents to you a chained " + slave.race + slave.dictionary(" $child, who still looks pretty rebellious.\n\n— Got you what you asked for!\n\nYou slowly inspect $him.") + slave.descriptionsmall() + "\n\n— I would like to receive " + str(slave.calculateprice()) + slave.dictionary(" gold for my service. If you don't want $him, it's fine, since I can find another buyer in huge town like this."))
 		buildbuttons(array)
 
 func sebastianpay():
@@ -2070,7 +2095,7 @@ func spellbackpackselect(spell):
 
 func useitem(item, slave):
 	globals.state.backpack.stackables[item.code] -= 1
-	if globals.state.backpack.stackables[item.code] <= 1:
+	if globals.state.backpack.stackables[item.code] < 1:
 		globals.state.backpack.stackables.erase(item.code)
 	if item.code == 'bandage':
 		if slave.effects.has('bandaged') == false:
@@ -2091,8 +2116,9 @@ func useitem(item, slave):
 			globals.state.playergroup.erase(slave.id)
 		else:
 			if globals.count_sleepers().jail < globals.state.mansionupgrades.jailcapacity:
-				captureeselected.sleep = 'jail'
-			globals.state.capturedgroup.erase(captureeselected)
+				slave.sleep = 'jail'
+			globals.slaves = slave
+			globals.state.capturedgroup.erase(slave)
 	playergrouppanel()
 	_on_details_pressed()
 
@@ -2184,4 +2210,5 @@ func _on_return_pressed():
 	globals.resources.gold -= 25
 	mansion()
 	get_node("playergroupdetails").set_hidden(true)
+
 

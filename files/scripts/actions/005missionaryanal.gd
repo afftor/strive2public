@@ -28,11 +28,11 @@ func getname(state = null):
 
 func getongoingname(givers, takers):
 	return "[name1] fuck[s/1] [names2] ass[/es2] in the missionary position."
-=======
+
 func givereffect(member):
 	var result
 	var effects = {lust = 90, sens = 100, lewd = 3}
-	if member.consent == true || (member.person.traits.find("Likes it rough") >= 0 && member.lewdness >= 30):
+	if member.consent == true || (member.person.traits.find("Likes it rough") >= 0 && member.lewd >= 30):
 		result = 'good'
 	elif member.person.traits.find("Likes it rough") >= 0:
 		result = 'average'
@@ -43,14 +43,17 @@ func givereffect(member):
 func takereffect(member):
 	var result
 	var effects = {lust = 80, sens = 110, lewd = 3}
-	if (member.consent == true || member.person.traits.find("Likes it rough") >= 0) && member.lewdness >= 40 && member.lube >= 5:
+	if (member.consent == true || member.person.traits.find("Likes it rough") >= 0) && member.lewd >= 40 && member.lube >= 5:
 		result = 'good'
 	elif (member.consent == true || member.person.traits.find("Likes it rough") >= 0):
 		result = 'average'
 	else:
 		result = 'bad'
 	if member.lube < 5:
-		effects.pain += 3
+		effects.pain = 3
+	if member.person.penis == 'none':
+		effects.sens /= 1.2
+		effects.lust /= 1.2
 	return [result, effects]
 
 

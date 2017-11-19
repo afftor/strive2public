@@ -252,9 +252,9 @@ func _on_talk_pressed(mode = 'talk'):
 					text = text + "— I'll try my best for you, $master. Despite what others might think, you are invaluable to me!\n"
 				if slave.stress > 50:
 					text = text + "— It has been tough for me recently... Could you consider giving me a small break, please?\n"
-				if slave.lust >= 60 && slave.sexuals.unlocked == true && slave.sexuals.actions.has('pussy'):
+				if slave.lust >= 60 && slave.consent == true && slave.sexuals.actions.has('pussy'):
 					text = text + "— I actually would love to fuck right now. \n"
-				elif slave.lust >= 60 && slave.sexuals.unlocked == true:
+				elif slave.lust >= 60 && slave.consent == true:
 					text = text + "— Uhm... would you like to give me some private attention? — $name gives you a deep lusting look. \n"
 			if slave.xp >= 100 && slave.levelupreqs.has('code') == false:
 				buttons.append({text = slave.dictionary("Investigate $name's potential"), function = 'levelreqs'})
@@ -265,7 +265,7 @@ func _on_talk_pressed(mode = 'talk'):
 		if slave.sleep != 'jail':
 			buttons.append({text = slave.dictionary("Praise $name"), function = '_on_talk_pressed', args = 'praise'})
 		buttons.append({text = slave.dictionary("Punish $name"), function = '_on_talk_pressed', args = 'punish'})
-		if slave.sleep != 'jail' && slave.sexuals.unlocked == false:
+		if slave.sleep != 'jail' && slave.consent == false:
 			buttons.append({text = slave.dictionary("Propose intimate relationship (25 energy)"), function = 'unlocksex'})
 			if globals.player.energy < 25: buttons[buttons.size()-1].disabled = true
 		buttons.append({text = slave.dictionary("Order to call you ..."), function = 'callorder'})
@@ -353,9 +353,9 @@ func unlocksex():
 			if slave.levelupreqs.has('code') && slave.levelupreqs.code == 'relationship':
 				text += "\n\n[color=green]As you got closer with $name, you felt like $he unlocked new potential. [/color]"
 				slave.levelup()
-			slave.sexuals.unlocked = true
+			slave.consent = true
 	if nakedspritesdict.has(slave.unique):
-		if slave.sexuals.unlocked:
+		if slave.consent:
 			sprite = [[nakedspritesdict[slave.unique].clothcons, 'pos1']]
 		else:
 			sprite = [[nakedspritesdict[slave.unique].clothrape, 'pos1']]

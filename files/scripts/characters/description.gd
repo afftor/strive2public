@@ -57,7 +57,7 @@ func genitals():
 func lowergenitals():
 	var text = ''
 	if slave.vagina == 'normal':
-		if slave.vagvirgin == true:
+		if slave.vagvirgin == true && slave.vagina != 'none':
 			text = '$He has a tight, [color=yellow]virgin pussy[/color] below $his waist. '
 		else:
 			text = '$He has a [color=yellow]normal pussy[/color] below $his waist. '
@@ -178,7 +178,7 @@ func entry():
 		if slave.sleep == 'jail':
 			text = 'Behind the iron bars you see '
 		elif globals.player == slave:
-			text = 'You are '
+			text = 'In the mirror you see '
 		else:
 			text = 'You see '
 		if slave.nickname == '':

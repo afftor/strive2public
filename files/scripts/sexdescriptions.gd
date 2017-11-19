@@ -74,6 +74,8 @@ func decoder(text, tempgivers = null, temptakers = null):
 		'[penis2]' : penis(takers),
 		'[ass1]' : ass(givers),
 		'[ass2]' : ass(takers),
+		'[tits1]' : tits(givers),
+		'[tits2]' : tits(takers),
 		#unfinished
 		'[body1]' : 'bodies' if givers.size() >= 2 else body(givers[0]),
 		'[body2]' : 'bodies' if takers.size() >= 2 else body(takers[0]),
@@ -833,6 +835,80 @@ func ass(group):
 		return getrandomfromarray(marray2)
 	else:
 		return getrandomfromarray(marray1) + " " + getrandomfromarray(marray2)
+
+func tits(group):
+	var array1 = []
+	var array2 = []
+	var marray1 = null
+	var marray2 = null
+	var tarray = []
+	for i in group:
+		array1 = []
+		array2 = ["tits","boobs","chest"] if group.size() == 1 else ["tits","boobs","chests"]
+		var mp = i.person
+		#size/age descriptors
+		if mp.asssize == 'flat':
+			array1 += ["flat","small"]
+			if mp.age == 'teen':
+				array1 += ["tiny","developing","child-like"]
+			elif mp.age == 'child':
+				array1 += ["tiny","developing","undeveloped","immature"]
+		elif mp.asssize == 'small':
+			array1 += ["small","compact"]
+			if mp.age == 'teen':
+				array1 += ["developing"]
+			elif mp.age == 'child':
+				array1 += ["undeveloped","immature"]
+		elif mp.asssize == 'average':
+			array1 += ["round","well-rounded","shapely"]
+			if mp.age == 'teen':
+				array1 += ["well-developed"]
+			elif mp.age == 'child':
+				array1 += ["well-developed","impressively large"]
+		elif mp.asssize == 'big':
+			array1 += ["big","sizeable","plump","hefty"]
+			if mp.age == 'teen':
+				array1 += ["well-developed","impressively large"]
+			elif mp.age == 'child':
+				array1 += ["overgrown","surprisingly large"]
+		elif mp.asssize == 'huge':
+			array1 += ["huge","massive","fat","meaty","gigantic","enormous"]
+			if mp.age == 'teen':
+				array1 += ["well-developed","surprisingly large"]
+			elif mp.age == 'child':
+				array1 += ["overgrown","shockingly large"]
+		#bodytype descriptors
+		if mp.bodyshape == 'jelly':
+			array1 += ["gelatinous","slimy","gooey"]
+		elif mp.skincov == 'full_body_fur':
+			array1 += ["furry","fluffy"]
+		#beauty descriptors
+		if mp.beauty_get() >= 50:
+			if mp.age == 'child':
+				array1 += ["cute","cute","flawless","perfect"]
+			elif mp.age == 'teen':
+				array1 += ["cute","beautiful","flawless","perfect"]
+			else:
+				array1 += ["seductive","beautiful","flawless","perfect"]
+		#for multiple people, only incude shared
+		if marray1 == null:
+			marray1 = array1
+			marray2 = array2
+		else:
+			tarray = [] + marray1
+			for i in tarray:
+				if not array1.has(i):
+					marray1.erase(i)
+			tarray = [] + marray2
+			for i in tarray:
+				if not array2.has(i):
+					marray2.erase(i)
+	#30% of time do not use descriptors
+	if  randf() < 0.3 || marray1 == []:
+		return getrandomfromarray(marray2)
+	else:
+		return getrandomfromarray(marray1) + " " + getrandomfromarray(marray2)
+
 
 func anus(member):
 	var array = []

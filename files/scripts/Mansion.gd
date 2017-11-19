@@ -143,17 +143,17 @@ func _on_new_slave_button_pressed():
 	slave.xp += 9990
 	slave.sexuals.affection = 200
 	slave.consent = true
-	#slave.sexuals.unlocked = true
-	#for i in get_node("MainScreen/slave_tab/sexual").sexbuttons:
-	#	slave.sexuals.actions[i] = 0
+	slave.sexuals.unlocked = true
+	slave.sexuals.unlocks.append('group')
+	slave.sexuals.unlocks.append('swing')
+	for i in get_node("MainScreen/slave_tab/sexual").sexbuttons:
+		slave.sexuals.actions[i] = 0
 	slave.lust = 100
 	#slave.tattoo.face = 'nature'
 	slave.attention = 70
 	slave.skillpoints = 100
 	for i in ['conf','cour','charm','wit']:
 		slave[i] = 100
-	#slave.sexuals.unlocks.append('group')
-	#slave.sexuals.unlocks.append('swing')
 	slave.ability.append('debilitate')
 	for i in globals.state.portals.values():
 		i.enabled = true
@@ -191,11 +191,11 @@ func _on_new_slave_button_pressed():
 	globals.state.mansionupgrades.mansionalchemy = 1
 	globals.state.mansionupgrades.mansionparlor = 1
 	globals.state.backpack.stackables.bandage = 1
-	for i in globals.characters.characters:
-		slave = globals.characters.create(i)
-		slave.loyal = 100
-		slave.lust = 100
-		globals.slaves = slave
+#	for i in globals.characters.characters:
+#		slave = globals.characters.create(i)
+#		slave.loyal = 100
+#		slave.lust = 100
+#		globals.slaves = slave
 
 func mansion():
 	_on_mansion_pressed()
@@ -894,6 +894,7 @@ func _on_end_pressed():
 	else:
 		text = text + 'Your food storage grew by [color=aqua]' + str(globals.resources.food - start_food) + '[/color] units of food.\n'
 	text0.set_bbcode(text0.get_bbcode() + text)
+	globals.state.sexactions = globals.player.send/2 + 1
 	if deads_array.size() > 0:
 		results = 'worst'
 		deads_array.invert()
@@ -1314,6 +1315,8 @@ func _on_saveloadfolder_pressed():
 
 
 func hide_everything():
+	for i in get_tree().get_nodes_in_group("mansioncontrols"):
+		i.set_hidden(true)
 	get_node("MainScreen/mansion/jailpanel").set_hidden(true)
 	get_node("MainScreen/slave_tab").set_hidden(true)
 	get_node("MainScreen/mansion/alchemypanel").set_hidden(true)
@@ -1395,6 +1398,8 @@ func _on_mansion_pressed():
 	if OS.get_name() != "HTML5" && globals.rules.fadinganimation == true:
 		yield(self, 'animfinished')
 	hide_everything()
+	for i in get_tree().get_nodes_in_group("mansioncontrols"):
+		i.set_hidden(false)
 	get_node("buttonpanel").set_hidden(false)
 	get_node("outside/slavesellpanel").set_hidden(true)
 	get_node("outside/slavebuypanel").set_hidden(true)
@@ -1405,6 +1410,7 @@ func _on_mansion_pressed():
 	get_node("charlistcontrol").set_hidden(false)
 	get_node("MainScreen").set_hidden(false)
 	get_node("Navigation").set_hidden(false)
+	get_node("MainScreen/mansion/sexbutton").set_disabled(globals.state.sexactions < 1)
 	var portals = false
 	for i in globals.state.portals.values():
 		if i.enabled == true:
@@ -1625,6 +1631,7 @@ func _on_alchemy_pressed():
 	alchemyclear()
 
 func alchemyclear():
+	get_node("MainScreen/mansion/alchemypanel/Panel 2").set_hidden(true)
 	get_node("MainScreen/mansion/alchemypanel/Label").set_hidden(true)
 	get_node("MainScreen/mansion/alchemypanel/Label1").set_hidden(true)
 	for i in get_node("MainScreen/mansion/alchemypanel/VBoxContainer").get_children():
@@ -1644,6 +1651,9 @@ func brewlistpressed(potion):
 		array.append(i)
 	array.sort_custom(get_node("itemnode"),'sortbytype')
 	alchemyclear()
+	if potselected.icon != null:
+		get_node("MainScreen/mansion/alchemypanel/Panel 2").set_hidden(false)
+		get_node("MainScreen/mansion/alchemypanel/Panel 2/bigicon").set_texture(potselected.icon)
 	get_node("MainScreen/mansion/alchemypanel/Label").set_hidden(false)
 	get_node("MainScreen/mansion/alchemypanel/Label1").set_hidden(false)
 	for i in array:
@@ -1660,11 +1670,6 @@ func brewlistpressed(potion):
 		if item.amount < recipedict[i]*counter:
 			newpanel.get_node("totalnumber").set('custom_colors/font_color', Color(1,0,0))
 			brewable = false
-#		if item.type == 'potion':
-#			text = text +'[color=yellow]' + item.name + '[/color] - ' + str(recipedict[i]*counter) + '/'
-#		else:
-#			text = text + item.name + ' - ' + str(recipedict[i]*counter) + '/'
-			
 	text = text + '\n[center][color=aqua]'+ potselected.name + '[/color][/center]\n' + '' + potselected.description + '\n'		
 	for i in get_tree().get_nodes_in_group('alchemypot'):
 		if i.get_text() != potion.name && i.is_pressed() == true:
@@ -1684,7 +1689,7 @@ func _on_brewbutton_pressed():
 		counter -= 1
 		get_node("itemnode").recipemake(potselected)
 	brewlistpressed(potselected)
-	_on_alchemypanel_visibility_changed()
+	_on_alchemy_pressed()
 	get_node("MainScreen/mansion/alchemypanel/brewbutton").set_disabled(true)
 
 func _on_brewcounter_value_changed( value ):
@@ -2173,7 +2178,7 @@ func reputationword(value):
 
 
 func _on_selfinspectlooks_pressed():
-	get_node("MainScreen/mansion/selfinspect/selflookspanel/selfdescript").set_bbcode(globals.player.description_full(true))
+	get_node("MainScreen/mansion/selfinspect/selflookspanel/selfdescript").set_bbcode(globals.player.description())
 	get_node("MainScreen/mansion/selfinspect/selflookspanel").set_hidden(false)
 
 func _on_selfskillclose_pressed():
@@ -2990,7 +2995,11 @@ func itemselected(button):
 		for k in item.effects:
 			text += "\n" + k.descript
 	else:
-		get_node("inventory/Panel/iconbig").set_hidden(true)
+		if item.icon != null:
+			get_node("inventory/Panel/iconbig").set_texture(item.icon)
+			get_node("inventory/Panel/iconbig").set_hidden(false)
+		else:
+			get_node("inventory/Panel/iconbig").set_hidden(true)
 		get_node("inventory/Panel/applytoslave").set_text("Use")
 		text = "[center]" + item.name + "[/center]\n\n" +"Type: " + item.type + "\nPrice: " + str(item.cost) + "\nIn possession: " + str(item.amount) + "\n\n" + item.description
 	get_node("inventory/Panel/iteminfo").set_bbcode(text)
@@ -3239,6 +3248,7 @@ func updatedescription():
 			text += i.dictionary('$name') + ". "
 		text += '\nClick Start to initiate.'
 		get_node("sexselect/startbutton").set_disabled(sexslaves.size() == 1 && sexassist.size() <= 1)
+	text += "\nInteractions left for today: " + str(globals.state.sexactions)
 	
 	if sexslaves.size() >= 4 && sexmode == 'sex':
 		get_node("sexselect/startbutton").set_disabled(globals.itemdict.aphroditebrew.amount < 1)
@@ -3250,6 +3260,7 @@ func updatedescription():
 
 
 func _on_startbutton_pressed():
+	globals.state.sexactions -= 1
 	var mode = 'normal'
 	if sexmode == 'abuse':
 		mode = 'rape'

@@ -68,7 +68,7 @@ maintheme = load("res://files/music/opening.ogg"),
 var backgrounds = {
 mansion = load("res://files/backgrounds/mansion.png"),
 jail = load("res://files/backgrounds/jail.png"),
-alchemy = load("res://files/backgrounds/alchemy.jpg"),
+alchemy = load("res://files/backgrounds/alchemy.png"),
 wimborn = load("res://files/backgrounds/town.png"),
 mageorder = load("res://files/backgrounds/mageorder.png"),
 slaverguild = load("res://files/backgrounds/slaveguild.png"),
@@ -403,6 +403,7 @@ class progress:
 	var backpack = {stackables = {}, unstackables = []}
 	var restday = 0
 	var defaultmasternoun = "Master"
+	var sexactions = 1
 	
 	func calculateweight():
 		var slave

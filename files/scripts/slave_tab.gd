@@ -176,7 +176,7 @@ func buildmetrics():
 	text = "[center]Sexual achievments[/center]\n"
 	text += "Had intimacy: " + str(slave.metrics.sex) + " time"+globals.fastif(slave.metrics.sex == 1, '','s')+";\n"
 	text += "Which ended in orgasm: " + str(slave.metrics.orgasm) + " time"+globals.fastif(slave.metrics.orgasm == 1, '','s')+";\n"
-	if slave.pussy.has == true:
+	if slave.vagina != 'none':
 		text += "Vaginal penetrations: " + str(slave.metrics.vag)+";\n"
 	text += "Anal penetrations: " + str(slave.metrics.anal)+";\n"
 	text += "Gave oral: " + str(slave.metrics.oral) + " time"+globals.fastif(slave.metrics.oral == 1, '','s')+";\n"
@@ -910,7 +910,7 @@ func _on_hairstyle_item_selected( ID ):
 	slave = globals.currentslave
 	var hairstyles = ['straight','ponytail', 'twintails', 'braid', 'two braids', 'bun']
 	slave.hairstyle = hairstyles[ID]
-	get_parent()._on_slave_tab_visibility_changed()
+	_on_slave_tab_visibility_changed()
 
 
 func _on_useitem_pressed():

@@ -1025,7 +1025,7 @@ func maturingpot():
 				slave.hairlength = globals.hairlengtharray[globals.hairlengtharray.find(slave.hairlength)+1]
 				text = text + "$name's hair has grown longer. "
 		if slave.sex != 'male':
-			if rand_range(1,10) > 5 && slave.assize != 'huge':
+			if rand_range(1,10) > 5 && slave.asssize != 'huge':
 				slave.asssize = globals.sizearray[globals.sizearray.find(slave.asssize)+1]
 				text = text + "$name's butt has grown bigger. "
 			if rand_range(1,10) > 5 && slave.titssize != 'huge':

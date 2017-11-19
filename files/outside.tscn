@@ -2557,7 +2557,6 @@ flat = false
 
 [node name="shoppanel" type="Control" parent="."]
 
-editor/display_folded = true
 visibility/visible = false
 anchor/right = 1
 anchor/bottom = 1
@@ -2688,7 +2687,7 @@ size_flags/vertical = 2
 margin/left = 41.0
 margin/top = 61.0
 margin/right = 259.0
-margin/bottom = 130.0
+margin/bottom = 66.0
 scroll/horizontal = false
 scroll/vertical = true
 
@@ -2822,10 +2821,10 @@ focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
-margin/left = 83.0
+margin/left = 213.0
 margin/top = 54.0
-margin/right = -74.0
-margin/bottom = 19.0
+margin/right = 56.0
+margin/bottom = 15.0
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
@@ -2841,10 +2840,10 @@ focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
-margin/left = 169.0
-margin/top = -2.0
-margin/right = 241.0
-margin/bottom = 36.0
+margin/left = 346.0
+margin/top = 3.0
+margin/right = 418.0
+margin/bottom = 41.0
 range/min = 0.0
 range/max = 100.0
 range/step = 1.0
@@ -2855,6 +2854,26 @@ range/rounded = false
 editable = true
 prefix = ""
 suffix = ""
+
+[node name="buysellbackpack" type="Button" parent="shoppanel/itempanel"]
+
+anchor/left = 3
+anchor/top = 1
+anchor/right = 3
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 49.0
+margin/top = 54.0
+margin/right = -108.0
+margin/bottom = 15.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Buy to backpack"
+flat = false
 
 [node name="sebastiannode" type="Control" parent="."]
 
@@ -2961,6 +2980,12 @@ autoplay = "spritemovefairy"
 
 [connection signal="pressed" from="slavesellpanel/slavesellcancel" to="." method="_on_slavesellcancel_pressed"]
 
+[connection signal="pressed" from="slaveguildquestpanel/questaccept" to="." method="_on_questaccept_pressed"]
+
+[connection signal="pressed" from="slaveguildquestpanel/questcancel" to="." method="_on_questcancel_pressed"]
+
+[connection signal="pressed" from="slaveguildquestpanel/questhide" to="." method="_on_questhide_pressed"]
+
 [connection signal="pressed" from="slaveservicepanel/serviceconfirm" to="." method="_on_serviceconfirm_pressed"]
 
 [connection signal="pressed" from="slaveservicepanel/selectslavebutton" to="." method="_on_selectslavebutton_pressed"]
@@ -2978,6 +3003,8 @@ autoplay = "spritemovefairy"
 [connection signal="pressed" from="shoppanel/Panel/closebutton" to="." method="shopclose"]
 
 [connection signal="pressed" from="shoppanel/itempanel/buysellbutton" to="." method="_on_buysellbutton_pressed"]
+
+[connection signal="pressed" from="shoppanel/itempanel/buysellbackpack" to="." method="_on_buysellbackpack_pressed"]
 
 [connection signal="pressed" from="sebastiannode/sebastianconfirm" to="." method="_on_sebastianconfirm_pressed"]
 

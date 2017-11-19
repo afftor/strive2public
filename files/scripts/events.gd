@@ -61,12 +61,12 @@ func gornpalaceivran(stage):
 		ivran.haircolor = 'brown'
 		ivran.hairlength = 'shoulder'
 		ivran.hairstyle = 'straight'
-		ivran.tits.size = 'big'
-		ivran.ass = 'average'
+		ivran.titssize = 'big'
+		ivran.asssize = 'average'
 		ivran.skin = 'brown'
 		ivran.eyecolor = 'amber'
-		ivran.pussy.virgin = true
-		ivran.pussy.first = 'none'
+		ivran.vagvirgin = true
+		#ivran.pussy.first = 'none'
 		ivran.stats.cour_base = 65
 		ivran.stats.conf_base = 83
 		ivran.stats.wit_base = 55
@@ -584,7 +584,7 @@ func caliproposal(stage = 0):
 	if cali == null:
 		globals.state.sidequests.cali = 100
 		return
-	if cali.pussy.virgin == false || cali.loyal <= 50:
+	if cali.vagvirgin == false || cali.loyal <= 50:
 		return
 	if cali.away.duration != 0:
 		globals.state.upcomingevents.append({code = 'caliproposal', duration = cali.away.duration})
@@ -598,9 +598,9 @@ func caliproposal(stage = 0):
 		text = textnode.CaliAcceptProposal
 		globals.charactergallery.cali.scenes[0].unlocked = true
 		globals.charactergallery.cali.nakedunlocked = true
-		if globals.player.penis.number >= 1:
-			cali.pussy.virgin = false
-			cali.pussy.first = 'you'
+		if globals.player.penis != 'none':
+			cali.vagvirgin = false
+			#cali.pussy.first = 'you'
 			cali.sexuals.unlocks.append("vaginal")
 			cali.metrics.vag += 1
 			text += textnode.CaliProposalSexMale
@@ -698,8 +698,8 @@ func calibar1(value):
 			cali.lust -= 15
 			cali.loyal -= 5
 			cali.energy = -50
-			cali.pussy.virgin = false
-			cali.add_trait(globals.origins.trait('Fickle'))
+			cali.vagvirgin = false
+			cali.add_trait('Fickle')
 		elif globals.state.sidequests.calibarsex == 'forced':
 			text = textnode.CaliBarFuckUnwilling
 			cali.metrics.sex += 1
@@ -711,7 +711,7 @@ func calibar1(value):
 			cali.stress += 75
 			cali.health = -15
 			cali.energy = -50
-			cali.pussy.virgin = false
+			cali.vagvirgin = false
 			globals.state.sidequests.calibarsex = 'disliked'
 		globals.state.sidequests.cali = 16
 		buttons.append(['Continue','calibar'])
@@ -1092,7 +1092,7 @@ func caligoodend(choice):
 		globals.slaves.erase(cali)
 	elif choice == 3:
 		text = textnode.CaliGoodEndKeep
-		cali.add_trait(globals.origins.trait('Pliable'))
+		cali.add_trait('Pliable')
 		cali.loyal += 100
 		globals.get_tree().get_current_scene()._on_mansion_pressed()
 	if choice != 3:
@@ -1109,7 +1109,7 @@ func calireturn():
 	var sprite = [['calihappy','pos1']]
 	cali.away.at = 'none'
 	cali.away.duration = 0
-	cali.add_trait(globals.origins.trait('Clingy'))
+	cali.add_trait('Clingy')
 	globals.get_tree().get_current_scene().dialogue(true,self,globals.player.dictionaryplayer(textnode.CaliGoodEndNoRewardReturn),null,sprite)
 	globals.get_tree().get_current_scene()._on_mansion_pressed()
 
@@ -1194,8 +1194,7 @@ func emilymansion(stage = 0):
 		emily.sexuals.unlocks.append('vaginal')
 		emily.sexuals.unlocks.append('petting')
 		emily.tags.erase('nosex')
-		emily.pussy.virgin = false
-		emily.pussy.first = 'you'
+		emily.vagvirgin = false
 		emily.metrics.orgasm += 1
 		emily.metrics.vag += 1
 		emily.metrics.partners.append(globals.player.id)
@@ -1210,8 +1209,7 @@ func emilymansion(stage = 0):
 		emily.tags.erase('nosex')
 		emily.sexuals.unlocked = true
 		emily.stress += 100
-		emily.pussy.virgin = false
-		emily.pussy.first = 'you'
+		emily.vagvirgin = false
 		emily.metrics.vag += 1
 		emily.metrics.partners.append(globals.player.id)
 		emily.obed = 0
@@ -1565,7 +1563,7 @@ func tishagornguild(stage = 0):
 		text = textnode.TishaSexSceneStart
 		globals.charactergallery.tisha.nakedunlocked = true
 		globals.charactergallery.tisha.scenes[1].unlocked = true
-		if globals.player.penis.number > 0:
+		if globals.player.penis != 'none':
 			text += "\n\n" + textnode.TishaSexSceneEnd
 		globals.resources.mana += 10
 		buttons.append(['Offer Tisha work for you', 'tishagornguild', 9])
@@ -1576,7 +1574,7 @@ func tishagornguild(stage = 0):
 		globals.charactergallery.tisha.scenes[1].unlocked = true
 		text = textnode.TishaRefusePayment + textnode.TishaSexSceneStart
 		globals.resources.mana += 10
-		if globals.player.penis.number > 0:
+		if globals.player.penis != 'none':
 			text += "\n\n" + textnode.TishaSexSceneEnd
 		buttons.append(['Offer Tisha work for you', 'tishagornguild', 9])
 		buttons.append(['Not bother her', 'tishagornguild', 10])
@@ -1587,7 +1585,7 @@ func tishagornguild(stage = 0):
 		text = textnode.TishaOfferJob
 		sprite = [['tishanakedhappy', 'pos1']]
 		var slave = globals.charactergallery.create("Tisha")
-		slave.sexuals.unlocked = true
+		slave.consent = true
 		slave.sexuals.unlocks.append('petting')
 		slave.sexuals.unlocks.append('oral')
 		slave.sexuals.unlocks.append('vaginal')
@@ -1805,7 +1803,7 @@ func chloevillage(stage = 0):
 		var chloe = globals.characters.create("CHloe")
 		chloe.loyal += 25
 		chloe.sexuals.affection += 250
-		chloe.add_trait(globals.origins.trait('Sex-crazed'))
+		chloe.add_trait('Sex-crazed')
 		sprite = [['chloehappy2', 'pos1']]
 		globals.slaves = chloe
 	elif stage == 8:

@@ -357,6 +357,7 @@ __meta__ = {
 [node name="stats" type="Tabs" parent="."]
 
 editor/display_folded = true
+visibility/visible = false
 anchor/right = 1
 anchor/bottom = 1
 focus/ignore_mouse = false
@@ -3017,8 +3018,6 @@ show_hidden_files = false
 
 [node name="sexual" type="Tabs" parent="."]
 
-editor/display_folded = true
-visibility/visible = false
 anchor/right = 1
 anchor/bottom = 1
 focus/ignore_mouse = false
@@ -3673,6 +3672,7 @@ max_lines_visible = -1
 
 [node name="hidingpanel" type="Panel" parent="sexual"]
 
+visibility/visible = false
 anchor/right = 1
 anchor/bottom = 1
 focus/ignore_mouse = false

@@ -1323,7 +1323,7 @@ func gornyris():
 	var text
 	var buttons = []
 	var sprite = [['yrisnormal', 'pos1', 'opac']]
-	if globals.player.penis.number < 1:
+	if globals.player.penis == 'none':
 		main.popup("This encounter requires your character to possess a penis. ")
 		return
 	if globals.state.sidequests.yris == 0:

@@ -72,6 +72,7 @@ class member:
 	var mouth
 	var anus
 	var mode = 'normal'
+	var consent = true
 	
 	func lust_set(value):
 		lust = min(value, 1000)
@@ -98,6 +99,12 @@ class member:
 		if values.has('pain'):
 			paininput = values.pain
 		
+		if values.has('tags'):
+			if values.tags.find('sexpain') >= 0 && person.asser < 50 && randf() < 0.1:
+				person.add_trait("Likes it rough")
+			if values.tags.find('sexpain') >= 0 && randf() < 0.25 && lust >= 950:
+				person.add_trait("Masochist")
+		
 		if acceptance == 'good':
 			sensinput *= rand_range(1.1,1.4)
 			lustinput *= 2
@@ -107,7 +114,9 @@ class member:
 		else:
 			sensinput *= 0.6
 			lustinput *= 0.3
-			person.stess += rand_range(5,10)
+			if values.has('pain') == false:
+				person.stress += rand_range(5,10)
+		
 		self.lewd += lewdinput
 		self.lust += lustinput
 		self.sens += sensinput
@@ -177,6 +186,7 @@ func startsequence(actors, mode = null, secondactors = []):
 			newmember.sanus = slave.sensanal
 			newmember.lewd = slave.lewdness
 			newmember.mode = 'forced'
+			newmember.consent = false
 			participants.append(newmember)
 	
 	get_node("Panel/sceneeffects").set_bbcode("You bring selected participants into your bedroom. ")
@@ -202,6 +212,7 @@ func changecategory(name):
 
 func rebuildparticipantslist():
 	var newnode
+	var effects
 	for i in get_node("Panel/ScrollContainer/VBoxContainer").get_children() + get_node("Panel/GridContainer/GridContainer").get_children():
 		if !i.get_name() in ['Panel', 'Button']:
 			i.set_hidden(true)
@@ -221,7 +232,7 @@ func rebuildparticipantslist():
 		newnode.get_node("sex").set_tooltip(i.person.sex)
 		newnode.get_node("lust").set_texture(statsicons['lust' + str(max(1,ceil(i.lust/200)))])
 		newnode.get_node("sens").set_texture(statsicons['sens' + str(max(1,ceil(i.sens/200)))])
-		newnode.get_node("lube").set_texture(statsicons['lub' + str(max(1,ceil(i.lube/2)))])
+		newnode.get_node("lube").set_texture(statsicons['lub' + str(clamp(ceil(i.lube/2), 1, 5))])
 		newnode.get_node("give").connect("pressed",self,'switchsides',[newnode, 'give'])
 		newnode.get_node("take").connect("pressed",self,'switchsides',[newnode, 'take'])
 		if i.mode == 'forced':
@@ -348,41 +359,27 @@ func startscene(scenescript, cont = false):
 				stopongoingaction(i[scenescript.takerpart])
 			i[scenescript.takerpart] = dict
 	
-	for i in givers: #Lust - mental desire, sens - physical excitement, pain - physical refusal, exposure - mental refusal, lewdness - mental anticipation
+	for i in givers: 
 		if scenescript.has_method('givereffect'):
 			effects = scenescript.givereffect(i)
 			i.actioneffect(effects[0], effects[1])
 		i.lube()
-#		var value = scenescript.givereffects.sens/2
-#		
-#		if scenescript.giverpart != '':
-#			i['s'+scenescript.giverpart] += clamp(value/50,0.2,5)
-#			value = value*max(1,i['s'+scenescript.giverpart]/100)
-#		if i.sens + value < i.sens:
-#			i.lust += scenescript.givereffects.lust/2
-#		else:
-#			i.lust += scenescript.givereffects.lust + i.lewd/25
-#			i.lube()
-#		i.lust = min(1000, i.lust)
-#		i.sens += value
 		
 	for i in takers:
 		if scenescript.has_method('takereffect'):
 			effects = scenescript.takereffect(i)
 			i.actioneffect(effects[0], effects[1])
 		i.lube()
-#		var value = scenescript.targeteffects.sens/2
-#		
-#		if scenescript.takerpart != '':
-#			i['s'+scenescript.takerpart] += clamp(value/50,0.2,5)
-#			value = value*max(1,i['s'+scenescript.takerpart]/100)
-#		if i.sens + value < i.sens:
-#			i.lust += scenescript.targeteffects.lust/2
-#		else:
-#			i.lust += scenescript.targeteffects.lust + i.lewd/25
-#			i.lube()
-#		i.lust = min(1000, i.lust)
-#		i.sens += value
+	
+	for i in ongoingactions:
+		for member in i.givers:
+			effects = i.scene.givereffect(member)
+			member.actioneffect(effects[0], effects[1])
+		for member in i.takers:
+			effects = i.scene.takereffect(member)
+			member.actioneffect(effects[0], effects[1])
+	
+	
 	for i in participants:
 		if i.sens >= 1000:
 			textdict.orgasms += '\n' + orgasm(i)
@@ -661,7 +658,8 @@ func stopongoingaction(meta):
 		if action.scene.giverpart != '':
 			i[action.scene.giverpart] = null
 	for i in action.takers:
-		i[action.scene.takerpart] = null
+		if action.scene.takerpart != '':
+			i[action.scene.takerpart] = null
 	ongoingactions.erase(action)
 	rebuildparticipantslist()
 
@@ -678,20 +676,22 @@ func endencounter():
 	var totalmana = 0
 	var text = ''
 	for i in participants:
-		i.person.lewdness += i.lewd
+		i.person.lewdness = i.lewd
 		text += i.person.dictionary("$name: Orgasms - ") + str(i.orgasms) 
 		if i.orgasms >= 1:
 			if i.person.stats.maf_cur*20 > rand_range(0,100) && i.person.getessence() != null:
 				text += ", Ingredient gained: [color=yellow]" + globals.itemdict[i.person.getessence()].name + "[/color]"
 				globals.itemdict[i.person.getessence()].amount += 1
-			mana += round(i.orgasms*4 + rand_range(1,2))
+			mana += round(i.orgasms*3 + rand_range(1,2))
 		else:
-			mana += round(rand_range(1,3))
+			mana += round(rand_range(1,2))
 		if i.person.race == 'Dark Elf':
 			mana = round(mana*1.2)
 		if i.person.spec == 'nympho':
 			mana += 2
-		totalmana += mformula(mana, totalmana)
+		if i.person == globals.player:
+			mana /= 2
+		totalmana = mformula(mana, totalmana)
 		text += "\n"
 	totalmana = round(totalmana)
 	text += "\nEarned mana: " + str(totalmana)

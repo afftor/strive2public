@@ -47,7 +47,7 @@ func _on_sexual_visibility_changed():
 	else:
 		get_node("togglerape").set_disabled(false)
 	
-	if slave.sexuals.unlocked == false:
+	if slave.consent == false:
 		get_node("hidingpanel").set_hidden(false)
 		get_node("hidingpanel/RichTextLabel").set_bbcode(slave.dictionary("You don't have $name's consent for personal actions. \n\n[color=red]Forcing $him into having sex will greatly impact $his opinion of you.[/color]"))
 		return
@@ -234,7 +234,7 @@ func _on_confirmbutton_pressed():
 		var difficulty = 0
 		if action.tags.find('degrading') >= 0 && slave.traits.find("Deviant") < 0:
 			difficulty += 20
-		if action.tags.find('penetration') >= 0 && slave.pussy.virgin == true && action.tags.find('anal') < 0:
+		if action.tags.find('penetration') >= 0 && slave.vagvirgin == true && action.tags.find('anal') < 0:
 			difficulty += 10
 		if action.tags.find('fetish') >= 0 && slave.traits.find("Deviant") < 0 && slave.traits.find("Pervert") < 0 && slave.traits.find("Slutty") < 0:
 			difficulty += 15
@@ -539,6 +539,7 @@ func sexinitiate(secondtime = false):
 		slave.charm += rand_range(3,6)
 		var array = []
 		for i in slave.sexuals.actions:
+			globals.currentslave = slave
 			if sexbuttons[i].tags.find('cancum') >= 0 &&  globals.evaluate(sexbuttons[i].playerreqs) && globals.evaluate(sexbuttons[i].slavereqs) && ((sexbuttons[i].receive == true && globals.rules.receiving == true) || sexbuttons[i].receive == false ):
 				if sexbuttons[i].tags.find('dom') >= 0 && slave.asser < 40:
 					continue
@@ -839,7 +840,7 @@ func _on_piercing_pressed():
 	
 	
 	for ii in array:
-		if ii.requirement == null || (slave.lewd >= 100 && ii.requirement == 'lewdness') || (slave.penis.number >= 1 && slave.lewd >= 100 && ii.id == 10) || (slave.vagina != 'none' && slave.lewd >= 100 && (ii.id == 8 || ii.id == 9)):
+		if ii.requirement == null || (slave.consent == true && ii.requirement == 'lewdness') || (slave.penis.number >= 1 && ii.id == 10) || (slave.vagina != 'none' && (ii.id == 8 || ii.id == 9)):
 			var newline = get_node("piercingpanel/ScrollContainer/VBoxContainer/piercingline").duplicate()
 			newline.set_hidden(false)
 			get_node("piercingpanel/ScrollContainer/VBoxContainer").add_child(newline)
@@ -848,9 +849,6 @@ func _on_piercing_pressed():
 				newline.get_node("pierceoptions").add_item(i)
 				if slave.piercing[ii.name] == i:
 					newline.get_node("pierceoptions").select(newline.get_node("pierceoptions").get_item_count()-1) 
-				#elif slave.piercing[ii.name] == null:
-				#	newline.get_node('pierceoptions').set_disabled(true)
-				#	newline.get_node('pierceoptions').set_text('Non Pierced')
 			newline.get_node('pierceoptions').set_meta('pierce', ii.name)
 			newline.get_node("pierceoptions").connect("item_selected", self, 'pierceselect', [newline.get_node("pierceoptions").get_meta('pierce')])
 
@@ -986,7 +984,7 @@ func _on_announcerape_pressed():
 		slaverapeconfirm()
 		return
 	var text = "You announce $name, that you will be using $him however you please not only in daily life, but also in bed with or without $his cooperation. "
-	slave.sexuals.unlocked = true
+	slave.consent = true
 	if slave.traits.find("Sex-crazed") < 0 && slave.traits.find("Submissive") < 0:
 		text += "$He's seemingly shocked with your words. "
 		slave.loyal -= 30

@@ -1,21 +1,26 @@
 extends Node
 
 var category = 'caress'
-var code = 'caress'
+var code = 'fondletits'
 var givers
 var takers
-var canlast = false
+var canlast = true
 var givereffects = {lust = 50, sens = 0}
 var targeteffects = {lust = 50, sens = 50}
 var giverpart = ''
 var takerpart = ''
 
 func getname(state = null):
-	return "Caress"
+	return "Fondle Chest"
 
 func getongoingname(givers, takers):
-	return "[name1] caress[es/1] [names2] [body2]."
+	return "[name1] fondle[s/1] [names2] chest."
 
+func getongoingdescription(givers, takers):
+	var temparray = []
+	temparray += ["[name1] continue[s/1] fondling [names2] breasts."]
+	return temparray[rand_range(0,temparray.size())]
+	
 func requirements():
 	var valid = true
 	if takers.size() < 1 || givers.size() < 1:
@@ -25,7 +30,7 @@ func requirements():
 func givereffect(member):
 	var result
 	var effects = {lust = 50}
-	if member.consent == true || (member.person.traits.find("Likes it rough") >= 0 && member.lewd >= 20):
+	if member.consent == true || (member.person.traits.find("Likes it rough") >= 0 && member.lewd >= 10):
 		result = 'good'
 	elif member.person.traits.find("Likes it rough") >= 0:
 		result = 'average'
@@ -35,13 +40,15 @@ func givereffect(member):
 
 func takereffect(member):
 	var result
-	var effects = {lust = 50, sens = 75}
-	if member.consent == true || (member.person.traits.find("Likes it rough") >= 0 && member.lewd >= 20):
+	var effects = {lust = 50, sens = 85}
+	if member.consent == true || (member.person.traits.find("Likes it rough") >= 0 && member.lewd >= 10):
 		result = 'good'
 	elif member.person.traits.find("Likes it rough") >= 0:
 		result = 'average'
 	else:
 		result = 'bad'
+	if member.person.sex == 'male':
+		effects.sens /= 2
 	return [result, effects]
 
 func initiate():
@@ -51,22 +58,9 @@ func initiate():
 	for i in givers:
 		if i.mouth != null:
 			kissable = false
-	temparray += ["[name1] {^gently:tenderly:carefully} {^stroke:fondle:cuddle:massage}[s/1] and {^caress[es/1]:rub[s/1]} [names2] [body2]"]
-	temparray += ["[name1] {^run:rub:work}[s/1] [his1] hands all {^over:along:around} [names2] [body2]"]
+	temparray += ["[name1] caress [names2] [tits2] and play[s/2] with [his2] nipples. "]
 	text += temparray[rand_range(0,temparray.size())]
-	temparray.clear()
-	if kissable:
-		temparray += [", kissing [him2] all over"]
-		temparray += [", kissing and teasing [him2] with [his1] tongue[/s1]"]
-		temparray += [", {^planting:laying} small kisses {^all over:as [he1] go[es/1]}"]
-		text += temparray[rand_range(0,temparray.size())]
-		temparray.clear()
-	else:
-		temparray += [", {^hitting:touching} all the right spots"]
-		temparray += [", {^thoroughly:expertly} pleasuring [him2]"]
-		text += temparray[rand_range(0,temparray.size())]
-		temparray.clear()
-	return text + '.'
+	return text
 
 func reaction(member):
 	var text = ''
