@@ -60,11 +60,17 @@ func newslave(race, age, sex, origins = 'slave'):
 			slave.sexuals.actions[ii] = 0
 	slave.memory = slave.origins
 	slave.masternoun = globals.state.defaultmasternoun
-	if rand_range(0,100) < 5:
+	if randf() < 0.05:
 		var spec = globals.specarray[rand_range(0,globals.specarray.size())]
 		globals.currentslave = slave
 		if globals.evaluate(globals.jobs.specs[spec].reqs) == true:
 			slave.spec = spec
+	if slave.age == 'child' && randf() < 0.1:
+		slave.vagvirgin = false
+	elif slave.age == 'teen' && randf() < 0.3:
+		slave.vagvirgin = false
+	elif slave.age == 'adult' && randf() < 0.65:
+		slave.vagvirgin = false
 	slave.health = 100
 	return slave
 

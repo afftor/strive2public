@@ -136,7 +136,7 @@ func _on_new_slave_button_pressed():
 	for i in globals.state.tutorial:
 		globals.state.tutorial[i] = true
 	music_set('mansion')
-	globals.state.capturedgroup.append(globals.newslave(testslaverace[rand_range(0,testslaverace.size())], testslaveage, testslavegender, testslaveorigin[rand_range(0,testslaveorigin.size())]))
+	#globals.state.capturedgroup.append(globals.newslave(testslaverace[rand_range(0,testslaverace.size())], testslaveage, testslavegender, testslaveorigin[rand_range(0,testslaveorigin.size())]))
 	var slave = globals.newslave(testslaverace[rand_range(0,testslaverace.size())], testslaveage, testslavegender, testslaveorigin[rand_range(0,testslaveorigin.size())])
 	slave.obed += 200
 	slave.loyal += 100
@@ -157,8 +157,8 @@ func _on_new_slave_button_pressed():
 	slave.ability.append('debilitate')
 	for i in globals.state.portals.values():
 		i.enabled = true
-	for i in globals.spelldict.values():
-		i.learned = true
+#	for i in globals.spelldict.values():
+#		i.learned = true
 	for i in globals.itemdict.values():
 		i.unlocked = true
 		if !i.type in ['gear','dummy']:
@@ -166,7 +166,7 @@ func _on_new_slave_button_pressed():
 	globals.slaves = slave
 	slave.stats.health_cur = 5
 	globals.state.reputation.wimborn = 40
-	globals.state.sidequests.maple = 1
+	globals.state.sidequests.ivran = 'potionreceived'
 	globals.player.ability.append("mindread")
 	globals.player.abilityactive.append("mindread")
 	globals.player.ability.append('heal')
@@ -182,15 +182,17 @@ func _on_new_slave_button_pressed():
 		var tmpitem = get_node("itemnode").createunstackable(i)
 		globals.state.unstackables[str(tmpitem.id)] = tmpitem
 	globals.state.sidequests.brothel = 1
-	globals.state.sidequests.cali = 0
+	globals.state.sidequests.emily = 15
 	#globals.state.decisions.append('')
 	globals.state.rank = 3
-	globals.state.mainquest = 0
+	globals.state.mainquest = 15
+	globals.resources.mana = 200
 	globals.state.farm = 3
 	globals.state.mansionupgrades.mansionlab = 1
 	globals.state.mansionupgrades.mansionalchemy = 1
 	globals.state.mansionupgrades.mansionparlor = 1
 	globals.state.backpack.stackables.bandage = 1
+	#lobals.state.upcomingevents.append({code = 'tishaappearance',duration =1})
 #	for i in globals.characters.characters:
 #		slave = globals.characters.create(i)
 #		slave.loyal = 100
@@ -537,7 +539,7 @@ func _on_end_pressed():
 				slave.sexuals.affection += round(rand_range(1,2))
 				if slave.loyal > 30:
 					slave.stress -= slave.loyal/7
-				if slave.lust > 40 && slave.sexuals.unlocked == true && slave.pussy.virgin == false && slave.tags.find('nosex') < 0:
+				if slave.lust > 40 && slave.sexuals.unlocked == true && slave.vagvirgin == false && slave.tags.find('nosex') < 0:
 					text2.set_bbcode(text2.get_bbcode() + slave.dictionary('$name went down on you being unable to calm $his lust.\n'))
 					slave.lust = -rand_range(10,15)
 					slave.metrics.sex += 1
@@ -683,7 +685,7 @@ func _on_end_pressed():
 					slave.stress += rand_range(35,50)
 				if slave.race == 'Goblin':
 					if slave.preg.duration > 5:
-						slave.tits.lactation = true
+						slave.lactation = true
 						if headgirl != null:
 							if slave.preg.duration == 6:
 								text0.set_bbcode(text0.get_bbcode() + headgirl.dictionary('[color=yellow]$name reports, that ') + slave.dictionary('$name appears to be pregnant. [/color]\n'))
@@ -691,7 +693,7 @@ func _on_end_pressed():
 								text0.set_bbcode(text0.get_bbcode() + headgirl.dictionary('[color=yellow]$name reports, that ') + slave.dictionary('$name will likely give birth soon. [/color]\n'))
 				else:
 					if slave.preg.duration > 10:
-						slave.tits.lactation = true
+						slave.lactation = true
 						if headgirl != null:
 							if slave.preg.duration == 11:
 								text0.set_bbcode(text0.get_bbcode() + headgirl.dictionary('[color=yellow]$name reports, that ') + slave.dictionary('$name appears to be pregnant. [/color]\n'))
@@ -774,15 +776,15 @@ func _on_end_pressed():
 		for slave in globals.slaves:
 			if slave.sleep == 'farm':
 				var production = 0
-				if slave.work == 'cow' && slave.tits.size != 'masculine':
-					production = rand_range(0,15) + 18*globals.sizearray.find(slave.tits.size)
-					if slave.tits.developed == true:
-						production = production + production * (0.33 * slave.tits.extrapairs)
+				if slave.work == 'cow' && slave.titssize != 'masculine':
+					production = rand_range(0,15) + 18*globals.sizearray.find(slave.titssize)
+					if slave.titsextradeveloped == true:
+						production = production + production * (0.33 * slave.titsextra)
 					if slave.race == 'Taurus':
 						production = production*1.2
 				elif slave.work == 'hen':
 					production = rand_range(50,100)
-					if slave.pussy.has == true:
+					if slave.vagina != 'none':
 						production = production + 50
 					if slave.race == 'Harpy':
 						production = production*1.2
@@ -1585,7 +1587,7 @@ func _on_jailerclose_pressed():
 var potselected
 
 func _on_alchemy_pressed():
-	background_set('alchemy')
+	background_set('alchemy' + str(globals.state.mansionupgrades.mansionalchemy))
 	if OS.get_name() != "HTML5" && globals.rules.fadinganimation == true:
 		yield(self, 'animfinished')
 	hide_everything()
@@ -2013,29 +2015,29 @@ func babyage(age):
 		baby.age = 'child'
 		var sizes = ['flat','small']
 		if baby.sex != 'male':
-			baby.tits.size = sizes[rand_range(0,sizes.size())]
-			baby.ass = sizes[rand_range(0,sizes.size())]
+			baby.titssize = sizes[rand_range(0,sizes.size())]
+			baby.asssize = sizes[rand_range(0,sizes.size())]
 		baby.away.duration = 15
 	elif age == 'teen':
 		baby.age = 'teen'
 		var sizes = ['flat','small','average','big']
 		if baby.sex != 'male':
-			baby.tits.size = sizes[rand_range(0,sizes.size())]
-			baby.ass = sizes[rand_range(0,sizes.size())]
+			baby.titssize = sizes[rand_range(0,sizes.size())]
+			baby.asssize = sizes[rand_range(0,sizes.size())]
 		baby.away.duration = 20
 	elif age == 'adult':
 		baby.age = 'adult'
 		var sizes = ['flat','small','average','big','huge']
 		if baby.sex != 'male':
-			baby.tits.size = sizes[rand_range(0,sizes.size())]
-			baby.ass = sizes[rand_range(0,sizes.size())]
+			baby.titssize = sizes[rand_range(0,sizes.size())]
+			baby.asssize = sizes[rand_range(0,sizes.size())]
 		baby.away.duration = 25
 	baby.away.at = 'growing'
 	baby.obed += 75
 	baby.loyal += 20
 	if baby.sex != 'male':
-		baby.pussy.virgin = true
-		baby.pussy.first = 'none'
+		baby.vagvirgin = true
+		#baby.pussy.first = 'none'
 	globals.slaves = baby
 	baby = ''
 	get_node("birthpanel").set_hidden(true)
@@ -2553,7 +2555,7 @@ func _on_farmadd_pressed():
 
 func farmassignpanel(slave):
 	selectedfarmslave = slave
-	if slave.tits.lactation == true:
+	if slave.lactation == true:
 		get_node("MainScreen/mansion/farmpanel/slavetofarm/addcow").set_disabled(false)
 		get_node("MainScreen/mansion/farmpanel/slavetofarm/addcow").set_tooltip('')
 	else:
@@ -2573,7 +2575,7 @@ func farmassignpanel(slave):
 		else:
 			get_node("MainScreen/mansion/farmpanel/slavetofarm/addhen").set_disabled(false)
 			get_node("MainScreen/mansion/farmpanel/slavetofarm/addhen").set_tooltip("")
-	get_node("MainScreen/mansion/farmpanel/slavetofarm/slaveassigntext").set_bbcode("Selected servant - " + slave.name_long()+ '. \nLactation: ' +globals.fastif(slave.tits.lactation == true, '[color=green]present[/color]', '[color=red]not present[/color]')+ '. \nTits size : '+slave.tits.size)
+	get_node("MainScreen/mansion/farmpanel/slavetofarm/slaveassigntext").set_bbcode("Selected servant - " + slave.name_long()+ '. \nLactation: ' +globals.fastif(slave.lactation == true, '[color=green]present[/color]', '[color=red]not present[/color]')+ '. \nTits size : '+slave.titssize)
 
 func _on_releasefromfarm_pressed():
 	var slave = get_node("MainScreen/mansion/farmpanel/slavefarminsepct/releasefromfarm").get_meta('slave')

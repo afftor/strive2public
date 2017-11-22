@@ -1253,19 +1253,13 @@ func mageorderquest2():
 	main.dialogue(true, self, text, buttons, sprites)
 
 
-func mageservices():
-	get_node("mageorderservices").set_hidden(false)
 
 func _on_close_pressed():
 	get_node("mageorderservices").set_hidden(true)
 
 
-func _on_mageorderservices_visibility_changed():
-	if get_node("mageorderservices").is_visible() == false:
-		return
-	buildspelllist()
-
-func buildspelllist():
+func mageservices():
+	get_node("mageorderservices").set_hidden(false)
 	var spelllist = get_node("mageorderservices/ScrollContainer/spelllist")
 	var spellbutton = get_node("mageorderservices/ScrollContainer/spelllist/spellbutton")
 	for i in spelllist.get_children():
@@ -1307,7 +1301,7 @@ func _on_learnspellbutton_pressed():
 	spell.learned = true
 	if globals.abilities.abilitydict.has(spell.code) == true:
 		globals.player.ability.append(spell.code)
-	buildspelllist()
+	mageservices()
 
 
 func _on_upgradelibrary_pressed():
@@ -1426,6 +1420,7 @@ func shopbuy():
 	get_node("shoppanel/itempanel").set_hidden(false)
 	get_node("shoppanel/Panel/buybutton").set_pressed(true)
 	get_node("shoppanel/Panel/sellbutton").set_pressed(false)
+	get_node("shoppanel/Panel/sellbuttonbp").set_pressed(false)
 	get_node("shoppanel/itempanel/buysellbutton/SpinBox").set_val(1)
 	mode = 'buy'
 	for i in itemlist.get_children():
@@ -1460,7 +1455,7 @@ func shopbuy():
 		newbutton.set_meta('item', item)
 		newbutton.connect('pressed',self,'selectshopitem', [newbutton])
 
-func shopsell():
+func shopsell(backpack = false):
 	var item
 	var newbutton
 	var itemlist = get_node("shoppanel/itempanel/ScrollContainer/GridContainer")
@@ -1468,10 +1463,14 @@ func shopsell():
 	var array = []
 	get_node("shoppanel/itempanel").set_hidden(false)
 	get_node("shoppanel/Panel/buybutton").set_pressed(false)
-	get_node("shoppanel/Panel/sellbutton").set_pressed(true)
+	get_node("shoppanel/Panel/sellbutton").set_pressed(!backpack)
+	get_node("shoppanel/Panel/sellbuttonbp").set_pressed(backpack)
 	get_node("shoppanel/itempanel/itemdescript").set_bbcode('')
 	get_node("shoppanel/itempanel/buysellbutton/SpinBox").set_val(1)
-	mode = 'sell'
+	if backpack == true:
+		mode = 'sellbackpack'
+	else:
+		mode = 'sell'
 	for i in itemlist.get_children():
 		if i != itembutton:
 			i.set_hidden(true)
@@ -1481,8 +1480,12 @@ func shopsell():
 	get_node("shoppanel/itempanel/buysellbutton").set_hidden(true)
 	get_node("shoppanel/itempanel/buysellbackpack").set_hidden(true)
 	get_node("shoppanel/itempanel/iconbig").set_hidden(true)
-	for item in globals.itemdict:
-		array.append(item)
+	if backpack == false:
+		for item in globals.itemdict:
+			array.append(item)
+	else:
+		for item in globals.state.backpack.stackables:
+			array.append(globals.itemdict[item].code)
 	
 	array.sort_custom(get_parent().get_node("itemnode"),'sortbytype')
 	
@@ -1496,7 +1499,10 @@ func shopsell():
 		newbutton.set_tooltip(item.name)
 		newbutton.get_node("price").set_text(str(round(item.cost/5)))
 		newbutton.get_node("amount").set_hidden(false)
-		newbutton.get_node("amount").set_text(str(item.amount))
+		if backpack == true:
+			newbutton.get_node("amount").set_text(str(globals.state.backpack.stackables[item.code]))
+		else:
+			newbutton.get_node("amount").set_text(str(item.amount))
 		if item.icon != null:
 			newbutton.get_node("icon").set_texture(item.icon)
 		else:
@@ -1504,7 +1510,11 @@ func shopsell():
 		itemlist.add_child(newbutton)
 		newbutton.set_meta('item', item)
 		newbutton.connect('pressed',self,'selectshopitem', [newbutton])
-	for item in globals.state.unstackables.values():
+	if backpack == true:
+		array = globals.state.backpack.unstackables
+	else:
+		array = globals.state.unstackables.values()
+	for item in array:
 		if item.owner == null:
 			var tempitem = globals.itemdict[item.code]
 			newbutton = itembutton.duplicate()
@@ -1524,6 +1534,11 @@ func shopsell():
 			newbutton.set_meta('item', tempitem)
 			newbutton.set_meta('unstuck', item)
 			newbutton.connect('pressed',self,'selectshopitem', [newbutton, item])
+
+
+func _on_sellbuttonbp_pressed():
+	shopsell(true)
+
 
 func selectshopitem(tempitem, unstuck = null):
 	var text = ''
@@ -1572,9 +1587,9 @@ func selectshopitem(tempitem, unstuck = null):
 	else:
 		get_node("shoppanel/itempanel/buysellbutton").set_disabled(false)
 		get_node("shoppanel/itempanel/buysellbackpack").set_disabled(false)
-	if mode == 'sell' && unstuck == null:
-		if item.amount <= 0:
-			shopsell()
+	if mode == 'sell' && unstuck == null && item.amount <= 0:
+		shopsell()
+
 
 
 func _on_buysellbutton_pressed(backpack = false):
@@ -1615,19 +1630,30 @@ func _on_buysellbutton_pressed(backpack = false):
 		else:
 			globals.resources.gold -= item.cost*amount
 		selectshopitem(selecteditem)
-	elif mode == 'sell':
-		if amount > item.amount && item.type != 'gear':
+	elif mode in ['sell','sellbackpack']:
+		if item.type != 'gear' && ((mode == 'sell' && amount > item.amount) || mode == 'sellbackpack' && globals.state.backpack.stackables[item.code] < amount ):
 			get_parent().infotext("[color=red]Not enough items in possession[/color]")
 			return
 		if item.type != 'gear':
-			item.amount -= amount
+			if mode == 'sell':
+				item.amount -= amount
+			else:
+				globals.state.backpack.stackables[item.code] -= amount
+				if globals.state.backpack.stackables[item.code] <= 0:
+					globals.state.backpack.stackables.erase(item.code)
 			globals.resources.gold += round(item.cost/5)*amount
 			selecteditem.get_node('amount').set_text(str(item.amount))
 		else:
 			var tempitem = selecteditem.get_meta("unstuck")
 			globals.resources.gold += round(item.cost/5)
-			globals.state.unstackables.erase(tempitem.id)
-		selectshopitem(selecteditem)
+			if mode == 'sell':
+				globals.state.unstackables.erase(tempitem.id)
+			else:
+				globals.state.backpack.unstackables.erase(tempitem)
+		if mode == 'sell':
+			selectshopitem(selecteditem)
+		else:
+			_on_sellbuttonbp_pressed()
 
 
 
@@ -2210,5 +2236,6 @@ func _on_return_pressed():
 	globals.resources.gold -= 25
 	mansion()
 	get_node("playergroupdetails").set_hidden(true)
+
 
 

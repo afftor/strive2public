@@ -345,7 +345,7 @@ code = 'nympho',
 descript = "Nymphos devote their life entirely to the lewdness. They are ready for anything and everything and want more. It's common practice to make such slaves into tools and toys by owners. ",
 descriptbonus = "Sex actions take only half energy, + 2 mana from sex actions, + 25% to fucktoy, no penalties from any sex activities. ",
 descriptreqs = "Grade: Commoner and below, Unlocked sex, Charm and Courage 50+ ",
-reqs = "slave.origins in ['slave','poor','commoner'] && slave.sexuals.unlocked == true && slave.cour >= 50 && slave.charm >= 50"
+reqs = "slave.origins in ['slave','poor','commoner'] && slave.consent == true && slave.cour >= 50 && slave.charm >= 50"
 },
 merchant = {
 name = "Merchant",
@@ -371,7 +371,7 @@ multitem = {reqs = 'true', speech = "you will need a [color=aqua]$item[/color] t
 gearitem = {reqs = 'true', speech = "you will need a [color=aqua]$item[/color] to unlock $his potential. ", descript = '$name needs a [color=aqua]$item[/color] to advance $his level.  ', execfunc = 'gearitem'},
 ingreditem = {reqs = 'true', speech = "you will need a [color=aqua]$item[/color] to unlock $his potential. ", descript = '$name needs [color=aqua]$item[/color] to advance $his level. ', execfunc = 'ingreditem'},
 vacation = {reqs = 'true', speech = "you should provide $name with [color=aqua]3 free days[/color] to furtherly unlock $his potential.", descript = '$name needs a [color=aqua]vacation[/color] to advance $his level. ', execfunc = 'vacationshort'},
-relationship = {reqs = "slave.sexuals.unlocked == false && slave.tags.find('nosex') < 0", speech = "you should unlock [color=aqua]intimacy[/color] with $name to unlock $his potential.", descript = "$name needs to have [color=aqua]intimacy unlocked[/color] to advance $his level. ", execfunc = 'startrelationship'},
+relationship = {reqs = "slave.consent == false && slave.tags.find('nosex') < 0", speech = "you should unlock [color=aqua]intimacy[/color] with $name to unlock $his potential.", descript = "$name needs to have [color=aqua]intimacy unlocked[/color] to advance $his level. ", execfunc = 'startrelationship'},
 wincombat = {reqs = 'true', speech = "you should let $name to [color=aqua]win in a fight[/color] to unlock $his potential.", descript = "$name needs to [color=aqua]win in a fight[/color] to advance $his level. ", execfunc = 'wincombat'},
 improvegrade = {reqs = 'globals.originsarray.find(slave.origins) <= 3', speech = "you should raise $name's [color=aqua]grade[/color] to unlock $his potential.", descript = "$name needs to [color=aqua]raise $his grade[/color] to advance $his level. ", execfunc = 'raisegrade'},
 specialization = {reqs = 'slave.spec == null', speech = "you should let $name's [color=aqua]to learn specialization[/color] to unlock $his potential.", descript = "$name needs to [color=aqua]learn specialization[/color] to advance $his level. ", execfunc = 'getspec'},
@@ -640,10 +640,10 @@ func ffprostitution(slave):
 	var gold = 0
 	slave.metrics.brothel += 1
 	var jobactions = ['vaginal','anal','oral','toys']
-	if slave.pussy.virgin == true:
+	if slave.vagvirgin == true:
 		slave.sexuals.actions.pussy = 1
-		slave.pussy.virgin = false
-		slave.pussy.first = 'brothel'
+		slave.vagvirgin = false
+		#slave.pussy.first = 'brothel'
 		slave.health -= 5
 		slave.stress += 15
 		text += "$His virginity was taken by one of the customers.\n"
@@ -661,7 +661,7 @@ func ffprostitution(slave):
 		gold = gold*1.2
 	slave.metrics.randompartners += round(rand_range(2,4))
 	slave.metrics.sex += round(rand_range(2,5))
-	if slave.sexuals.unlocks.find('penetration') && slave.pussy.has == true:
+	if slave.sexuals.unlocks.find('penetration') && slave.vagina != 'none':
 		slave.metrics.vag += round(rand_range(1,4))
 	if slave.sexuals.unlocks.find('anal') >= 0:
 		slave.metrics.anal += round(rand_range(1,4))
@@ -722,10 +722,10 @@ func fucktoy(slave):
 	slave.metrics.brothel += 1
 	text = "$name sent to Umbra to be used as a Fucktoy.\n"
 	var jobactions = ['oral','anal','vaginal','fetish','fetish2','toy','group']
-	if slave.pussy.virgin == true:
+	if slave.vagvirgin == true:
 		slave.sexuals.actions.pussy = 1
-		slave.pussy.virgin = false
-		slave.pussy.first = 'brothel'
+		slave.vagvirgin = false
+		#slave.pussy.first = 'brothel'
 		slave.health -= 5
 		slave.stress += 10
 		slave.loyal += rand_range(-2,-4)
@@ -740,11 +740,11 @@ func fucktoy(slave):
 		if globals.state.reputation[i] < 0:
 			gold += abs(globals.state.reputation[i])
 	gold += rand_range(5,10)
-	if slave.traits.has('Sex-crazed') == true:
+	if slave.traits.has('Sex-crazed'):
 		slave.stress -= counter*3
 	slave.metrics.sex += round(rand_range(3,6))
 	slave.metrics.randompartners += round(rand_range(2,5))
-	if slave.sexuals.unlocks.find('penetration') >= 0 && slave.pussy.has == true:
+	if slave.sexuals.unlocks.find('penetration') >= 0 && slave.vagina != 'none':
 		slave.metrics.vag += round(rand_range(2,5))
 	if slave.sexuals.unlocks.find('anal') >= 0:
 		slave.metrics.anal += round(rand_range(2,5))
@@ -849,10 +849,10 @@ func whorewimborn(slave):
 	var gold = 0
 	slave.metrics.brothel += 1
 	var jobactions = ['vaginal','anal','oral','toys']
-	if slave.pussy.virgin == true:
+	if slave.vagvirgin == true:
 		slave.sexuals.actions.pussy = 1
-		slave.pussy.virgin = false
-		slave.pussy.first = 'brothel'
+		slave.vagvirgin = false
+		#slave.pussy.first = 'brothel'
 		slave.health -= 5
 		slave.stress += 15
 		text += "$His virginity was taken by one of the customers.\n"
@@ -873,7 +873,7 @@ func whorewimborn(slave):
 		gold = gold/2
 		slave.metrics.sex += round(rand_range(1,3))
 		slave.metrics.randompartners += round(rand_range(1,2))
-		if slave.sexuals.unlocks.find('penetration') && slave.pussy.has == true:
+		if slave.sexuals.unlocks.find('penetration') && slave.vagina != 'none':
 			slave.metrics.vag += round(rand_range(1,2))
 		if slave.sexuals.unlocks.find('anal') >= 0:
 			slave.metrics.anal += round(rand_range(1,2))
@@ -882,7 +882,7 @@ func whorewimborn(slave):
 	else:
 		slave.metrics.randompartners += round(rand_range(2,4))
 		slave.metrics.sex += round(rand_range(2,5))
-		if slave.sexuals.unlocks.find('penetration') && slave.pussy.has == true:
+		if slave.sexuals.unlocks.find('penetration') && slave.vagina != 'none':
 			slave.metrics.vag += round(rand_range(1,4))
 		if slave.sexuals.unlocks.find('anal') >= 0:
 			slave.metrics.anal += round(rand_range(1,4))
@@ -905,9 +905,9 @@ func escortwimborn(slave):
 	slave.metrics.brothel += 1
 	var text = "$name provided escort service to rich clients of the brothel.\n"
 	var gold
-	if slave.pussy.virgin == true:
-		slave.pussy.virgin = false
-		slave.pussy.first = 'brothel'
+	if slave.vagvirgin == true:
+		slave.vagvirgin = false
+		#slave.pussy.first = 'brothel'
 		slave.sexuals.actions.pussy = 1
 		slave.health -= 5
 		if slave.race.find('Bunny') >= 0:
@@ -936,7 +936,7 @@ func escortwimborn(slave):
 	slave.xp += gold/6
 	slave.metrics.randompartners += round(rand_range(1,2))
 	slave.metrics.sex += round(rand_range(1,2))
-	if slave.sexuals.unlocks.find('penetration') && slave.pussy.has == true:
+	if slave.sexuals.unlocks.find('penetration') && slave.vagina != 'none':
 		slave.metrics.vag += round(rand_range(1,3))
 	if slave.sexuals.unlocks.find('anal') >= 0:
 		slave.metrics.anal += round(rand_range(1,3))
@@ -953,10 +953,10 @@ func fucktoywimborn(slave):
 	slave.metrics.brothel += 1
 	text = "$name departed to work as an exotic whore.\n"
 	var jobactions = ['oral','anal','vaginal','fetish','fetish2','toy','group']
-	if slave.pussy.virgin == true:
+	if slave.vagvirgin == true:
 		slave.sexuals.actions.pussy = 1
-		slave.pussy.virgin = false
-		slave.pussy.first = 'brothel'
+		slave.vagvirgin = false
+		#slave.pussy.first = 'brothel'
 		slave.health -= 5
 		slave.stress += 10
 		slave.loyal += rand_range(-2,-4)
@@ -971,7 +971,7 @@ func fucktoywimborn(slave):
 	if slave.traits.has('Sex-crazed') == true:
 		slave.stress += -counter*4
 		gold = gold*1.2
-	if slave.pussy.has == true && slave.penis.number >= 1:
+	if slave.vagina != 'none' && slave.penis != 'none':
 		gold = gold*1.1
 	if slave.mods.has("hollownipples") == true:
 		gold = gold*1.2
@@ -982,7 +982,7 @@ func fucktoywimborn(slave):
 		slave.metrics.sex += round(rand_range(2,4))
 		gold = gold/2
 		slave.metrics.randompartners += round(rand_range(1,4))
-		if slave.sexuals.unlocks.find('penetration') && slave.pussy.has == true:
+		if slave.sexuals.unlocks.find('penetration') && slave.vagina != 'none':
 			slave.metrics.vag += round(rand_range(1,3))
 		if slave.sexuals.unlocks.find('anal') >= 0:
 			slave.metrics.anal += round(rand_range(1,3))
@@ -994,7 +994,7 @@ func fucktoywimborn(slave):
 		
 		slave.metrics.sex += round(rand_range(3,6))
 		slave.metrics.randompartners += round(rand_range(2,5))
-		if slave.sexuals.unlocks.find('penetration') >= 0 && slave.pussy.has == true:
+		if slave.sexuals.unlocks.find('penetration') >= 0 && slave.vagina != 'none':
 			slave.metrics.vag += round(rand_range(2,5))
 		if slave.sexuals.unlocks.find('anal') >= 0:
 			slave.metrics.anal += round(rand_range(2,5))

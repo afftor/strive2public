@@ -186,7 +186,7 @@ code = 'tits',
 type = 'custom',
 description = '',
 options = [''],
-target = 'tits',
+target = 'titssize',
 data = {
 developtits = {price = {mana = 120, gold = 500}, items = {maturingpot = 2}, time = 6},
 reversetits = {price = {mana = 60, gold = 300}, items = {youthingpot = 1}, time = 4},
@@ -285,7 +285,7 @@ func labbuttonselected(string):
 				newbutton.connect("pressed",self,'genetalia', [dict[string],'pussy'])
 				newbutton.set_meta('effect', 'pussy')
 		elif dict[string].code == 'tits':
-			if slave.tits.extrapairs >= 1 && slave.titsextra <= 4&& slave.titsextradeveloped == false:
+			if slave.titsextra >= 1 && slave.titsextra <= 4&& slave.titsextradeveloped == false:
 				newbutton = get_node("labmodpanel/ScrollContainer1/secondarymodlist/buttontemp").duplicate()
 				newbutton.set_hidden(false)
 				newbutton.set_text('Develop nipples')

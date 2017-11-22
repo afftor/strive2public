@@ -2606,11 +2606,27 @@ size_flags/vertical = 2
 margin/left = 37.0
 margin/top = 81.0
 margin/right = 194.0
-margin/bottom = 116.0
+margin/bottom = 117.0
 toggle_mode = true
 enabled_focus_mode = 2
 shortcut = null
-text = "Sell"
+text = "Sell from Storage"
+flat = false
+
+[node name="sellbuttonbp" type="Button" parent="shoppanel/Panel"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 37.0
+margin/top = 121.0
+margin/right = 194.0
+margin/bottom = 157.0
+toggle_mode = true
+enabled_focus_mode = 2
+shortcut = null
+text = "Sell from Backpack"
 flat = false
 
 [node name="closebutton" type="Button" parent="shoppanel/Panel"]
@@ -2678,7 +2694,6 @@ stretch_mode = 0
 
 [node name="ScrollContainer" type="ScrollContainer" parent="shoppanel/itempanel"]
 
-editor/display_folded = true
 anchor/bottom = 1
 focus/ignore_mouse = false
 focus/stop_mouse = true
@@ -2999,6 +3014,8 @@ autoplay = "spritemovefairy"
 [connection signal="pressed" from="shoppanel/Panel/buybutton" to="." method="shopbuy"]
 
 [connection signal="pressed" from="shoppanel/Panel/sellbutton" to="." method="shopsell"]
+
+[connection signal="pressed" from="shoppanel/Panel/sellbuttonbp" to="." method="_on_sellbuttonbp_pressed"]
 
 [connection signal="pressed" from="shoppanel/Panel/closebutton" to="." method="shopclose"]
 

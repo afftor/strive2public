@@ -517,7 +517,7 @@ func action(actionname):
 			slave.obed += -rand_range(10,20)
 			slave.loyal += -rand_range(4,8)
 	if actionname in ['tickling','spanking','whipping','hotwax','woodenhorse']:
-		if slave.lust > 70 || (slave.lust > 30 && (slave.traits.has('Masochist') == true||slave.dom <= 20)):
+		if slave.lust > 70 || (slave.lust > 30 && (slave.traits.has('Masochist') == true||slave.asser <= 20)):
 			text = text + "\nDuring the procedure $name twitches and climaxes, unable to hold back $his excitement."
 			slave.lust = -rand_range(8,15)
 			if rand_range(1,10) > 7 || slave.effects.has('entranced') == true:

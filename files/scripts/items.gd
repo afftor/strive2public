@@ -960,12 +960,12 @@ func handcuffeffect(slave):
 		if slave.obed >= 75:
 			text += "attempts to do their daily tasks while handcuffed behind $his back.\n"
 			slave.obed += rand_range(3,6)
-			slave.dom += rand_range(-1,-3)
+			slave.asser += rand_range(-1,-3)
 		else:
 			text += "becomes more stressed as $he struggles to do $his daily tasks while handcuffed behind $his back.\n"
 			slave.obed += rand_range(3,6)
 			slave.stress += rand_range(5,10)
-			slave.dom += rand_range(-1,-3)
+			slave.asser += rand_range(-1,-3)
 	return text
 
 
@@ -1031,8 +1031,8 @@ func maturingpot():
 			if rand_range(1,10) > 5 && slave.titssize != 'huge':
 				slave.titssize = globals.sizearray[globals.sizearray.find(slave.titssize)+1]
 				text = text + "$name's tits have grown bigger. "
-		if slave.penis.number > 0:
-			if rand_range(1,10) > 5 && slave.penis.size != 'big':
+		if slave.penis != 'none':
+			if rand_range(1,10) > 5 && slave.penis != 'big':
 				slave.penis = globals.genitaliaarray[globals.genitaliaarray.find(slave.penis)+1]
 				text = text + "$name's cock has grown bigger. "
 		if slave.balls != 'none':

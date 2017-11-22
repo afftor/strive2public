@@ -502,7 +502,7 @@ func teenagersflirt(stage = 0):
 			slave.loyal += -rand_range(5,10)
 			showntext += slave.dictionary("Getting caught up in the action, $name gets on all fours and lets one of the boys take $him from behind. ")
 			
-			if slave.pussy.has == true:
+			if slave.vagina != 'none':
 				slave.metrics.vag += round(rand_range(1,3))
 			if slave.sexuals.actions.has('ass'):
 				slave.metrics.anal += round(rand_range(1,2))

@@ -54,7 +54,7 @@ func gornpalaceivran(stage):
 		text = textnode.MainQuestGornIvranChange
 		globals.state.sidequests.ivran = 'changed'
 		globals.state.mainquest = 16
-		ivran = globals.slavegen.newslave('Dark Elf', 'adult', 'female', 'rich')
+		ivran = globals.newslave('Dark Elf', 'adult', 'female', 'rich')
 		ivran.name = 'Ivran'
 		ivran.surname = ''
 		ivran.beautybase = 75
@@ -1308,7 +1308,7 @@ func tishadecision(number):
 		text += "\n\n[color=green]You've earned 15 mana.\n\nTisha now belongs to you. [/color]"
 		globals.resources.mana += 15
 		state = false
-		var slave = globals.charactergallery.create("Tisha")
+		var slave = globals.characters.create("Tisha")
 		globals.slaves = slave
 	elif number == 6:
 		text = textnode.TishaEmilyLeaveFree
@@ -1534,7 +1534,7 @@ func tishagornguild(stage = 0):
 		text = textnode.TishaGornBrand
 		sprite = [['tishashocked', 'pos1']]
 		globals.state.sidequests.emily = 101
-		var slave = globals.charactergallery.create("Tisha")
+		var slave = globals.characters.create("Tisha")
 		slave.brand = 'basic'
 		globals.slaves = slave
 		state = true
@@ -1584,7 +1584,7 @@ func tishagornguild(stage = 0):
 				i.tags.erase('nosex')
 		text = textnode.TishaOfferJob
 		sprite = [['tishanakedhappy', 'pos1']]
-		var slave = globals.charactergallery.create("Tisha")
+		var slave = globals.characters.create("Tisha")
 		slave.consent = true
 		slave.sexuals.unlocks.append('petting')
 		slave.sexuals.unlocks.append('oral')
