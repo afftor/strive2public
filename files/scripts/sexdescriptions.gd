@@ -36,6 +36,14 @@ func decoder(text, tempgivers = null, temptakers = null):
 		'[s/2]' : '' if takers.size() >= 2 or takers[0].person == globals.player else 's',
 		'[es/1]' : '' if givers.size() >= 2 or givers[0].person == globals.player else 'es',
 		'[es/2]' : '' if takers.size() >= 2 or takers[0].person == globals.player else 'es',
+		#verb endings involving objects and body actions
+		#same as above, but only takes number into account
+		'[ies/y#1]' : 'y' if givers.size() >= 2 else 'ies',
+		'[ies/y#2]' : 'y' if takers.size() >= 2 else 'ies',
+		'[s/#1]' : '' if givers.size() >= 2 else 's',
+		'[s/#2]' : '' if takers.size() >= 2 else 's',
+		'[es/#1]' : '' if givers.size() >= 2 else 'es',
+		'[es/#2]' : '' if takers.size() >= 2 else 'es',
 		#nouns
 		'[y/ies1]' : 'ies' if givers.size() >= 2 else 'y',
 		'[y/ies2]' : 'ies' if takers.size() >= 2 else 'y',

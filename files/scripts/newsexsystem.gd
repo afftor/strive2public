@@ -417,14 +417,21 @@ func output(scenescript, valid_lines, givers, takers):
 	var takerpart = scenescript.takerpart
 	var act_lines = scenescript.act_lines
 	var virginloss = scenescript.virginloss
+	var links = scenescript.links
 	#internal
+	var linearray = []
 	var output = ''
-	var consent = true
-	var virgin = true
 	var virginpart = null
 	var virginsource = null
-	var link = null
-	var checks = []
+	#checks
+	var checks = {
+		consent = true,
+		virgin = true,
+		link = null,
+		arousal = 1,
+		lube = 1,
+		lust = 1,
+	}
 	
 	#virginity assignments
 	if giverpart == 'penis':
@@ -444,59 +451,53 @@ func output(scenescript, valid_lines, givers, takers):
 	#assign virginity check
 	for i in virginsource:
 		if i.person[virginpart] == false:
-			virgin = false
-	if virgin:
-		checks += ['virgin']
+			checks.virgin = false
 	#assign consent
 	for i in takers:
 		if i.mode == 'forced':
-			consent = false
+			checks.consent = false
 	#link with ongoingactions
 	if givers[0][giverpart] != null:
-		link = givers[0][giverpart].scene.code
-		for i in givers:
-			if i[giverpart] != givers[0][giverpart]:
-				link = null
-				break
-		for i in takers:
-			if i[takerpart] != givers[0][giverpart]:
-				link = null
-				break
+		if givers[0][giverpart].scene.code in links:
+			checks.link = givers[0][giverpart].scene.code
+			for i in givers:
+				if i[giverpart] != givers[0][giverpart]:
+					checks.link = null
+					break
+			for i in takers:
+				if i[takerpart] != givers[0][giverpart]:
+					checks.link = null
+					break
 	#link with lastaction
-	if link == null && givers[0].lastaction != null:
-		link = givers[0].lastaction.scene.code
-		for i in givers+takers:
-			if i.lastaction != givers[0].lastaction:
-				link = null
-				break
-	if link == scenescript.code:
-		checks += ['same']
-	elif link != null:
-		checks += [link]
-	#used in reactions only
+	if checks.link == null && givers[0].lastaction != null:
+		if givers[0].lastaction.scene.code in links:
+			checks.link = givers[0].lastaction.scene.code
+			for i in givers+takers:
+				if i.lastaction != givers[0].lastaction:
+					checks.link = null
+					break
+	#based on screen values, subject to adjustment
 	if takers.size() == 1:
-		if takers[0].sens >= 750:
-			checks += ['sens750']
-		elif takers[0].sens >= 500:
-			checks += ['sens500']
-		elif takers[0].sens >= 250:
-			checks += ['sens250']
-	checks += ['default']
+		checks.arousal = int(clamp(ceil(takers[0].sens/200), 1, 5))
+		checks.lube = int(clamp(ceil(takers[0].lube/2), 1, 5))
+		checks.lust = int(clamp(ceil(takers[0].lust/200), 1, 5))
+	
 	#build the output
+	var drop = false
 	for i in valid_lines:
+		linearray = []
 		if !i in act_lines:
 			continue
-		for j in checks:
-			if j in act_lines[i]:
-				if consent == false && act_lines[i][j].has("mean"):
-					output += act_lines[i][j].mean[rand_range(0,act_lines[i][j].mean.size())]
+		for j in act_lines[i]:
+			drop = false
+			for k in act_lines[i][j].conditions:
+				if checks.has(k) && !act_lines[i][j].conditions[k].has(checks[k]):
+					drop = true
 					break
-				elif act_lines[i][j].has("nice"):
-					output += act_lines[i][j].nice[rand_range(0,act_lines[i][j].nice.size())]
-					break
-				elif act_lines[i][j] != []:
-					output += act_lines[i][j][rand_range(0,act_lines[i][j].size())]
-					break
+			if drop == false:
+				linearray += act_lines[i][j].lines
+		if linearray.size() > 0:
+			output += linearray[randi()%linearray.size()]
 	
 	return decoder(output, givers, takers)
 
