@@ -9,6 +9,7 @@ var testslaveorigin = ['slave','poor','commoner','rich','noble']
 var currentslave = 0 setget currentslave_set
 var selectedslave = -1
 var texture = null
+onready var exploration = get_node("explorationnode")
 onready var slavepanel = get_node("MainScreen/slave_tab")
 
 signal animfinished
@@ -157,8 +158,8 @@ func _on_new_slave_button_pressed():
 	slave.ability.append('debilitate')
 	for i in globals.state.portals.values():
 		i.enabled = true
-#	for i in globals.spelldict.values():
-#		i.learned = true
+	for i in globals.spelldict.values():
+		i.learned = true
 	for i in globals.itemdict.values():
 		i.unlocked = true
 		if !i.type in ['gear','dummy']:
@@ -182,7 +183,7 @@ func _on_new_slave_button_pressed():
 		var tmpitem = get_node("itemnode").createunstackable(i)
 		globals.state.unstackables[str(tmpitem.id)] = tmpitem
 	globals.state.sidequests.brothel = 1
-	globals.state.sidequests.emily = 15
+	globals.state.sidequests.cali = 14
 	#globals.state.decisions.append('')
 	globals.state.rank = 3
 	globals.state.mainquest = 15
@@ -193,11 +194,12 @@ func _on_new_slave_button_pressed():
 	globals.state.mansionupgrades.mansionparlor = 1
 	globals.state.backpack.stackables.bandage = 1
 	#lobals.state.upcomingevents.append({code = 'tishaappearance',duration =1})
-#	for i in globals.characters.characters:
-#		slave = globals.characters.create(i)
-#		slave.loyal = 100
-#		slave.lust = 100
-#		globals.slaves = slave
+	for i in globals.characters.characters:
+		slave = globals.characters.create(i)
+		slave.loyal = 100
+		slave.lust = 100
+		slave.consent = true
+		globals.slaves = slave
 
 func mansion():
 	_on_mansion_pressed()
@@ -471,10 +473,10 @@ func _on_end_pressed():
 				slave.health += rand_range(2,5)
 				slave.obed += slave.loyal/5 - (slave.cour+slave.conf)/10
 				if chef != null:
-					var consumption = -10 + (chef.sagi + (chef.wit/20)/2)
+					var consumption = max(3, 10 - (chef.sagi + (chef.wit/20))/2)
 					if chef.race == 'Scylla':
-						consumption = consumption + 1
-					globals.resources.food += consumption
+						consumption = max(3, consumption - 1)
+					globals.resources.food -= consumption
 				else:
 					globals.resources.food -= 10
 					
@@ -841,7 +843,7 @@ func _on_end_pressed():
 	
 	if globals.resources.food >= 5:
 		if chef != null: 
-			globals.resources.food -= (10 - (chef.sagi + (chef.wit/20)/2))
+			globals.resources.food -= max(10 - (chef.sagi + (chef.wit/20))/2, 3)
 		else:
 			globals.resources.food -= 10
 	else:
@@ -1456,11 +1458,9 @@ func _on_mansion_pressed():
 			headgirl = true
 			text = text + i.dictionary('$name is your headgirl.')
 	if (globals.slaves.size() >= 8 && headgirl == true) || globals.developmode == true:
-		get_node("charlistcontrol/headgirl").set_hidden(false)
-		get_node("MainScreen/mansion/slavelist").set_hidden(false)
+		get_node("charlistcontrol/slavelist").set_hidden(false)
 	else:
-		get_node("charlistcontrol/headgirl").set_hidden(true)
-		get_node("MainScreen/mansion/slavelist").set_hidden(true)
+		get_node("charlistcontrol/slavelist").set_hidden(true)
 	if globals.state.farm >= 3:
 		get_node("buttonpanel/VBoxContainer/farm").set_disabled(false)
 	else:
@@ -1714,38 +1714,52 @@ func _on_library_pressed():
 		text = "Tucked away in a large room off the main passage in the mansion is the library. Bookshelves line every wall leaving only spaces for long narrow windows and the door. The shelves are mostly empty a few scarce books from your days studying you've brought with you. "
 	else:
 		text = "Tucked away in a large room off the main passage in the mansion is the library. Bookshelves line every wall leaving only spaces for long narrow windows and the door. Your collection of books grew bigger since your earlier days, and you are fairly proud of it."
-	var list = get_node("MainScreen/mansion/librarypanel/ScrollContainer/VBoxContainer")
+	var list = get_node("MainScreen/mansion/librarypanel/TextureFrame/ScrollContainer/VBoxContainer")
 	for i in list.get_children():
-		if i != get_node("MainScreen/mansion/librarypanel/ScrollContainer/VBoxContainer/bookbutton"):
+		if i.get_name() != "Button":
 			i.set_hidden(true)
 			i.queue_free()
 	
 	var array = []
-		
-#	array.append([0, loredict['slavery']])
-#	array.append([1, loredict['magesorder']])
-#	if globals.state.library >= 1:
-#		array.append([2,loredict['branding']])
-#		array.append([3,loredict['worldhistory']])
-#	if globals.state.library >= 2:
-#		array.append([4,loredict['magic']])
 	for i in loredict.values():
 		if globals.evaluate(i.reqs) == false:
 			continue
-		var newbutton = get_node("MainScreen/mansion/librarypanel/ScrollContainer/VBoxContainer/bookbutton").duplicate()
+		var newbutton = get_node("MainScreen/mansion/librarypanel/TextureFrame/ScrollContainer/VBoxContainer/Button").duplicate()
 		list.add_child(newbutton)
 		newbutton.set_hidden(false)
 		newbutton.set_text(i.name)
-		newbutton.connect('pressed',self,'lorebutton', [i.text])
+		newbutton.set_meta('lore', i)
+		newbutton.connect('pressed',self,'lorebutton', [i])
 	
+	var slavearray = []
 	for slave in globals.slaves:
 		if slave.work == 'library':
-			text = text + slave.dictionary('\n\nYou can see $name studying here.')
+			slavearray.append(slave)
+	if slavearray.size() > 0:
+		text += '\n\nYou can see '
+		for i in slavearray:
+			text += i.dictionary('$name')
+			if i != slavearray.back() && slavearray.find(i) != slavearray.size()-2:
+				text += ', '
+			elif slavearray.find(i) == slavearray.size()-2:
+				text += ' and '
+		text += " studying here."
 	get_node("MainScreen/mansion/librarypanel/libraryinfo").set_bbcode(text)
 
 func lorebutton(lore):
-	get_node("MainScreen/mansion/librarypanel/libraryinfo").set_bbcode(lore)
+	for i in get_node("MainScreen/mansion/librarypanel/TextureFrame/ScrollContainer/VBoxContainer").get_children():
+		if i.get_name() != 'Button' && i.get_meta('lore') != lore:
+			i.set_pressed(false)
+		else:
+			i.set_pressed(true)
+	get_node("MainScreen/mansion/librarypanel/TextureFrame/librarytext").set_bbcode(lore.text)
+	get_node("MainScreen/mansion/librarypanel/TextureFrame/librarytext").get_v_scroll().set_val(0)
 
+func _on_lorebutton_pressed():
+	get_node("MainScreen/mansion/librarypanel/TextureFrame").set_hidden(false)
+
+func _on_libraryclose_pressed():
+	get_node("MainScreen/mansion/librarypanel/TextureFrame").set_hidden(true)
 ###########QUEST LOG
 
 func _on_questlog_pressed():
@@ -2386,40 +2400,6 @@ func _on_relativesclose_pressed():
 
 
 
-######### Headgirl
-
-func _on_headgirl_pressed():
-	var dict = {'none':0,'kind':1,'strict':2}
-	get_node("MainScreen/mansion/headgirlsettings").set_hidden(false)
-	get_node("MainScreen/mansion/headgirlsettings/headgirlbehavior").select(dict[globals.state.headgirlbehavior])
-	_on_headgirlbehavior_item_selected(dict[globals.state.headgirlbehavior])
-
-
-func _on_headgirlclose_pressed():
-	get_node("MainScreen/mansion/headgirlsettings").set_hidden(true)
-
-
-func _on_headgirlbehavior_item_selected( ID ):
-	var text = ''
-	if ID == 0:
-		globals.state.headgirlbehavior = 'none'
-		text += "Headgirl will not interfere with others' business. "
-	if ID == 1:
-		globals.state.headgirlbehavior = 'kind'
-		text += "Headgirl will focus on kind approach and improve stress and loyalty of others."
-	if ID == 2:
-		globals.state.headgirlbehavior = 'strict'
-		text += "Headgirl will focus on putting other servants in line at the cost of thier stress. "
-	var headgirl = null
-	for i in globals.slaves:
-		if i.work == 'headgirl':
-			headgirl = i
-	if headgirl == null:
-		text += "\nCurrently you have no headgirl assigned. "
-	else:
-		text += headgirl.dictionary("\n$name is your current headgirl. ")
-	get_node("MainScreen/mansion/headgirlsettings/headgirldescript").set_bbcode(text)
-
 func showracedescript(slave):
 	var text = globals.dictionary.getRaceDescription(slave.race)
 	dialogue(true, self, text)
@@ -2437,6 +2417,9 @@ func _on_orderbutton_pressed():
 
 ####### PORTALS
 func _on_portals_pressed():
+	if globals.state.calculateweight().overload == true:
+		infotext("[color=red]Your backpack is too heavy to leave[/color]")
+		return
 	_on_mansion_pressed()
 	if OS.get_name() != 'HTML5' && globals.rules.fadinganimation == true:
 		yield(self, 'animfinished')
@@ -2691,21 +2674,6 @@ func checkplayergroup():
 
 
 
-func _on_cleanbutton_pressed():
-	var text = ''
-	get_node("MainScreen/mansion/cleandialog").popup()
-	text += "Cleaning can be done by either assigning your slaves to the cleaning task or by hiring one time help from city. \n\nCost: "
-	text += '[color=yellow]' + str(min(ceil(globals.resources.day/5.0)*10,100)) + '[/color]'
-	if globals.resources.gold >= min(ceil(globals.resources.day/5.0)*10,100) && globals.state.condition < 80:
-		get_node("MainScreen/mansion/cleandialog/cleaningbutton").set_disabled(false)
-	elif globals.state.condition >= 80:
-		text += '\n\nYour mansion requires no cleaning.'
-		get_node("MainScreen/mansion/cleandialog/cleaningbutton").set_disabled(true)
-	else:
-		text += "\n\nYou don't have enough gold."
-		get_node("MainScreen/mansion/cleandialog/cleaningbutton").set_disabled(true)
-
-	get_node("MainScreen/mansion/cleandialog/cleaningtext").set_bbcode(text)
 
 func _on_cleaningbutton_pressed():
 	globals.state.condition = 100
@@ -2906,6 +2874,8 @@ func _on_inventory_pressed(mode = 'mainscreen'):
 	get_node("inventory/Panel/discard").set_hidden(true)
 	get_node("inventory/Panel/iteminfo").set_bbcode("")
 	get_node("inventory/Panel/iconbig").set_hidden(true)
+	get_node("inventory/Panel/movebp").set_hidden(true)
+	get_node("inventory/Panel/moveinv").set_hidden(true)
 	sortitems()
 
 func selectcategory(button):
@@ -2921,13 +2891,15 @@ func sortitems():
 	var button
 	var array = []
 	var items = false
+	var tempitem
 	if itemselected != null && itemselected.has('id') == false:
 		if itemselected.amount <= 0:
 			_on_inventory_pressed()
 			return
-	for i in get_tree().get_nodes_in_group("inventoryitems"):
-		i.set_hidden(true)
-		i.queue_free()
+	for i in get_node("inventory/Panel/ScrollContainer/GridContainer").get_children() + get_node("inventory/Panel/backpackcontainer/GridContainer").get_children():
+		if i.get_name() != "Button":
+			i.set_hidden(true)
+			i.queue_free()
 	for i in globals.itemdict.values():
 		array.append(i)
 	array.sort_custom(get_node("itemnode"),'sortitems')
@@ -2937,7 +2909,7 @@ func sortitems():
 		if categoryselected.findn(i.type) < 0 && categoryselected != 'everything':
 			continue
 		items = true
-		button = get_node("inventory/Panel/ScrollContainer/GridContainer/TextureButton").duplicate()
+		button = get_node("inventory/Panel/ScrollContainer/GridContainer/Button").duplicate()
 		button.set_hidden(false)
 		button.get_node('number').set_text(str(i.amount))
 		if i.icon != null:
@@ -2950,14 +2922,13 @@ func sortitems():
 		button.connect("mouse_enter",self,'itemhovered',[button])
 		button.connect("mouse_exit",self,'itemunhovered',[button])
 		button.set_meta("item", i)
-		button.add_to_group('inventoryitems')
 		itemgrid.add_child(button)
 	for i in globals.state.unstackables.values():
 		if i.owner != null && globals.state.findslave(i.owner) == null && i.owner != globals.player.id:
 			i.owner = null
 		if i.owner == null && (categoryselected == 'everything' || categoryselected == 'gear' ):
 			items = true
-			button = get_node("inventory/Panel/ScrollContainer/GridContainer/TextureButton").duplicate()
+			button = get_node("inventory/Panel/ScrollContainer/GridContainer/Button").duplicate()
 			button.set_hidden(false)
 			button.get_node('number').set_hidden(true)
 			if i.icon != null:
@@ -2969,33 +2940,52 @@ func sortitems():
 			button.connect("mouse_enter",self,'itemhovered',[button])
 			button.connect("mouse_exit",self,'itemunhovered',[button])
 			button.set_meta("item", i)
-			button.add_to_group('inventoryitems')
 			itemgrid.add_child(button)
-	
-	
-	#get_node("inventory/Panel/iconbig").set_hidden(true)
+	for i in globals.state.backpack.stackables:
+		tempitem = globals.itemdict[i]
+		button = get_node("inventory/Panel/ScrollContainer/GridContainer/Button").duplicate()
+		get_node("inventory/Panel/backpackcontainer/GridContainer").add_child(button)
+		button.set_hidden(false)
+		button.get_node("number").set_text(str(globals.state.backpack.stackables[i]))
+		if tempitem.icon != null:
+			button.get_node("icon").set_texture(tempitem.icon)
+		button.connect("pressed",self,"itemselected",[button, true])
+		button.connect("mouse_enter",self,'itemhovered',[button])
+		button.connect("mouse_exit",self,'itemunhovered',[button])
+		button.set_meta("item", tempitem)
+	for i in globals.state.backpack.unstackables:
+		button = get_node("inventory/Panel/ScrollContainer/GridContainer/Button").duplicate()
+		get_node("inventory/Panel/backpackcontainer/GridContainer").add_child(button)
+		button.set_hidden(false)
+		button.get_node("number").set_hidden(true)
+		if i.icon != null:
+			button.get_node("icon").set_texture(load(i.icon))
+		button.connect("pressed",self,"itemselected",[button, true])
+		button.connect("mouse_enter",self,'itemhovered',[button])
+		button.connect("mouse_exit",self,'itemunhovered',[button])
+		button.set_meta("item", i)
+	calculateweight()
 	get_node("inventory/Panel/noitems").set_hidden(items)
 
+func calculateweight():
+	var weight = globals.state.calculateweight()
+	get_node("inventory/Panel/weightmeter/Label").set_text("Weight: " + str(weight.currentweight) + '/' + str(weight.maxweight))
+	get_node("inventory/Panel/weightmeter").set_val((weight.currentweight*10/max(weight.maxweight,1)*10))
 
-func itemselected(button):
+func itemselected(button, backpack = false):
 	var text = ''
 	var item = button.get_meta("item")
 	itemselected = item
-	for i in get_tree().get_nodes_in_group("inventoryitems"):
-		if i != button:
-			i.set_pressed(false)
+	for i in get_node("inventory/Panel/ScrollContainer/GridContainer").get_children():
+		i.set_pressed(i == button)
 	if item.type in ['costume','underwear','armor','weapon','accessory']:
 		get_node("inventory/Panel/applytoslave").set_text("Equip")
-		text = "[center]" + item.name + "[/center]\n\n" +"Type: " + item.type + "\n\n" + get_node("itemnode").itemlist[item.code].description
+		text = globals.itemdescription(item)
 		if item.icon != null:
 			get_node("inventory/Panel/iconbig").set_texture(load(item.icon))
 			get_node("inventory/Panel/iconbig").set_hidden(false)
 		else:
 			get_node("inventory/Panel/iconbig").set_hidden(true)
-		if item.effects.size() > 0:
-			text += "\n\n[color=green]Effects: [/color]"
-		for k in item.effects:
-			text += "\n" + k.descript
 	else:
 		if item.icon != null:
 			get_node("inventory/Panel/iconbig").set_texture(item.icon)
@@ -3003,10 +2993,12 @@ func itemselected(button):
 		else:
 			get_node("inventory/Panel/iconbig").set_hidden(true)
 		get_node("inventory/Panel/applytoslave").set_text("Use")
-		text = "[center]" + item.name + "[/center]\n\n" +"Type: " + item.type + "\nPrice: " + str(item.cost) + "\nIn possession: " + str(item.amount) + "\n\n" + item.description
+		text = globals.itemdescription(item)
 	get_node("inventory/Panel/iteminfo").set_bbcode(text)
-	get_node("inventory/Panel/discard").set_hidden(false)
-	if itemselected.type in ['ingredient']:
+	get_node("inventory/Panel/discard").set_hidden(backpack)
+	get_node("inventory/Panel/movebp").set_hidden(backpack)
+	get_node("inventory/Panel/moveinv").set_hidden(!backpack)
+	if itemselected.type in ['ingredient', 'supply'] || backpack == true:
 		get_node("inventory/Panel/applytoslave").set_hidden(true)
 	else:
 		get_node("inventory/Panel/applytoslave").set_hidden(false)
@@ -3024,6 +3016,32 @@ func itemhovered(button):
 
 func itemunhovered(button):
 	get_node("inventory/Panel/tooltip").set_hidden(true)
+
+func _on_movebp_pressed():
+	var item = itemselected
+	if item.has('owner') == false:
+		item.amount -= 1
+		if globals.state.backpack.stackables.has(item.code):
+			globals.state.backpack.stackables[item.code] += 1
+		else:
+			globals.state.backpack.stackables[item.code] = 1
+	else:
+		globals.state.backpack.unstackables.append(item)
+		globals.state.unstackables.erase(item.id)
+	sortitems()
+
+func _on_moveinv_pressed():
+	var item = itemselected
+	if item.has('owner') == false:
+		item.amount += 1
+		globals.state.backpack.stackables[item.code] -= 1
+		if globals.state.backpack.stackables[item.code] <= 0:
+			globals.state.backpack.stackables.erase(item.code)
+			_on_inventory_pressed()
+	else:
+		globals.state.unstackables[str(item.id)] = item
+		globals.state.backpack.unstackables.erase(item)
+	sortitems()
 
 func _on_applytoslave_pressed():
 	if inventorymode == 'mainscreen':
@@ -3278,5 +3296,71 @@ func _on_startbutton_pressed():
 
 func _on_cancelbutton_pressed():
 	get_node("sexselect").set_hidden(true)
+
+
+
+
+func _on_mansionsettings_pressed():
+	get_node("mansionsettings").set_hidden(false)
+	var text = ''
+	text += "Cleaning can be done by either assigning your slaves to the cleaning task or by hiring one time help from city. \n\nCost: "
+	text += '[color=yellow]' + str(min(ceil(globals.resources.day/5.0)*10,100)) + '[/color]'
+	if globals.resources.gold >= min(ceil(globals.resources.day/5.0)*10,100) && globals.state.condition < 80:
+		get_node("mansionsettings/Panel/cleanbutton").set_disabled(false)
+	elif globals.state.condition >= 80:
+		text += '\n\nYour mansion requires no cleaning.'
+		get_node("mansionsettings/Panel/cleanbutton").set_disabled(true)
+	else:
+		text += "\n\nYou don't have enough gold."
+		get_node("mansionsettings/Panel/cleanbutton").set_disabled(true)
+	get_node("mansionsettings/Panel/cleaningtext").set_bbcode(text)
+	var dict = {'none':0,'kind':1,'strict':2}
+	get_node("mansionsettings/Panel/headgirlbehavior").select(dict[globals.state.headgirlbehavior])
+	_on_headgirlbehavior_item_selected(dict[globals.state.headgirlbehavior])
+
+
+
+func _on_headgirlbehavior_item_selected( ID ):
+	var text = ''
+	if ID == 0:
+		globals.state.headgirlbehavior = 'none'
+		text += "Headgirl will not interfere with others' business. "
+	if ID == 1:
+		globals.state.headgirlbehavior = 'kind'
+		text += "Headgirl will focus on kind approach and improve stress and loyalty of others."
+	if ID == 2:
+		globals.state.headgirlbehavior = 'strict'
+		text += "Headgirl will focus on putting other servants in line at the cost of thier stress. "
+	var headgirl = null
+	for i in globals.slaves:
+		if i.work == 'headgirl':
+			headgirl = i
+	if headgirl == null:
+		text += "\nCurrently you have no headgirl assigned. "
+	else:
+		text += headgirl.dictionary("\n$name is your current headgirl. ")
+	get_node("mansionsettings/Panel/headgirldescript").set_bbcode(text)
+	get_node("mansionsettings/Panel/foodbuy").set_val(globals.state.foodbuy)
+	get_node("mansionsettings/Panel/supplykeep").set_val(globals.state.supplykeep)
+	get_node("mansionsettings/Panel/supplykeep/supplybuy").set_pressed(globals.state.supplybuy)
+
+func _on_foodbuy_value_changed( value ):
+	globals.state.foodbuy = get_node("mansionsettings/Panel/foodbuy").get_val()
+
+func _on_supplykeep_value_changed( value ):
+	globals.state.supplykeep = get_node("mansionsettings/Panel/supplykeep").get_val()
+
+
+func _on_supplybuy_pressed():
+	globals.state.supplybuy = get_node("mansionsettings/Panel/supplykeep/supplybuy").is_pressed()
+
+
+func _on_close_pressed():
+	get_node("mansionsettings").set_hidden(true)
+
+
+
+
+
 
 

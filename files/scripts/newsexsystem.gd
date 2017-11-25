@@ -71,6 +71,7 @@ class member:
 	var penis
 	var mouth
 	var anus
+	var tail
 	var mode = 'normal'
 	var consent = true
 	
@@ -239,10 +240,33 @@ func rebuildparticipantslist():
 			newnode.get_node("name").set("custom_colors/font_color", Color(1,0,0))
 			newnode.get_node("name").set_tooltip("Forced")
 	var text = ''
+	
+	#check for double dildo scenes between participants
+	var doubledildo = false
+	var givercheck = false
+	var takercheck = false
+	
+	for scene in ongoingactions:
+		if scene.scene.code in ['doubledildo','doubledildoass']:
+			for i in givers:
+				if scene.givers.has(i) || scene.takers.has(i):
+					givercheck = true
+			for i in takers:
+				if scene.givers.has(i) || scene.takers.has(i):
+					takercheck = true
+		if givercheck && takercheck:
+			doubledildo = true
+			break
+		else:
+			givercheck = false
+			takercheck = false
+	
 	for i in categories[selectedcategory]:
 		i.givers = givers
 		i.takers = takers
 		if i.requirements() == false:
+			continue
+		elif doubledildo == true && i.category in ['caress','fucking'] && !i.code in ['doubledildo','doubledildoass']:
 			continue
 		newnode = get_node("Panel/GridContainer/GridContainer/Button").duplicate()
 		get_node("Panel/GridContainer/GridContainer").add_child(newnode)
@@ -303,6 +327,11 @@ func startscene(scenescript, cont = false):
 	scenescript.givers = givers
 	scenescript.takers = takers
 	
+	if scenescript.code in ['doubledildo','doubledildoass']:
+		for i in ongoingactions:
+			if i.scene.category == 'fucking' && (i.givers.has(givers[0]) || i.takers.has(givers[0]) || i.givers.has(takers[0]) || i.takers.has(takers[0])):
+				stopongoingaction(i)
+	
 	#temporary support for scenes converted to centralized output and those not
 	#should be unified in the future
 	var centralized = false
@@ -336,15 +365,7 @@ func startscene(scenescript, cont = false):
 				elif scenescript.takerpart == 'anus':
 					i.person.assvirgin = false
 	
-	var sceneexists = false
-	for i in ongoingactions:
-		if i.givers == givers && i.takers == takers && i.scene == scenescript:
-			sceneexists = true
-		elif i.scene.has_method('getongoingdescription'):
-			textdict.repeats += '\n' + decoder(i.scene.getongoingdescription(i.givers, i.takers), i.givers, i.takers)
-		else:
-			textdict.repeats += '\n' + output(i.scene, i.scene.ongoing, i.givers, i.takers)
-	textdict.repeats = textdict.repeats.replace("[color=yellow]", '').replace('[color=aqua]', '').replace('[/color]','')
+	
 	
 	var dict = {scene = scenescript, takers = [] + takers, givers = [] + givers}
 	
@@ -370,6 +391,16 @@ func startscene(scenescript, cont = false):
 			effects = scenescript.takereffect(i)
 			i.actioneffect(effects[0], effects[1])
 		i.lube()
+	
+	var sceneexists = false
+	for i in ongoingactions:
+		if i.givers == givers && i.takers == takers && i.scene == scenescript:
+			sceneexists = true
+		elif i.scene.has_method('getongoingdescription'):
+			textdict.repeats += '\n' + decoder(i.scene.getongoingdescription(i.givers, i.takers), i.givers, i.takers)
+		else:
+			textdict.repeats += '\n' + output(i.scene, i.scene.ongoing, i.givers, i.takers)
+	textdict.repeats = textdict.repeats.replace("[color=yellow]", '').replace('[color=aqua]', '').replace('[/color]','')
 	
 	for i in ongoingactions:
 		for member in i.givers:
@@ -595,8 +626,10 @@ func orgasm(member):
 					penistext = "[name2] feel[s/2] {^a wave of:an intense} {^pleasure:euphoria} {^run through:course through:building in} [his2] [penis2] and [his2]"
 				else:
 					penistext = "[name2] {^thrust:jerk}[s/2] [his2] hips forward and a {^thick :hot :}{^jet:load:batch} of"
-				if scene.scene.code == 'handjob':
-					penistext += " {^semen:seed:cum} {^sprays onto:shoots all over:covers} [names1] face[/s1] as [he2] ejaculate[s/2]."
+				if scene.scene.code in ['handjob','titjob']:
+					penistext += " {^sticky:white:hot} {^semen:seed:cum} {^sprays onto:shoots all over:covers} [names1] face[/s1] as [he2] ejaculate[s/2]."
+				elif scene.scene.code == 'tailjob':
+					penistext += " {^sticky:white:hot} {^semen:seed:cum} {^sprays onto:shoots all over:covers} [names1] tail[/s1] as [he2] ejaculate[s/2]."
 				elif scene.scene.giverpart == '':
 					penistext += " {^semen:seed:cum} {^pours onto:shoots onto:falls to} the {^ground:floor} as [he2] ejaculate[s/2]."
 				elif ['anus','vagina','mouth'].has(scene.scene.giverpart):
@@ -677,6 +710,7 @@ func endencounter():
 	var text = ''
 	for i in participants:
 		i.person.lewdness = i.lewd
+		i.person.lust = i.lust/10
 		text += i.person.dictionary("$name: Orgasms - ") + str(i.orgasms) 
 		if i.orgasms >= 1:
 			if i.person.stats.maf_cur*20 > rand_range(0,100) && i.person.getessence() != null:

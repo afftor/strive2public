@@ -14,7 +14,7 @@ humanfemale = ["Adelia","Adelina","Afton","Agueda","Aisha","Aja","Akiko","Albert
 }
 
 static func getRandomFurrySurname():
-	var furrysurnames1 = ['Black','White','Red','Dark','Frost','Fire','Wind','Ice','Forest','Shade','Moon','Iron','Shadow','Gold','Strong','Grim','River','Silver','Great']
+	var furrysurnames1 = ['Amber','Marble','Black','White','Red','Dark','Frost','Fire','Wind','Ice','Forest','Shade','Moon','Iron','Shadow','Gold','Strong','Grim','River','Silver','Great']
 	var furrysurnames2 = ['paw','mane','tail','fang','howl','bone','pelt','eyes','hunter','claw','growl']
 	return furrysurnames1[rand_range(0,furrysurnames1.size())] + furrysurnames2[rand_range(0,furrysurnames2.size())]
 

@@ -374,6 +374,8 @@ class progress:
 	var currentversion = 4480
 	var unstackables = {}
 	var supplykeep = 10
+	var foodbuy = 200
+	var supplybuy = false
 	var tutorial = {basics = false, slave = false, alchemy = false, jail = false, lab = false, farm = false, outside = false, combat = false}
 	var itemcounter = 0
 	var alisecloth = 'normal'
@@ -427,7 +429,7 @@ class progress:
 			for k in i.gear.values():
 				if !k in ['underwearplain','clothcommon'] && k != null && globals.state.unstackables[k].code == 'acctravelbag': maxweight += 20
 					
-		var dict = {currentweight = currentweight, maxweight = maxweight}
+		var dict = {currentweight = currentweight, maxweight = maxweight, overload = maxweight < currentweight}
 		return dict
 	
 	func reputation_set(value):

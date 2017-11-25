@@ -81,6 +81,9 @@ func buildbuttons(array, target = self):
 		counter += 1
 
 func _on_leave_pressed():
+	if globals.state.calculateweight().overload == true:
+		get_parent().infotext("[color=red]Your backpack is too heavy to leave[/color]")
+		return
 	gooutside()
 	get_parent().get_node("explorationnode").currentzone = get_parent().get_node("explorationnode").zones[globals.state.location]
 	get_parent().get_node("explorationnode").zoneenter(globals.state.location)
@@ -108,7 +111,7 @@ func playergrouppanel():
 		charpanel.set_meta("slave", slave)
 		charpanel.get_node("name").set_text(slave.name_short())
 		charpanel.get_node("stress").set_hidden(false)
-		charpanel.get_node("button").connect("pressed",self,'utilitypanel',[charpanel])
+		#charpanel.get_node("button").connect("pressed",self,'utilitypanel',[charpanel])
 		charpanel.get_node("stress").set_text("SR:" + str(round(slave.stress)))
 		charpanel.get_node("health").set_text('HP:' +str(round(slave.health)) + '/' + str(slave.stats.health_max))
 		charpanel.get_node("energy").set_text('EN:'+str(round(slave.energy)) + '/' + str(slave.stats.energy_max))
@@ -1740,11 +1743,11 @@ func caliqueststart(value = ''):
 	if globals.state.sidequests.cali == 0:
 		sprites = [['caliangry', 'pos1','opac']]
 	elif globals.state.sidequests.cali == 1:
-		sprites = [['caliangry2', 'pos1']]
+		sprites = [['caliangry', 'pos1']]
 	elif globals.state.sidequests.cali == 7:
 		sprites = [['calihappy', 'pos1']]
 	elif globals.state.sidequests.cali == 5:
-		sprites = [['calinangry2', 'pos1']]
+		sprites = [['calinangry1', 'pos1']]
 	else:
 		sprites = [['calineutral', 'pos1']]
 	main.dialogue(false, self, text, buttons, sprites)
@@ -2056,7 +2059,7 @@ func _on_details_pressed(empty = null):
 		newbutton.connect("pressed",self,'itembackpackselect', [item])
 	calculateweight()
 	
-	for i in ['heal','mindread','invigorate']:
+	for i in ['heal','mindread','invigorate','guidance']:
 		var spell = globals.spelldict[i]
 		if spell.learned == false:
 			continue
@@ -2091,6 +2094,8 @@ func selectpartymember(slave):
 			i.set_pressed(true)
 	if backpackselecteditem != null:
 		itembackpackselect(backpackselecteditem)
+	elif backpackselectedspell != null:
+		spellbackpackselect(backpackselectedspell)
 
 func itembackpackselect(item):
 	backpackselecteditem = item
@@ -2115,6 +2120,8 @@ func spellbackpackselect(spell):
 		get_node("playergroupdetails/Panel/usebutton").set_disabled(false)
 	else:
 		get_node("playergroupdetails/Panel/usebutton").set_disabled(true)
+	if spell.code == 'guidance':
+		get_node("playergroupdetails/Panel/usebutton").set_disabled(get_parent().exploration.inencounter)
 	var text ='[center]' + spell.name + '[/center]\n' + spell.description + '\n\nMana Cost: ' + str(spell.manacost)
 	get_node("playergroupdetails/Panel/itemdescript").set_bbcode(text)
 
@@ -2157,6 +2164,8 @@ func usespell(spell, slave):
 		get_tree().get_current_scene().get_node('spellnode').invigorateeffect()
 	elif spell.code == 'mindread' && slave != globals.player:
 		get_tree().get_current_scene().get_node('spellnode').mindreadeffect()
+	elif spell.code == 'guidance':
+		get_tree().get_current_scene().get_node('spellnode').guidanceeffect()
 	_on_details_pressed()
 	playergrouppanel()
 

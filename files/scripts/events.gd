@@ -638,15 +638,21 @@ func calibar():
 		buttons.append(['Pay 500 gold for information', 'calibar1', 1])
 	if !globals.state.sidequests.calibarsex in ['disliked','liked','agreed','forced','sebastianfinish']:
 		buttons.append(['Talk to Cali', 'calibar1', 2])
-	if globals.state.sidequests.calibarsex in ['disliked','liked','sebastianfinish'] && globals.resources.gold >= 100:
+	if globals.state.sidequests.calibarsex in ['disliked','liked','sebastianfinish'] && globals.resources.gold >= 100 && globals.state.sidequests.cali < 17:
 		buttons.append(['Pay 100 gold for information', 'calibar1', 3])
 	if globals.state.sidequests.calibarsex == 'sebastian':
 		buttons.append(["Show Jason Sebastian's note", 'calibar1', 9])
 	if globals.state.sidequests.calibarsex in ['agreed','forced']:
 		buttons.append(['Let him fuck Cali', 'calibar1',5])
+	if globals.state.sidequests.calibarsex in ['forced','disliked']:
+		sprite = [['calisad','pos1']]
 	if globals.state.sidequests.cali == 17:
-		sprite = [['calineutral','pos1']]
+		if globals.state.sidequests.calibarsex in ['forced','disliked']:
+			sprite = [['calisad','pos1']]
+		else:
+			sprite = [['calineutral','pos1']]
 		text = textnode.CaliBarLeave
+		globals.get_tree().get_current_scene().get_node("outside").backstreets()
 		globals.get_tree().get_current_scene().dialogue(true, self, text, buttons, sprite)
 		return
 	buttons.append(['Excuse yourself and leave', 'calibar1', 4])
@@ -660,7 +666,11 @@ func calibar1(value):
 			cali = i
 	var buttons = []
 	var text = ''
-	var sprite = [['calineutral','pos1']]
+	var sprite 
+	if globals.state.sidequests.calibarsex in ['forced','disliked']:
+		sprite = [['calisad','pos1']]
+	else:
+		sprite = [['calineutral','pos1']]
 	if value == 1:
 		globals.resources.gold -= 500
 		text = textnode.CaliBarPay500
@@ -701,6 +711,7 @@ func calibar1(value):
 			cali.vagvirgin = false
 			cali.add_trait('Fickle')
 		elif globals.state.sidequests.calibarsex == 'forced':
+			sprite = [['calisad','pos1']]
 			text = textnode.CaliBarFuckUnwilling
 			cali.metrics.sex += 1
 			cali.metrics.vag += 1
@@ -713,25 +724,26 @@ func calibar1(value):
 			cali.energy = -50
 			cali.vagvirgin = false
 			globals.state.sidequests.calibarsex = 'disliked'
-		globals.state.sidequests.cali = 16
+			globals.state.sidequests.cali = 16
 		buttons.append(['Continue','calibar'])
 	elif value == 6:
+		sprite = [['calisad','pos1']]
 		text = textnode.CaliBarForce
 		cali.loyal -= 30
 		cali.obed -= 30
 		globals.state.sidequests.calibarsex = 'forced'
 		buttons.append(['Return','calibar'])
 	elif value == 7:
-		if cali.lust > 50 && cali.sexuals.unlocked == true:
+		if cali.lewd >= 30 && cali.consent == true:
 			text = textnode.CaliBarPersuadeSuccess
 			globals.state.sidequests.calibarsex = 'agreed'
 			buttons.append(['Return','calibar'])
 		else:
 			text = textnode.CaliBarPersuadeFail
-			sprite = [['caliangry1','pos1']]
+			sprite = [['caliangry','pos1']]
 			globals.state.sidequests.calibarsex = 'reject'
-			cali.loyal -= 10
-			cali.obed -= 15
+			cali.loyal -= 15
+			cali.obed -= 25
 			buttons.append(['Return','calibar1', 2])
 	elif value == 8:
 		text = textnode.CaliBarDeny
@@ -916,7 +928,7 @@ func calislaver(choice):
 		text = textnode.CaliSlaversNoOffer
 		buttons.append(['Leave', 'calislaver',6])
 	elif choice == 3:
-		sprite = [['caliangry1','pos1']]
+		sprite = [['caliangry','pos1']]
 		text = textnode.CaliSlaverSell
 		for i in globals.slaves:
 			if i.unique == 'Cali':
@@ -998,7 +1010,7 @@ func calireturnhome():
 	var sprite
 	if globals.state.sidequests.caliparentsdead == true:
 		text = globals.player.dictionaryplayer(textnode.CaliBadEnd)
-		sprite = [['caliangry1','pos1','opac']]
+		sprite = [['calisad','pos1','opac']]
 		buttons.append(['Let her be','calireturnhome1',1])
 		buttons.append(['Comfort her','calireturnhome1',2])
 	else:

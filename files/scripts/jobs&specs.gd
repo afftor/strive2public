@@ -138,7 +138,7 @@ tags = ['sex', 'umbra'],
 code = 'storewimborn',
 name = "W - Market",
 type = 'social',
-description = "$name will attempt to sell excessive supplies (above 10) or will try to make some profit by speculating with cheap products. \n\n[color=yellow]Efficiency grows with Charm, Wit and Grade. [/color]",
+description = "$name will attempt to sell excessive supplies or will try to make some profit by speculating with cheap products. \n\n[color=yellow]Efficiency grows with Charm, Wit and Grade. [/color]",
 workline = "$name will be working at town's market.",
 reqs = 'true',
 unlockreqs = 'true',
@@ -289,7 +289,7 @@ code = 'geisha',
 descript = "A Geisha is an adept of love. They are trained to please both men and women, not only with sex but also in companionship. They are genuinely pleasant to have around as they try their best to feel what potential partner might want. ",
 descriptbonus = "+25% to escort and prostitution, no penalties for same-sex, opposite dominance or perverted actions",
 descriptreqs = "Charm 75+, Beauty 60+, grade Commoner or above, unlocked sex.",
-reqs = "slave.charm >= 75 && slave.beautybase >= 60 && !slave.origins in ['slave','poor'] && slave.sexuals.unlocked == true"
+reqs = "slave.charm >= 75 && slave.beautybase >= 60 && !slave.origins in ['slave','poor'] && slave.consent == true"
 },
 ranger = {
 name = "Ranger",
@@ -616,10 +616,10 @@ func cooking(slave):
 	var food = 0
 	slave.xp += globals.slaves.size()
 	if globals.resources.food < 200:
-		if globals.resources.gold >= 100:
-			text = '$name went to purchase groceries and bought 200 units of food.\n'
-			gold = -100
-			food = 200
+		if globals.resources.gold >= globals.state.foodbuy/2:
+			text = '$name went to purchase groceries and brought back new food supplies.\n'
+			gold = -globals.state.foodbuy/2
+			food = globals.state.foodbuy
 		else:
 			text = '$name complained about the lack of food and no money to supply kitchen on $his own.\n'
 	text += '$name spent $his time prepearing meals for everyone.\n'
@@ -780,7 +780,7 @@ func storewimborn(slave):
 	var text
 	var gold
 	var bonus = 1
-	var supplyprice = round(rand_range(3,5))
+	var supplyprice = round(rand_range(3,4))
 	var supplysold
 	text = "$name worked at the local market. "
 	gold = rand_range(1,5) + (slave.charm + slave.wit)/3
@@ -799,10 +799,22 @@ func storewimborn(slave):
 	supplysold = floor(gold/supplyprice)
 	if globals.itemdict.supply.amount-globals.state.supplykeep >= supplysold:
 		gold = supplysold*supplyprice
+		globals.itemdict.supply.amount -= supplysold
+	elif globals.state.supplybuy == true && globals.itemdict.supply.amount < globals.state.supplykeep:
+		gold = ((gold-supplysold*supplyprice)*0.5) + (supplysold*supplyprice)
+		var purchaseamount = globals.state.supplykeep - globals.itemdict.supply.amount
+		var counter = 0
+		supplysold = 0
+		while purchaseamount > 0 && gold >= 5:
+			counter += 1
+			gold -= 5
+			purchaseamount -= 1
+			globals.itemdict.supply.amount += 1
+		text += "With earned money $he purchased " + str(counter) + ' supply units. '
 	else:
 		supplysold = globals.itemdict.supply.amount - globals.state.supplykeep
 		gold = ((gold-supplysold*supplyprice)*0.5) + (supplysold*supplyprice)
-	globals.itemdict.supply.amount -= supplysold
+		globals.itemdict.supply.amount -= supplysold
 	if supplysold > 0:
 		text += "$He managed to sell [color=yellow]" + str(supplysold) + "[/color] units of supplies. "
 	slave.metrics.goldearn += gold
