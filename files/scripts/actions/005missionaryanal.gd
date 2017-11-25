@@ -61,11 +61,20 @@ const ongoing = ['b1','b2']
 
 const reaction = ['c1','c2','c3']
 
-var links = [code]
+var links = [code, "missionary", "doggy", "doggyanal"]
 
 const act_lines = {
 
 a1 = {
+
+	holeswap = {
+	conditions = {
+		link = ["missionary"],
+	},
+	lines = [
+		"[name1] {^pull:remove}[s/1] [his1] [penis1] from [names2] [pussy2]",
+		"[name1] {^slip:slide}[s/1] [himself1] out from [names2] [pussy2]",
+	]},
 	
 	repeat_nice = {
 	conditions = {
@@ -74,7 +83,7 @@ a1 = {
 	},
 	lines = [
 		"[name1] {^hold:lift}[s/1] [names2] legs{^ over [his2] head: apart}",
-		"[name1] {^hug:hold:embrace}[s/1] [name2]",
+		"[name1] {^hug:hold}[s/1] [name2] close to [him1]",
 	]},
 	
 	repeat_mean = {
@@ -85,6 +94,26 @@ a1 = {
 	lines = [
 		"[name1] {^roughly :}{^pull[s/1]:spread[s/1]:hold[s/1]} [names2] legs{^ over [his2] head: apart}",
 		"[name1] {^pin[s/1]:hold[s/1]} [name2] down",
+	]},
+	
+	doggy_nice = {
+	conditions = {
+		link = ["doggyanal", "doggy"],
+		consent = [true],
+	},
+	lines = [
+		"[name1] {^flip:roll:turn}[s/1] [name2] over {^onto [his2] back[/s2]:to face [him1]}",
+		"[name1] {^lift:guide:pull}[s/1] [name2] up off [his2] hands and knees and {^flip:roll:turn}[s/1] [him2] over",
+	]},
+	
+	doggy_mean = {
+	conditions = {
+		link = ["doggyanal", "doggy"],
+		consent = [false],
+	},
+	lines = [
+		"[name1] {^flip:roll:turn}[s/1] [name2] over {^onto [his2] back[/s2]:to face [him1]}",
+		"[name1] {^yank:jerk:pull}[s/1] [name2] up off [his2] hands and knees and {^flip:roll:turn}[s/1] [him2] over",
 	]},
 	
 	insert_nice = {
@@ -111,14 +140,34 @@ a1 = {
 
 a2 = {
 	
+	swap_nice = {
+	conditions = {
+		link = ["doggyanal"],
+		consent = [true],
+	},
+	lines = [
+		"{^ before continuing to:, beginning again to:, proceeding to once again} {^hammer into:pound:fuck} [his2] [anus2]. ",
+		"{^ before continuing to:, beginning again to:, proceeding to once again} {^pump:pound} [his1] [penis1] {^in and out of:down into:deep inside} [his2] [anus2]. ",
+	]},
+	
+	swap_mean = {
+	conditions = {
+		link = ["doggyanal"],
+		consent = [false],
+	},
+	lines = [
+		"{^ before continuing to:, beginning again to:, proceeding to once again} {^agressively :roughly :savagely :}{^hammer into:pound:fuck} [his2] [anus2]. ",
+		"{^ before continuing to:, beginning again to:, proceeding to once again} {^agressively :roughly :savagely :}{^pump:pound:slam} [his1] [penis1] {^in and out of:down into:deep inside} [his2] [anus2]. ",
+	]},
+	
 	repeat_nice = {
 	conditions = {
 		link = [code],
 		consent = [true],
 	},
 	lines = [
-		", continuing to {^hammer into:pound:fuck} [his2] [anus2]{^ from above:}. ",
-		", continuing to {^pump:pound} [his1] [penis1] {^in and out of:down into:deep inside} [his2] [anus2]. ",
+		"{^,: while:, all the while} continuing to {^hammer into:pound:fuck} [his2] [anus2]{^ from above:}. ",
+		"{^,: while:, all the while} continuing to {^pump:pound} [his1] [penis1] {^in and out of:down into:deep inside} [his2] [anus2]. ",
 	]},
 	
 	repeat_mean = {
@@ -127,41 +176,42 @@ a2 = {
 		consent = [false],
 	},
 	lines = [
-		", continuing to {^agressively :roughly :savagely :}{^hammer into:pound:fuck} [his2] [anus2]{^ from above:}. ",
-		", continuing to {^agressively :roughly :savagely :}{^pump:pound:slam} [his1] [penis1] {^in and out of:down into:deep inside} [his2] [anus2]. ",
+		"{^,: while:, all the while} continuing to {^agressively :roughly :savagely :}{^hammer into:pound:fuck} [his2] [anus2]{^ from above:}. ",
+		"{^,: while:, all the while} continuing to {^agressively :roughly :savagely :}{^pump:pound:slam} [his1] [penis1] {^in and out of:down into:deep inside} [his2] [anus2]. ",
 	]},
 	
-	insert_nice = {
+	insert = {
 	conditions = {
-		link = [null],
-		consent = [true],
+		link = [null, "missionary", "doggy"],
 	},
 	lines = [
-		", {^spreading:parting} [his2] thighs to expose [his2] [anus2]. ",
+		", {^spreading:parting:pulling apart:holding apart} [his2] thighs to expose [his2] [anus2]. ",
 		", {^aligning:lining up} [his1] [penis1] with the {^enterance:mouth} of [his2] [anus2]. ",
-	]},
-	
-	insert_mean = {
-	conditions = {
-		link = [null],
-		consent = [false],
-	},
-	lines = [
-		", {^pulling:holding} apart [his2] thighs to expose [his2] [anus2]. ",
-		", {^probing:pressing} [his1] [penis1] into the {^enterance:mouth} of [his2] [anus2]. ",
+		", {^probing:pressing} {^the tip of :}[his1] [penis1] into the {^enterance:mouth} of [his2] [anus2]. ",
 	]},
 	
 },
 
 b1 = {
 	
-	virgin = {
+	virgin_nice = {
 	conditions = {
 		virgin = [true],
+		consent = [true],
 	},
 	lines = [
-		"[names2] {^rear enterance:backside} {^stretch[es/#2] to make room:widen[s/#2] to a new shape:offer[s/#2] some resistance} as [name1]",
+		"[names2] {^ass:butt}hole {^stretch[es/#2] to make room:widen[s/#2] to a new shape:offer[s/#2] some resistance} as [name1]",
 		"[name2] {^brace[s/2] [himself2]:steels [his2] resolve:stare[s/2] down with wide eyes} as [name1]",
+	]},
+	
+	virgin_mean = {
+	conditions = {
+		virgin = [true],
+		consent = [false],
+	},
+	lines = [
+		"[names2] {^ass:butt}hole {^stretch[es/#2]:permanently widen[s/#2]:offer[s/#2] resistance} as [name1]",
+		"[name2] {^brace[s/2] [himself2]:reels with shock:stare[s/2] down with horror} as [name1]",
 	]},
 	
 	nice = {
@@ -170,8 +220,8 @@ b1 = {
 		consent = [true],
 	},
 	lines = [
-		"[names2] sphincter {^envelop[s/#2]:wrap[s/#2] around:spread[s/#2] apart for} [names1] [penis1] as [he1]",
-		"[name2] {^hold[s/2] onto:hug[s/2]:wrap[s/2] [his2] legs around} [name1] as [he1]",
+		"[name2] {^spread[s/2]:part[s/2]} [his2] thighs for [name1] as [he1]",
+		"[name2] {^hold[s/2] onto:throw[s/2] [his2] arms around:wrap[s/2] [his2] legs around} [name1] as [he1]",
 	]},
 	
 	mean = {
@@ -180,8 +230,15 @@ b1 = {
 		consent = [false],
 	},
 	lines = [
-		"[names2] sphincter {^envelop[s/#2]:wrap[s/#2] around:spread[s/#2] apart for [names1] [penis1] as [he1]",
-		"[name2] {^struggle[s/2] against:push[es/2] against} [name1] as [he1]",
+		"[name2] {^helplessly :fruitlessly :}struggle[s/2] against [name1] as [he1]",
+		"[name2] {^helplessly :fruitlessly :}tr[ies/y2] to {^push:move} away as [name1]",
+	]},
+	
+	default = {
+	conditions = {
+	},
+	lines = [
+		"[names2] {^ass:butt}hole {^envelop[s/#2]:wrap[s/#2] around:spread[s/#2] apart for:tug[s/#2] at} [names1] [penis1] as [he1]",
 	]},
 	
 },
@@ -200,7 +257,7 @@ b2 = {
 	repeat = {
 	conditions = {
 		virgin = [false],
-		link = [code],
+		link = [code, "doggyanal"],
 	},
 	lines = [
 		" {^slide[s/1]:push[es/1]} [himself1] in and out of [partners2] {^[body2]:[anus2]}. ",
@@ -210,7 +267,7 @@ b2 = {
 	insert = {
 	conditions = {
 		virgin = [false],
-		link = [null],
+		link = [null, "missionary", "doggy"],
 	},
 	lines = [
 		" {^slide[s/1]:push[es/1]} [himself1] {^down:deep} {^into:inside} [partners2] {^[body2]:[anus2]}. ",
@@ -409,6 +466,7 @@ c3 = {
 	conditions = {
 	},
 	lines = [
+		" as [name1] {^screw:plow:fuck}[s/1] [partner2].",
 		" as [names1] [penis1] {^fillls:slides in and out of:plows} [his2] [anus2].",
 		" as [names1] [penis1] {^massages:scrapes against:rubs against} the walls of [his2] [anus2].",
 		" as [his2] [anus2] get[s/2] {^stretched:churned:massaged} by [names1] [penis1].",
