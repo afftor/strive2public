@@ -75,7 +75,8 @@ wimborn = load("res://files/backgrounds/town.png"),
 mageorder = load("res://files/backgrounds/mageorder.png"),
 slaverguild = load("res://files/backgrounds/slaveguild.png"),
 market = load("res://files/backgrounds/market.jpg"),
-library = load("res://files/backgrounds/library.jpg"),
+library1 = load("res://files/backgrounds/library1.png"),
+library2 = load("res://files/backgrounds/library2.png"),
 forest = load("res://files/backgrounds/forest.jpg"),
 shaliq = load("res://files/backgrounds/shaliq.jpg"),
 crossroads = load("res://files/backgrounds/crossroads.png"),
@@ -374,6 +375,8 @@ class progress:
 	var currentversion = 4480
 	var unstackables = {}
 	var supplykeep = 10
+	var foodbuy = 200
+	var supplybuy = false
 	var tutorial = {basics = false, slave = false, alchemy = false, jail = false, lab = false, farm = false, outside = false, combat = false}
 	var itemcounter = 0
 	var alisecloth = 'normal'
@@ -427,7 +430,7 @@ class progress:
 			for k in i.gear.values():
 				if !k in ['underwearplain','clothcommon'] && k != null && globals.state.unstackables[k].code == 'acctravelbag': maxweight += 20
 					
-		var dict = {currentweight = currentweight, maxweight = maxweight}
+		var dict = {currentweight = currentweight, maxweight = maxweight, overload = maxweight < currentweight}
 		return dict
 	
 	func reputation_set(value):
@@ -1065,7 +1068,7 @@ class slave:
 	func status():
 		return globals.description.getstatus(self)
 	
-	func countluxuty():
+	func countluxury():
 		var luxury = 0
 		var goldspent = 0
 		var foodspent = 0

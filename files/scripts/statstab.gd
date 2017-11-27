@@ -256,12 +256,12 @@ func _on_talk_pressed(mode = 'talk'):
 					text = text + "— I actually would love to fuck right now. \n"
 				elif slave.lust >= 60 && slave.consent == true:
 					text = text + "— Uhm... would you like to give me some private attention? — $name gives you a deep lusting look. \n"
-			if slave.xp >= 100 && slave.levelupreqs.has('code') == false:
-				buttons.append({text = slave.dictionary("Investigate $name's potential"), function = 'levelreqs'})
-			elif slave.levelupreqs.has('code'):
-				text += "\n\n[color=yellow]Your investigation shown, that " + slave.dictionary(slave.levelupreqs.speech) + '[/color]'
-				if slave.levelupreqs.activate == 'fromtalk':
-					buttons.append({text = slave.levelupreqs.button, function = 'levelup', args = slave.levelupreqs.effect})
+		if slave.xp >= 100 && slave.levelupreqs.has('code') == false:
+			buttons.append({text = slave.dictionary("Investigate $name's potential"), function = 'levelreqs'})
+		elif slave.levelupreqs.has('code'):
+			text += "\n\n[color=yellow]Your investigation shown, that " + slave.dictionary(slave.levelupreqs.speech) + '[/color]'
+			if slave.levelupreqs.activate == 'fromtalk':
+				buttons.append({text = slave.levelupreqs.button, function = 'levelup', args = slave.levelupreqs.effect})
 		if slave.sleep != 'jail':
 			buttons.append({text = slave.dictionary("Praise $name"), function = '_on_talk_pressed', args = 'praise'})
 		buttons.append({text = slave.dictionary("Punish $name"), function = '_on_talk_pressed', args = 'punish'})

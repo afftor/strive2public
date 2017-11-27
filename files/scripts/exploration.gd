@@ -4,6 +4,7 @@ extends Node
 var progress = 0.0
 var enemygroup
 var defeated = {}
+var inencounter = false
 var currentzone
 var lastzone
 var awareness = 0
@@ -449,6 +450,7 @@ func zoneenter(zone):
 		deeperregion = false
 		outside.buildbuttons(array, self)
 	else:
+		inencounter = false
 		array.append({name = "Proceed through area", function = 'enemyencounter'})
 		if globals.developmode == true:
 			array.append({name = "Skip", function = 'areaskip'})
@@ -503,32 +505,6 @@ func frostfordclearing():
 	event('frostforddryad')
 
 
-#func healeveryone(args = null):
-#	var slave
-#	var manaused = 0
-#	if globals.player.health < globals.player.stats.health_max:
-#		globals.player.stats.health_cur = globals.player.stats.health_max
-#		manaused += 10
-#	for i in globals.state.playergroup:
-#		slave = globals.state.findslave(i)
-#		if slave.stats.health_cur < slave.stats.health_max:
-#			slave.stats.health_cur = slave.stats.health_max
-#			manaused += 5
-#	manaused = min(manaused, globals.resources.mana)
-#	globals.resources.mana -= manaused
-#	if manaused > 0:
-#		main.popup("You've patched up everyone by using " + str(manaused) +  " mana. ")
-#	else:
-#		main.popup("Nobody has injuries in your party. ")
-#	outside.playergrouppanel()
-#
-#func castinvig(args = null):
-#	main.selectslavelist(false, 'castinvigtarget', self, 'true', false, true)
-#
-#func castinvigtarget(slave):
-#	get_tree().get_current_scene().get_node('spellnode').slave = slave
-#	get_tree().get_current_scene().get_node('spellnode').invigorateeffect()
-#	zoneenter(currentzone.code)
 
 func areaskip():
 	progress = currentzone.length
@@ -543,6 +519,7 @@ func enemyencounter():
 	var text = ''
 	var enemyawareness
 	enemygroup = {}
+	inencounter = true
 	outside.clearbuttons()
 	if globals.state.playergroup.size() > 0:
 		for i in globals.state.playergroup:
@@ -1217,7 +1194,7 @@ func _on_confirmwinning_pressed(secondary = false): #0 leave, 1 capture, 2 rape,
 			elif slave.sexuals.unlocked == true:
 				if slave.lust >= 50 && slave.dom >= 40:
 					slave.sexuals.affection += round(rand_range(2,4))
-					slave.dom = rand_range(6,12)
+					slave.dom += rand_range(6,12)
 					text += slave.dictionary('\n$name, overwhelemed by situation, joins you and pleasures $himself with one of the captives. ')
 				else:
 					text += slave.dictionary("\n$name does not appear to be very interested in ongoing action and just waits patiently.")

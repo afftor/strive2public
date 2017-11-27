@@ -23,6 +23,7 @@ func decoder(text, tempgivers = null, temptakers = null):
 	#dictionary of replacements
 	var replacements = {
 		#state verbs
+		'[their]' : 'your' if givers[0].person == globals.player || takers[0].person == globals.player else 'their',
 		'[is1]' : 'are' if givers.size() >= 2 or givers[0].person == globals.player else 'is',
 		'[is2]' : 'are' if takers.size() >= 2 or takers[0].person == globals.player else 'is',
 		'[has1]' : 'have' if givers.size() >= 2 or givers[0].person == globals.player else 'has',
@@ -313,10 +314,10 @@ const racenames = {
 		pluralpos = "goblins'"
 	},
 	Fairy = {
-		single = "gnome",
-		plural = "gnomes",
-		singlepos = "gnome's",
-		pluralpos = "gnomes'"
+		single = "fairy",
+		plural = "fairies",
+		singlepos = "fairy's",
+		pluralpos = "fairies'"
 	},
 	Seraph = {
 		single = "seraph",

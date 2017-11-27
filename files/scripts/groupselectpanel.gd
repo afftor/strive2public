@@ -42,7 +42,7 @@ func calculateweight():
 	var weight = globals.state.calculateweight()
 	get_node("grouppanel/weightmeter/Label").set_text("Weight: " + str(weight.currentweight) + '/' + str(weight.maxweight))
 	get_node("grouppanel/weightmeter").set_val((weight.currentweight*10/max(weight.maxweight,1)*10))
-	if weight.currentweight > weight.maxweight:
+	if weight.overload == true:
 		get_node("grouppanel/closegroup").set_tooltip("Reduce carry weight before proceeding")
 		get_node("grouppanel/closegroup").set_disabled(true)
 	else:
@@ -156,9 +156,6 @@ func moveitemtoinventory(button):
 	itemtooltiphide()
 
 func itemtooltip(item):
-#	var text = '[center]'+item.name + '[/center]\n' +item.description 
-#	if item.has('weight'):
-#		text += "\n\nWeight: [color=yellow]" + str(item.weight)+"[/color]"
 	globals.showtooltip(globals.itemdescription(item))
 
 func itemtooltiphide():

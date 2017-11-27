@@ -282,7 +282,7 @@ func _on_confirmbutton_pressed():
 	sexinitiate()
 
 var nakedspritesdict = {
-	Cali = {cons = 'calinakedhappy', rape = 'calinakedangry', clothcons = 'calineutral', clothrape = 'caliangry2'},
+	Cali = {cons = 'calinakedhappy', rape = 'calinakedsad', clothcons = 'calineutral', clothrape = 'calisad'},
 	Tisha = {cons = 'tishanakedhappy', rape = 'tishanakedneutral', clothcons = 'tishahappy', clothrape = 'tishaneutral'},
 	Emily = {cons = 'emilynakedhappy', rape = 'emilynakedneutral', clothcons = 'emily2happy', clothrape = 'emily2worried'},
 	Chloe = {cons = 'chloenakedhappy', rape = 'chloenakedneutral', clothcons = 'chloehappy2', clothrape = 'chloeneutral2'},
@@ -824,7 +824,7 @@ func _on_piercing_pressed():
 		if i != get_node("piercingpanel/ScrollContainer/VBoxContainer/piercingline"):
 			i.set_hidden(true)
 			i.queue_free()
-	if slave.lewd >= 100:
+	if slave.lewd >= 20:
 		get_node("piercingpanel/piercestate").set_text(slave.dictionary('$name does not seems to mind you piercing $his private places.'))
 	else:
 		get_node("piercingpanel/piercestate").set_text(slave.dictionary('$name refuses to let you pierce $his private places'))

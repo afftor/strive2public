@@ -405,7 +405,7 @@ func clearpanels():
 
 func choosecharacter(combatant):
 	var newbutton
-	if combatant.state in ['chasing','stunned']:
+	if combatant.state == 'chasing' || (combatant.state == 'stunned' && selectmode == null):
 		get_node("warning").set_text(combatant.name + " can't act this turn: " + combatant.state.capitalize() + '. ')
 		get_node("warning").set_opacity(1)
 		get_node("grouppanel/groupline").get_child(playergroup.find(combatant)+1).set_pressed(false)

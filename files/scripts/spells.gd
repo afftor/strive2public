@@ -13,8 +13,6 @@ func spellsynchronize():
 			globals.spelldict[i].learned = true
 			print('spellsynchroned')
 
-
-
 var spelllist = {
 mindread = {
 	code = 'mindread',
@@ -200,8 +198,21 @@ summontentacle = {
 	combat = false,
 	learned = false,
 	type = 'utility',
-	}
-	}
+	},
+guidance = {
+	code = 'guidance',
+	name = 'Guidance',
+	description = "An utility spell which helps to find shortest and safest paths among the wilds. \nEffect grows with Magic Affinity. \n[color=yellow]Effect reduced in enclosed spaces[/color] ",
+	effect = 'guidanceeffect',
+	manacost = 8,
+	req = 2,
+	price = 250,
+	personal = false,
+	combat = false,
+	learned = false,
+	type = 'utility',
+	},
+}
 
 func mindreadeffect():
 	var spell = globals.spelldict.mindread
@@ -349,6 +360,18 @@ func dominationeffect():
 				slave.effects.captured.duration -= 3+(1*globals.player.smaf)
 	main.popup(slave.dictionary(text))
 	main.rebuild_slave_list()
+
+func guidanceeffect():
+	var spell = globals.spelldict.guidance
+	globals.resources.mana -= spell.manacost
+	var text = 'You cast guidance and move forward through the area avoiding any unnecessary encounters. '
+	
+	if main.exploration.currentzone.tags.has("noreturn"):
+		main.exploration.progress += round((2 + globals.player.smaf*.15)/2)
+	else:
+		main.exploration.progress += round(2 + globals.player.smaf*1.5)
+	main.exploration.zoneenter(main.exploration.currentzone.code)
+	main.popup(text)
 
 func tentacleeffect():
 	main.popup('This spell is WIP, Sorry.')
