@@ -75,7 +75,8 @@ wimborn = load("res://files/backgrounds/town.png"),
 mageorder = load("res://files/backgrounds/mageorder.png"),
 slaverguild = load("res://files/backgrounds/slaveguild.png"),
 market = load("res://files/backgrounds/market.jpg"),
-library = load("res://files/backgrounds/library.jpg"),
+library1 = load("res://files/backgrounds/library1.png"),
+library2 = load("res://files/backgrounds/library2.png"),
 forest = load("res://files/backgrounds/forest.jpg"),
 shaliq = load("res://files/backgrounds/shaliq.jpg"),
 crossroads = load("res://files/backgrounds/crossroads.png"),
@@ -1067,7 +1068,7 @@ class slave:
 	func status():
 		return globals.description.getstatus(self)
 	
-	func countluxuty():
+	func countluxury():
 		var luxury = 0
 		var goldspent = 0
 		var foodspent = 0

@@ -760,7 +760,7 @@ func fucktoy(slave):
 	if slave.effects.has('captured'):
 		slave.effects.captured.duration -= 3
 	slave.obed += 20
-	slave.dom -= rand_range(4,8)
+	slave.asser -= rand_range(4,8)
 	text += "By the end of the day $he earned [color=yellow]" + str(gold) + "[/color] gold.\n"
 	var dict = {text = text, gold = gold}
 	return dict
@@ -829,7 +829,7 @@ func assistwimborn(slave):
 	var text
 	var gold
 	text = "$name worked at the Mage's Order.\n"
-	gold = rand_range(1,5) + slave.stats.maf_cur*7 + slave.wit/1.4 + min(globals.state.reputation.wimborn/1.5,50)
+	gold = rand_range(1,5) + slave.smaf*15 + slave.wit/4 + min(globals.state.reputation.wimborn/1.5,50)
 	gold = round(gold)
 	slave.metrics.goldearn += gold
 	slave.xp += gold/5

@@ -1064,7 +1064,7 @@ func youthingpot():
 			if rand_range(1,10) > 5 && slave.titssize != 'flat':
 				slave.titssize = globals.sizearray[globals.sizearray.find(slave.titssize)-1]
 				text = text + "$name's tits shrink in size. "
-		if slave.penis.number > 0:
+		if slave.penis != 'none':
 			if rand_range(1,10) > 5 && slave.penis != 'small':
 				slave.penis = globals.genitaliaarray[globals.genitaliaarray.find(slave.penis)-1]
 				text = text + "$name's cock shrinks in size. "
@@ -1167,7 +1167,7 @@ func minoruseffect():
 		buttons.append(['Butt','applybutt'])
 	if slave.titssize != 'flat' && slave.titssize != 'masculine':
 		buttons.append(['Breasts','applytits'])
-	if slave.penis.size != 'small' && slave.penis.number > 0:
+	if !slave.penis in ['none','small']:
 		buttons.append(['Penis','applypenis'])
 	if slave.balls != 'none' && slave.balls != 'small':
 		buttons.append(['Testicles','applytestic'])
@@ -1227,7 +1227,7 @@ func applytits():
 	var text = ''
 	main.close_dialogue()
 	if currentpotion.code == 'minoruspot':
-		slave.titssize = globals.sizearray[globals.sizearray.find(slave.tit.size)-1]
+		slave.titssize = globals.sizearray[globals.sizearray.find(slave.titssize)-1]
 		if slave == globals.player:
 			text = slave.dictionary("You apply the Minorus Potion to your breasts. A little while later, you notice that they have shrunken in size. ")
 		else:
@@ -1249,13 +1249,13 @@ func applypenis():
 	var text = ''
 	main.close_dialogue()
 	if currentpotion.code == 'minoruspot':
-		slave.penis.size = globals.genitaliaarray[globals.genitaliaarray.find(slave.penis.size)-1]
+		slave.penis = globals.genitaliaarray[globals.genitaliaarray.find(slave.penis)-1]
 		if slave == globals.player:
 			text = slave.dictionary("You apply the Minorus Potion to your penis. A little while later, you notice that it has shrunken in size. ")
 		else:
 			text = slave.dictionary("You apply the Minorus Potion to $name's penis. A little while later, you notice that it has shrunken in size. ")
 	elif currentpotion.code == 'majoruspot':
-		slave.penis.size = globals.genitaliaarray[globals.genitaliaarray.find(slave.penis.size)+1]
+		slave.penis = globals.genitaliaarray[globals.genitaliaarray.find(slave.penis)+1]
 		if slave == globals.player:
 			text = slave.dictionary("You apply the Majorus Potion to your penis. A little while later, you notice that it has grown bigger. ")
 		else:

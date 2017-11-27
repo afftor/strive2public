@@ -230,6 +230,7 @@ margin/bottom = 31.0
 
 [node name="Panel" type="Panel" parent="Panel"]
 
+anchor/top = 3
 anchor/right = 1
 anchor/bottom = 1
 focus/ignore_mouse = false
@@ -237,13 +238,14 @@ focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
 margin/left = 1.0
-margin/top = 269.0
+margin/top = 5.5
 margin/right = 0.0
 margin/bottom = 88.0
 custom_styles/panel = SubResource( 1 )
 
 [node name="sceneeffects" type="RichTextLabel" parent="Panel"]
 
+anchor/top = 3
 anchor/right = 1
 anchor/bottom = 1
 focus/ignore_mouse = false
@@ -251,7 +253,7 @@ focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
 margin/left = 15.0
-margin/top = 284.0
+margin/top = -9.5
 margin/right = 525.0
 margin/bottom = 109.0
 bbcode/enabled = true
@@ -262,6 +264,7 @@ visible_characters = -1
 [node name="VSeparator" type="VSeparator" parent="Panel"]
 
 anchor/left = 1
+anchor/top = 3
 anchor/right = 1
 anchor/bottom = 1
 focus/ignore_mouse = false
@@ -269,13 +272,14 @@ focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
 margin/left = 538.0
-margin/top = 277.0
+margin/top = -2.5
 margin/right = 498.0
 margin/bottom = 96.0
 
 [node name="sceneeffects1" type="RichTextLabel" parent="Panel"]
 
 anchor/left = 1
+anchor/top = 3
 anchor/right = 1
 anchor/bottom = 1
 focus/ignore_mouse = false
@@ -283,7 +287,7 @@ focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
 margin/left = 507.0
-margin/top = 284.0
+margin/top = -9.5
 margin/right = 14.0
 margin/bottom = 111.0
 bbcode/enabled = true

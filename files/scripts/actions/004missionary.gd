@@ -12,12 +12,23 @@ const takerpart = 'vagina'
 const virginloss = true
 
 func requirements():
-    var valid = true
-    if takers.size() != 1 || givers.size() != 1:
-        valid = false
-    elif (!givers[0].penis in [takers[0].vagina, takers[0].anus] && (takers[0].vagina != null || givers[0].penis != null)) || takers[0].person.vagina == 'none':
-        valid = false
-    return valid
+	var valid = true
+	if takers.size() != 1 || givers.size() != 1:
+		valid = false
+	elif givers.size() + takers.size() == 2 && (!givers[0].penis in [takers[0].vagina, takers[0].anus] ):
+		valid = false
+	for i in givers:
+		if i.person.penis == 'none' && i.strapon == null:
+			valid = false
+		elif i.penis != null && givers.size() > 1:
+			valid = false
+	for i in takers:
+		if i.person.vagina == 'none':
+			valid = false
+		elif i.vagina != null && takers.size() > 1:
+			valid = false
+	
+	return valid
 
 func getname(state = null):
 	return "Missionary"

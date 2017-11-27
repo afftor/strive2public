@@ -116,7 +116,7 @@ func upgradeselected(upgrade):
 		else:
 			cost = upgrade.cost[currentupgradelevel]
 		purchaseupgrade.set_meta('cost', cost)
-		text += "\n\nPrice: [color=yellow]" + str(cost) + '[/color]'
+		text += "\n\nPrice: [color=yellow]" + str(cost) + ' gold[/color]'
 		text += "\n\nRequired Upgrade Points: " + str(upgrade.pointscost)
 		if globals.resources.gold < cost || globals.resources.upgradepoints < upgrade.pointscost:
 			canpurchase = false

@@ -23,13 +23,6 @@ func requirements():
 	var valid = true
 	if takers.size() != 1 || givers.size() != 1:
 		valid = false
-	else:
-		for i in givers:
-			if i.anus != null:
-				valid = false
-		for i in takers:
-			if i.anus != null:
-				valid = false
 	return valid
 
 func givereffect(member):

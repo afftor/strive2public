@@ -72,6 +72,7 @@ class member:
 	var mouth
 	var anus
 	var tail
+	var strapon
 	var mode = 'normal'
 	var consent = true
 	
@@ -247,7 +248,7 @@ func rebuildparticipantslist():
 	var takercheck = false
 	
 	for scene in ongoingactions:
-		if scene.scene.code in ['doubledildo','doubledildoass']:
+		if scene.scene.code in ['doubledildo','doubledildoass','tribadism','frottage']:
 			for i in givers:
 				if scene.givers.has(i) || scene.takers.has(i):
 					givercheck = true
@@ -266,7 +267,7 @@ func rebuildparticipantslist():
 		i.takers = takers
 		if i.requirements() == false:
 			continue
-		elif doubledildo == true && i.category in ['caress','fucking'] && !i.code in ['doubledildo','doubledildoass']:
+		elif doubledildo == true && i.category in ['caress','fucking'] && !i.code in ['doubledildo','doubledildoass','tribadism','frottage']:
 			continue
 		newnode = get_node("Panel/GridContainer/GridContainer/Button").duplicate()
 		get_node("Panel/GridContainer/GridContainer").add_child(newnode)
@@ -327,10 +328,12 @@ func startscene(scenescript, cont = false):
 	scenescript.givers = givers
 	scenescript.takers = takers
 	
-	if scenescript.code in ['doubledildo','doubledildoass']:
+	if scenescript.code in ['doubledildo','doubledildoass','tribadism']:
 		for i in ongoingactions:
 			if i.scene.category == 'fucking' && (i.givers.has(givers[0]) || i.takers.has(givers[0]) || i.givers.has(takers[0]) || i.takers.has(takers[0])):
 				stopongoingaction(i)
+	if scenescript.code == 'strapon':
+		cont = true
 	
 	#temporary support for scenes converted to centralized output and those not
 	#should be unified in the future
@@ -403,12 +406,14 @@ func startscene(scenescript, cont = false):
 	textdict.repeats = textdict.repeats.replace("[color=yellow]", '').replace('[color=aqua]', '').replace('[/color]','')
 	
 	for i in ongoingactions:
-		for member in i.givers:
-			effects = i.scene.givereffect(member)
-			member.actioneffect(effects[0], effects[1])
-		for member in i.takers:
-			effects = i.scene.takereffect(member)
-			member.actioneffect(effects[0], effects[1])
+		if i.scene.has_method("givereffect"):
+			for member in i.givers:
+				effects = i.scene.givereffect(member)
+				member.actioneffect(effects[0], effects[1])
+		if i.scene.has_method("takereffect"):
+			for member in i.takers:
+				effects = i.scene.takereffect(member)
+				member.actioneffect(effects[0], effects[1])
 	
 	
 	for i in participants:

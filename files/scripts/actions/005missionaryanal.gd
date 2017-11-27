@@ -15,8 +15,17 @@ func requirements():
 	var valid = true
 	if takers.size() != 1 || givers.size() != 1:
 		valid = false
-	elif !givers[0].penis in [takers[0].vagina, takers[0].anus] && (takers[0].anus != null || givers[0].penis != null || givers[0].person.penis == 'none'):
+	elif givers.size() + takers.size() == 2 && (!givers[0].penis in [takers[0].vagina, takers[0].anus] ):
 		valid = false
+	for i in givers:
+		if i.person.penis == 'none' && i.strapon == null:
+			valid = false
+		elif i.penis != null && givers.size() > 1:
+			valid = false
+	for i in takers:
+		if i.anus != null && takers.size() > 1:
+			valid = false
+	
 	return valid
 
 

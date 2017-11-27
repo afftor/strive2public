@@ -193,6 +193,7 @@ func _on_new_slave_button_pressed():
 	globals.state.mansionupgrades.mansionalchemy = 1
 	globals.state.mansionupgrades.mansionparlor = 1
 	globals.state.backpack.stackables.bandage = 1
+	globals.state.condition -= 100
 	#lobals.state.upcomingevents.append({code = 'tishaappearance',duration =1})
 	for i in globals.characters.characters:
 		slave = globals.characters.create(i)
@@ -705,7 +706,7 @@ func _on_end_pressed():
 					slave.stress += rand_range(15,20)
 			if slave.away.duration == 0 && !slave.sleep in ['jail','farm']:
 				var slaveluxury = slave.calculateluxury()
-				var luxurycheck = slave.countluxuty()
+				var luxurycheck = slave.countluxury()
 				var luxury = luxurycheck.luxury
 				gold_consumption += luxurycheck.goldspent
 				if luxurycheck.nosupply == true:
@@ -1336,7 +1337,6 @@ func hide_everything():
 	globals.hidetooltip()
 	#rebuild_slave_list()
 
-var backgrounddict = globals.backgrounds
 
 
 func background_set(text):
@@ -1344,7 +1344,7 @@ func background_set(text):
 	if player.is_playing() == true:
 		return
 	if OS.get_name() != "HTML5" && globals.rules.fadinganimation == true:
-		if get_node("TextureFrame").get_texture() == backgrounddict[text]:
+		if get_node("TextureFrame").get_texture() == globals.backgrounds[text]:
 			player.play("wait")
 			yield(player, 'finished')
 			emit_signal('animfinished')
@@ -1352,7 +1352,7 @@ func background_set(text):
 		player.play("fadetoblack")
 		yield(player, "finished")
 		emit_signal('animfinished')
-	texture = backgrounddict[text]
+	texture = globals.backgrounds[text]
 	get_node("TextureFrame").set_texture(texture)
 	if OS.get_name() != "HTML5" && globals.rules.fadinganimation == true:
 		player.play("removeblack")
@@ -1704,7 +1704,10 @@ func chloealchemy():
 var loredict = globals.dictionary.loredict
 
 func _on_library_pressed():
-	background_set('library')
+	if globals.state.mansionupgrades.mansionlibrary == 0:
+		background_set('library1')
+	else:
+		background_set('library2')
 	if OS.get_name() != "HTML5" && globals.rules.fadinganimation == true:
 		yield(self, 'animfinished')
 	hide_everything()
@@ -2675,11 +2678,10 @@ func checkplayergroup():
 
 
 
-func _on_cleaningbutton_pressed():
+func _on_cleanbutton_pressed():
 	globals.state.condition = 100
 	globals.resources.gold -= min(ceil(globals.resources.day/7.0)*10,100)
-	get_node("MainScreen/mansion/cleandialog").set_hidden(true)
-	_on_mansion_pressed()
+	_on_mansionsettings_pressed()
 
 
 

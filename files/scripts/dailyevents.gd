@@ -218,7 +218,7 @@ func forestfind(stage = 0):
 	if stage == 0:
 		slave2 = globals.newslave(globals.wimbornraces[rand_range(0,globals.wimbornraces.size())], age[rand_range(0, age.size())], 'random', origins[rand_range(0, origins.size())])
 		showntext = slave.dictionary(eventstext[currentevent][stage])
-		showntext += slave2.description_small() + " What would you like to do with $him?"
+		showntext += slave2.descriptionsmall() + " What would you like to do with $him?"
 		tempbuttons = [[slave2.dictionary('Imprison the $child'), 1], [slave2.dictionary('Return $him to town (-25 energy)'),2], [slave2.dictionary("Don't bother with $him"), 3]]
 	if stage == 1:
 		showntext = slave2.dictionary(eventstext[currentevent][stage])
