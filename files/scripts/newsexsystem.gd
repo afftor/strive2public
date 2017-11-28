@@ -446,9 +446,13 @@ func startscene(scenescript, cont = false):
 func startscenecontinue(scenescript):
 	startscene(scenescript, true)
 
+
+var sexdict = load("res://files/scripts/newsexdictionary.gd").new()
+
 #centralized output processing
 #category currently assumed to be 'fucking', will expland with further conversions
 func output(scenescript, valid_lines, givers, takers):
+	var shared_lines = sexdict.shared_lines
 	var giverpart = scenescript.giverpart
 	var takerpart = scenescript.takerpart
 	var act_lines = scenescript.act_lines
@@ -461,14 +465,34 @@ func output(scenescript, valid_lines, givers, takers):
 	var virginsource = null
 	#checks
 	var checks = {
+		link = null,
 		consent = true,
 		virgin = true,
-		link = null,
 		arousal = 1,
 		lube = 1,
 		lust = 1,
 	}
 	
+	#link with ongoingactions
+	if givers[0][giverpart] != null:
+		if givers[0][giverpart].scene.code in links:
+			checks.link = givers[0][giverpart].scene.code
+			for i in givers:
+				if i[giverpart] != givers[0][giverpart]:
+					checks.link = null
+					break
+			for i in takers:
+				if i[takerpart] != givers[0][giverpart]:
+					checks.link = null
+					break
+	#link with lastaction
+	if checks.link == null && givers[0].lastaction != null:
+		if givers[0].lastaction.scene.code in links:
+			checks.link = givers[0].lastaction.scene.code
+			for i in givers+takers:
+				if i.lastaction != givers[0].lastaction:
+					checks.link = null
+					break
 	#virginity assignments
 	if giverpart == 'penis':
 		if takerpart == 'vagina':
@@ -492,26 +516,6 @@ func output(scenescript, valid_lines, givers, takers):
 	for i in takers:
 		if i.mode == 'forced':
 			checks.consent = false
-	#link with ongoingactions
-	if givers[0][giverpart] != null:
-		if givers[0][giverpart].scene.code in links:
-			checks.link = givers[0][giverpart].scene.code
-			for i in givers:
-				if i[giverpart] != givers[0][giverpart]:
-					checks.link = null
-					break
-			for i in takers:
-				if i[takerpart] != givers[0][giverpart]:
-					checks.link = null
-					break
-	#link with lastaction
-	if checks.link == null && givers[0].lastaction != null:
-		if givers[0].lastaction.scene.code in links:
-			checks.link = givers[0].lastaction.scene.code
-			for i in givers+takers:
-				if i.lastaction != givers[0].lastaction:
-					checks.link = null
-					break
 	#based on screen values, subject to adjustment
 	if takers.size() == 1:
 		checks.arousal = int(clamp(ceil(takers[0].sens/200), 1, 5))
@@ -522,16 +526,24 @@ func output(scenescript, valid_lines, givers, takers):
 	var drop = false
 	for i in valid_lines:
 		linearray = []
-		if !i in act_lines:
-			continue
-		for j in act_lines[i]:
-			drop = false
-			for k in act_lines[i][j].conditions:
-				if checks.has(k) && !act_lines[i][j].conditions[k].has(checks[k]):
-					drop = true
-					break
-			if drop == false:
-				linearray += act_lines[i][j].lines
+		if i in act_lines:
+			for j in act_lines[i]:
+				drop = false
+				for k in act_lines[i][j].conditions:
+					if checks.has(k) && !act_lines[i][j].conditions[k].has(checks[k]):
+						drop = true
+						break
+				if drop == false:
+					linearray += act_lines[i][j].lines
+		if i in shared_lines:
+			for j in shared_lines[i]:
+				drop = false
+				for k in shared_lines[i][j].conditions:
+					if checks.has(k) && !shared_lines[i][j].conditions[k].has(checks[k]):
+						drop = true
+						break
+				if drop == false:
+					linearray += shared_lines[i][j].lines
 		if linearray.size() > 0:
 			output += linearray[randi()%linearray.size()]
 	

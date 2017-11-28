@@ -85,6 +85,13 @@ func decoder(text, tempgivers = null, temptakers = null):
 		'[ass2]' : ass(takers),
 		'[tits1]' : tits(givers),
 		'[tits2]' : tits(takers),
+		#sex actions
+		'[fuck1]' : fuck(givers),
+		'[fuck2]' : fuck(takers),
+		'[fucks1]' : fucks(givers),
+		'[fucks2]' : fucks(takers),
+		'[fucking1]' : fucking(givers),
+		'[fucking2]' : fucking(takers),
 		#unfinished
 		'[body1]' : 'bodies' if givers.size() >= 2 else body(givers[0]),
 		'[body2]' : 'bodies' if takers.size() >= 2 else body(takers[0]),
@@ -93,6 +100,12 @@ func decoder(text, tempgivers = null, temptakers = null):
 		'[anus1]' : 'anuses' if givers.size() >= 2 else anus(givers[0]),
 		'[anus2]' : 'anuses' if takers.size() >= 2 else anus(takers[0]),
 	}
+	
+	#some tricks to make proper nouns easier
+	if text.find("[name1]") + text.find("[names1]") < 0:
+		replacements['[he1]'] = name(givers)
+	if text.find("[name2]") + text.find("[names2]") < 0:
+		replacements['[he2]'] = name(takers)
 	
 	#replace
 	for i in replacements:
@@ -268,6 +281,58 @@ func names(group):
 	if group.size() > 1 or (group.size() > 0 && group[0].person != globals.player):
 		text += "'s"
 	return text
+
+#no recursive functions allowed in godot so this looks semi-horrible, but whatever
+func fuck(group):
+	var outputs = []
+	var temp = ''
+	outputs += [getrandomfromarray(['fuck','plow','screw','penetrate','churn','pummel','massage the inside of'])]
+	temp = getrandomfromarray(['plunge','hammer','pound','pump','slam','thrust','grind'])
+	temp += getrandomfromarray([' ' + his(group) + ' ' + penis(group),''])
+	temp += getrandomfromarray([' deep','']) + ' into'
+	outputs += [temp]
+	temp = getrandomfromarray(['plunge','pump','slide','thrust'])
+	temp += getrandomfromarray([' ' + his(group) + ' ' + penis(group),'']) + ' in and out of'
+	outputs += [temp]
+	temp = getrandomfromarray(['plunge','slide','thrust'])
+	temp += ' ' + getrandomfromarray([his(group) + ' ' + penis(group),himself(group)])
+	temp += ' ' + getrandomfromarray(['in and out of','into','inside'])
+	outputs += [temp]
+	return outputs[randi()%outputs.size()]
+
+func fucks(group):
+	var outputs = []
+	var temp = ''
+	outputs += [getrandomfromarray(['fucks','plows','screws','penetrates','churns','pummels','massages the inside of'])]
+	temp = getrandomfromarray(['plunges','hammers','pounds','pumps','slams','thrusts','grinds'])
+	temp += getrandomfromarray([' ' + his(group) + ' ' + penis(group),''])
+	temp += getrandomfromarray([' deep','']) + ' into'
+	outputs += [temp]
+	temp = getrandomfromarray(['plunges','pumps','slides','thrusts'])
+	temp += getrandomfromarray([' ' + his(group) + ' ' + penis(group),'']) + ' in and out of'
+	outputs += [temp]
+	temp = getrandomfromarray(['plunges','slides','thrusts'])
+	temp += ' ' + getrandomfromarray([his(group) + ' ' + penis(group),himself(group)])
+	temp += ' ' + getrandomfromarray(['in and out of','into','inside'])
+	outputs += [temp]
+	return outputs[randi()%outputs.size()]
+
+func fucking(group):
+	var outputs = []
+	var temp = ''
+	outputs += [getrandomfromarray(['fucking','plowing','screwing','penetrating','churning','pummeling','massaging the inside of'])]
+	temp = getrandomfromarray(['plunging','hammering','pounding','pumping','slaming','thrusting','grinding'])
+	temp += getrandomfromarray([' ' + his(group) + ' ' + penis(group),''])
+	temp += getrandomfromarray([' deep','']) + ' into'
+	outputs += [temp]
+	temp = getrandomfromarray(['plunging','pumping','sliding','thrusting'])
+	temp += getrandomfromarray([' ' + his(group) + ' ' + penis(group),'']) + ' in and out of'
+	outputs += [temp]
+	temp = getrandomfromarray(['plunging','sliding','thrusting'])
+	temp += ' ' + getrandomfromarray([his(group) + ' ' + penis(group),himself(group)])
+	temp += ' ' + getrandomfromarray(['in and out of','into','inside'])
+	outputs += [temp]
+	return outputs[randi()%outputs.size()]
 
 #this could be added to the race dictionaries instead
 const racenames = {
@@ -475,7 +540,7 @@ func partner(group):
 			array1 += ["small","young","adolescent"]
 			array2 += ["child"] if group.size() == 1 else ["children"]
 		elif mp.age == 'teen':
-			array1 += ['young','adolescent']
+			array1 += ['young']
 			array2 += ["teen"] if group.size() == 1 else ["teens"]
 		else:
 			array1 += ['mature', 'adult']
@@ -483,13 +548,16 @@ func partner(group):
 		if mp.cour < 40:
 			array1 += ['shy','meek']
 		if mp.charm > 60:
-			array1 += ['charming']
+			if mp.age == 'child':
+				array1 += ['cute']
+			else:
+				array1 += ['charming','enchanting']
 		if mp.wit > 80:
 			array1 += ['clever']
 		if mp.conf > 65:
 			array1 += ['proud','haughty']
 		if mp.height in ['petite','shortstack']:
-			array1 += ["tiny","petite","small"]
+			array1 += ["tiny","petite","small","diminutive"]
 		elif mp.height in ['tall', 'towering']:
 			array1 += ["huge","tall","large"]
 		if i.lust > 300:
@@ -570,13 +638,16 @@ func partners(group):
 		if mp.cour < 40:
 			array1 += ['shy','meek']
 		if mp.charm > 60:
-			array1 += ['charming']
+			if mp.age == 'child':
+				array1 += ['cute']
+			else:
+				array1 += ['charming','enchanting']
 		if mp.wit > 80:
 			array1 += ['clever']
 		if mp.conf > 65:
 			array1 += ['proud','haughty']
 		if mp.height in ['petite','shortstack']:
-			array1 += ["tiny","petite","small"]
+			array1 += ["tiny","petite","small","diminutive"]
 		elif mp.height in ['tall', 'towering']:
 			array1 += ["huge","tall","large"]
 		if i.lust > 300:
@@ -635,10 +706,12 @@ func body(member):
 	var person = member.person
 	if person.age == 'child':
 		array += ["small", "petite", "slender", "dainty"]
-	elif person.height in ['shortstack','petite']:
-		array += ["small","petite","shorty"]
-	if person.age in ['adult','teen']:
+	elif person.age in ['teen']:
+		array += ["shapely","enticing","slender"]
+	elif person.age in ['adult']:
 		array += ["well-rounded","voluptuous","seductive","curvaceous","shapely"]
+	if person.height in ['shortstack','petite']:
+		array += ["small","petite","tiny"]
 	if person.bodyshape == 'jelly':
 		array += ["transparent", "jelly", "gelatinous"]
 	elif person.bodyshape == 'halfhorse':
@@ -780,7 +853,7 @@ func ass(group):
 		if mp.asssize == 'flat':
 			array1 += ["flat","compact"]
 			if mp.age == 'teen':
-				array1 += ["tiny","developing","child-like"]
+				array1 += ["tiny","developing","childlike"]
 			elif mp.age == 'child':
 				array1 += ["tiny","developing","undeveloped","immature"]
 		elif mp.asssize == 'small':
@@ -859,7 +932,7 @@ func tits(group):
 		if mp.asssize == 'flat':
 			array1 += ["flat","small"]
 			if mp.age == 'teen':
-				array1 += ["tiny","developing","child-like"]
+				array1 += ["tiny","developing","childlike"]
 			elif mp.age == 'child':
 				array1 += ["tiny","developing","undeveloped","immature"]
 		elif mp.asssize == 'small':
