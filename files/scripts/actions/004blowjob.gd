@@ -20,7 +20,7 @@ func getongoingdescription(givers, takers):
 	var temparray = []
 	temparray += ["[name1] {^steadily :rhythmically :carefully :}{^suck:blow}[s/1] [names2] [penis2]{^, trying to maintain eye contact:, studying [his2] reactions:}."]
 	temparray += ["[name1] {^work:nurse:serve}[s/1] {^the length of :the shaft[/s2] of :the tip[/s2] of :}[names2] [penis2] with [his1] mouth[/s1]."]
-	return temparray[rand_range(0,temparray.size())]
+	return temparray[randi()%temparray.size()]
 
 func requirements():
 	var valid = true
@@ -61,4 +61,4 @@ func initiate():
 	var temparray = []
 	temparray += ["[name1] {^take:place:shove}[s/1] [names2] [penis2] into [his1] mouth[/s1], {^carefully serving:working the length of:coiling around} [it2] with [his1] tongue[/s1]..."]
 	temparray += ["[name1] {^kiss[es/1]:rub[s/1] [his1] face against:lick[s/1] the tip of:admire[s/1]} [names2] [penis2] as [he1] begin[s/1] {^servicing:slurping at:milking:attending} [it2]."]
-	return temparray[rand_range(0,temparray.size())]
+	return temparray[randi()%temparray.size()]

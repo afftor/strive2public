@@ -18,8 +18,8 @@ func getongoingname(givers, takers):
 
 func getongoingdescription(givers, takers):
 	var temparray = []
-	temparray += ["[name1] rub[/s1] [his1] [tits1] against [names2] [penis2]."]
-	return temparray[rand_range(0,temparray.size())]
+	temparray += ["[name1] continue[s/1] rubbing [names2] [penis2] with [his1] [tits1]."]
+	return temparray[randi()%temparray.size()]
 
 func requirements():
 	var valid = true
@@ -58,5 +58,5 @@ func takereffect(member):
 
 func initiate():
 	var temparray = []
-	temparray += ["[name1] buries [names2] [penis2] in [his1] [tits1], squeezing them together. "]
-	return temparray[rand_range(0,temparray.size())]
+	temparray += ["[name1] buries [names2] [penis2] in [his1] [tits1], {^squeezing:teasing} and {^rubbing:massaging:milking} [it2]. "]
+	return temparray[randi()%temparray.size()]

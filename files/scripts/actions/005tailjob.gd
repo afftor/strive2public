@@ -18,12 +18,15 @@ func getongoingname(givers, takers):
 
 func getongoingdescription(givers, takers):
 	var temparray = []
-	temparray += ["[name1] wrap[/s1] [his1] tail around [names2] [penis2] and stroke[/s1] it."]
-	return temparray[rand_range(0,temparray.size())]
+	temparray += ["[name1] {^steadily :rhythmically :carefully :}{^massage:stroke:rub:jerk}[s/1] [names2] [penis2] with [his1] tail[/s1]{^, trying to maintain eye contact:, studying [his2] reactions:}."]
+	temparray += ["[name1] {^massage:work:stroke:rub}[s/1] {^up and down the length of:all along:the shaft[/s2] of} [names2] [penis2] with [his1] tail[/s1]."]
+	return temparray[randi()%temparray.size()]
 
 func requirements():
 	var valid = true
 	if takers.size() < 1 || givers.size() < 1:
+		valid = false
+	elif takers.size() > givers.size():
 		valid = false
 	else:
 		for i in givers:
@@ -58,5 +61,6 @@ func takereffect(member):
 
 func initiate():
 	var temparray = []
-	temparray += ["[name1] wrap[/s1] [his1] tail around [names2] [penis2] squeezing and stroking it."]
-	return temparray[rand_range(0,temparray.size())]
+	temparray += ["[name1] wrap[/s1] [his1] tail around [names2] [penis2] and {^massage:stroke:rub:jerk}[s/1] [it2]."]
+	temparray += ["[name1] {^tease[s/1]:brush[es/1] against} the {^tip:shaft:base}[/s2] of [names2] [penis2] as [he1] {^service:stroke:attend}[s/1] [it2] with [his1] tail[/s1]."]
+	return temparray[randi()%temparray.size()]

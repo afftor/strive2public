@@ -53,18 +53,18 @@ func initiate():
 			kissable = false
 	temparray += ["[name1] {^gently:tenderly:carefully} {^stroke:fondle:cuddle:massage}[s/1] and {^caress[es/1]:rub[s/1]} [names2] [body2]"]
 	temparray += ["[name1] {^run:rub:work}[s/1] [his1] hands all {^over:along:around} [names2] [body2]"]
-	text += temparray[rand_range(0,temparray.size())]
+	text += temparray[randi()%temparray.size()]
 	temparray.clear()
 	if kissable:
 		temparray += [", kissing [him2] all over"]
 		temparray += [", kissing and teasing [him2] with [his1] tongue[/s1]"]
-		temparray += [", {^planting:laying} small kisses {^all over:as [he1] go[es/1]}"]
-		text += temparray[rand_range(0,temparray.size())]
+		temparray += [", planting {^a few small:fleeting:a few brief} kisses as [he1] go[es/1]"]
+		text += temparray[randi()%temparray.size()]
 		temparray.clear()
 	else:
 		temparray += [", {^hitting:touching} all the right spots"]
 		temparray += [", {^thoroughly:expertly} pleasuring [him2]"]
-		text += temparray[rand_range(0,temparray.size())]
+		text += temparray[randi()%temparray.size()]
 		temparray.clear()
 	return text + '.'
 

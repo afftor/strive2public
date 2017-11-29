@@ -11,10 +11,10 @@ var giverpart = 'strapon'
 var takerpart = ''
 
 func getname(state = null):
-	return "Wear Strapon"
+	return "Wear Strap-on"
 
 func getongoingname(givers, takers):
-	return "[name1] wears a strapon"
+	return "[name1] [is1] wearing a strap-on."
 
 func getongoingdescription(givers, takers):
 	return ""

@@ -102,9 +102,9 @@ func decoder(text, tempgivers = null, temptakers = null):
 	}
 	
 	#some tricks to make proper nouns easier
-	if text.find("[name1]") + text.find("[names1]") < 0:
+	if text.find("[name1]") + text.find("[names1]") < -1:
 		replacements['[he1]'] = name(givers)
-	if text.find("[name2]") + text.find("[names2]") < 0:
+	if text.find("[name2]") + text.find("[names2]") < -1:
 		replacements['[he2]'] = name(takers)
 	
 	#replace
@@ -287,16 +287,16 @@ func fuck(group):
 	var outputs = []
 	var temp = ''
 	outputs += [getrandomfromarray(['fuck','plow','screw','penetrate','churn','pummel','massage the inside of'])]
-	temp = getrandomfromarray(['plunge','hammer','pound','pump','slam','thrust','grind'])
+	temp = getrandomfromarray(['plunge','hammer','pound','pump','slam','thrust','grind','drive'])
 	temp += getrandomfromarray([' ' + his(group) + ' ' + penis(group),''])
 	temp += getrandomfromarray([' deep','']) + ' into'
 	outputs += [temp]
 	temp = getrandomfromarray(['plunge','pump','slide','thrust'])
 	temp += getrandomfromarray([' ' + his(group) + ' ' + penis(group),'']) + ' in and out of'
 	outputs += [temp]
-	temp = getrandomfromarray(['plunge','slide','thrust'])
+	temp = getrandomfromarray(['plunge','thrust'])
 	temp += ' ' + getrandomfromarray([his(group) + ' ' + penis(group),himself(group)])
-	temp += ' ' + getrandomfromarray(['in and out of','into','inside'])
+	temp += ' ' + getrandomfromarray(['in and out of','inside'])
 	outputs += [temp]
 	return outputs[randi()%outputs.size()]
 
@@ -304,14 +304,14 @@ func fucks(group):
 	var outputs = []
 	var temp = ''
 	outputs += [getrandomfromarray(['fucks','plows','screws','penetrates','churns','pummels','massages the inside of'])]
-	temp = getrandomfromarray(['plunges','hammers','pounds','pumps','slams','thrusts','grinds'])
+	temp = getrandomfromarray(['plunges','hammers','pounds','pumps','slams','thrusts','grinds','drives'])
 	temp += getrandomfromarray([' ' + his(group) + ' ' + penis(group),''])
 	temp += getrandomfromarray([' deep','']) + ' into'
 	outputs += [temp]
 	temp = getrandomfromarray(['plunges','pumps','slides','thrusts'])
 	temp += getrandomfromarray([' ' + his(group) + ' ' + penis(group),'']) + ' in and out of'
 	outputs += [temp]
-	temp = getrandomfromarray(['plunges','slides','thrusts'])
+	temp = getrandomfromarray(['plunges','thrusts'])
 	temp += ' ' + getrandomfromarray([his(group) + ' ' + penis(group),himself(group)])
 	temp += ' ' + getrandomfromarray(['in and out of','into','inside'])
 	outputs += [temp]
@@ -321,14 +321,14 @@ func fucking(group):
 	var outputs = []
 	var temp = ''
 	outputs += [getrandomfromarray(['fucking','plowing','screwing','penetrating','churning','pummeling','massaging the inside of'])]
-	temp = getrandomfromarray(['plunging','hammering','pounding','pumping','slaming','thrusting','grinding'])
+	temp = getrandomfromarray(['plunging','hammering','pounding','pumping','slaming','thrusting','grinding','driving'])
 	temp += getrandomfromarray([' ' + his(group) + ' ' + penis(group),''])
 	temp += getrandomfromarray([' deep','']) + ' into'
 	outputs += [temp]
 	temp = getrandomfromarray(['plunging','pumping','sliding','thrusting'])
 	temp += getrandomfromarray([' ' + his(group) + ' ' + penis(group),'']) + ' in and out of'
 	outputs += [temp]
-	temp = getrandomfromarray(['plunging','sliding','thrusting'])
+	temp = getrandomfromarray(['plunging','thrusting'])
 	temp += ' ' + getrandomfromarray([his(group) + ' ' + penis(group),himself(group)])
 	temp += ' ' + getrandomfromarray(['in and out of','into','inside'])
 	outputs += [temp]
@@ -630,7 +630,7 @@ func partners(group):
 			array1 += ["small","young","adolescent"]
 			array2 += ["child's"] if group.size() == 1 else ["childrens'"]
 		elif mp.age == 'teen':
-			array1 += ['young','adolescent']
+			array1 += ['young']
 			array2 += ["teen's"] if group.size() == 1 else ["teens'"]
 		else:
 			array1 += ['mature', 'adult']
@@ -926,34 +926,38 @@ func tits(group):
 	var tarray = []
 	for i in group:
 		array1 = []
-		array2 = ["tits","boobs","chest"] if group.size() == 1 else ["tits","boobs","chests"]
+		array2 = ["tits","boobs","breasts","chest"] if group.size() == 1 else ["tits","boobs","breasts","chests"]
 		var mp = i.person
 		#size/age descriptors
-		if mp.asssize == 'flat':
+		if mp.sex == 'male':
+			array2 = ["chest","pecs"] if group.size() == 1 else ["chests","pecs"]
+		if mp.titssize == 'masculine':
+			array1 += ["muscular","strong","toned"]
+		elif mp.titssize == 'flat':
 			array1 += ["flat","small"]
 			if mp.age == 'teen':
 				array1 += ["tiny","developing","childlike"]
 			elif mp.age == 'child':
 				array1 += ["tiny","developing","undeveloped","immature"]
-		elif mp.asssize == 'small':
+		elif mp.titssize == 'small':
 			array1 += ["small","compact"]
 			if mp.age == 'teen':
 				array1 += ["developing"]
 			elif mp.age == 'child':
 				array1 += ["undeveloped","immature"]
-		elif mp.asssize == 'average':
+		elif mp.titssize == 'average':
 			array1 += ["round","well-rounded","shapely"]
 			if mp.age == 'teen':
 				array1 += ["well-developed"]
 			elif mp.age == 'child':
 				array1 += ["well-developed","impressively large"]
-		elif mp.asssize == 'big':
+		elif mp.titssize == 'big':
 			array1 += ["big","sizeable","plump","hefty"]
 			if mp.age == 'teen':
 				array1 += ["well-developed","impressively large"]
 			elif mp.age == 'child':
 				array1 += ["overgrown","surprisingly large"]
-		elif mp.asssize == 'huge':
+		elif mp.titssize == 'huge':
 			array1 += ["huge","massive","fat","meaty","gigantic","enormous"]
 			if mp.age == 'teen':
 				array1 += ["well-developed","surprisingly large"]

@@ -27,7 +27,7 @@ func getongoingdescription(givers, takers):
 		temparray += ["[name1] {^passionately :eagerly :}{^exchange[s/1] saliva with:kiss[es/1]:make[s/1] out with} [name2], {^savoring the taste of [his2] lips:trying [his1] best to share}."]
 	else:
 		temparray += ["[name1] {^passionately :eagerly :}{^exchange[s/1] saliva with:kiss[es/1]:make[s/1] out with} [name2], {^savoring the taste of [his2] lips:trying [his1] best keep both satisfied}."]
-	return temparray[rand_range(0,temparray.size())]
+	return temparray[randi()%temparray.size()]
 
 func requirements():
 	var valid = true
@@ -71,7 +71,7 @@ func initiate():
 		temparray += ["[name1] {^french :}kiss[es/1] [name2], licking {^all around :}[his2] face[/s2]."]
 		temparray += ["[name1] coil[s/1] [his1] tongue[/s1] inside [names2] mouth[/s2] and [he2] {^eagerly:enthusiastically} return[s/2] the gesture."]
 	temparray += ["[name1] grab[s/1] [name2] and {^deeply :}kiss[es/1] [him2], {^driving [his1] tongue[/s1] into [his2] mouth[/s2]:eagerly tasting [his2] lips}."]
-	return temparray[rand_range(0,temparray.size())]
+	return temparray[randi()%temparray.size()]
 	
 	#move this to reaction
 	#if takers[0].lust > 50 || takers[0].person.loyal >= 50:
