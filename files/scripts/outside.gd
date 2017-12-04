@@ -406,7 +406,7 @@ func selectslavebuy(slave):
 		text += "During the examination $name only returned bold, angry look, showing $his [color=red]rebellious[/color] attitude. \n\n"
 	elif slave.obed < 40:
 		text += "$name reacts to commands [color=red]poorly[/color] and does not seem to hold any enthusiasm about $his position. Perhaps $he will need an additional training...\n\n"
-	if slave.vagvirgin == true:
+	if slave.vagvirgin == true && slave.vagina != 'none':
 		text += "After a gesture, $name reveals to you $his [color=aqua]virgin[/color] pussy. \n\n"
 	text += "As you finish inspection, you are being reminded, that you can purchase $him for mere [color=yellow]"+str(price)+ " gold[/color].[/color] "
 	maintext.set_bbcode(slave.descriptionsmall() + '\n\n[color=#ff5df8]'+ slave.dictionary(text))
@@ -505,7 +505,7 @@ func _on_slavesellbutton_pressed():
 			text += "[color=yellow]Your reputation has suffered from this deal. [/color]\n"
 	if globals.guildslaves.has(location):
 		globals.guildslaves[location].append(selectedslave)
-	globals.slaves.remove(globals.slaves.find(selectedslave))
+	selectedslave.removefrommansion()
 	selectedslave.fromguild = true
 	text += selectedslave.dictionary('You sell $name for ') + str(selectedslaveprice) + selectedslave.dictionary(" gold.")
 	if sellslavelocation != 'sebastian':
@@ -564,8 +564,6 @@ func clearselection(temp = ''):
 	selectedslave = ''
 	selectedslaveprice = 0
 	maintext.set_bbcode('')
-	#get_node("slavebuypanel/slavedescription").set_bbcode('[color=yellow]— We have the finest choice of fresh obedient merchandise. Who would you like to see?[/color]')
-	#get_node("slavesellpanel/slavedescription").set_bbcode("[color=yellow]— Oh, you have someone, you would like to part with? That's fine, but don't expect us to pay you full price. We are just humble retailers after all. If you want better price, you should find a buyer yourself. [/color]")
 	if temp == 'buy':
 		maintext.set_bbcode('[color=yellow]Your newly purchased slave has been sent to your mansion. [/color]')
 	elif temp == 'sell':
@@ -686,7 +684,7 @@ func _on_questaccept_pressed():
 						globals.state.repeatables[i].remove(globals.state.repeatables[i].find(ii))
 			slaveguildquests()
 		else:
-			main.selectslavelist(true, 'slaveforquestselected', self)
+			main.selectslavelist(false, 'slaveforquestselected', self)
 
 func slaveforquestselected(slave):
 	var quest = selectedquest
@@ -1610,9 +1608,9 @@ func _on_buysellbutton_pressed(backpack = false):
 				item.amount += amount
 			else:
 				if globals.state.backpack.stackables.has(item.code):
-					globals.state.backpack.stackables[item.code] += 1
+					globals.state.backpack.stackables[item.code] += amount
 				else:
-					globals.state.backpack.stackables[item.code] = 1
+					globals.state.backpack.stackables[item.code] = amount
 		elif item.type == 'gear':
 			var counter = amount
 			while counter >= 1:
@@ -2118,6 +2116,8 @@ func spellbackpackselect(spell):
 	get_node("playergroupdetails/Panel/discardbutton").set_disabled(false)
 	if globals.resources.mana >= spell.manacost && partyselectedslave != null:
 		get_node("playergroupdetails/Panel/usebutton").set_disabled(false)
+	elif spell.code == 'mindread' && partyselectedslave == globals.player:
+		get_node("playergroupdetails/Panel/usebutton").set_disabled(true)
 	else:
 		get_node("playergroupdetails/Panel/usebutton").set_disabled(true)
 	if spell.code == 'guidance':

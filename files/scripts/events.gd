@@ -1202,7 +1202,7 @@ func emilymansion(stage = 0):
 		globals.itemdict.aphrodisiac.amount -= 1
 		text = textnode.EmilyShowerSex
 		sprite = [['emilynakedhappy','pos1']]
-		emily.sexuals.unlocked = true
+		emily.consent = true
 		emily.sexuals.unlocks.append('vaginal')
 		emily.sexuals.unlocks.append('petting')
 		emily.tags.erase('nosex')
@@ -1219,7 +1219,7 @@ func emilymansion(stage = 0):
 		text = textnode.EmilyShowerRape
 		sprite = [['emilynakedneutral','pos1']]
 		emily.tags.erase('nosex')
-		emily.sexuals.unlocked = true
+		emily.consent = true
 		emily.stress += 100
 		emily.vagvirgin = false
 		emily.metrics.vag += 1
@@ -1429,7 +1429,7 @@ func tishadisappear(stage = 0):
 		text = textnode.TishaDisappearUnlock
 		globals.state.sidequests.emily = 12
 		emily.loyal += -10
-		emily.sexuals.unlocked = true
+		emily.consent = true
 		emily.tags.erase('nosex')
 		state = true
 	globals.get_tree().get_current_scene().dialogue(state,self,text,buttons,sprite)
@@ -1610,7 +1610,7 @@ func tishagornguild(stage = 0):
 		globals.resources.upgradepoints += 10
 		for i in globals.slaves:
 			if i.unique == 'Emily':
-				i.sexuals.unlocked = true
+				i.consent = true
 				i.tags.erase("nosex")
 	elif stage == 10:
 		sprite = [['tishaneutral', 'pos1']]
@@ -1812,7 +1812,7 @@ func chloevillage(stage = 0):
 		globals.resources.gold += 500
 	elif stage == 7:
 		text = textnode.ChloeTakeSelf
-		var chloe = globals.characters.create("CHloe")
+		var chloe = globals.characters.create("Chloe")
 		chloe.loyal += 25
 		chloe.sexuals.affection += 250
 		chloe.add_trait('Sex-crazed')

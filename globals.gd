@@ -186,6 +186,7 @@ func slaves_set(slave):
 	slave.originstrue = slave.origins
 	slave.gear.costume = 'clothcommon'
 	slave.gear.underwear = 'underwearplain'
+	slave.health = max(slave.health, 5)
 	slaves.append(slave)
 	if get_tree().get_current_scene().find_node('CharList'):
 		get_tree().get_current_scene().rebuild_slave_list()
@@ -218,12 +219,14 @@ fontsize = 14,
 musicvol = 1,
 receiving = true,
 fullscreen = false,
-oldresize = false,
+oldresize = true,
 fadinganimation = true,
 permadeath = false,
 autoattack = true,
 enddayalise = 1,
 spritesindialogues = true,
+screenwidth = 1080,
+screenheight = 600,
 }
 
 
@@ -429,7 +432,6 @@ class progress:
 		for i in array:
 			for k in i.gear.values():
 				if !k in ['underwearplain','clothcommon'] && k != null && globals.state.unstackables[k].code == 'acctravelbag': maxweight += 20
-					
 		var dict = {currentweight = currentweight, maxweight = maxweight, overload = maxweight < currentweight}
 		return dict
 	
@@ -957,31 +959,31 @@ class slave:
 	func health_icon():
 		var health
 		if float(stats.health_cur)/stats.health_max > 0.75: 
-			health = load("res://files/buttons/icons/health/2.png")#'res://files/buttons/health_high.png')
+			health = load("res://files/buttons/icons/health/2.png")
 		elif float(stats.health_cur)/stats.health_max > 0.4:
-			health = load("res://files/buttons/icons/health/1.png")#'res://files/buttons/health_med.png')
+			health = load("res://files/buttons/icons/health/1.png")
 		else:
-			health = load("res://files/buttons/icons/health/3.png")#'res://files/buttons/health_low.png')
+			health = load("res://files/buttons/icons/health/3.png")
 		return health
 	
 	func obed_icon():
 		var obed
 		if float(stats.obed_cur)/stats.obed_max > 0.75: 
-			obed = load("res://files/buttons/icons/obedience/2.png")#'res://files/buttons/obed_high.png')
+			obed = load("res://files/buttons/icons/obedience/2.png")
 		elif float(stats.obed_cur)/stats.obed_max > 0.4:
-			obed = load("res://files/buttons/icons/obedience/1.png")#'res://files/buttons/obed_med.png')
+			obed = load("res://files/buttons/icons/obedience/1.png")
 		else:
-			obed = load("res://files/buttons/icons/obedience/3.png")#'res://files/buttons/obed_low.png')
+			obed = load("res://files/buttons/icons/obedience/3.png")
 		return obed
 	
 	func stress_icon():
 		var stress
 		if stats.stress_cur >= 70: 
-			stress = load("res://files/buttons/icons/stress/3.png")#'res://files/buttons/stress_high.png')
+			stress = load("res://files/buttons/icons/stress/3.png")
 		elif stats.stress_cur > 35:
-			stress = load("res://files/buttons/icons/stress/1.png")#'res://files/buttons/stress_med.png')
+			stress = load("res://files/buttons/icons/stress/1.png")
 		else:
-			stress = load("res://files/buttons/icons/stress/2.png")#'res://files/buttons/stress_low.png')
+			stress = load("res://files/buttons/icons/stress/2.png")
 		return stress
 	
 	
@@ -1144,7 +1146,7 @@ class slave:
 			price = price*1.75
 		elif race == 'Fairy'|| race == 'Dryad' || race == 'Taurus' || race.find('Fox') >= 0:
 			price = price*2
-		elif race == 'Slime'||race == 'Lamia' || race == 'Arachna' || race == 'Harpy' || race == 'Scyalla':
+		elif race == 'Slime'||race == 'Lamia' || race == 'Arachna' || race == 'Harpy' || race == 'Scylla':
 			price = price*2.5
 		elif race == 'Dragonkin':
 			price = price*3.5
@@ -1170,6 +1172,12 @@ class slave:
 			price = 5
 		return round(price)
 	
+	func removefrommansion():
+		globals.slaves.erase(self)
+		globals.get_tree().get_current_scene().infotext(self.dictionary("[color=red]$name $surname is no longer in your posession. [/color]"))
+		for i in gear.values():
+			if !i in ['underwearplain','clothcommon'] && i != null:
+				globals.state.unstackables[i].owner = null
 	
 	func fetch(dict):
 		for key in dict:

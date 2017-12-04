@@ -34,7 +34,7 @@ pervertevent = ["Walking through the mansion you spot how $name distracts $2name
 var eventsdict = {
 play = {function = 'play', reqs = "slave.age in ['teen', 'child'] && slave.mindage != 'adult'" },
 spendtime = {function = 'spendtime', reqs = "slave.age in ['teen', 'adult'] && slave.mindage != 'child'" },
-horny = {function = 'horny', reqs = "slave.lust >= 50 && slave.sexuals.unlocked == true" },
+horny = {function = 'horny', reqs = "slave.lust >= 50 && slave.consent == true" },
 forestfind = {function = 'forestfind', reqs = "slave.work in ['forage','hunt']" },
 prositutebuyout = {function = 'prositutebuyout', reqs = "slave.work in ['prostitution','escort']" },
 abortion = {function = 'abortion', reqs = "slave.preg.duration >= 9 && slave.loyal < 40" },
@@ -425,7 +425,7 @@ func gift(stage = 0):
 		slave.obed += -rand_range(20,35)
 		slave.loyal += -rand_range(2,5)
 	elif stage == 3:
-		if slave.sexuals.unlocked == false:
+		if slave.consent == false:
 			slave.obed += -rand_range(20,40)
 			slave.loyal += -rand_range(5,10)
 			showntext += slave.dictionary("$name is disgusted by your implications and leaves infuriated. ")
@@ -603,7 +603,7 @@ func fickleevent(stage = 0):
 		globals.player.energy -= 25
 	elif stage == 2:
 		slave.loyal += rand_range(5,10)
-		slave.sexuals.unlocked == true
+		slave.consent = true
 		get_parent().impregnation(slave)
 		slave.lust = -rand_range(10,20)
 		globals.player.energy -= 25

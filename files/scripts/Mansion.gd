@@ -82,6 +82,7 @@ func _ready():
 	globals.resources.panel = get_node("ResourcePanel")
 	if globals.player.name == '':
 		#_on_leavenode_mouse_enter()
+		get_tree().set_screen_stretch(1, 1, Vector2(1080,600))
 		globals.player = globals.newslave('Human', 'teen', 'male')
 		globals.player.relatives.father = 0
 		globals.player.relatives.mother = 0
@@ -186,7 +187,7 @@ func _on_new_slave_button_pressed():
 	globals.state.sidequests.cali = 14
 	#globals.state.decisions.append('')
 	globals.state.rank = 3
-	globals.state.mainquest = 15
+	globals.state.mainquest = 28
 	globals.resources.mana = 200
 	globals.state.farm = 3
 	globals.state.mansionupgrades.mansionlab = 1
@@ -195,12 +196,12 @@ func _on_new_slave_button_pressed():
 	globals.state.backpack.stackables.bandage = 1
 	globals.state.condition -= 100
 	#lobals.state.upcomingevents.append({code = 'tishaappearance',duration =1})
-	for i in globals.characters.characters:
-		slave = globals.characters.create(i)
-		slave.loyal = 100
-		slave.lust = 100
-		slave.consent = true
-		globals.slaves = slave
+#	for i in globals.characters.characters:
+#		slave = globals.characters.create(i)
+#		slave.loyal = 100
+#		slave.lust = 100
+#		slave.consent = true
+#		globals.slaves = slave
 
 func mansion():
 	_on_mansion_pressed()
@@ -844,7 +845,7 @@ func _on_end_pressed():
 	
 	if globals.resources.food >= 5:
 		if chef != null: 
-			globals.resources.food -= max(10 - (chef.sagi + (chef.wit/20))/2, 3)
+			globals.resources.food -= max(3, 10 - (chef.sagi + (chef.wit/20))/2)
 		else:
 			globals.resources.food -= 10
 	else:
@@ -2655,7 +2656,7 @@ func _on_startcombat_pressed():
 			i[j] = 100
 	get_node("outside").gooutside()
 	globals.state.backpack.stackables.rope = 3
-	get_node("explorationnode").zoneenter("mountains")
+	get_node("explorationnode").zoneenter("undercityruins")
 	#get_node("combat").start_battle()
 
 func checkplayergroup():
@@ -3182,7 +3183,7 @@ func sexselect():
 			i.queue_free()
 	for i in globals.slaves:
 		if sexmode == 'sex':
-			if i.consent == false || i.away.duration > 0 || i.sleep in ['jail','farm']:
+			if i.consent == false || i.away.duration != 0 || i.sleep in ['jail','farm']:
 				continue
 			newbutton = get_node("sexselect/ScrollContainer/VBoxContainer/Button").duplicate()
 			get_node("sexselect/ScrollContainer/VBoxContainer").add_child(newbutton)
@@ -3195,7 +3196,7 @@ func sexselect():
 				newbutton.set_disabled(true)
 				newbutton.set_tooltip(i.dictionary('You have already interacted with $name today.'))
 		elif sexmode == 'abuse':
-			if i.away.duration > 0 || i.sleep in ['farm']:
+			if i.away.duration != 0 || i.sleep in ['farm']:
 				continue
 			newbutton = get_node("sexselect/ScrollContainer/VBoxContainer/Button").duplicate()
 			get_node("sexselect/ScrollContainer/VBoxContainer").add_child(newbutton)
@@ -3329,10 +3330,10 @@ func _on_headgirlbehavior_item_selected( ID ):
 		text += "Headgirl will not interfere with others' business. "
 	if ID == 1:
 		globals.state.headgirlbehavior = 'kind'
-		text += "Headgirl will focus on kind approach and improve stress and loyalty of others."
+		text += 'The Headgirl will focus on a kind approach and reduce the stress of others, trying to endrose acceptance of their master. '
 	if ID == 2:
 		globals.state.headgirlbehavior = 'strict'
-		text += "Headgirl will focus on putting other servants in line at the cost of thier stress. "
+		text += "Headgirl will focus on putting other servants in line at the cost of their stress. "
 	var headgirl = null
 	for i in globals.slaves:
 		if i.work == 'headgirl':

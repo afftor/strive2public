@@ -80,9 +80,9 @@ class fighter:
 				self[i] = self[i] + buff.stats[i]
 	
 	func removebuff(buffcode):
-		var buffexists = false
-		
 		if effects.has(buffcode):
+			if buffcode == 'stun':
+				state = 'normal'
 			for i in effects[buffcode].stats:
 				self[i] = self[i] - effects[buffcode].stats[i]
 			effects.erase(buffcode)
@@ -425,12 +425,14 @@ func choosecharacter(combatant):
 		for i in combatant.activeabilities:
 			newbutton = get_node("grouppanel/skilline/skill").duplicate()
 			get_node("grouppanel/skilline").add_child(newbutton)
-			if combatant.cooldowns.has(i.code):
-				newbutton.get_node("Panel").set_hidden(false)
-			else:
-				newbutton.get_node("Panel").set_hidden(true)
+			newbutton.set_disabled(combatant.cooldowns.has(i.code))
+#			if combatant.cooldowns.has(i.code):
+#				newbutton.set_disabled(true)
+#			else:
+#				newbutton.get_node("Panel").set_hidden(true)
 			newbutton.set_hidden(false)
 			newbutton.get_node("Label").set_text(i.name)
+			
 			newbutton.get_node("number").set_text(str(get_node("grouppanel/skilline").get_children().size()-1))
 			newbutton.set_meta("skill", i)
 			newbutton.connect("mouse_enter",self,'showskilltooltip',[i])
@@ -438,10 +440,15 @@ func choosecharacter(combatant):
 			if i.has('iconnorm'):
 				newbutton.set_normal_texture(i.iconnorm)
 				newbutton.set_pressed_texture(i.iconpressed)
+				newbutton.set_disabled_texture(i.icondisabled)
 			newbutton.connect("pressed",self,'activateskill',[i,combatant])
 			if combatant.action != null:
 				if combatant.action.name == i.name:
 					newbutton.set_pressed(true)
+			if newbutton.is_disabled():
+				newbutton.get_node("Label").set('custom_colors/font_color', Color(1,0,0,1))
+			elif newbutton.is_pressed():
+				newbutton.get_node("Label").set('custom_colors/font_color', Color(0,1,1,1))
 			newbutton.set_meta('skill', i)
 	elif selectmode == 'ally':
 		for i in get_node("grouppanel/groupline/").get_children():
@@ -747,7 +754,7 @@ func _on_confirm_pressed():
 		return
 	var text = ''
 	for combatant in playergroup:
-		if combatant.action == null:
+		if combatant.action == null && combatant.state in ['normal']:
 			if globals.rules.autoattack == false:
 				combatant.action = globals.abilities.abilitydict['pass']
 				combatant.target = playergroup.find(combatant)

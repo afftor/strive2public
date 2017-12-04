@@ -349,5 +349,8 @@ zoehappy = load("res://files/images/zoe/zoehappy.png"),
 zoehappynaked = load("res://files/images/zoe/zoehappynaked.png"),
 zoesad = load("res://files/images/zoe/zoesad.png"),
 zoesadnaked = load("res://files/images/zoe/zoesadnaked.png"),
+
+theron = load("res://files/images/theron.png"),
+garthor = load("res://files/images/garthor.png"),
 }
 

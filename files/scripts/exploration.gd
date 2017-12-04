@@ -332,7 +332,7 @@ tags = [],
 
 frostfordclearing = {
 background = 'borealforest',
-reqs = "str(globals.state.mainquest) in ['28','28.1','30','32']",
+reqs = "str(globals.state.mainquest) in ['28.1','30','32']",
 combat = false,
 code = 'frostfordclearing',
 name = 'Clearing',
@@ -475,7 +475,7 @@ func zoneenter(zone):
 	if zone.code == 'frostfordoutskirts' && globals.state.sidequests.zoe == 1 && progress >= 3:
 		globals.state.sidequests.zoe = 2
 		main.dialogue(true, self, globals.questtext.MainQuestFrostfordBeforeForestZoe, [], null)
-	if progress == 0 && lastzone != zone.code:
+	if progress == 0 && lastzone != zone.code && globals.evaluate(zones[lastzone].reqs) == true:
 		array.append({name = "Return to " + zones[lastzone].name, function = "zoneenter", args = lastzone})
 	outside.buildbuttons(array, self)
 
