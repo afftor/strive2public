@@ -62,12 +62,12 @@ func initiate():
 	temparray += ["[name1] {^run:rub:work}[s/1] [his1] hands all around [names2] [tits2]"]
 	text += temparray[randi()%temparray.size()]
 	temparray.clear()
-	temparray += [", {^playing with:teasing:flicking and teasing} [his2] nipples. "]
-	temparray += [", kneading into the surrounding {^flesh:tissue}. "]
+	temparray += [", {^playing with:teasing:flicking and teasing} [his2] nipples."]
+	temparray += [", kneading into the surrounding {^flesh:tissue}."]
 	temparray += [". "]
 	if kissable:
-		temparray += [", {^kissing:licking} and {^kneading:teasing} them. "]
-		temparray += [", {^burrying:nuzzling} [his1] face[/s1] in them. "]
+		temparray += [", {^kissing:licking} and {^kneading:teasing} them."]
+		temparray += [", {^burrying:nuzzling} [his1] face[/s1] in them."]
 	text += temparray[randi()%temparray.size()]
 	temparray.clear()
 	return text

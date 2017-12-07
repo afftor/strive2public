@@ -31,6 +31,6 @@ func requirements():
 
 func initiate():
 	if givers.size() < 2:
-		return "[name1] put[s/1] on a strap-on dildo. "
+		return "[name1] put[s/1] on a strap-on dildo."
 	else:
-		return "[name1] put[s/1] on strap-on dildos. "
+		return "[name1] put[s/1] on strap-on dildos."

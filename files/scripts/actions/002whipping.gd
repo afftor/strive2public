@@ -55,7 +55,7 @@ func takereffect(member):
 
 func initiate():
 	var temparray = []
-	temparray += ["[name1] {^lash}[s/1] at [names2] [body2] with a leather whip..."]
+	temparray += ["[name1] {^lash}[s/1] at [names2] [body2] with a leather whip."]
 	return temparray[rand_range(0,temparray.size())]
 
 func reaction(member):

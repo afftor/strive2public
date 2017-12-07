@@ -18,7 +18,7 @@ func getongoingname(givers, takers):
 
 func getongoingdescription(givers, takers):
 	var temparray = []
-	temparray += ["[name1] continue[s/1] rubbing [names2] [penis2] with [his1] [tits1]."]
+	temparray += ["[name1] continue[s/1] {^rubbing:massaging:squeezing} [names2] [penis2] with [his1] [tits1]."]
 	return temparray[randi()%temparray.size()]
 
 func requirements():
@@ -58,5 +58,21 @@ func takereffect(member):
 
 func initiate():
 	var temparray = []
-	temparray += ["[name1] buries [names2] [penis2] in [his1] [tits1], {^squeezing:teasing} and {^rubbing:massaging:milking} [it2]. "]
+	temparray += ["[name1] buries [names2] [penis2] in [his1] [tits1], {^squeezing:teasing} and {^rubbing:massaging:milking} [it2]."]
 	return temparray[randi()%temparray.size()]
+
+func reaction(member):
+	var text = ''
+	if member.energy == 0:
+		text = "[name2] lie[s/2] unconscious, {^trembling:twitching} {^slightly :}as [his2] [penis2] {^respond:react}[s/#2] to {^the stimulation:[names1] [tits1]}."
+	#elif member.consent == false:
+		#TBD
+	elif member.sens < 100:
+		text = "[name2] {^show:give}[s/2] little {^response:reaction} to {^the stimulation:[names1] efforts:[names1] [tits1]}."
+	elif member.sens < 400:
+		text = "[name2] {^begin:start}[s/2] to {^respond:react} as [his2] [penis2] get[s/#2] {^rubbed:massaged:squeezed} by [names1] [tits1]."
+	elif member.sens < 800:
+		text = "[name2] {^moans[s/2]:crie[s/2] out} in {^pleasure:arousal:extacy} as [his2] [penis2] get[s/#2] {^rubbed:massaged:squeezed} by [names1] [tits1]."
+	else:
+		text = "[names2] body {^trembles:quivers} {^at the slightest movement of [names1] [tits1] against [his2] [penis2]:in response to [names1] [tits1]}{^ as [he2] rapidly near[s/2] orgasm: as [he2] approach[es/2] orgasm: as [he2] edge[s/2] toward orgasm:}."
+	return text

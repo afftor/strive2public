@@ -17,7 +17,7 @@ func getongoingname(givers, takers):
 	return "[name1] give[s/1] [a /1]rimjob[/s1] to [name2]."
 
 func getongoingdescription(givers, takers):
-	return "[name1] {^eat[s/1] out:lick[s/1]:slurp[s/1] at} [names2] [anus2]. "
+	return "[name1] {^eat[s/1] out:lick[s/1]:slurp[s/1] at} [names2] [anus2]."
 
 func requirements():
 	var valid = true
@@ -59,7 +59,7 @@ func takereffect(member):
 
 func initiate():
 	var text = ''
-	text += "[name1] {^eat[s/1] out:lick[s/1]:slurp[s/1] at} [names2] [anus2], stimulating the {^enterance:walls} with [his1] tongue[/s1]..."
+	text += "[name1] {^eat[s/1] out:lick[s/1]:slurp[s/1] at} [names2] [anus2], stimulating the {^enterance:walls} with [his1] tongue[/s1]."
 	return text
 
 func reaction(member):

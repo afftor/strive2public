@@ -22,10 +22,10 @@ func getongoingdescription(givers, takers):
 	temparray += ["[name1] continue[s/1] {^licking:teasing} and {^kissing:sucking on} [names2] nipples"]
 	text += temparray[randi()%temparray.size()]
 	temparray.clear()
-	temparray += [", rolling them around with [his1] tongue[/s1]. "]
-	temparray += [", {^lightly:gently} {^nibbling at:stimulating} them with [his1] teeth. "]
-	temparray += [", {^greedily slurping at them:nursing} like [a /1]bab[y/ies1]. "]
-	temparray += [". "]
+	temparray += [", rolling them around with [his1] tongue[/s1]."]
+	temparray += [", {^lightly:gently} {^nibbling at:stimulating} them with [his1] teeth."]
+	temparray += [", {^greedily slurping at them:nursing} like [a /1]bab[y/ies1]."]
+	temparray += ["."]
 	text += temparray[randi()%temparray.size()]
 	return text
 	
@@ -72,9 +72,9 @@ func initiate():
 	temparray += ["[name1] latch[es/1] onto [names2] nipples"]
 	text += temparray[randi()%temparray.size()]
 	temparray.clear()
-	temparray += [", {^licking:teasing} and {^kissing:sucking on} them. "]
-	temparray += [", {^lightly:gently} {^nibbling at:stimulating} them with [his1] teeth. "]
-	temparray += [", {^greedily slurping at them:nursing} like [a /1]bab[y/ies1]. "]
+	temparray += [", {^licking:teasing} and {^kissing:sucking on} them."]
+	temparray += [", {^lightly:gently} {^nibbling at:stimulating} them with [his1] teeth."]
+	temparray += [", {^greedily slurping at them:nursing} like [a /1]bab[y/ies1]."]
 	text += temparray[randi()%temparray.size()]
 	return text
 

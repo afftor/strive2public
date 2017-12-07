@@ -61,37 +61,55 @@ func decoder(text, tempgivers = null, temptakers = null):
 		'[it2]' : 'them' if takers.size() >= 2 else 'it',
 		'[he1]' : he(givers),
 		'[he2]' : he(takers),
+		'[he3]' : he(givers + takers),
 		'[him1]' : him(givers),
 		'[him2]' : him(takers),
+		'[him3]' : him(givers + takers),
 		'[himself1]' : himself(givers),
 		'[himself2]' : himself(takers),
+		'[himself3]' : himself(givers + takers),
 		'[his1]' : his(givers),
 		'[his2]' : his(takers),
+		'[his3]' : his(givers + takers),
+		'[his_1]' : his_(givers),
+		'[his_2]' : his_(takers),
+		'[his_3]' : his_(givers + takers),
 		#proper nouns
 		'[name1]' : name(givers),
 		'[name2]' : name(takers),
+		'[name3]' : name(givers + takers),
 		'[names1]' : names(givers),
 		'[names2]' : names(takers),
+		'[names3]' : names(givers + takers),
 		'[partner1]' : partner(givers),
 		'[partner2]' : partner(takers),
+		'[partner3]' : partner(givers + takers),
 		'[partners1]' : partners(givers),
 		'[partners2]' : partners(takers),
+		'[partners3]' : partners(givers + takers),
 		#body parts
 		'[pussy1]' : pussy(givers),
 		'[pussy2]' : pussy(takers),
+		'[pussy3]' : pussy(givers + takers),
 		'[penis1]' : penis(givers),
 		'[penis2]' : penis(takers),
+		'[penis3]' : penis(givers + takers),
 		'[ass1]' : ass(givers),
 		'[ass2]' : ass(takers),
+		'[ass3]' : ass(givers + takers),
 		'[tits1]' : tits(givers),
 		'[tits2]' : tits(takers),
+		'[tits3]' : tits(givers + takers),
 		#sex actions
 		'[fuck1]' : fuck(givers),
 		'[fuck2]' : fuck(takers),
+		'[fuck3]' : fuck(givers + takers),
 		'[fucks1]' : fucks(givers),
 		'[fucks2]' : fucks(takers),
+		'[fucks3]' : fucks(givers + takers),
 		'[fucking1]' : fucking(givers),
 		'[fucking2]' : fucking(takers),
+		'[fucking3]' : fucking(givers + takers),
 		#unfinished
 		'[body1]' : 'bodies' if givers.size() >= 2 else body(givers[0]),
 		'[body2]' : 'bodies' if takers.size() >= 2 else body(takers[0]),
@@ -200,6 +218,18 @@ func his(group):
 			return 'her'
 	else:
 		return 'their'
+
+func his_(group):
+	for i in group:
+		if i.person == globals.player:
+			return 'yours'
+	if group.size() == 1:
+		if group[0].sex == 'male':
+			return 'his'
+		else:
+			return 'hers'
+	else:
+		return 'theirs'
 
 func him(group):
 	for i in group:
@@ -732,7 +762,7 @@ func penis(group):
 	var tarray = []
 	for i in group:
 		array1 = []
-		array2 = ['cock','dick','penis'] if group.size() == 1 else ['cocks','dicks','penises']
+		array2 = ['cock','dick','penis','shaft'] if group.size() == 1 else ['cocks','dicks','penises','shafts']
 		var mp = i.person
 		#size/age descriptors
 		if mp.penis == 'small':
