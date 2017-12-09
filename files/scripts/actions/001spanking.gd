@@ -13,14 +13,12 @@ var takerpart = ''
 func getname(state = null):
 	return "Spanking"
 
-func getongoingname(givers, takers):
-	return "[name1] spank[s/1] [name2] ass."
+#func getongoingname(givers, takers):
+#	return "[name1] spank[s/1] [names2] ass."
 
-func getongoingdescription(givers, takers):
-	var temparray = []
-	temparray += ["[name1] {^steadily :rhythmically :carefully :}{^suck:blow}[s/1] [names2] [penis2]{^, trying to maintain eye contact:, studying [his2] reactions:}."]
-	temparray += ["[name1] {^work:nurse:serve}[s/1] {^the length of :the shaft[/s2] of :the tip[/s2] of :}[names2] [penis2] with [his1] mouth[/s1]."]
-	return temparray[rand_range(0,temparray.size())]
+#func getongoingdescription(givers, takers):
+#	var temparray = []
+#	return temparray[rand_range(0,temparray.size())]
 
 func requirements():
 	var valid = true
@@ -57,24 +55,25 @@ func takereffect(member):
 
 func initiate():
 	var temparray = []
-	temparray += ["[name1] {^spank:slap}[s/1] [names2] [ass2] until it turns red..."]
-	return temparray[rand_range(0,temparray.size())]
+	temparray += ["[name1] {^spank:slap:beat:swat}[s/1] [names2] [ass2]{^ with [an /1]open hand[/s1]: until it turns red:, intent on humiliating [him2]}."]
+	temparray += ["[name1] {^spank:slap:beat:swat}[s/1] [name2] {^right :square :}{^across:on} [his2] [ass2] {^repeatedly:again and again:over and over}."]
+	return temparray[randi()%temparray.size()]
 
 func reaction(member):
 	var text = ''
 	#elif member.consent == false:
 		#TBD
 	if member.sens < 300:
-		text = "[name2] twitches in pain from {^harsh:rough} threatment."
+		text = "[name2] {^jerk:wince:writhe}[s/2] in pain from the {^humiliating:demeaning:embarassing} punishment."
 	elif member.sens < 600:
-		text = "[name2] shows a mix of pain and pleasure on [his2] face."
+		text = "[name2] cries out with each blow to [his2] buttox, though [his2] voice betrays some enjoyment."
 	elif member.sens < 950:
-		text = "[name2][s/2] moans make it hard to tell if [he2] suffers at all."
+		text = "[names2] moans make it {^hard:difficult} to tell if [he2] in pain or enjoying [himself2]."
 	else:
-		text = "[name2] barely reacts to {^heavy:painful} slaps as [he2] edge[s/2] toward orgasm."
+		text = "[names2] body {^trembles:quivers} {^with each swat:each time [name1] slap[s/1] [his2] [ass2]}{^ as [he2] rapidly near[s/2] orgasm: as [he2] approach[es/2] orgasm: as [he2] edge[s/2] toward orgasm:}."
 	if member.person.obed >= 90 && member.person != globals.player:
-		text += "\n[color=green]During short break, [name2] shows [his2] complete submission to enforced discipline"
+		text += "\n[color=green]Afterward, {^[name2] seems to have:it looks as though [name2] [has2]} {^learned [his2] lesson:reformed [his2] rebellious ways:surrendered} and shows {^complete:total} {^submission:obedience:compliance}"
 		if member.person.traits.find("Masochist") >= 0:
-			text += ", but you also notice an unusual desire in [his2] eyes"
+			text += ", but there is also {^an unusual:a strange} {^flash:hint:look} of desire in [his2] eyes"
 		text += '. [/color]'
 	return text

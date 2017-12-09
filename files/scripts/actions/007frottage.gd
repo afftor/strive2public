@@ -14,10 +14,10 @@ func getname(state = null):
 	return "Frottage"
 
 func getongoingname(givers, takers):
-	return "[name1] and [name2] rub [their] cocks together."
+	return "[name1] and [name2] rub [their] [penis3] together."
 
 func getongoingdescription(givers, takers):
-	return "[name1] and [name2] continues to {^rub:grind} [their] {^cocks:penises} together. "
+	return "[name1] and [name2] continue to {^rub:grind} [their] [penis3] together."
 
 func requirements():
 	var valid = true
@@ -57,22 +57,21 @@ func takereffect(member):
 
 func initiate():
 	var text = ''
-	text += "[name1] and [name2] {^stroke} [their] {^cocks:dicks:penises} against each other..."
+	text += "[name1] and [name2] {^rub:grind:press} [their] [penis3] {^together:against one another}."
 	return text
 
-#func reaction(member):
-#	var text = ''
-#	var pleasure = member.sens
-#	if member.energy == 0:
-#		text = "[name] trembles nervously as [his] pussy is licked."
-#	elif pleasure < 300:
-#		text = "[name] doesn't show much pleasure as [his] pussy is licked."
-#	elif pleasure < 1000:
-#		text = "[name] is starting to react to the sensation of having [his] pussy licked."
-#	elif pleasure < 3000:
-#		text = "As [his] sensitive clit is licked, [name] gives herself over to pleasure, moaning and shaking [his] hips."
-#	elif pleasure < 6000:
-#		text = "As [name]'s clit is licked, [he] shakes [his] body and moans in pleasure."
-#	else:
-#		text = "[name] writhes and moans loudly in pleasure as [his] clit is intensely stimulated by a tongue."
-#	return text
+func reaction(member):
+	var text = ''
+	if member.energy == 0:
+		text = "[name2] lie[s/2] unconscious, {^trembling:twitching} {^slightly :}as [his2] [penis2] {^respond:react}[s/#2] to {^the stimulation:[names1] efforts:[name1] against [him2]}."
+	#elif member.consent == false:
+		#TBD
+	elif member.sens < 100:
+		text = "[name2] {^show:give}[s/2] little {^response:reaction} to {^the stimulation:[names1] efforts}."
+	elif member.sens < 400:
+		text = "[name2] {^begin:start}[s/2] to {^respond:react} as [his2] [penis2] get[s/#2] {^rubbed:stimulated:teased}."
+	elif member.sens < 800:
+		text = "[name2] {^moans[s/2]:crie[s/2] out} in {^pleasure:arousal:extacy} as [his2] [penis2] get[s/#2] {^rubbed:stimulated:teased}."
+	else:
+		text = "[names2] body {^trembles:quivers} {^at the slightest movement of [names1] [penis1] against [his_2]:in response to [names1] efforts}{^ as [he2] rapidly near[s/2] orgasm: as [he2] approach[es/2] orgasm: as [he2] edge[s/2] toward orgasm:}."
+	return text
