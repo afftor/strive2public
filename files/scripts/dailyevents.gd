@@ -526,7 +526,7 @@ func devotedevent(stage = 0):
 	showntext = slave.dictionary(eventstext[currentevent][stage])
 	if stage == 0:
 		slave2 = globals.newslave(globals.wimbornraces[rand_range(0,globals.wimbornraces.size())], 'random', 'random', origins[rand_range(0, origins.size())])
-		showntext += '\n' + slave2.description_small()
+		showntext += '\n' + slave2.descriptionsmall()
 		tempbuttons = [["Accept",1],["Reject",2]]
 	if stage == 1:
 		showntext = slave2.dictionary(eventstext[currentevent][stage])
@@ -561,15 +561,15 @@ func masochistevent(stage = 0):
 	if stage == 0:
 		tempbuttons = [["Punish $name (-25 energy)",1],["Punish $name sexually (-25 energy)",2], ["Ignore", 3]]
 	if stage == 1:
-		slave.lust = rand_range(5,10)
+		slave.lust += rand_range(5,10)
 		slave.obed += rand_range(15,25)
 		slave.loyal += rand_range(3,6)
 		globals.player.energy -= 25
 	elif stage == 2:
-		slave.lust = -rand_range(15,25)
+		slave.lust += -rand_range(15,25)
 		slave.obed += rand_range(15,25)
 		slave.loyal += rand_range(10,15)
-		get_parent().impregnation(slave, globals.player)
+		globals.impregnation(slave, globals.player)
 	elif stage == 3:
 		slave.loyal += -rand_range(5,10)
 		slave.obed += -rand_range(15,35)
@@ -604,7 +604,7 @@ func fickleevent(stage = 0):
 	elif stage == 2:
 		slave.loyal += rand_range(5,10)
 		slave.consent = true
-		get_parent().impregnation(slave)
+		globals.impregnation(slave)
 		slave.lust = -rand_range(10,20)
 		globals.player.energy -= 25
 		globals.resources.mana += rand_range(4,10)

@@ -987,8 +987,8 @@ func regressionpoteffect():
 	if slave == globals.player:
 		return('You decide this potion is not going to benefit you at all.')
 	slave.trait_remove('Uncivilized')
-	slave.add_trait(globals.origins.trait('Pliable'))
-	slave.add_trait(globals.origins.trait('Regressed'))
+	slave.add_trait('Pliable')
+	slave.add_trait('Regressed')
 	slave.loyal += rand_range(15,25)
 	var text = slave.dictionary("As $name drinks the potion, the look on $his face becomes less and less focused, until eventually $his mind is reformed back into a very young and learning state. With this you can leave much greater impact on $his consciousness. ")
 	return text

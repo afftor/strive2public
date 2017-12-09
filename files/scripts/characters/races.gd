@@ -238,7 +238,7 @@ Centaur = {
 	agi_max = 5,
 	maf_max = 3,
 	end_max = 5,
-	energy_max = 40}
+	energy_max = 140}
 },
 Nereid = {
 	description = "Nereid are considered to be another subspecies of the humanoid races, yet they likely split from another race in the distant past. They adapted to an aquatic lifestyle. Nereids are often seen by sailors and fishermen, but they tend to be hesitant in making contact with humans, likely viewing them as a threat.",

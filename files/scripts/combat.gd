@@ -245,6 +245,8 @@ func _process(delta):
 			button.get_node('Panel').set_hidden(false)
 		if i.target == null:
 			button.get_node('target').set_text('Nothing')
+			if i.state == 'chasing':
+				button.get_node('target').set_text('Chasing')
 		elif i.action.target == 'enemy':
 			button.get_node('target').set_text(i.action.name + ' - ' + enemygroup[i.target].name)
 		elif i.action.target == 'ally':
@@ -567,7 +569,7 @@ func actionexecute(actor, target, skill):
 					return text
 		#checking hit chance
 		if skill.attributes.find('damage') >= 0:
-			if skill.can_miss == true && target.action.code != 'protect':
+			if skill.can_miss == true && target.action != null && target.action.code != 'protect':
 				hit = hitchance(actor, target)
 			else:
 				hit = 'hit'
@@ -584,8 +586,6 @@ func actionexecute(actor, target, skill):
 						damage = damage - damage*0.35
 			elif skill.type == 'spell':
 				damage = (actor.magic * 2.5) * skill.power
-			if actor.energy == 0:
-				damage = damage/2
 			actor.energy = max(actor.energy - skill.costenergy,0)
 			if actor.person != null && actor.person.spec == 'assassin':
 				damage += 5
@@ -764,6 +764,9 @@ func _on_confirm_pressed():
 					if i.state == 'normal':
 						combatant.target = enemygroup.find(i)
 						continue
+		elif combatant.state == 'chasing':
+			combatant.action = globals.abilities.abilitydict['pass']
+			combatant.target = playergroup.find(combatant)
 	for combatant in enemygroup:
 		combatant.action = null
 		for i in combatant.cooldowns:
@@ -782,9 +785,9 @@ func _on_confirm_pressed():
 	for combatant in playergroup:
 		if combatant.action.target == 'enemy':
 			text += actionexecute(combatant, enemygroup[combatant.target], combatant.action) + '\n'
-		if combatant.action.target == 'self':
+		elif combatant.action.target == 'self':
 			text += actionexecute(combatant, combatant, combatant.action) + '\n'
-		if combatant.action.target == 'ally' && combatant.action.code != 'protect':
+		elif combatant.action.target == 'ally' && combatant.action.code != 'protect':
 			text += actionexecute(combatant, playergroup[combatant.target], combatant.action) + '\n'
 		for i in combatant.cooldowns:
 			combatant.cooldowns[i] -= 1
@@ -812,7 +815,7 @@ func resolution(text = ''):
 			i.state = 'defeated'
 			text += '\n[color=yellow]'+ i.name + ' has been defeated. [/color]'
 			if i.person != null:
-				var escapechance = (globals.originsarray.find(i.person.origins)+1)*15
+				var escapechance = (globals.originsarray.find(i.person.origins)+1)*1500
 				if rand_range(0,100) < escapechance:
 					if counter > 1 && i.effects.has('shackleeffect'):
 						i.state = 'captured'
@@ -932,15 +935,16 @@ func _on_escapeconfirm_pressed():
 		var chaseslave = playergroup[ID]
 		chaseslave.state = 'chasing'
 		basechance = chaseslave.speed
+		chaseslave.action = {code = 'chasing'}
 		chaseslave.energy -= 30
 		if chaseslave.person.spec == 'trapper':
 			basechance += 5
 		if basechance > slave.speed * 2:
 			captured = true
-			text = '[color=green]'+chaseslave.name + ' swiftly caught helpless ' + slave.name + '. [/color] '
+			text = '[color=aqua]'+chaseslave.name + ' swiftly caught helpless ' + slave.name + '. [/color] '
 		elif (basechance - slave.speed) + rand_range(0, 10) > 8:
 			captured = true
-			text = '[color=green]'+slave.name + ' has been caught and subdued by ' + chaseslave.name + '. [/color]'
+			text = '[color=aqua]'+slave.name + ' has been caught and subdued by ' + chaseslave.name + '. [/color]'
 		else:
 			captured = false
 			text = '[color=red]'+chaseslave.name + ' failed to catch escaping ' + slave.name + '. [/color]'

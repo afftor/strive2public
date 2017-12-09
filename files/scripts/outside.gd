@@ -168,6 +168,7 @@ func town():
 
 func wimborn():
 	gooutside()
+	main.music_set('wimborn')
 	get_node("charactersprite").set_hidden(true)
 	var array = [{name = "Visit the Mage's Order",function = 'mageorder'},{name = "Visit Slaver's Guild", function = 'slaveguild'},{name = "Visit Market District",function = 'market'},{name = "Visit Red Lantern District", function = 'backstreets'},{name = "Leave Town",function = 'outskirts'}]
 	if globals.state.location == 'wimborn':
@@ -182,7 +183,6 @@ func gooutside():
 	get_node("playergrouppanel/VBoxContainer").set_hidden(false)
 	if OS.get_name() != "HTML5" && globals.rules.fadinganimation == true:
 		yield(main, 'animfinished')
-	main.music_set('wimborn')
 	main.checkplayergroup()
 	main.get_node("Navigation").set_hidden(true)
 	main.get_node("buttonpanel").set_hidden(true)
@@ -507,9 +507,9 @@ func _on_slavesellbutton_pressed():
 		globals.guildslaves[location].append(selectedslave)
 	selectedslave.removefrommansion()
 	selectedslave.fromguild = true
-	text += selectedslave.dictionary('You sell $name for ') + str(selectedslaveprice) + selectedslave.dictionary(" gold.")
+	text += selectedslave.dictionary('You sell $name for ') + str(selectedslaveprice) + selectedslave.dictionary(" gold. ")
 	if sellslavelocation != 'sebastian':
-		text += "$He's taken away and put on sale for other customers. "
+		text += selectedslave.dictionary("$He's taken away and put on sale for other customers. ")
 	main.rebuild_slave_list()
 	slaveguildsells()
 	clearselection('sell')
@@ -1515,26 +1515,67 @@ func shopsell(backpack = false):
 		array = globals.state.backpack.unstackables
 	else:
 		array = globals.state.unstackables.values()
+	
+	var unstackarray = []
+	
 	for item in array:
-		if item.owner == null:
-			var tempitem = globals.itemdict[item.code]
-			newbutton = itembutton.duplicate()
-			newbutton.set_hidden(false)
-			newbutton.set_tooltip(item.name)
-			newbutton.get_node("price").set_text(str(round(tempitem.cost/5)))
-			if item.icon != null:
-				if typeof(item.icon) == TYPE_STRING:
-					newbutton.get_node("icon").set_texture(globals.itemdict[item.code].icon)
-				else:
-					newbutton.get_node("icon").set_texture(item.icon)
+		if item.owner != null:
+			continue
+		var groupfound = false
+		var counter = -1
+		for i in unstackarray:
+			counter += 1
+			if i[0].type == item.type && i[0].effects == item.effects:
+				groupfound = true
+				unstackarray[counter].append(item)
+				continue
+		if groupfound == false:
+			unstackarray.append([item])
+	
+	
+	for items in unstackarray:
+		item = items[0]
+		var tempitem = globals.itemdict[item.code]
+		newbutton = itembutton.duplicate()
+		newbutton.set_hidden(false)
+		newbutton.set_tooltip(item.name)
+		newbutton.get_node('amount').set_hidden(false)
+		newbutton.get_node('amount').set_text(str(items.size()))
+		newbutton.get_node("price").set_text(str(round(tempitem.cost/5)))
+		if item.icon != null:
+			if typeof(item.icon) == TYPE_STRING:
+				newbutton.get_node("icon").set_texture(globals.itemdict[item.code].icon)
 			else:
-				newbutton.get_node("icon").set_texture(null)
-				newbutton.get_node("name").set_text(item.name)
-				newbutton.get_node("name").set_hidden(false)
-			itemlist.add_child(newbutton)
-			newbutton.set_meta('item', tempitem)
-			newbutton.set_meta('unstuck', item)
-			newbutton.connect('pressed',self,'selectshopitem', [newbutton, item])
+				newbutton.get_node("icon").set_texture(item.icon)
+		else:
+			newbutton.get_node("icon").set_texture(null)
+			newbutton.get_node("name").set_text(item.name)
+			newbutton.get_node("name").set_hidden(false)
+		itemlist.add_child(newbutton)
+		newbutton.set_meta('item', tempitem)
+		newbutton.set_meta('unstuck', items)
+		newbutton.connect('pressed',self,'selectshopitem', [newbutton, item])
+#	
+#	for item in array:
+#		if item.owner == null:
+#			var tempitem = globals.itemdict[item.code]
+#			newbutton = itembutton.duplicate()
+#			newbutton.set_hidden(false)
+#			newbutton.set_tooltip(item.name)
+#			newbutton.get_node("price").set_text(str(round(tempitem.cost/5)))
+#			if item.icon != null:
+#				if typeof(item.icon) == TYPE_STRING:
+#					newbutton.get_node("icon").set_texture(globals.itemdict[item.code].icon)
+#				else:
+#					newbutton.get_node("icon").set_texture(item.icon)
+#			else:
+#				newbutton.get_node("icon").set_texture(null)
+#				newbutton.get_node("name").set_text(item.name)
+#				newbutton.get_node("name").set_hidden(false)
+#			itemlist.add_child(newbutton)
+#			newbutton.set_meta('item', tempitem)
+#			newbutton.set_meta('unstuck', item)
+#			newbutton.connect('pressed',self,'selectshopitem', [newbutton, item])
 
 
 func _on_sellbuttonbp_pressed():

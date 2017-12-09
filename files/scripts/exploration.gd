@@ -214,7 +214,7 @@ enemies = [{value = 'solospider', weight = 1}, {value = 'oozesgroup', weight = 1
 encounters = [],
 length = 8,
 exits = ['undercityentrance', 'undercityruins'],
-tags = ['noreturn'],
+tags = [],
 races = [],
 },
 undercityruins = {
@@ -228,7 +228,7 @@ enemies = [{value = 'spidergroup',weight = 5},{value = 'gembeetle', weight = 1},
 encounters = [],
 length = 8,
 exits = ['undercitytunnels','undercityhall'],
-tags = ['noreturn'],
+tags = [],
 races = [],
 },
 undercityhall = {
@@ -242,7 +242,7 @@ enemies = [],
 encounters = [],
 length = 1,
 exits = ['undercityhall'],
-tags = ['noreturn'],
+tags = [],
 races = []
 },
 

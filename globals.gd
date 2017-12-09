@@ -93,8 +93,8 @@ mountains = load("res://files/backgrounds/mountains.jpg"),
 borealforest = load("res://files/backgrounds/borealforest.jpg"),
 amberguard = load("res://files/backgrounds/amberguard.png"),
 amberroad = load("res://files/backgrounds/amberroad.png"),
-undercity = load("res://files/backgrounds/undercity.jpg"),
-tunnels = load("res://files/backgrounds/tunnels.jpg"),
+undercity = load("res://files/backgrounds/undercity.png"),
+tunnels = load("res://files/backgrounds/tunnels.png"),
 }
 var mansionupgradesdict = mansionupgrades.dict
 

@@ -9,6 +9,7 @@ var testslaveorigin = ['slave','poor','commoner','rich','noble']
 var currentslave = 0 setget currentslave_set
 var selectedslave = -1
 var texture = null
+var startcombatzone = "undercityruins"
 onready var exploration = get_node("explorationnode")
 onready var slavepanel = get_node("MainScreen/slave_tab")
 
@@ -137,7 +138,8 @@ func _on_new_slave_button_pressed():
 	globals.resources.day = 2
 	for i in globals.state.tutorial:
 		globals.state.tutorial[i] = true
-	music_set('mansion')
+	#music_set('mansion')
+	get_node("music").play(100)
 	#globals.state.capturedgroup.append(globals.newslave(testslaverace[rand_range(0,testslaverace.size())], testslaveage, testslavegender, testslaveorigin[rand_range(0,testslaveorigin.size())]))
 	var slave = globals.newslave(testslaverace[rand_range(0,testslaverace.size())], testslaveage, testslavegender, testslaveorigin[rand_range(0,testslaveorigin.size())])
 	slave.obed += 200
@@ -1365,7 +1367,7 @@ func music_set(text):
 	var music = get_node("music")
 	if music.is_paused() == true && globals.rules.musicvol > 0:
 		music.set_paused(false)
-	if globals.rules.musicvol == 0 || music.get_meta("currentsong") == text:
+	if globals.rules.musicvol == 0 || (music.get_meta("currentsong") == text && music.get_pos() != music.get_length()):
 		return
 	var path = ''
 	var array = []
@@ -1389,6 +1391,11 @@ func _on_music_finished():
 	if get_node("music").get_meta("currentsong") == 'mansion':
 		get_node("music").set_meta("currentsong", 'over')
 		music_set("mansion")
+	elif get_node("music").get_meta("currentsong") == 'combat':
+		get_node("music").set_meta("currentsong", 'over')
+		music_set("combat")
+	else:
+		music_set(get_node("music").get_meta("currentsong"))
 
 
 
@@ -2656,7 +2663,7 @@ func _on_startcombat_pressed():
 			i[j] = 100
 	get_node("outside").gooutside()
 	globals.state.backpack.stackables.rope = 3
-	get_node("explorationnode").zoneenter("undercityruins")
+	get_node("explorationnode").zoneenter(startcombatzone)
 	#get_node("combat").start_battle()
 
 func checkplayergroup():
