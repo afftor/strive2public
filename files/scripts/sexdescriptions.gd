@@ -37,6 +37,14 @@ func decoder(text, tempgivers = null, temptakers = null):
 		'[s/2]' : '' if takers.size() >= 2 or takers[0].person == globals.player else 's',
 		'[es/1]' : '' if givers.size() >= 2 or givers[0].person == globals.player else 'es',
 		'[es/2]' : '' if takers.size() >= 2 or takers[0].person == globals.player else 'es',
+		#verb endings involving objects and body actions
+		#same as above, but only takes number into account
+		'[ies/y#1]' : 'y' if givers.size() >= 2 else 'ies',
+		'[ies/y#2]' : 'y' if takers.size() >= 2 else 'ies',
+		'[s/#1]' : '' if givers.size() >= 2 else 's',
+		'[s/#2]' : '' if takers.size() >= 2 else 's',
+		'[es/#1]' : '' if givers.size() >= 2 else 'es',
+		'[es/#2]' : '' if takers.size() >= 2 else 'es',
 		#nouns
 		'[y/ies1]' : 'ies' if givers.size() >= 2 else 'y',
 		'[y/ies2]' : 'ies' if takers.size() >= 2 else 'y',
@@ -53,30 +61,55 @@ func decoder(text, tempgivers = null, temptakers = null):
 		'[it2]' : 'them' if takers.size() >= 2 else 'it',
 		'[he1]' : he(givers),
 		'[he2]' : he(takers),
+		'[he3]' : he(givers + takers),
 		'[him1]' : him(givers),
 		'[him2]' : him(takers),
+		'[him3]' : him(givers + takers),
 		'[himself1]' : himself(givers),
 		'[himself2]' : himself(takers),
+		'[himself3]' : himself(givers + takers),
 		'[his1]' : his(givers),
 		'[his2]' : his(takers),
+		'[his3]' : his(givers + takers),
+		'[his_1]' : his_(givers),
+		'[his_2]' : his_(takers),
+		'[his_3]' : his_(givers + takers),
 		#proper nouns
 		'[name1]' : name(givers),
 		'[name2]' : name(takers),
+		'[name3]' : name(givers + takers),
 		'[names1]' : names(givers),
 		'[names2]' : names(takers),
+		'[names3]' : names(givers + takers),
 		'[partner1]' : partner(givers),
 		'[partner2]' : partner(takers),
+		'[partner3]' : partner(givers + takers),
 		'[partners1]' : partners(givers),
 		'[partners2]' : partners(takers),
+		'[partners3]' : partners(givers + takers),
 		#body parts
 		'[pussy1]' : pussy(givers),
 		'[pussy2]' : pussy(takers),
+		'[pussy3]' : pussy(givers + takers),
 		'[penis1]' : penis(givers),
 		'[penis2]' : penis(takers),
+		'[penis3]' : penis(givers + takers),
 		'[ass1]' : ass(givers),
 		'[ass2]' : ass(takers),
+		'[ass3]' : ass(givers + takers),
 		'[tits1]' : tits(givers),
 		'[tits2]' : tits(takers),
+		'[tits3]' : tits(givers + takers),
+		#sex actions
+		'[fuck1]' : fuck(givers),
+		'[fuck2]' : fuck(takers),
+		'[fuck3]' : fuck(givers + takers),
+		'[fucks1]' : fucks(givers),
+		'[fucks2]' : fucks(takers),
+		'[fucks3]' : fucks(givers + takers),
+		'[fucking1]' : fucking(givers),
+		'[fucking2]' : fucking(takers),
+		'[fucking3]' : fucking(givers + takers),
 		#unfinished
 		'[body1]' : 'bodies' if givers.size() >= 2 else body(givers[0]),
 		'[body2]' : 'bodies' if takers.size() >= 2 else body(takers[0]),
@@ -85,6 +118,12 @@ func decoder(text, tempgivers = null, temptakers = null):
 		'[anus1]' : 'anuses' if givers.size() >= 2 else anus(givers[0]),
 		'[anus2]' : 'anuses' if takers.size() >= 2 else anus(takers[0]),
 	}
+	
+	#some tricks to make proper nouns easier
+	if text.find("[name1]") + text.find("[names1]") < -1:
+		replacements['[he1]'] = name(givers)
+	if text.find("[name2]") + text.find("[names2]") < -1:
+		replacements['[he2]'] = name(takers)
 	
 	#replace
 	for i in replacements:
@@ -180,6 +219,18 @@ func his(group):
 	else:
 		return 'their'
 
+func his_(group):
+	for i in group:
+		if i.person == globals.player:
+			return 'yours'
+	if group.size() == 1:
+		if group[0].sex == 'male':
+			return 'his'
+		else:
+			return 'hers'
+	else:
+		return 'theirs'
+
 func him(group):
 	for i in group:
 		if i.person == globals.player:
@@ -260,6 +311,58 @@ func names(group):
 	if group.size() > 1 or (group.size() > 0 && group[0].person != globals.player):
 		text += "'s"
 	return text
+
+#no recursive functions allowed in godot so this looks semi-horrible, but whatever
+func fuck(group):
+	var outputs = []
+	var temp = ''
+	outputs += [getrandomfromarray(['fuck','plow','screw','penetrate','churn','pummel','massage the inside of'])]
+	temp = getrandomfromarray(['plunge','hammer','pound','pump','slam','thrust','grind','drive'])
+	temp += getrandomfromarray([' ' + his(group) + ' ' + penis(group),''])
+	temp += getrandomfromarray([' deep','']) + ' into'
+	outputs += [temp]
+	temp = getrandomfromarray(['plunge','pump','slide','thrust'])
+	temp += getrandomfromarray([' ' + his(group) + ' ' + penis(group),'']) + ' in and out of'
+	outputs += [temp]
+	temp = getrandomfromarray(['plunge','thrust'])
+	temp += ' ' + getrandomfromarray([his(group) + ' ' + penis(group),himself(group)])
+	temp += ' ' + getrandomfromarray(['in and out of','inside'])
+	outputs += [temp]
+	return outputs[randi()%outputs.size()]
+
+func fucks(group):
+	var outputs = []
+	var temp = ''
+	outputs += [getrandomfromarray(['fucks','plows','screws','penetrates','churns','pummels','massages the inside of'])]
+	temp = getrandomfromarray(['plunges','hammers','pounds','pumps','slams','thrusts','grinds','drives'])
+	temp += getrandomfromarray([' ' + his(group) + ' ' + penis(group),''])
+	temp += getrandomfromarray([' deep','']) + ' into'
+	outputs += [temp]
+	temp = getrandomfromarray(['plunges','pumps','slides','thrusts'])
+	temp += getrandomfromarray([' ' + his(group) + ' ' + penis(group),'']) + ' in and out of'
+	outputs += [temp]
+	temp = getrandomfromarray(['plunges','thrusts'])
+	temp += ' ' + getrandomfromarray([his(group) + ' ' + penis(group),himself(group)])
+	temp += ' ' + getrandomfromarray(['in and out of','into','inside'])
+	outputs += [temp]
+	return outputs[randi()%outputs.size()]
+
+func fucking(group):
+	var outputs = []
+	var temp = ''
+	outputs += [getrandomfromarray(['fucking','plowing','screwing','penetrating','churning','pummeling','massaging the inside of'])]
+	temp = getrandomfromarray(['plunging','hammering','pounding','pumping','slaming','thrusting','grinding','driving'])
+	temp += getrandomfromarray([' ' + his(group) + ' ' + penis(group),''])
+	temp += getrandomfromarray([' deep','']) + ' into'
+	outputs += [temp]
+	temp = getrandomfromarray(['plunging','pumping','sliding','thrusting'])
+	temp += getrandomfromarray([' ' + his(group) + ' ' + penis(group),'']) + ' in and out of'
+	outputs += [temp]
+	temp = getrandomfromarray(['plunging','thrusting'])
+	temp += ' ' + getrandomfromarray([his(group) + ' ' + penis(group),himself(group)])
+	temp += ' ' + getrandomfromarray(['in and out of','into','inside'])
+	outputs += [temp]
+	return outputs[randi()%outputs.size()]
 
 #this could be added to the race dictionaries instead
 const racenames = {
@@ -467,7 +570,7 @@ func partner(group):
 			array1 += ["small","young","adolescent"]
 			array2 += ["child"] if group.size() == 1 else ["children"]
 		elif mp.age == 'teen':
-			array1 += ['young','adolescent']
+			array1 += ['young']
 			array2 += ["teen"] if group.size() == 1 else ["teens"]
 		else:
 			array1 += ['mature', 'adult']
@@ -475,13 +578,16 @@ func partner(group):
 		if mp.cour < 40:
 			array1 += ['shy','meek']
 		if mp.charm > 60:
-			array1 += ['charming']
+			if mp.age == 'child':
+				array1 += ['cute']
+			else:
+				array1 += ['charming','enchanting']
 		if mp.wit > 80:
 			array1 += ['clever']
 		if mp.conf > 65:
 			array1 += ['proud','haughty']
 		if mp.height in ['petite','shortstack']:
-			array1 += ["tiny","petite","small"]
+			array1 += ["tiny","petite","small","diminutive"]
 		elif mp.height in ['tall', 'towering']:
 			array1 += ["huge","tall","large"]
 		if i.lust > 300:
@@ -554,7 +660,7 @@ func partners(group):
 			array1 += ["small","young","adolescent"]
 			array2 += ["child's"] if group.size() == 1 else ["childrens'"]
 		elif mp.age == 'teen':
-			array1 += ['young','adolescent']
+			array1 += ['young']
 			array2 += ["teen's"] if group.size() == 1 else ["teens'"]
 		else:
 			array1 += ['mature', 'adult']
@@ -562,13 +668,16 @@ func partners(group):
 		if mp.cour < 40:
 			array1 += ['shy','meek']
 		if mp.charm > 60:
-			array1 += ['charming']
+			if mp.age == 'child':
+				array1 += ['cute']
+			else:
+				array1 += ['charming','enchanting']
 		if mp.wit > 80:
 			array1 += ['clever']
 		if mp.conf > 65:
 			array1 += ['proud','haughty']
 		if mp.height in ['petite','shortstack']:
-			array1 += ["tiny","petite","small"]
+			array1 += ["tiny","petite","small","diminutive"]
 		elif mp.height in ['tall', 'towering']:
 			array1 += ["huge","tall","large"]
 		if i.lust > 300:
@@ -627,10 +736,12 @@ func body(member):
 	var person = member.person
 	if person.age == 'child':
 		array += ["small", "petite", "slender", "dainty"]
-	elif person.height in ['shortstack','petite']:
-		array += ["small","petite","shorty"]
-	if person.age in ['adult','teen']:
+	elif person.age in ['teen']:
+		array += ["shapely","enticing","slender"]
+	elif person.age in ['adult']:
 		array += ["well-rounded","voluptuous","seductive","curvaceous","shapely"]
+	if person.height in ['shortstack','petite']:
+		array += ["small","petite","tiny"]
 	if person.bodyshape == 'jelly':
 		array += ["transparent", "jelly", "gelatinous"]
 	elif person.bodyshape == 'halfhorse':
@@ -651,7 +762,7 @@ func penis(group):
 	var tarray = []
 	for i in group:
 		array1 = []
-		array2 = ['cock','dick','penis'] if group.size() == 1 else ['cocks','dicks','penises']
+		array2 = ['cock','dick','penis','shaft'] if group.size() == 1 else ['cocks','dicks','penises','shafts']
 		var mp = i.person
 		#size/age descriptors
 		if mp.penis == 'small':
@@ -772,7 +883,7 @@ func ass(group):
 		if mp.asssize == 'flat':
 			array1 += ["flat","compact"]
 			if mp.age == 'teen':
-				array1 += ["tiny","developing","child-like"]
+				array1 += ["tiny","developing","childlike"]
 			elif mp.age == 'child':
 				array1 += ["tiny","developing","undeveloped","immature"]
 		elif mp.asssize == 'small':
@@ -845,34 +956,38 @@ func tits(group):
 	var tarray = []
 	for i in group:
 		array1 = []
-		array2 = ["tits","boobs","chest"] if group.size() == 1 else ["tits","boobs","chests"]
+		array2 = ["tits","boobs","breasts","chest"] if group.size() == 1 else ["tits","boobs","breasts","chests"]
 		var mp = i.person
 		#size/age descriptors
-		if mp.asssize == 'flat':
+		if mp.sex == 'male':
+			array2 = ["chest","pecs"] if group.size() == 1 else ["chests","pecs"]
+		if mp.titssize == 'masculine':
+			array1 += ["muscular","strong","toned"]
+		elif mp.titssize == 'flat':
 			array1 += ["flat","small"]
 			if mp.age == 'teen':
-				array1 += ["tiny","developing","child-like"]
+				array1 += ["tiny","developing","childlike"]
 			elif mp.age == 'child':
 				array1 += ["tiny","developing","undeveloped","immature"]
-		elif mp.asssize == 'small':
+		elif mp.titssize == 'small':
 			array1 += ["small","compact"]
 			if mp.age == 'teen':
 				array1 += ["developing"]
 			elif mp.age == 'child':
 				array1 += ["undeveloped","immature"]
-		elif mp.asssize == 'average':
+		elif mp.titssize == 'average':
 			array1 += ["round","well-rounded","shapely"]
 			if mp.age == 'teen':
 				array1 += ["well-developed"]
 			elif mp.age == 'child':
 				array1 += ["well-developed","impressively large"]
-		elif mp.asssize == 'big':
+		elif mp.titssize == 'big':
 			array1 += ["big","sizeable","plump","hefty"]
 			if mp.age == 'teen':
 				array1 += ["well-developed","impressively large"]
 			elif mp.age == 'child':
 				array1 += ["overgrown","surprisingly large"]
-		elif mp.asssize == 'huge':
+		elif mp.titssize == 'huge':
 			array1 += ["huge","massive","fat","meaty","gigantic","enormous"]
 			if mp.age == 'teen':
 				array1 += ["well-developed","surprisingly large"]

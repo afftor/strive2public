@@ -1,7 +1,7 @@
 extends Node
 
 const category = 'fucking'
-const code = 'missionary'
+const code = 'doggy'
 var givers
 var takers
 const canlast = true
@@ -31,10 +31,10 @@ func requirements():
 	return valid
 
 func getname(state = null):
-	return "Missionary"
+	return "Doggy Style"
 
 func getongoingname(givers, takers):
-	return "[name1] fuck[s/1] [name2] in the missionary position."
+	return "[name1] fuck[s/1] [name2] doggy style."
 
 func givereffect(member):
 	var result
@@ -69,7 +69,7 @@ const ongoing = ['main_1_sexv','main_2_sexv']
 
 const reaction = ['react_1_sex','react_2_sex','react_3_sexv']
 
-const links = [code, "missionaryanal", "doggy", "doggyanal"]
+var links = [code, "doggyanal", "missionary", "missionaryanal"]
 
 const act_lines = {
 
@@ -77,42 +77,42 @@ start_1_sexv = {
 	
 	repeat_nice = {
 	conditions = {
-		link = [code, "missionaryanal"],
+		link = [code, "doggyanal"],
 		consent = [true],
 	},
 	lines = [
-		"[name1] {^hold:lift}[s/1] [names2] legs{^ over [his2] head: apart}",
-		"[name1] {^hug:hold:squeeze}[s/1] [name2] close to [him1]",
+		"[name1] {^hold[s/1]:secure[s/1]:stead[ies/y1]} [name2] by [his2] {^hips:waist[/s2]}",
+		"[name1] {^squeeze:hold:grab}[s/1] [names2] {^ass:butt}cheeks",
 	]},
 	
 	repeat_mean = {
 	conditions = {
-		link = [code, "missionaryanal"],
+		link = [code, "doggyanal"],
 		consent = [false],
 	},
 	lines = [
-		"[name1] {^roughly :}{^pull[s/1]:spread[s/1]:hold[s/1]} [names2] legs{^ over [his2] head: apart}",
-		"[name1] {^pin[s/1]:hold[s/1]} [name2] down",
+		"[name1] {^roughly :}{^grabs[s/1]:seize[s/1]} [name2] by [his2] {^hips:waist[/s2]}",
+		"[name1] {^pin[s/1]:hold[s/1]} [name2] down {^on all fours:on [his2] knees}",
 	]},
 	
-	doggy_nice = {
+	missionary_nice = {
 	conditions = {
-		link = ["doggy", "doggyanal"],
+		link = ["missionary", "missionaryanal"],
 		consent = [true],
 	},
 	lines = [
-		"[name1] {^flip:roll:turn}[s/1] [name2] over {^onto [his2] back[/s2]:to face [him1]}",
-		"[name1] {^lift:guide:pull}[s/1] [name2] up off [his2] hands and knees and {^flip:roll:turn}[s/1] [him2] over",
+		"[name1] {^flip:roll:turn}[s/1] [name2] over onto {^all fours:[his2] knees:[his2] hands and knees}",
+		"[name1] {^lift:guide:pull}[s/1] [name2] up off [his2] back[/s2] and {^flip:roll:turn}[s/1] [him2] over",
 	]},
 	
-	doggy_mean = {
+	missionary_mean = {
 	conditions = {
-		link = ["doggy", "doggyanal"],
+		link = ["missionary", "missionaryanal"],
 		consent = [false],
 	},
 	lines = [
-		"[name1] {^flip:roll:turn}[s/1] [name2] over {^onto [his2] back[/s2]:to face [him1]}",
-		"[name1] {^yank:jerk:pull}[s/1] [name2] up off [his2] hands and knees and {^flip:roll:turn}[s/1] [him2] over",
+		"[name1] {^flip:roll:turn}[s/1] [name2] over onto {^all fours:[his2] knees:[his2] hands and knees}",
+		"[name1] {^yank:jerk:pull}[s/1] [name2] up off [his2] back[/s2] and {^flip:roll:turn}[s/1] [him2] over",
 	]},
 	
 	insert_nice = {
@@ -121,8 +121,8 @@ start_1_sexv = {
 		consent = [true],
 	},
 	lines = [
-		"[name1] {^gently :}{^lay:set}[s/1] [name2] down{^ on [his2] back:}",
-		"[name1] {^roll:shift}[s/1] [name2] onto [his2] back",
+		"[name1] {^gently :}{^guide:set}[s/1] [name2] down onto {^all fours:[his2] knees}",
+		"[name1] {^roll:shift}[s/1] [name2] onto [his2] hands and knees",
 	]},
 	
 	insert_mean = {
@@ -131,8 +131,8 @@ start_1_sexv = {
 		consent = [false],
 	},
 	lines = [
-		"[name1] {^roughly :}{^push[es/1]:pin[s/1]:hold[s/1]} [name2] down{^ on [his2] back:}",
-		"[name1] {^toss[es/1]:throw[s/1]} [name2] onto [his2] back",
+		"[name1] {^roughly :}{^push[es/1]:pin[s/1]:hold[s/1]} [name2] down {^on all fours:on [his2] knees}",
+		"[name1] {^toss[es/1]:throw[s/1]} [name2] onto [his2] hands and knees",
 	]},
 	
 },
@@ -141,7 +141,7 @@ start_2_sexv = {
 	
 	swap_nice = {
 	conditions = {
-		link = ["doggy"],
+		link = ["missionary"],
 		consent = [true],
 	},
 	lines = [
@@ -150,11 +150,11 @@ start_2_sexv = {
 	
 	swap_mean = {
 	conditions = {
-		link = ["doggy"],
+		link = ["missionary"],
 		consent = [false],
 	},
 	lines = [
-		"{^ before continuing to:, beginning again to} {^agressively :roughly :savagely :}[fuck1] [his2] [pussy2]. ",
+		"{^ before continuing to:, beginning again to} {^agressively :roughly :savagely :}[fuck1] [his2] [pussy2]{^ from behind:}. ",
 	]},
 	
 	repeat_nice = {
@@ -163,7 +163,7 @@ start_2_sexv = {
 		consent = [true],
 	},
 	lines = [
-		"{^,: while:, all the while} continuing to [fuck1] [his2] [pussy2]{^ from above:}. ",
+		"{^,: while: all the while} continuing to [fuck1] [his2] [pussy2]{^ from behind:}. ",
 	]},
 	
 	repeat_mean = {
@@ -172,7 +172,7 @@ start_2_sexv = {
 		consent = [false],
 	},
 	lines = [
-		"{^,: while:, all the while} continuing to {^agressively :roughly :savagely :}[fuck1] [his2] [pussy2]{^ from above:}. ",
+		"{^,: while: all the while} continuing to {^agressively :roughly :savagely :}[fuck1] [his2] [pussy2]{^ from behind:}. ",
 	]},
 	
 	holeswap = {
@@ -189,7 +189,8 @@ start_2_sexv = {
 		link = [null],
 	},
 	lines = [
-		", {^spreading:parting:pulling apart:holding apart} [his2] thighs to expose [his2] [pussy2]. ",
+		", {^adjusting:rolling} [his2] hips forward to expose [his2] [pussy2]. ",
+		", {^pressing:pushing} [his2] upper body downward to expose [his2] [pussy2]. ",
 		", {^aligning:lining up} [his1] [penis1] with the {^enterance:mouth} of [his2] [pussy2]. ",
 		", {^probing:pressing} {^the tip of :}[his1] [penis1] into the {^enterance:mouth} of [his2] [pussy2]. ",
 	]},
@@ -204,7 +205,7 @@ main_1_sexv = {
 		consent = [true],
 	},
 	lines = [
-		"[name2] {^brace[s/2] [himself2]:steels [his2] resolve:stare[s/2] down with wide eyes}",
+		"[name2] {^brace[s/2] [himself2]:steels [his2] resolve:stare[s/2] back with wide eyes}",
 	]},
 	
 	virgin_mean = {
@@ -213,7 +214,7 @@ main_1_sexv = {
 		consent = [false],
 	},
 	lines = [
-		"[name2] {^brace[s/2] [himself2]:reels with shock:stare[s/2] down with horror}",
+		"[name2] {^brace[s/2] [himself2]:reels with shock:stare[s/2] back with horror}",
 	]},
 	
 	nice = {
@@ -222,7 +223,7 @@ main_1_sexv = {
 		consent = [true],
 	},
 	lines = [
-		"[name2] {^throw[s/2] [his2] arms around:wrap[s/2] [his2] legs around} [name1]",
+		"[name2] {^stare:glance:look}[s/2] {^back:backward} {^over [his2] shoulder :}at [name1]",
 	]},
 	
 	mean = {
@@ -231,7 +232,7 @@ main_1_sexv = {
 		consent = [false],
 	},
 	lines = [
-		"[name2] {^helplessly :fruitlessly :}tr[ies/y2] to {^push:move} away",
+		"[name2] {^helplessly :fruitlessly :}tr[ies/y2] to {^crawl:move} away",
 	]},
 	
 },
@@ -241,20 +242,20 @@ main_2_sexv = {
 	repeat = {
 	conditions = {
 		virgin = [false],
-		link = [code, "doggy"],
+		link = [code, "missionary"],
 	},
 	lines = [
-		" as [he1] [fucks1] [partners2] {^[body2]:[pussy2]}. ",
+		" as [he1] [fucks1] [partners2] {^[body2]:[pussy2]}{^ from behind:}. ",
 	]},
 	
 	insert = {
 	conditions = {
 		virgin = [false],
-		link = [null, "missionaryanal", "doggyanal"],
+		link = [null, "doggyanal", "missionaryanal"],
 	},
 	lines = [
-		" as [he1] {^slide[s/1]:push[es/1]} [himself1] {^down:deep} {^into:inside} [partners2] {^[body2]:[pussy2]}. ",
-		" as [he1] {^begin:start}[s/1] [fucking1] [partners2] {^[body2]:[pussy2]}. ",
+		" as [he1] {^slide[s/1]:push[es/1]} [himself1] {^down:deep} {^into:inside} [partners2] {^[body2]:[pussy2]}{^ from behind:}. ",
+		" as [he1] {^begin:start}[s/1] [fucking1] {^[body2]:[pussy2]}{^ from behind:}. ",
 	]},
 	
 },
@@ -265,7 +266,7 @@ react_3_sexv = {
 	conditions = {
 	},
 	lines = [
-		" as [name1] [fucks1] [partner2].",
+		" as [name1] [fucks1] [partner2] {^like [an /2]animal[/s2]:like a dog in heat}.",
 	]},
 	
 },
