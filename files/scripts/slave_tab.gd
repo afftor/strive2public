@@ -306,7 +306,7 @@ func regulationdescription():
 		slave.work = 'rest'
 	text = slave.dictionary(jobdict[slave.work].workline + '\n')
 	if slave.brand == 'none':
-		text = text + '[color=red]Currently, $he is not branded. [/color]\n'
+		text = text + '[color=#ff4949]Currently, $he is not branded. [/color]\n'
 	elif slave.brand == 'basic':
 		text = text + 'On $his neck you can recognize the magic [color=green]brand[/color] you left on $him.\n'
 	elif slave.brand == 'advanced':
@@ -757,7 +757,7 @@ func _on_applybutton_pressed():
 	elif tattootheme == 'none':
 		return
 	elif globals.itemdict.magicessenceing.amount < 1 || globals.itemdict.supply.amount < 1:
-		get_tree().get_current_scene().infotext("[color=red]Not enough resources[/color]")
+		get_tree().get_current_scene().infotext("Not enough resources",'red')
 		return
 	else:
 		globals.itemdict.magicessenceing.amount -= 1

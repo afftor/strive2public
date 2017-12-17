@@ -74,9 +74,9 @@ func paperdollpressed(button):
 		newbutton.set_hidden(false)
 		newbutton.connect("pressed", self, 'selectitemforslot', ['clothcommon'])
 	elif button.get_name() == 'underwear' && slave.gear.underwear != 'underwearplain':
-		newbutton.get_node("icon").set_texture(load("res://files/images/items/underwear.png"))
 		newbutton = get_node("selectitem/selectpanel/ScrollContainer/VBoxContainer/button").duplicate()
 		get_node("selectitem/selectpanel/ScrollContainer/VBoxContainer").add_child(newbutton)
+		newbutton.get_node("icon").set_texture(load("res://files/images/items/underwear.png"))
 		newbutton.set_text("Plain Underwear")
 		newbutton.set_hidden(false)
 		newbutton.connect("pressed", self, 'selectitemforslot', ['underwearplain'])

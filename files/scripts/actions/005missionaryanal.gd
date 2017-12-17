@@ -10,6 +10,8 @@ const targeteffects = {lust = 50, sens = 100, pain = 40}
 const giverpart = 'penis'
 const takerpart = 'anus'
 const virginloss = true
+var giverconsent = 'basic'
+var takerconsent = 'any'
 
 func requirements():
 	var valid = true
@@ -35,7 +37,7 @@ func getname(state = null):
 		return "Missionary Anal"
 
 func getongoingname(givers, takers):
-	return "[name1] fuck[s/1] [names2] ass[/es2] in the missionary position."
+	return "[name1] thrust[s/1] [his1] tail in and out of [names2] [ass2]."
 
 func givereffect(member):
 	var result
@@ -46,6 +48,9 @@ func givereffect(member):
 		result = 'average'
 	else:
 		result = 'bad'
+	if member.person.penis == 'none':
+		effects.sens /= 1.2
+		effects.lust /= 1.2
 	return [result, effects]
 
 func takereffect(member):
@@ -59,9 +64,6 @@ func takereffect(member):
 		result = 'bad'
 	if member.lube < 5:
 		effects.pain = 3
-	if member.person.penis == 'none':
-		effects.sens /= 1.2
-		effects.lust /= 1.2
 	return [result, effects]
 
 const initiate = ['start_1_sexa','start_2_sexa']

@@ -10,6 +10,8 @@ const targeteffects = {lust = 50, sens = 100, pain = 40}
 const giverpart = 'penis'
 const takerpart = 'anus'
 const virginloss = true
+var giverconsent = 'basic'
+var takerconsent = 'any'
 
 func requirements():
 	var valid = true

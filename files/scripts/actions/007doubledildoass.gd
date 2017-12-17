@@ -9,6 +9,8 @@ var givereffects = {lust = 50, sens = 20}
 var targeteffects = {lust = 50, sens = 100}
 var giverpart = 'anus'
 var takerpart = 'anus'
+var giverconsent = 'advanced'
+var takerconsent = 'advanced'
 
 func getname(state = null):
 	return "Double Anal Dildo"

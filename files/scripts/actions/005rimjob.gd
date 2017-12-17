@@ -9,6 +9,8 @@ var givereffects = {lust = 50, sens = 20}
 var targeteffects = {lust = 50, sens = 100}
 var giverpart = 'mouth'
 var takerpart = 'anus'
+var giverconsent = 'advanced'
+var takerconsent = 'any'
 
 func getname(state = null):
 	return "Rimjob"

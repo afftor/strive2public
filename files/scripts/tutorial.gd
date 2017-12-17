@@ -2,12 +2,12 @@ extends Node
 
 
 var alisesprites = {
-neutral = {costume1 = load('res://files/images/alise/006.png'), costume2 = load('res://files/images/alise/018.png'), naked = load('res://files/images/alise/025.png')},
-happy1 = {costume1 = load('res://files/images/alise/004.png'), costume2 = load('res://files/images/alise/016.png'), naked = load('res://files/images/alise/026.png')},
-happy2 = {costume1 = load('res://files/images/alise/008.png'), costume2 = load('res://files/images/alise/020.png'), naked = load('res://files/images/alise/027.png')},
-wink1 = {costume1 = load('res://files/images/alise/003.png'), costume2 = load('res://files/images/alise/015.png'), naked = load('res://files/images/alise/028.png')},
-wink2 = {costume1 = load('res://files/images/alise/009.png'), costume2 = load('res://files/images/alise/021.png'), naked = load('res://files/images/alise/029.png')},
-side = {costume1 = load('res://files/images/alise/005.png'), costume2 = load('res://files/images/alise/017.png'), naked = load('res://files/images/alise/030.png')},
+neutral = {costume1 = load('res://files/images/alise/006.png'), costume2 = load('res://files/images/alise/018.png'), naked = load('res://files/images/alise/025.png'), christmas = load('res://files/images/alise/031.png')},
+happy1 = {costume1 = load('res://files/images/alise/004.png'), costume2 = load('res://files/images/alise/016.png'), naked = load('res://files/images/alise/026.png'), christmas = load('res://files/images/alise/032.png')},
+happy2 = {costume1 = load('res://files/images/alise/008.png'), costume2 = load('res://files/images/alise/020.png'), naked = load('res://files/images/alise/027.png'), christmas = load('res://files/images/alise/033.png')},
+wink1 = {costume1 = load('res://files/images/alise/003.png'), costume2 = load('res://files/images/alise/015.png'), naked = load('res://files/images/alise/028.png'), christmas = load('res://files/images/alise/034.png')},
+wink2 = {costume1 = load('res://files/images/alise/009.png'), costume2 = load('res://files/images/alise/021.png'), naked = load('res://files/images/alise/029.png'), christmas = load('res://files/images/alise/035.png')},
+side = {costume1 = load('res://files/images/alise/005.png'), costume2 = load('res://files/images/alise/017.png'), naked = load('res://files/images/alise/030.png'), christmas = load('res://files/images/alise/036.png')},
 }
 
 
@@ -161,13 +161,19 @@ call = [
 {text = "What can I do for you?", choice = 'menu'},
 ],
 gallery = [
-{sprite = 'neutral', text = "With pleasure."},
+{sprite = 'happy1', text = "With pleasure."},
 {funct = 'galleryshow'}
 ],
 redresslingerie = [
 {sprite = 'side', text = "That's... a bold request. Alright, hold on!", funct = ['hide', 'aliselingerie']},
 {sprite = 'side', text = "Do you enjoy what you see?", funct = ['unhide']},
 {text = "Please, try not to stare too hard.  Even I can get embarrassed at times."},
+{sprite = 'happy1',text = "Would you like anything else?", choice = 'menu'}
+],
+redresschristmas = [
+{sprite = 'happy1', text = "It's that time of year already?"},
+{sprite = 'side', text = "I'll be right back.", funct = ['hide', 'alisechristmas']},
+{sprite = 'happy2', text = "I'm feeling merry now!", funct = ['unhide']},
 {sprite = 'happy1',text = "Would you like anything else?", choice = 'menu'}
 ],
 redressnaked = [
@@ -235,6 +241,7 @@ alisechange = [
 {text = "Default costume", funct = "alisechangenorm"},
 {text = "Lingerie", funct = "alisechangelingerie"},
 {text = "Naked", funct = "alisechangenaked"},
+{text = "Christmas", funct = 'alisechangechristmas'}
 ],
 }
 
@@ -257,7 +264,11 @@ func _ready():
 	set_process(true)
 	get_node("speech/RichTextLabel").connect("mouse_enter", self, 'stopinput')
 	get_node("speech/RichTextLabel").connect("mouse_exit", self, 'startinput')
-	
+	var date = OS.get_date()
+	if globals.state.supporter == false && globals.state.alisecloth == 'normal' && ((OS.get_date().month == 12 && date.day > 14) || (OS.get_date().month == 1 && date.day < 12)):
+		globals.state.alisecloth = 'christmas'
+	elif globals.state.supporter == false && globals.state.alisecloth == 'christmas' && ((!OS.get_date().month in [1,12]) || (OS.get_date().month == 1 && date.day >= 12) || (OS.get_date().month == 12 && date.day <= 14)):
+		globals.state.alisecloth = 'normal'
 #	starttutorial()
 
 func _input(event):
@@ -343,7 +354,7 @@ func show(dict):
 		nochoice()
 
 func buildbody(node, sprite):
-	var dict = {normal = 'costume1', naked = 'naked', lingerie = 'costume2' }
+	var dict = {normal = 'costume1', naked = 'naked', lingerie = 'costume2' , christmas = 'christmas'}
 	var texture = alisesprites[sprite][dict[globals.state.alisecloth]]
 	node.set_texture(texture)
 
@@ -445,11 +456,19 @@ func alisenormal():
 func aliselingerie():
 	globals.state.alisecloth = 'lingerie'
 
+func alisechristmas():
+	globals.state.alisecloth = 'christmas'
+
 func alisechangenorm():
 	self.currentdict = textdict.redressnorm
 
 func alisechangelingerie():
 	self.currentdict = textdict.redresslingerie
+
+
+func alisechangechristmas():
+	self.currentdict = textdict.redresschristmas
+
 	
 func alisechangenaked():
 	self.currentdict = textdict.redressnaked

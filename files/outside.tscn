@@ -869,6 +869,7 @@ max_lines_visible = -1
 
 [node name="playergroupdetails" type="Panel" parent="."]
 
+editor/display_folded = true
 visibility/visible = false
 anchor/right = 1
 anchor/bottom = 1
@@ -1720,7 +1721,6 @@ max_lines_visible = -1
 
 [node name="statspanel" parent="slavebuypanel" instance=ExtResource( 20 )]
 
-editor/display_folded = true
 margin/left = -785.0
 margin/top = 53.0
 margin/right = -1076.0
@@ -1734,8 +1734,8 @@ margin/right = 23.5
 
 [node name="sstr" parent="slavebuypanel/statspanel"]
 
-margin/left = 112.5
-margin/right = 85.5
+margin/left = 111.5
+margin/right = 84.5
 
 [node name="sagi" parent="slavebuypanel/statspanel"]
 
@@ -1759,8 +1759,8 @@ margin/right = -122.5
 
 [node name="cour" parent="slavebuypanel/statspanel"]
 
-margin/left = -21.5
-margin/right = -48.5
+margin/left = -22.5
+margin/right = -49.5
 
 [node name="conf" parent="slavebuypanel/statspanel"]
 
@@ -2685,10 +2685,10 @@ focus/ignore_mouse = true
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
-margin/left = 277.0
-margin/top = 19.0
-margin/right = 39.0
-margin/bottom = 273.0
+margin/left = 287.0
+margin/top = 21.0
+margin/right = 41.0
+margin/bottom = 289.0
 expand = true
 stretch_mode = 0
 

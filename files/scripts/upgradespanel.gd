@@ -57,9 +57,9 @@ func categoryselect(button):
 		get_node("upgrades/VBoxContainer").add_child(newbutton)
 		newbutton.set_text(upgrade.name)
 		if upgrade.levels == currentupgradelevel:
-			newbutton.set('custom_colors/font_color', Color(0,1,0))
-			newbutton.set('custom_colors/font_color_hover', Color(0,1,0))
-			newbutton.set('custom_colors/font_color_pressed', Color(0,1,0))
+			newbutton.set('custom_colors/font_color', Color(0,0.4,0))
+			#newbutton.set('custom_colors/font_color_hover', Color(0.2,0.8,0.2))
+			#newbutton.set('custom_colors/font_color_pressed', Color(0.2,0.8,0.2))
 		newbutton.set_hidden(false)
 		newbutton.set_meta("upgrade", upgrade)
 		newbutton.connect("pressed",self,'upgradeselected',[upgrade])

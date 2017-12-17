@@ -9,6 +9,8 @@ var givereffects = {lust = 50, sens = 20}
 var targeteffects = {lust = 50, sens = 100}
 var giverpart = 'mouth'
 var takerpart = 'penis'
+var giverconsent = 'basic'
+var takerconsent = 'basic'
 
 func getname(state = null):
 	return "Blowjob"

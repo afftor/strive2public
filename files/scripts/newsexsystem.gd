@@ -31,6 +31,9 @@ sens2 = load("res://files/buttons/sexicons/sens2.png"),
 sens3 = load("res://files/buttons/sexicons/sens3.png"),
 sens4 = load("res://files/buttons/sexicons/sens4.png"),
 sens5 = load("res://files/buttons/sexicons/sens5.png"),
+stress1 = load("res://files/buttons/icons/stress/2.png"),
+stress2 = load("res://files/buttons/icons/stress/1.png"),
+stress3 = load("res://files/buttons/icons/stress/3.png")
 }
 
 
@@ -101,11 +104,6 @@ class member:
 		if values.has('pain'):
 			paininput = values.pain
 		
-		if values.has('tags'):
-			if values.tags.find('sexpain') >= 0 && person.asser < 50 && randf() < 0.1:
-				person.add_trait("Likes it rough")
-			if values.tags.find('sexpain') >= 0 && randf() < 0.25 && lust >= 950:
-				person.add_trait("Masochist")
 		
 		if acceptance == 'good':
 			sensinput *= rand_range(1.1,1.4)
@@ -119,9 +117,28 @@ class member:
 			if values.has('pain') == false:
 				person.stress += rand_range(5,10)
 		
-		self.lewd += lewdinput
-		self.lust += lustinput
-		self.sens += sensinput
+		if values.has('tags') && values.tags.has('punish'):
+			if (person.obed < 90 || mode == 'forced') && (!person.traits.has('Masochist') && !person.traits.has('Likes it rough')):
+				person.obed += values.obed
+				person.stress += values.stress
+				if person.effects.has("captured") && randf() >= values.obed/2:
+					person.effects.captured.duration -= 1
+				self.lust += lustinput/4
+				self.sens += sensinput/4
+			else:
+				self.lewd += lewdinput
+				self.lust += lustinput
+				self.sens += sensinput
+				if person.asser < 50 && randf() < 0.1:
+					person.add_trait("Likes it rough")
+				if !person.traits.has('Masochist'):
+					person.stress += values.stress
+			if randf() < 0.20 && lust >= 950:
+				person.add_trait("Masochist")
+		else:
+			self.lewd += lewdinput
+			self.lust += lustinput
+			self.sens += sensinput
 	
 
 func _ready():
@@ -139,6 +156,7 @@ func _ready():
 			i -= 1
 			var slave = globals.newslave(globals.allracesarray[rand_range(0,globals.allracesarray.size())], 'random', 'random')
 			var newmember = member.new()
+			slave.obed = 90
 			newmember.loyalty = slave.loyal
 			newmember.submission = slave.obed
 			newmember.person = slave
@@ -173,7 +191,7 @@ func startsequence(actors, mode = null, secondactors = []):
 		newmember.lewd = slave.lewdness
 		participants.append(newmember)
 	
-	if mode == 'rape':
+	if mode == 'abuse':
 		for slave in secondactors:
 			var newmember = member.new()
 			slave.lastinteractionday = globals.resources.day
@@ -235,11 +253,29 @@ func rebuildparticipantslist():
 		newnode.get_node("lust").set_texture(statsicons['lust' + str(max(1,ceil(i.lust/200)))])
 		newnode.get_node("sens").set_texture(statsicons['sens' + str(max(1,ceil(i.sens/200)))])
 		newnode.get_node("lube").set_texture(statsicons['lub' + str(clamp(ceil(i.lube/2), 1, 5))])
+		newnode.get_node("stress").set_texture(statsicons['stress'+str(clamp(round(i.person.stress/33)+1,1,3))])
+		newnode.get_node("stress").set_tooltip("Stress: " + str(floor(i.person.stress))+"%")
 		newnode.get_node("give").connect("pressed",self,'switchsides',[newnode, 'give'])
 		newnode.get_node("take").connect("pressed",self,'switchsides',[newnode, 'take'])
+		
+		
+		if i.person == globals.player:
+			newnode.get_node("mood").set_hidden(true)
+			continue
+		
+		if i.person.obed < 90:
+			newnode.get_node("mood").set("custom_colors/font_color", Color(1,i.person.obed/100,i.person.obed/100))
+			newnode.get_node("mood").set_text("Rebellious")
+		
 		if i.mode == 'forced':
-			newnode.get_node("name").set("custom_colors/font_color", Color(1,0,0))
-			newnode.get_node("name").set_tooltip("Forced")
+			newnode.get_node("mood").set("custom_colors/font_color", Color(1,i.person.obed/100,i.person.obed/100))
+			newnode.get_node("mood").set_text("Forced")
+		elif i.lust > 200:
+			newnode.get_node("mood").set("custom_colors/font_color", Color(1,0.2,0.8))
+			newnode.get_node("mood").set_text("Horny")
+		else:
+			newnode.get_node("mood").set_text("Neutral")
+		
 	var text = ''
 	
 	#check for double dildo scenes between participants
@@ -328,12 +364,32 @@ func startscene(scenescript, cont = false):
 	scenescript.givers = givers
 	scenescript.takers = takers
 	
+	for i in givers:
+		if i.person == globals.player:
+			continue
+		if scenescript.giverconsent != 'any' && ((i.mode == 'forced' || i.person.obed < 90) && !i.person.traits.has('Masochist') && !i.person.traits.has('Likes it rough') ):
+			get_node("Panel/sceneeffects").set_bbcode(i.person.dictionary("$name refused to do [color=yellow]" + scenescript.getname() + '[/color] (low obedience)'))
+			return
+		elif scenescript.giverconsent == 'advanced' && i.lewd < 50:
+			get_node("Panel/sceneeffects").set_bbcode(i.person.dictionary("$name refused to do [color=yellow]" + scenescript.getname() + '[/color] (low lewdness)'))
+			return
+	for i in takers:
+		if i.person == globals.player:
+			continue
+		if scenescript.takerconsent != 'any' && ((i.mode == 'forced' || i.person.obed < 90) && !i.person.traits.has('Masochist') && !i.person.traits.has('Likes it rough')  ):
+			get_node("Panel/sceneeffects").set_bbcode(i.person.dictionary("$name refused to do [color=yellow]" + scenescript.getname() + '[/color] (low obedience)'))
+			return
+		elif scenescript.takerconsent == 'advanced' && i.lewd < 50:
+			get_node("Panel/sceneeffects").set_bbcode(i.person.dictionary("$name refused to do [color=yellow]" + scenescript.getname() + '[/color] (low lewdness)'))
+			return
+	
 	if scenescript.code in ['doubledildo','doubledildoass','tribadism']:
 		for i in ongoingactions:
 			if i.scene.category == 'fucking' && (i.givers.has(givers[0]) || i.takers.has(givers[0]) || i.givers.has(takers[0]) || i.takers.has(takers[0])):
 				stopongoingaction(i)
 	if scenescript.code == 'strapon':
 		cont = true
+	
 	
 	#temporary support for scenes converted to centralized output and those not
 	#should be unified in the future

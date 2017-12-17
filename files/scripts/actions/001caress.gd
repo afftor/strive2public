@@ -9,6 +9,8 @@ var givereffects = {lust = 50, sens = 0}
 var targeteffects = {lust = 50, sens = 50}
 var giverpart = ''
 var takerpart = ''
+var giverconsent = 'basic'
+var takerconsent = 'any'
 
 func getname(state = null):
 	return "Caress"

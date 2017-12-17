@@ -9,6 +9,8 @@ var givereffects = {lust = 0, sens = 0}
 var targeteffects = {lust = 0, sens = 0, pain = 0}
 var giverpart = 'strapon'
 var takerpart = ''
+var giverconsent = 'basic'
+var takerconsent = 'any'
 
 func getname(state = null):
 	return "Wear Strap-on"

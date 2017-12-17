@@ -174,7 +174,7 @@ func race():
 
 func entry():
 	var text
-	if globals.slaves.find(slave) >= 0 || globals.player == slave || slave.fromguild == true:
+	if globals.slaves.find(slave) >= 0 || globals.player == slave:
 		if slave.sleep == 'jail':
 			text = 'Behind the iron bars you see '
 		elif globals.player == slave:

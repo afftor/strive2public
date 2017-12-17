@@ -417,7 +417,7 @@ func zoneenter(zone):
 	globals.get_tree().get_current_scene().get_node("outside/exploreprogress").set_val((progress/max(zone.length,1))*100)
 	currentzone = zone
 	outside.clearbuttons()
-	text = '[center]'+ zone.name + '[/center]' + globals.fastif(deeperregion == true, ' [Deep Area]', '')
+	text = '[center]'+ zone.name + '[/center]' + globals.fastif(deeperregion == true, ' [color=yellow][Deep Area][/color]', '')
 	text += '\n\n'+ zone.description
 	if zone.code in ['wimborn','gorn','amberguard','frostford']:
 		text += "\n\n[color=yellow]You can use public teleport to return to mansion from this location.[/color]"
@@ -985,7 +985,7 @@ func captureslave(slave):
 		globals.state.reputation[location] -= 1
 	defeated.names.remove(defeated.units.find(slave))
 	defeated.units.erase(slave)
-	get_tree().get_current_scene().infotext("[color=green]New captive added to your group.[/color]")
+	get_tree().get_current_scene().infotext("New captive added to your group",'green')
 	buildcapturelist()
 	builditemlists()
 
@@ -1597,7 +1597,7 @@ func frostford():
 	if globals.state.reputation.frostford >= 20 && globals.state.mainquest == 30 && globals.state.sidequests.zoe == 0:
 		var text = globals.questtext.MainQuestFrostfordCityhallZoe
 		var buttons = []
-		var sprite = []
+		var sprite = [['zoeneutral','pos1','opac']]
 		buttons.append({text = 'Accept', function = "frostfordzoe", args = 1})
 		buttons.append({text = 'Refuse', function = "frostfordzoe", args = 2})
 		main.dialogue(false, self, text, buttons, sprite)
@@ -1611,7 +1611,7 @@ func frostford():
 func frostfordzoe(stage):
 	var text
 	var buttons = []
-	var sprite = []
+	var sprite = [['zoehappy','pos1']]
 	if stage == 1:
 		text = globals.questtext.MainQuestFrostfordCityhallZoeAccept
 		globals.state.sidequests.zoe = 1
@@ -1710,7 +1710,7 @@ func encounterdictionary(text):
 		if temp == '1':
 			temp = 'sole'
 		string = string.replace('$capturednumber', temp)
-	if enemygroup.units.size() <= 1 && enemygroup.units[0].capture != null:
+	if enemygroup.units[0].capture != null:
 		string = enemygroup.units[0].capture.dictionary(string)
 	string = string.replace('$scoutname', scout.dictionary('$name'))
 	return string
@@ -1720,9 +1720,9 @@ func unloadgroup():
 		globals.slaves = i
 		if globals.count_sleepers().jail < globals.state.mansionupgrades.jailcapacity:
 			i.sleep = 'jail'
-			get_parent().infotext(i.dictionary("[color=green]$name has been moved to jail.[/color]"))
+			get_parent().infotext(i.dictionary("$name has been moved to jail"),'green')
 		else:
-			get_parent().infotext(i.dictionary("[color=yellow]With no free cells in jail $name has been assigned to communal room.[/color]"))
+			get_parent().infotext(i.dictionary("With no free cells in jail $name has been assigned to communal room"),'yellow')
 	for i in globals.state.backpack.stackables:
 		var item = globals.itemdict[i]
 		if item.type in ['ingredient']:

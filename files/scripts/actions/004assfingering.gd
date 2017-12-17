@@ -9,6 +9,8 @@ var givereffects = {lust = 50, sens = 0}
 var targeteffects = {lust = 50, sens = 100, pain = 10}
 var giverpart = ''
 var takerpart = 'anus'
+var giverconsent = 'basic'
+var takerconsent = 'any'
 
 func getname(state = null):
 	return "Ass Fingering"

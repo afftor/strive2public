@@ -42,6 +42,7 @@ class fighter:
 	var party
 	var button
 	var icon
+	var passives = []
 	
 	func sendbuff():
 		var effect = str2var(var2str(globals.abilities.effects[action.effect]))
@@ -233,6 +234,9 @@ func damage(combatant, value):
 
 func speed(combatant, value):
 	combatant.speed += value
+
+func passive(combatant, value):
+	combatant.passives.append(value)
 
 func _process(delta):
 	var button
@@ -586,6 +590,8 @@ func actionexecute(actor, target, skill):
 						damage = damage - damage*0.35
 			elif skill.type == 'spell':
 				damage = (actor.magic * 2.5) * skill.power
+				if skill.code == 'mindblast':
+					damage += target.healthmax/5
 			actor.energy = max(actor.energy - skill.costenergy,0)
 			if actor.person != null && actor.person.spec == 'assassin':
 				damage += 5
@@ -789,6 +795,8 @@ func _on_confirm_pressed():
 			text += actionexecute(combatant, combatant, combatant.action) + '\n'
 		elif combatant.action.target == 'ally' && combatant.action.code != 'protect':
 			text += actionexecute(combatant, playergroup[combatant.target], combatant.action) + '\n'
+		if combatant.passives.has('doubleattack') && randf() < 0.5 && combatant.action.code == 'attack':
+			text += "[color=aqua][Double Attack][/color]" + actionexecute(combatant, enemygroup[combatant.target], combatant.action) + '\n'
 		for i in combatant.cooldowns:
 			combatant.cooldowns[i] -= 1
 			if combatant.cooldowns[i] <= 0:
@@ -815,7 +823,7 @@ func resolution(text = ''):
 			i.state = 'defeated'
 			text += '\n[color=yellow]'+ i.name + ' has been defeated. [/color]'
 			if i.person != null:
-				var escapechance = (globals.originsarray.find(i.person.origins)+1)*1500
+				var escapechance = (globals.originsarray.find(i.person.origins)+1)*15
 				if rand_range(0,100) < escapechance:
 					if counter > 1 && i.effects.has('shackleeffect'):
 						i.state = 'captured'

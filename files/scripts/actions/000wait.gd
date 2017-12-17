@@ -9,6 +9,8 @@ var givereffects = {lust = 0, sens = 0}
 var targeteffects = {lust = 0, sens = 0, pain = 0}
 var giverpart = ''
 var takerpart = ''
+var giverconsent = 'any'
+var takerconsent = 'any'
 
 func getname(state = null):
 	return "Wait"
