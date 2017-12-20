@@ -1,14 +1,15 @@
 extends Node
 
-var category = 'caress'
-var code = 'kiss'
+const category = 'caress'
+const code = 'kiss'
 var givers
 var takers
-var canlast = true
-var givereffects = {lust = 50, sens = 50}
-var targeteffects = {lust = 50, sens = 50}
-var giverpart = 'mouth'
-var takerpart = 'mouth'
+const canlast = true
+const givereffects = {lust = 50, sens = 50}
+const targeteffects = {lust = 50, sens = 50}
+const giverpart = 'mouth'
+const takerpart = 'mouth'
+const virginloss = false
 
 func getname(state = null):
 	if givers.size() > 1 || takers.size() > 1:

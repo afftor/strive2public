@@ -1,14 +1,15 @@
 extends Node
 
-var category = 'fucking'
-var code = 'doubledildo'
+const category = 'fucking'
+const code = 'doubledildo'
 var givers
 var takers
-var canlast = true
-var givereffects = {lust = 50, sens = 20}
-var targeteffects = {lust = 50, sens = 100}
-var giverpart = 'vagina'
-var takerpart = 'vagina'
+const canlast = true
+const givereffects = {lust = 50, sens = 20}
+const targeteffects = {lust = 50, sens = 100}
+const giverpart = 'vagina'
+const takerpart = 'vagina'
+const virginloss = true
 
 func getname(state = null):
 	return "Double Dildo"
@@ -57,7 +58,7 @@ func takereffect(member):
 
 func initiate():
 	var text = ''
-	text += "[name1] insert[s/1] a double dildo into [his1] and [names2] pussies, {^grinding:pumping:gyrating} [his1] hips against [partners2]."
+	text += "[name1] insert[s/1] a double dildo into [his1] and [names2] pussies, {^grinding:pumping:gyrating} [his1] hips against [partner2]."
 	return text
 
 func reaction(member):
@@ -73,5 +74,5 @@ func reaction(member):
 	elif member.sens < 600:
 		text = "[names2] [pussy2] {^trembles:quivers} in {^response:reaction} to the {^sensation:feeling} of {^[names1] dildo:the dildo inside [him2]}, [his2] arousal {^made clear:apparent:clearly showing}."
 	else:
-		text = "[names2] [pussy2] {^violently trembles:clenches:quivers} {^with every movement of [names1] hips:in response to [names1] efforts}{^ as [he2] rapidly near[s/2] orgasm: as [he2] approach[es/2] orgasm: as [he2] edge[es/2] toward orgasm:}."
+		text = "[names2] [pussy2] {^violently trembles:clenches:quivers} {^with every movement of [names1] hips:in response to [names1] efforts}{^ as [he2] rapidly near[s/2] orgasm: as [he2] approach[es/2] orgasm: as [he2] edge[s/2] toward orgasm:}."
 	return text

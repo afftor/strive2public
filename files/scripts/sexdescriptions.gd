@@ -97,9 +97,15 @@ func decoder(text, tempgivers = null, temptakers = null):
 		'[ass1]' : ass(givers),
 		'[ass2]' : ass(takers),
 		'[ass3]' : ass(givers + takers),
+		'[hips1]' : hips(givers),
+		'[hips2]' : hips(takers),
+		'[hips3]' : hips(givers + takers),
 		'[tits1]' : tits(givers),
 		'[tits2]' : tits(takers),
 		'[tits3]' : tits(givers + takers),
+		'[body1]' : body(givers),
+		'[body2]' : body(takers),
+		'[body3]' : body(givers + takers),
 		#sex actions
 		'[fuck1]' : fuck(givers),
 		'[fuck2]' : fuck(takers),
@@ -110,9 +116,25 @@ func decoder(text, tempgivers = null, temptakers = null):
 		'[fucking1]' : fucking(givers),
 		'[fucking2]' : fucking(takers),
 		'[fucking3]' : fucking(givers + takers),
+		'[vfuck1]' : fuck(givers),
+		'[vfuck2]' : fuck(takers),
+		'[vfuck3]' : fuck(givers + takers),
+		'[vfucks1]' : fucks(givers),
+		'[vfucks2]' : fucks(takers),
+		'[vfucks3]' : fucks(givers + takers),
+		'[vfucking1]' : fucking(givers),
+		'[vfucking2]' : fucking(takers),
+		'[vfucking3]' : fucking(givers + takers),
+		'[afuck1]' : fuck(givers),
+		'[afuck2]' : fuck(takers),
+		'[afuck3]' : fuck(givers + takers),
+		'[afucks1]' : fucks(givers),
+		'[afucks2]' : fucks(takers),
+		'[afucks3]' : fucks(givers + takers),
+		'[afucking1]' : fucking(givers),
+		'[afucking2]' : fucking(takers),
+		'[afucking3]' : fucking(givers + takers),
 		#unfinished
-		'[body1]' : 'bodies' if givers.size() >= 2 else body(givers[0]),
-		'[body2]' : 'bodies' if takers.size() >= 2 else body(takers[0]),
 		'[labia1]' : 'labia' if givers.size() >= 2 else labia(givers[0]),
 		'[labia2]' : 'labia' if takers.size() >= 2 else labia(takers[0]),
 		'[anus1]' : 'anuses' if givers.size() >= 2 else anus(givers[0]),
@@ -179,9 +201,9 @@ func he(group):
 			if group.size() == 1:
 				return 'you'
 			elif group.size() == 2:
-				return '{^you both:you each}'
+				return '{^you both:you}'
 			else:
-				return '{^you all:you each}'
+				return '{^you all:you}'
 	if group.size() == 1:
 		if group[0].sex == 'male':
 			return 'he'
@@ -210,7 +232,12 @@ func himself(group):
 func his(group):
 	for i in group:
 		if i.person == globals.player:
-			return 'your'
+			if group.size() == 1:
+				return 'your'
+			elif group.size() == 2:
+				return '{^both of your:your}'
+			else:
+				return '{^all of your:your}'
 	if group.size() == 1:
 		if group[0].sex == 'male':
 			return 'his'
@@ -313,10 +340,13 @@ func names(group):
 	return text
 
 #no recursive functions allowed in godot so this looks semi-horrible, but whatever
+#fuck() and variants used after "to" or a modal verb such as "will/should"
+#fucks() used in other present tense cases, will return fuck() depending on group characteristics
+#vfuck() and afuck() variants assume verticality
 func fuck(group):
 	var outputs = []
 	var temp = ''
-	outputs += [getrandomfromarray(['fuck','plow','screw','penetrate','churn','pummel','massage the inside of'])]
+	outputs += [getrandomfromarray(['fuck','plow','screw','penetrate','churn','pummel'])]
 	temp = getrandomfromarray(['plunge','hammer','pound','pump','slam','thrust','grind','drive'])
 	temp += getrandomfromarray([' ' + his(group) + ' ' + penis(group),''])
 	temp += getrandomfromarray([' deep','']) + ' into'
@@ -331,9 +361,14 @@ func fuck(group):
 	return outputs[randi()%outputs.size()]
 
 func fucks(group):
+	if group.size() >= 2:
+		return fuck(group)
+	for i in group:
+		if i.person == globals.player:
+			return fuck(group)
 	var outputs = []
 	var temp = ''
-	outputs += [getrandomfromarray(['fucks','plows','screws','penetrates','churns','pummels','massages the inside of'])]
+	outputs += [getrandomfromarray(['fucks','plows','screws','penetrates','churns','pummels'])]
 	temp = getrandomfromarray(['plunges','hammers','pounds','pumps','slams','thrusts','grinds','drives'])
 	temp += getrandomfromarray([' ' + his(group) + ' ' + penis(group),''])
 	temp += getrandomfromarray([' deep','']) + ' into'
@@ -350,7 +385,7 @@ func fucks(group):
 func fucking(group):
 	var outputs = []
 	var temp = ''
-	outputs += [getrandomfromarray(['fucking','plowing','screwing','penetrating','churning','pummeling','massaging the inside of'])]
+	outputs += [getrandomfromarray(['fucking','plowing','screwing','penetrating','churning','pummeling'])]
 	temp = getrandomfromarray(['plunging','hammering','pounding','pumping','slaming','thrusting','grinding','driving'])
 	temp += getrandomfromarray([' ' + his(group) + ' ' + penis(group),''])
 	temp += getrandomfromarray([' deep','']) + ' into'
@@ -361,6 +396,142 @@ func fucking(group):
 	temp = getrandomfromarray(['plunging','thrusting'])
 	temp += ' ' + getrandomfromarray([his(group) + ' ' + penis(group),himself(group)])
 	temp += ' ' + getrandomfromarray(['in and out of','into','inside'])
+	outputs += [temp]
+	return outputs[randi()%outputs.size()]
+
+func vfuck(group):
+	var outputs = []
+	var temp = ''
+	outputs += [getrandomfromarray(['massage','squeeze','envelop','milk'])]
+	temp = getrandomfromarray(['grind','bounce','gyrate'])
+	temp += ' ' + getrandomfromarray(['on top of','on','atop'])
+	outputs += [temp]
+	temp = getrandomfromarray(['grind','bounce','gyrate','thrust','pump','work'])
+	temp += ' ' + his(group) + ' ' + hips(group)
+	temp += ' ' + getrandomfromarray(['on top of','on','atop'])
+	outputs += [temp]
+	temp = getrandomfromarray(['grind','thrust','slam','pound'])
+	temp += ' ' + getrandomfromarray([his(group) + ' ' + pussy(group),himself(group)])
+	temp += ' ' + getrandomfromarray(['against','down on'])
+	outputs += [temp]
+	temp = getrandomfromarray(['impale','pleasure','churn','satisfy'])
+	temp += ' ' + getrandomfromarray([his(group) + ' ' + pussy(group),himself(group)])
+	temp += ' ' + getrandomfromarray(['on top of','on'])
+	outputs += [temp]
+	return outputs[randi()%outputs.size()]
+
+func vfucks(group):
+	if group.size() >= 2:
+		return vfuck(group)
+	for i in group:
+		if i.person == globals.player:
+			return vfuck(group)
+	var outputs = []
+	var temp = ''
+	outputs += [getrandomfromarray(['massages','squeezes','envelops','milks'])]
+	temp = getrandomfromarray(['grinds','bounces','gyrates'])
+	temp += ' ' + getrandomfromarray(['on top of','on','atop'])
+	outputs += [temp]
+	temp = getrandomfromarray(['grinds','bounces','gyrates','thrusts','pumps','works'])
+	temp += ' ' + his(group) + ' ' + hips(group)
+	temp += ' ' + getrandomfromarray(['on top of','on','atop'])
+	outputs += [temp]
+	temp = getrandomfromarray(['grinds','thrusts','slams','pounds'])
+	temp += ' ' + getrandomfromarray([his(group) + ' ' + pussy(group),himself(group)])
+	temp += ' ' + getrandomfromarray(['against','down on'])
+	outputs += [temp]
+	temp = getrandomfromarray(['impales','pleasures','churns','satisfies'])
+	temp += ' ' + getrandomfromarray([his(group) + ' ' + pussy(group),himself(group)])
+	temp += ' ' + getrandomfromarray(['on top of','on'])
+	outputs += [temp]
+	return outputs[randi()%outputs.size()]
+
+func vfucking(group):
+	var outputs = []
+	var temp = ''
+	outputs += [getrandomfromarray(['massaging','squeezing','enveloping','milking'])]
+	temp = getrandomfromarray(['grinding','bouncing','gyrating'])
+	temp += ' ' + getrandomfromarray(['on top of','on','atop'])
+	outputs += [temp]
+	temp = getrandomfromarray(['grinding','bouncing','gyrating','thrusting','pumping','working'])
+	temp += ' ' + his(group) + ' ' + hips(group)
+	temp += ' ' + getrandomfromarray(['on top of','on','atop'])
+	outputs += [temp]
+	temp = getrandomfromarray(['grinding','thrusting','slamming','pounding'])
+	temp += ' ' + getrandomfromarray([his(group) + ' ' + pussy(group),himself(group)])
+	temp += ' ' + getrandomfromarray(['against','down on'])
+	outputs += [temp]
+	temp = getrandomfromarray(['impaling','pleasuring','churning','satisfying'])
+	temp += ' ' + getrandomfromarray([his(group) + ' ' + pussy(group),himself(group)])
+	temp += ' ' + getrandomfromarray(['on top of','on'])
+	outputs += [temp]
+	return outputs[randi()%outputs.size()]
+
+func afuck(group):
+	var outputs = []
+	var temp = ''
+	outputs += [getrandomfromarray(['massage','squeeze','envelop','milk'])]
+	temp = getrandomfromarray(['grind','bounce','gyrate'])
+	temp += ' ' + getrandomfromarray(['on top of','on','atop'])
+	outputs += [temp]
+	temp = getrandomfromarray(['grind','bounce','gyrate','thrust','pump','work'])
+	temp += ' ' + his(group) + ' ' + hips(group)
+	temp += ' ' + getrandomfromarray(['on top of','on','atop'])
+	outputs += [temp]
+	temp = getrandomfromarray(['grind','thrust','slam','pound'])
+	temp += ' ' + getrandomfromarray([his(group) + ' ' + anus(group),himself(group)])
+	temp += ' ' + getrandomfromarray(['against','down on'])
+	outputs += [temp]
+	temp = getrandomfromarray(['impale','pleasure','churn','satisfy'])
+	temp += ' ' + getrandomfromarray([his(group) + ' ' + anus(group),himself(group)])
+	temp += ' ' + getrandomfromarray(['on top of','on'])
+	outputs += [temp]
+	return outputs[randi()%outputs.size()]
+
+func afucks(group):
+	if group.size() >= 2:
+		return afuck(group)
+	for i in group:
+		if i.person == globals.player:
+			return afuck(group)
+	var outputs = []
+	var temp = ''
+	outputs += [getrandomfromarray(['massages','squeezes','envelops','milks'])]
+	temp = getrandomfromarray(['grinds','bounces','gyrates'])
+	temp += ' ' + getrandomfromarray(['on top of','on','atop'])
+	outputs += [temp]
+	temp = getrandomfromarray(['grinds','bounces','gyrates','thrusts','pumps','works'])
+	temp += ' ' + his(group) + ' ' + hips(group)
+	temp += ' ' + getrandomfromarray(['on top of','on','atop'])
+	outputs += [temp]
+	temp = getrandomfromarray(['grinds','thrusts','slams','pounds'])
+	temp += ' ' + getrandomfromarray([his(group) + ' ' + anus(group),himself(group)])
+	temp += ' ' + getrandomfromarray(['against','down on'])
+	outputs += [temp]
+	temp = getrandomfromarray(['impales','pleasures','churns','satisfies'])
+	temp += ' ' + getrandomfromarray([his(group) + ' ' + anus(group),himself(group)])
+	temp += ' ' + getrandomfromarray(['on top of','on'])
+	outputs += [temp]
+	return outputs[randi()%outputs.size()]
+
+func afucking(group):
+	var outputs = []
+	var temp = ''
+	outputs += [getrandomfromarray(['massaging','squeezing','enveloping','milking'])]
+	temp = getrandomfromarray(['grinding','bouncing','gyrating'])
+	temp += ' ' + getrandomfromarray(['on top of','on','atop'])
+	outputs += [temp]
+	temp = getrandomfromarray(['grinding','bouncing','gyrating','thrusting','pumping','working'])
+	temp += ' ' + his(group) + ' ' + hips(group)
+	temp += ' ' + getrandomfromarray(['on top of','on','atop'])
+	outputs += [temp]
+	temp = getrandomfromarray(['grinding','thrusting','slamming','pounding'])
+	temp += ' ' + getrandomfromarray([his(group) + ' ' + anus(group),himself(group)])
+	temp += ' ' + getrandomfromarray(['against','down on'])
+	outputs += [temp]
+	temp = getrandomfromarray(['impaling','pleasuring','churning','satisfying'])
+	temp += ' ' + getrandomfromarray([his(group) + ' ' + anus(group),himself(group)])
+	temp += ' ' + getrandomfromarray(['on top of','on'])
 	outputs += [temp]
 	return outputs[randi()%outputs.size()]
 
@@ -562,34 +733,58 @@ func partner(group):
 		var mp = i.person
 		array1 = []
 		array2 = []
+		var thick = thickness(mp)
+		#feminity descriptors
+		if mp.titssize == 'masculine':
+			array1 += ["muscular","toned"]
+		elif thick < 3:
+			array1 += ["dainty","delicate","slim"]
+		elif thick < 5:
+			array1 += ["healthy","shapely"]
+		elif thick < 7:
+			array1 += ["healthy","shapely","sensuous","curvaceous","buxom"]
+		else:
+			array1 += ["sensuous","curvaceous","buxom","voluptuous","bombastic","meaty"]
 		#body
 		if mp.preg.duration > 1:
 			array1 += ["pregnant","gravid"]
 		#age
 		if mp.age == 'child':
-			array1 += ["small","young","adolescent"]
+			array1 += ["young","adolescent"]
 			array2 += ["child"] if group.size() == 1 else ["children"]
 		elif mp.age == 'teen':
 			array1 += ['young']
 			array2 += ["teen"] if group.size() == 1 else ["teens"]
 		else:
 			array1 += ['mature', 'adult']
+		#beauty
+		if mp.beauty_get() >= 50:
+			array1 += ['attractive']
+			if mp.sex == 'male':
+				array1 += ['handsome']
+			elif mp.age == 'child':
+				array1 += ['cute','pretty']
+			elif mp.age == 'teen':
+				array1 += ['cute','pretty','beautiful']
+			else:
+				array1 += ['pretty','beautiful']
+		#size
+		if mp.height in ['petite','shortstack']:
+			array1 += ["tiny","small","little","pint-sized","diminutive"]
+		elif mp.height in ['tall', 'towering']:
+			array1 += ["giant","huge","large","big","tall"]
 		#personality
+		if mp.charm > 60:
+			if mp.age in ['child','teen']:
+				array1 += ['adorable','cute']
+			if mp.age in ['adult','teen']:
+				array1 += ['charming','enchanting','captivating']
 		if mp.cour < 40:
 			array1 += ['shy','meek']
-		if mp.charm > 60:
-			if mp.age == 'child':
-				array1 += ['cute']
-			else:
-				array1 += ['charming','enchanting']
 		if mp.wit > 80:
 			array1 += ['clever']
 		if mp.conf > 65:
 			array1 += ['proud','haughty']
-		if mp.height in ['petite','shortstack']:
-			array1 += ["tiny","petite","small","diminutive"]
-		elif mp.height in ['tall', 'towering']:
-			array1 += ["huge","tall","large"]
 		if i.lust > 300:
 			array1 += ['horny', 'excited']
 		#boy/girl
@@ -652,34 +847,58 @@ func partners(group):
 		var mp = i.person
 		array1 = []
 		array2 = []
+		var thick = thickness(mp)
+		#feminity descriptors
+		if mp.titssize == 'masculine':
+			array1 += ["muscular","toned"]
+		elif thick < 3:
+			array1 += ["dainty","delicate","slim","petite"]
+		elif thick < 5:
+			array1 += ["healthy","shapely"]
+		elif thick < 7:
+			array1 += ["healthy","shapely","sensuous","curvaceous","buxom"]
+		else:
+			array1 += ["sensuous","curvaceous","buxom","voluptuous","bombastic","meaty"]
 		#body
 		if mp.preg.duration > 1:
 			array1 += ["pregnant","gravid"]
 		#age
 		if mp.age == 'child':
-			array1 += ["small","young","adolescent"]
+			array1 += ["young","adolescent"]
 			array2 += ["child's"] if group.size() == 1 else ["childrens'"]
 		elif mp.age == 'teen':
 			array1 += ['young']
 			array2 += ["teen's"] if group.size() == 1 else ["teens'"]
 		else:
 			array1 += ['mature', 'adult']
+		#beauty
+		if mp.beauty_get() >= 50:
+			array1 += ['attractive']
+			if mp.sex == 'male':
+				array1 += ['handsome']
+			elif mp.age == 'child':
+				array1 += ['cute','pretty']
+			elif mp.age == 'teen':
+				array1 += ['cute','pretty','beautiful']
+			else:
+				array1 += ['pretty','beautiful']
+		#size
+		if mp.height in ['petite','shortstack']:
+			array1 += ["tiny","small","little","pint-sized","diminutive"]
+		elif mp.height in ['tall', 'towering']:
+			array1 += ["giant","huge","large","big","tall"]
 		#personality
+		if mp.charm > 60:
+			if mp.age in ['child','teen']:
+				array1 += ['adorable','cute']
+			if mp.age in ['adult','teen']:
+				array1 += ['charming','enchanting','captivating']
 		if mp.cour < 40:
 			array1 += ['shy','meek']
-		if mp.charm > 60:
-			if mp.age == 'child':
-				array1 += ['cute']
-			else:
-				array1 += ['charming','enchanting']
 		if mp.wit > 80:
 			array1 += ['clever']
 		if mp.conf > 65:
 			array1 += ['proud','haughty']
-		if mp.height in ['petite','shortstack']:
-			array1 += ["tiny","petite","small","diminutive"]
-		elif mp.height in ['tall', 'towering']:
-			array1 += ["huge","tall","large"]
 		if i.lust > 300:
 			array1 += ['horny', 'excited']
 		#boy/girl
@@ -730,29 +949,73 @@ func partners(group):
 	else:
 		return "the " + getrandomfromarray(marray1) + " " + getrandomfromarray(marray2)
 
-
-func body(member):
-	var array = []
-	var person = member.person
-	if person.age == 'child':
-		array += ["small", "petite", "slender", "dainty"]
-	elif person.age in ['teen']:
-		array += ["shapely","enticing","slender"]
-	elif person.age in ['adult']:
-		array += ["well-rounded","voluptuous","seductive","curvaceous","shapely"]
-	if person.height in ['shortstack','petite']:
-		array += ["small","petite","tiny"]
-	if person.bodyshape == 'jelly':
-		array += ["transparent", "jelly", "gelatinous"]
-	elif person.bodyshape == 'halfhorse':
-		array += ["equine"]
-	elif person.bodyshape == "halfspider":
-		array += ["arachnid"]
-	if person.skincov == 'full_body_fur':
-		array += ["furry","fluffy","fur-covered"]
-	#add later# array += ["sexy","seductive","lovely","erotic","alluring","captivating","enticing"]
-	
-	return getrandomfromarray(array) + ' body'
+func body(group):
+	var array1 = []
+	var array2 = []
+	var marray1 = null
+	var marray2 = null
+	var tarray = []
+	for i in group:
+		array1 = []
+		array2 = ["body"] if group.size() == 1 else ["bodies"]
+		var mp = i.person
+		var thick = thickness(mp)
+		#feminity
+		if mp.titssize == 'masculine':
+			array1 += ["muscular","toned"]
+		elif thick < 3:
+			array1 += ["dainty","delicate","slim","petite"]
+		elif thick < 5:
+			array1 += ["healthy","shapely"]
+		elif thick < 7:
+			array1 += ["healthy","shapely","sensuous","curvaceous","buxom"]
+		else:
+			array1 += ["sensuous","curvaceous","buxom","voluptuous","bombastic"]
+		#beauty
+		if mp.beauty_get() >= 50:
+			array1 += ['alluring','enticing']
+			if mp.age in ['adult','teen'] && mp.sex != 'male':
+				array1 += ['ravishing','seductive']
+		#age
+		if mp.age == 'child':
+			array1 += ["youthful","immature"]
+		elif mp.age == 'teen':
+			array1 += ["youthful"]
+		elif mp.age == 'adult':
+			if mp.sex == 'male':
+				array1 += ["manly"]
+			else:
+				array1 += ["womanly","mature"]
+		#size
+		if mp.height in ['petite','shortstack']:
+			array1 += ["tiny","small","little"]
+		elif mp.height in ['tall','towering']:
+			array1 += ["giant","huge","large"]
+		#bodytype
+		if mp.bodyshape == 'jelly':
+			array1 += ["transparent","squishy","gelatinous"]
+		if mp.bodyshape == 'halfsnake':
+			array1 += ["long","serpentine"]
+		elif mp.skincov == 'full_body_fur':
+			array1 += ["furry","fluffy","fur-covered"]
+		#for multiple people, only incude shared
+		if marray1 == null:
+			marray1 = array1
+			marray2 = array2
+		else:
+			tarray = [] + marray1
+			for i in tarray:
+				if not array1.has(i):
+					marray1.erase(i)
+			tarray = [] + marray2
+			for i in tarray:
+				if not array2.has(i):
+					marray2.erase(i)
+	#30% of time do not use descriptors
+	if  randf() < 0.5 || marray1 == []:
+		return getrandomfromarray(marray2)
+	else:
+		return getrandomfromarray(marray1) + " " + getrandomfromarray(marray2)
 
 func penis(group):
 	var array1 = []
@@ -948,6 +1211,69 @@ func ass(group):
 	else:
 		return getrandomfromarray(marray1) + " " + getrandomfromarray(marray2)
 
+#only to be used in specific contexts to avoid description bloat
+#not a replacement for "hips"
+func hips(group):
+	var array1 = []
+	var array2 = []
+	var marray1 = null
+	var marray2 = null
+	var tarray = []
+	for i in group:
+		array1 = []
+		array2 = ["hips"]
+		var mp = i.person
+		#size/age descriptors
+		if mp.sex == 'male' && mp.asssize in ['flat','small']:
+			array1 += ["trim","slim"]
+		elif mp.asssize == 'flat':
+			array1 += ["slim","slender","petite","tiny"]
+		elif mp.asssize == 'small':
+			array1 += ["slim","slender","svelte","small"]
+		elif mp.asssize == 'average':
+			array1 += ["curved","shapely"]
+			if mp.age == 'teen':
+				array1 += ["well-developed"]
+			elif mp.age == 'child':
+				array1 += ["well-developed","impressively thick"]
+		elif mp.asssize == 'big':
+			array1 += ["sizeable","ample","wide","thick","curvaceous"]
+			if mp.age == 'teen':
+				array1 += ["well-developed","impressively thick"]
+			elif mp.age == 'child':
+				array1 += ["overgrown","surprisingly thick"]
+		elif mp.asssize == 'huge':
+			array1 += ["huge","massive","enormous","wide","thick","curvaceous"]
+			if mp.age == 'teen':
+				array1 += ["well-developed","surprisingly thick"]
+			elif mp.age == 'child':
+				array1 += ["overgrown","shockingly thick"]
+		#bodytype descriptors
+		if mp.bodyshape == 'halfhorse':
+			array1 += ["equine","hairy"]
+		elif mp.bodyshape == 'halfsnake':
+			array1 += ["scaly"]
+		elif mp.skincov == 'full_body_fur':
+			array1 += ["furry","hairy"]
+		#for multiple people, only incude shared
+		if marray1 == null:
+			marray1 = array1
+			marray2 = array2
+		else:
+			tarray = [] + marray1
+			for i in tarray:
+				if not array1.has(i):
+					marray1.erase(i)
+			tarray = [] + marray2
+			for i in tarray:
+				if not array2.has(i):
+					marray2.erase(i)
+	#30% of time do not use descriptors
+	if  randf() < 0.5 || marray1 == []:
+		return getrandomfromarray(marray2)
+	else:
+		return getrandomfromarray(marray1) + " " + getrandomfromarray(marray2)
+
 func tits(group):
 	var array1 = []
 	var array2 = []
@@ -959,10 +1285,9 @@ func tits(group):
 		array2 = ["tits","boobs","breasts","chest"] if group.size() == 1 else ["tits","boobs","breasts","chests"]
 		var mp = i.person
 		#size/age descriptors
-		if mp.sex == 'male':
-			array2 = ["chest","pecs"] if group.size() == 1 else ["chests","pecs"]
 		if mp.titssize == 'masculine':
 			array1 += ["muscular","strong","toned"]
+			array2 = ["chest","pecs"] if group.size() == 1 else ["chests","pecs"]
 		elif mp.titssize == 'flat':
 			array1 += ["flat","small"]
 			if mp.age == 'teen':
@@ -1025,7 +1350,6 @@ func tits(group):
 	else:
 		return getrandomfromarray(marray1) + " " + getrandomfromarray(marray2)
 
-
 func anus(member):
 	var array = []
 	var array2 = ["anus","asshole","butthole","rectum"]
@@ -1036,6 +1360,27 @@ func anus(member):
 	else:
 		array += ["rosy","mature"]
 	return getrandomfromarray(array) + " " + getrandomfromarray(array2)
+
+#register tickness
+func thickness(mp):
+	var thick = 0
+	if mp.titssize == 'small':
+		thick += 1
+	elif mp.titssize == 'average':
+		thick += 2
+	elif mp.titssize == 'big':
+		thick += 3
+	elif mp.titssize == 'huge':
+		thick += 4
+	if mp.asssize == 'small':
+		thick += 1
+	elif mp.asssize == 'average':
+		thick += 2
+	elif mp.asssize == 'big':
+		thick += 3
+	elif mp.asssize == 'huge':
+		thick += 4
+	return thick
 
 func getrandomfromarray(array):
 	if array != []:
