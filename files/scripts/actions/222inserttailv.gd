@@ -1,16 +1,17 @@
 extends Node
 
-var category = 'fucking'
-var code = 'inserttailv'
+const category = 'fucking'
+const code = 'inserttailv'
 var givers
 var takers
-var canlast = true
-var givereffects = {lust = 50}
-var targeteffects = {lust = 50, sens = 100}
-var giverpart = 'tail'
-var takerpart = 'vagina'
-var giverconsent = 'advanced'
-var takerconsent = 'any'
+const canlast = true
+const givereffects = {lust = 50}
+const targeteffects = {lust = 50, sens = 100}
+const giverpart = 'tail'
+const takerpart = 'vagina'
+const virginloss = true
+const giverconsent = 'advanced'
+const takerconsent = 'any'
 
 func getname(state = null):
 	return "Insert Tail Pussy"

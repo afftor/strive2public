@@ -1,16 +1,18 @@
 extends Node
 
-var category = 'other'
-var code = 'wait'
+const category = 'other'
+const code = 'wait'
 var givers
 var takers
-var canlast = false
-var givereffects = {lust = 0, sens = 0}
-var targeteffects = {lust = 0, sens = 0, pain = 0}
-var giverpart = ''
-var takerpart = ''
-var giverconsent = 'any'
-var takerconsent = 'any'
+const canlast = false
+const givereffects = {lust = 0, sens = 0}
+const targeteffects = {lust = 0, sens = 0, pain = 0}
+const giverpart = ''
+const takerpart = ''
+const virginloss = false
+const giverconsent = 'any'
+const takerconsent = 'any'
+
 
 func getname(state = null):
 	return "Wait"

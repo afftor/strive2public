@@ -1,16 +1,17 @@
 extends Node
 
-var category = 'caress'
-var code = 'caress'
+const category = 'caress'
+const code = 'caress'
 var givers
 var takers
-var canlast = false
-var givereffects = {lust = 50, sens = 0}
-var targeteffects = {lust = 50, sens = 50}
-var giverpart = ''
-var takerpart = ''
-var giverconsent = 'basic'
-var takerconsent = 'any'
+const canlast = false
+const givereffects = {lust = 50, sens = 0}
+const targeteffects = {lust = 50, sens = 50}
+const giverpart = ''
+const takerpart = ''
+const virginloss = false
+const giverconsent = 'basic'
+const takerconsent = 'any'
 
 func getname(state = null):
 	return "Caress"

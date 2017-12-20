@@ -1,16 +1,17 @@
 extends Node
 
-var category = 'caress'
-var code = 'sucknipples'
+const category = 'caress'
+const code = 'sucknipples'
 var givers
 var takers
-var canlast = true
-var givereffects = {lust = 50, sens = 0}
-var targeteffects = {lust = 50, sens = 50}
-var giverpart = 'mouth'
-var takerpart = ''
-var giverconsent = 'basic'
-var takerconsent = 'any'
+const canlast = true
+const givereffects = {lust = 50, sens = 0}
+const targeteffects = {lust = 50, sens = 50}
+const giverpart = 'mouth'
+const takerpart = ''
+const virginloss = false
+const giverconsent = 'basic'
+const takerconsent = 'any'
 
 func getname(state = null):
 	return "Nipple Sucking"

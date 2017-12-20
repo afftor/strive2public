@@ -1,16 +1,17 @@
 extends Node
 
-var category = 'fucking'
-var code = 'strapon'
+const category = 'fucking'
+const code = 'strapon'
 var givers
 var takers
-var canlast = false
-var givereffects = {lust = 0, sens = 0}
-var targeteffects = {lust = 0, sens = 0, pain = 0}
-var giverpart = 'strapon'
-var takerpart = ''
-var giverconsent = 'basic'
-var takerconsent = 'any'
+const canlast = false
+const givereffects = {lust = 0, sens = 0}
+const targeteffects = {lust = 0, sens = 0, pain = 0}
+const giverpart = 'strapon'
+const takerpart = ''
+const virginloss = false
+const giverconsent = 'basic'
+const takerconsent = 'any'
 
 func getname(state = null):
 	return "Wear Strap-on"

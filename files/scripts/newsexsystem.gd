@@ -221,7 +221,6 @@ func clearstate():
 	takers.clear()
 	if givers.size() >= 1:
 		givers.append(participants[0])
-	#globals.player = participants[0] #for "You" testing
 
 func changecategory(name):
 	selectedcategory = name
@@ -410,19 +409,18 @@ func startscene(scenescript, cont = false):
 			for i in takers:
 				textdict.mainevent += '\n' + output(scenescript, scenescript.reaction, givers, [i])
 	
-	if centralized == true:
-		#remove virginity if relevant
-		if scenescript.virginloss == true:
-			for i in givers:
-				if scenescript.giverpart == 'vagina':
-					i.person.vagvirgin = false
-				elif scenescript.giverpart == 'anus':
-					i.person.assvirgin = false
-			for i in takers:
-				if scenescript.takerpart == 'vagina':
-					i.person.vagvirgin = false
-				elif scenescript.takerpart == 'anus':
-					i.person.assvirgin = false
+	#remove virginity if relevant
+	if scenescript.virginloss == true:
+		for i in givers:
+			if scenescript.giverpart == 'vagina':
+				i.person.vagvirgin = false
+			elif scenescript.giverpart == 'anus':
+				i.person.assvirgin = false
+		for i in takers:
+			if scenescript.takerpart == 'vagina':
+				i.person.vagvirgin = false
+			elif scenescript.takerpart == 'anus':
+				i.person.assvirgin = false
 	
 	
 	
@@ -512,18 +510,22 @@ func output(scenescript, valid_lines, givers, takers):
 	var giverpart = scenescript.giverpart
 	var takerpart = scenescript.takerpart
 	var act_lines = scenescript.act_lines
-	var virginloss = scenescript.virginloss
-	var links = scenescript.links
+	var links = sexdict.linksets[scenescript.linkset]
 	#internal
 	var linearray = []
 	var output = ''
 	var virginpart = null
 	var virginsource = null
+	var link = null
 	#checks
 	var checks = {
+		code = scenescript.code,
 		link = null,
+		orifice = 'insert',
 		consent = true,
 		virgin = true,
+		parallel = true if scenescript.rotation1.x == scenescript.rotation2.x else false,
+		facing = true if scenescript.rotation1.w == 0.0 && scenescript.rotation2.w == 0.0 else false,
 		arousal = 1,
 		lube = 1,
 		lust = 1,
@@ -532,23 +534,35 @@ func output(scenescript, valid_lines, givers, takers):
 	#link with ongoingactions
 	if givers[0][giverpart] != null:
 		if givers[0][giverpart].scene.code in links:
-			checks.link = givers[0][giverpart].scene.code
+			link = givers[0][giverpart].scene
 			for i in givers:
 				if i[giverpart] != givers[0][giverpart]:
-					checks.link = null
+					link = null
 					break
 			for i in takers:
 				if i[takerpart] != givers[0][giverpart]:
-					checks.link = null
+					link = null
 					break
-	#link with lastaction
-	if checks.link == null && givers[0].lastaction != null:
+	#link with lastaction if ongoing fails
+	if link == null && givers[0].lastaction != null:
 		if givers[0].lastaction.scene.code in links:
-			checks.link = givers[0].lastaction.scene.code
+			link = givers[0].lastaction.scene
 			for i in givers+takers:
 				if i.lastaction != givers[0].lastaction:
-					checks.link = null
+					link = null
 					break
+	#gather orifice info from link
+	if link != null:
+		checks.link = link.code
+		if scenescript.virginloss == true && link.virginloss == true:
+			if checks.code == link.code:
+				checks.orifice = 'same'
+			elif 'vagina' in [scenescript.giverpart] + [scenescript.takerpart] && 'vagina' in [link.giverpart] + [link.takerpart]:
+				checks.orifice = 'shift'
+			elif 'anus' in [scenescript.giverpart] + [scenescript.takerpart] && 'anus' in [link.giverpart] + [link.takerpart]:
+				checks.orifice = 'shift'
+			else:
+				checks.orifice = 'swap'
 	#virginity assignments
 	if giverpart == 'penis':
 		if takerpart == 'vagina':
