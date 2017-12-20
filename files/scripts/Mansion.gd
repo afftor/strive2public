@@ -9,6 +9,7 @@ var testslaveorigin = ['slave','poor','commoner','rich','noble']
 var currentslave = 0 setget currentslave_set
 var selectedslave = -1
 var texture = null
+var startcombatzone = "sea"
 onready var exploration = get_node("explorationnode")
 onready var slavepanel = get_node("MainScreen/slave_tab")
 
@@ -82,6 +83,7 @@ func _ready():
 	globals.resources.panel = get_node("ResourcePanel")
 	if globals.player.name == '':
 		#_on_leavenode_mouse_enter()
+		get_tree().set_screen_stretch(1, 1, Vector2(1080,600))
 		globals.player = globals.newslave('Human', 'teen', 'male')
 		globals.player.relatives.father = 0
 		globals.player.relatives.mother = 0
@@ -128,7 +130,7 @@ func _ready():
 		_on_buttonpanel_mouse_enter()
 		get_node("buttonpanel/leavenode").set_hidden(true)
 	elif globals.gameloaded == true:
-		infotext("[color=green]Game Loaded.[/color]")
+		infotext("Game Loaded.",'green')
 
 
 
@@ -136,10 +138,11 @@ func _on_new_slave_button_pressed():
 	globals.resources.day = 2
 	for i in globals.state.tutorial:
 		globals.state.tutorial[i] = true
-	music_set('mansion')
+	#music_set('mansion')
+	get_node("music").play(100)
 	#globals.state.capturedgroup.append(globals.newslave(testslaverace[rand_range(0,testslaverace.size())], testslaveage, testslavegender, testslaveorigin[rand_range(0,testslaveorigin.size())]))
 	var slave = globals.newslave(testslaverace[rand_range(0,testslaverace.size())], testslaveage, testslavegender, testslaveorigin[rand_range(0,testslaveorigin.size())])
-	slave.obed += 200
+	slave.obed += 20
 	slave.loyal += 100
 	slave.xp += 9990
 	slave.sexuals.affection = 200
@@ -170,37 +173,43 @@ func _on_new_slave_button_pressed():
 	globals.state.sidequests.ivran = 'potionreceived'
 	globals.player.ability.append("mindread")
 	globals.player.abilityactive.append("mindread")
+	globals.player.abilityactive.append("sedation")
 	globals.player.ability.append('heal')
 	#globals.player.stats.maf_cur = 3
 	globals.state.branding = 2
-	globals.resources.gold += 100000
+	globals.resources.gold += 100
 	globals.resources.food += 1000
 	globals.resources.mana += 5
 	globals.player.energy += 100
 	globals.player.xp += 50
 	globals.resources.upgradepoints += 100
-	for i in ['armorchain','weaponclaymore','clothpet','clothninja','clothkimono']:
+	for i in ['armorchain','weaponclaymore','clothpet','clothninja','clothkimono','underwearlacy','weaponaynerisrapier']:
 		var tmpitem = get_node("itemnode").createunstackable(i)
 		globals.state.unstackables[str(tmpitem.id)] = tmpitem
 	globals.state.sidequests.brothel = 1
 	globals.state.sidequests.cali = 14
 	#globals.state.decisions.append('')
 	globals.state.rank = 3
-	globals.state.mainquest = 15
+	globals.state.mainquest = 30
 	globals.resources.mana = 200
 	globals.state.farm = 3
 	globals.state.mansionupgrades.mansionlab = 1
 	globals.state.mansionupgrades.mansionalchemy = 1
 	globals.state.mansionupgrades.mansionparlor = 1
-	globals.state.backpack.stackables.bandage = 1
+	globals.state.backpack.stackables.rope = 4
+	globals.player.sstr = 5
+	globals.player.send = 5
+	globals.player.stats.agi_max = 5
+	globals.player.sagi = 5
+	globals.state.reputation.frostford = 50
 	globals.state.condition -= 100
 	#lobals.state.upcomingevents.append({code = 'tishaappearance',duration =1})
-	for i in globals.characters.characters:
-		slave = globals.characters.create(i)
-		slave.loyal = 100
-		slave.lust = 100
-		slave.consent = true
-		globals.slaves = slave
+#	for i in globals.characters.characters:
+#		slave = globals.characters.create(i)
+#		slave.loyal = 100
+#		slave.lust = 100
+#		slave.consent = true
+#		globals.slaves = slave
 
 func mansion():
 	_on_mansion_pressed()
@@ -232,11 +241,10 @@ func _on_combatgroup_pressed():
 
 
 func getridof():
-	var slave = get_tree().get_current_scene().currentslave
+	var slave = globals.slaves[get_tree().get_current_scene().currentslave]
+	slave.removefrommansion()
 	if get_node("dialogue").is_visible():
-		popup(globals.slaves[slave].dictionary("You've released $name and $he left your household. "))
 		close_dialogue()
-	globals.slaves.remove(slave)
 	rebuild_slave_list()
 	if get_node("MainScreen").is_visible():
 		_on_nobutton_pressed()
@@ -449,7 +457,7 @@ func _on_end_pressed():
 							if globals.state.reputation[i] < -10 && rand_range(0,100) < 33 && get_node("MainScreen/slave_tab").jobdict[slave.work].tags.find(i) >= 0:
 								slave.obed -= max(abs(globals.state.reputation[i])*2 - slave.loyal/6,0)
 								slave.loyal -= rand_range(1,3)
-								text += "[color=red]$name has been influenced by local townfolk, which is hostile towards you. [/color]\n"
+								text += "[color=#ff4949]$name has been influenced by local townfolk, which is hostile towards you. [/color]\n"
 							elif globals.state.reputation[i] > 10 && rand_range(0,100) < 20:
 								slave.obed += abs(globals.state.reputation[i])
 								slave.loyal += rand_range(1,3)
@@ -486,7 +494,7 @@ func _on_end_pressed():
 				slave.health -= rand_range(slave.stats.health_max/6,slave.stats.health_max/4)
 				slave.obed += -max(35 - slave.loyal/3,10)
 				if slave.health < 1:
-					text = slave.dictionary('[color=red]$name has died of starvation.[/color]\n')
+					text = slave.dictionary('[color=#ff4949]$name has died of starvation.[/color]\n')
 					deads_array.append({number = count, reason = text})
 			if slave.obed < 25 && slave.cour >= 50 && slave.rules.silence == false && slave.traits.find('Mute') < 0 && slave.sleep != 'jail' && slave.sleep != 'farm' && slave.brand != 'advanced'&& rand_range(0,1) > 0.5:
 				text0.set_bbcode(text0.get_bbcode()+slave.dictionary('$name dares to openly show $his disrespect towards you and instigates other servants. \n'))
@@ -514,10 +522,10 @@ func _on_end_pressed():
 					escape *= 0.8
 				if escape > stay:
 					if handcuffs == false:
-						var temptext = slave.dictionary('[color=red]$name has escaped during the night![/color]\n')
+						var temptext = slave.dictionary('[color=#ff4949]$name has escaped during the night![/color]\n')
 						deads_array.append({number = count, reason = temptext})
 					else:
-						text0.set_bbcode(text0.get_bbcode()+slave.dictionary('[color=red]$name attempted to escape during the night but being handcuffed slowed them down and they were quickly discovered![/color]\n'))
+						text0.set_bbcode(text0.get_bbcode()+slave.dictionary('[color=#ff4949]$name attempted to escape during the night but being handcuffed slowed them down and they were quickly discovered![/color]\n'))
 			#sleep conditions
 			slave.lust = round(rand_range(3,8))
 			if slave.sleep == 'communal' && globals.count_sleepers()['communal'] > globals.state.mansionupgrades.mansioncommunal:
@@ -599,7 +607,7 @@ func _on_end_pressed():
 					slave.preg.fertility = max(slave.preg.fertility - rand_range(10,15), 0)
 					gold_consumption += 5
 				else:
-					text0.set_bbcode(text0.get_bbcode()+slave.dictionary("[color=red]You could't afford to provide $name with contraceptives.[/color]\n"))
+					text0.set_bbcode(text0.get_bbcode()+slave.dictionary("[color=#ff4949]You could't afford to provide $name with contraceptives.[/color]\n"))
 			if slave.rules.aphrodisiac == true:
 				var value
 				if slave.spec != 'housekeeper':
@@ -611,7 +619,7 @@ func _on_end_pressed():
 					slave.lust = rand_range(10,15)
 					gold_consumption += value
 				else:
-					text0.set_bbcode(text0.get_bbcode()+slave.dictionary("[color=red]You could't supply $name's food with aphrodisiac.[/color]\n"))
+					text0.set_bbcode(text0.get_bbcode()+slave.dictionary("[color=#ff4949]You could't supply $name's food with aphrodisiac.[/color]\n"))
 			if slave.rules.silence == true:
 				if slave.cour > 40:
 					slave.cour += -rand_range(3,5)
@@ -667,7 +675,7 @@ func _on_end_pressed():
 			if slave.stress > 80 && slave.sleep != 'jail' && slave.sleep != 'farm' && slave.away.duration < 1:
 				text0.set_bbcode(text0.get_bbcode() + slave.dictionary("$name complained "+globals.fastif(headgirl == null, "to you, ", "to your headgirl, ")+"that $he's having it too hard and hoped to get some rest.\n"))
 			if slave.stress >= 100 && slave.cour+slave.conf+slave.wit+slave.charm > 50:
-				text0.set_bbcode(text0.get_bbcode() + slave.dictionary("[color=red]$name had a severe mental breakdown due to high stress.[/color] \n"))
+				text0.set_bbcode(text0.get_bbcode() + slave.dictionary("[color=#ff4949]$name had a severe mental breakdown due to high stress.[/color] \n"))
 				slave.cour += -rand_range(5,slave.cour/4)
 				slave.conf += -rand_range(5,slave.conf/4)
 				slave.wit += -rand_range(5,slave.wit/4)
@@ -682,7 +690,7 @@ func _on_end_pressed():
 			if slave.preg.duration > 0:
 				slave.preg.duration += 1
 				if slave.health < 20 && rand_range(0,100) > slave.health*2:
-					text0.set_bbcode(text0.get_bbcode()+slave.dictionary('[color=red]Due to poor health condition, $name had a miscarriage and lost $his child.[/color]\n'))
+					text0.set_bbcode(text0.get_bbcode()+slave.dictionary('[color=#ff4949]Due to poor health condition, $name had a miscarriage and lost $his child.[/color]\n'))
 					slave.preg.baby = null
 					slave.preg.duration = 0
 					slave.stress += rand_range(35,50)
@@ -714,7 +722,7 @@ func _on_end_pressed():
 				if luxury < slaveluxury && slave.metrics.ownership - slave.metrics.jail > 7 :
 					slave.loyal -= (slaveluxury - luxury)/2.5
 					slave.obed -= (slaveluxury - luxury)
-					text0.set_bbcode(text0.get_bbcode() + slave.dictionary("[color=red]$name appears to be rather unhappy about quality of $his life and demands better living conditions from you. [/color]\n"))
+					text0.set_bbcode(text0.get_bbcode() + slave.dictionary("[color=#ff4949]$name appears to be rather unhappy about quality of $his life and demands better living conditions from you. [/color]\n"))
 		elif slave.away.duration > 0:
 			slave.away.duration -= 1
 			if slave.away.duration == 0 && slave.away.at == 'lab' && slave.health < 5:
@@ -818,7 +826,7 @@ func _on_end_pressed():
 			elif rand_range(0,10) >= 4:
 				slave.stress += rand_range(25,30)
 				slave.health -= rand_range(5,10)
-				text0.set_bbcode(text0.get_bbcode() + slave.dictionary("[color=red]Mansion's terrible condition causes $name a lot of stress and impacted $his health. [/color]\n"))
+				text0.set_bbcode(text0.get_bbcode() + slave.dictionary("[color=#ff4949]Mansion's terrible condition causes $name a lot of stress and impacted $his health. [/color]\n"))
 	#####          Outside Events
 	for i in globals.guildslaves:
 		for slave in globals.guildslaves[i]:
@@ -844,7 +852,7 @@ func _on_end_pressed():
 	
 	if globals.resources.food >= 5:
 		if chef != null: 
-			globals.resources.food -= max(10 - (chef.sagi + (chef.wit/20))/2, 3)
+			globals.resources.food -= max(3, 10 - (chef.sagi + (chef.wit/20))/2)
 		else:
 			globals.resources.food -= 10
 	else:
@@ -853,7 +861,7 @@ func _on_end_pressed():
 			get_node("gameover/Panel/text").set_bbcode("[center]With no food and money your mansion falls in chaos. \nGame over.[/center]")
 		else:
 			globals.resources.gold -= 20
-			text0.set_bbcode(text0.get_bbcode()+ "[color=red]You have no food in the mansion and left dining at town, paying 20 gold in process.[/color]\n")
+			text0.set_bbcode(text0.get_bbcode()+ "[color=#ff4949]You have no food in the mansion and left dining at town, paying 20 gold in process.[/color]\n")
 	
 	for i in globals.state.repeatables:
 		for ii in globals.state.repeatables[i]:
@@ -866,7 +874,7 @@ func _on_end_pressed():
 				globals.state.repeatables[i].remove(globals.state.repeatables[i].find(ii))
 			if ii.time < 0:
 				removed = true
-				text0.set_bbcode(text0.get_bbcode() + '[color=red]You have failed to complete your quest at ' + ii.location.capitalize() +'.[/color]\n')
+				text0.set_bbcode(text0.get_bbcode() + '[color=#ff4949]You have failed to complete your quest at ' + ii.location.capitalize() +'.[/color]\n')
 				globals.state.repeatables[i].remove(globals.state.repeatables[i].find(ii))
 	
 	if int(globals.resources.day)%5 == 0.0:
@@ -910,7 +918,7 @@ func _on_end_pressed():
 	get_node("FinishDayPanel/FinishDayScreen").set_current_tab(0)
 	aliseresults = results
 	if lacksupply == true:
-		text0.set_bbcode(text0.get_bbcode()+"[color=red]You have expended your supplies and some of the actions couldn't be finished. [/color]\n")
+		text0.set_bbcode(text0.get_bbcode()+"[color=#ff4949]You have expended your supplies and some of the actions couldn't be finished. [/color]\n")
 	enddayprocess = false
 	dailyevent = false
 	nextdayevents()
@@ -1002,7 +1010,7 @@ func alisebuild(state):
 	elif state == 'med':
 		showtext = '[color=yellow]' + showtext + '[/color]'
 	elif state in ['bad','worst']:
-		showtext = '[color=red]' + showtext + '[/color]'
+		showtext = '[color=#ff4949]' + showtext + '[/color]'
 	get_node("FinishDayPanel/alise/speech/RichTextLabel").set_bbcode(showtext)
 	get_node("tutorialnode").buildbody(get_node("FinishDayPanel/alise"), truesprite)
 
@@ -1225,7 +1233,7 @@ func _on_nobutton_pressed():
 
 ##### Saveload
 
-var filename = 'autosave'
+var filename = 'user://saves/autosave'
 
 func _on_SavePanel_visibility_changed():
 	if get_node("menucontrol/menupanel/SavePanel").is_visible() == false:
@@ -1284,7 +1292,7 @@ func _on_loadbutton_pressed():
 	if Directory.new().file_exists(filename):
 		yesnopopup('Load this file?', 'loadfile')
 	else:
-		popup_set('No file with such name') 
+		popup('No file with such name') 
 
 func loadfile():
 	if thread.is_active():
@@ -1364,7 +1372,7 @@ func music_set(text):
 	var music = get_node("music")
 	if music.is_paused() == true && globals.rules.musicvol > 0:
 		music.set_paused(false)
-	if globals.rules.musicvol == 0 || music.get_meta("currentsong") == text:
+	if globals.rules.musicvol == 0 || (music.get_meta("currentsong") == text && music.get_pos() != music.get_length()):
 		return
 	var path = ''
 	var array = []
@@ -1388,6 +1396,11 @@ func _on_music_finished():
 	if get_node("music").get_meta("currentsong") == 'mansion':
 		get_node("music").set_meta("currentsong", 'over')
 		music_set("mansion")
+	elif get_node("music").get_meta("currentsong") == 'combat':
+		get_node("music").set_meta("currentsong", 'over')
+		music_set("combat")
+	else:
+		music_set(get_node("music").get_meta("currentsong"))
 
 
 
@@ -1425,15 +1438,15 @@ func _on_mansion_pressed():
 	text = 'You are at your mansion, which is located near [color=aqua]'+ globals.state.location.capitalize()+'[/color].\n\n' 
 	text += 'You have '
 	if sleepers.communal > globals.state.mansionupgrades.mansioncommunal:
-		text += '[color=red]'
+		text += '[color=#ff4949]'
 	elif sleepers.communal == globals.state.mansionupgrades.mansioncommunal:
 		text += '[color=yellow]'
 	else:
 		text += '[color=green]'
 	text += str(globals.state.mansionupgrades.mansioncommunal) + '[/color] beds in communal room\n'
-	text += 'You have ' + globals.fastif(sleepers.personal >= globals.state.mansionupgrades.mansionpersonal, '[color=red]', '[color=green]') + str(globals.state.mansionupgrades.mansionpersonal) + '[/color] ' + globals.fastif(globals.state.mansionupgrades.mansionpersonal > 1, 'personal rooms', 'personal room')+ ' available for living\nYour bed can fit ' +globals.fastif(sleepers['your_bed'] >= globals.state.mansionupgrades.mansionbed, '[color=red]', '[color=green]') + str(globals.state.mansionupgrades.mansionbed) + '[/color] ' +  globals.fastif(globals.state.mansionupgrades.mansionpersonal > 1, 'persons', 'person')+' besides you.\n\nYour jail can hold up to ' +globals.fastif(sleepers.jail >= globals.state.mansionupgrades.jailcapacity, '[color=red]', '[color=green]') + str(globals.state.mansionupgrades.jailcapacity) +'[/color] prisoners. \n\n'
+	text += 'You have ' + globals.fastif(sleepers.personal >= globals.state.mansionupgrades.mansionpersonal, '[color=#ff4949]', '[color=green]') + str(globals.state.mansionupgrades.mansionpersonal) + '[/color] ' + globals.fastif(globals.state.mansionupgrades.mansionpersonal > 1, 'personal rooms', 'personal room')+ ' available for living\nYour bed can fit ' +globals.fastif(sleepers['your_bed'] >= globals.state.mansionupgrades.mansionbed, '[color=#ff4949]', '[color=green]') + str(globals.state.mansionupgrades.mansionbed) + '[/color] ' +  globals.fastif(globals.state.mansionupgrades.mansionpersonal > 1, 'persons', 'person')+' besides you.\n\nYour jail can hold up to ' +globals.fastif(sleepers.jail >= globals.state.mansionupgrades.jailcapacity, '[color=#ff4949]', '[color=green]') + str(globals.state.mansionupgrades.jailcapacity) +'[/color] prisoners. \n\n'
 	if globals.state.condition <= 20:
-		text += 'Mansion is [color=red]in a complete mess[/color].\n\n'
+		text += 'Mansion is [color=#ff4949]in a complete mess[/color].\n\n'
 	elif globals.state.condition <= 40:
 		text += 'Mansion is [color=#FFA500]very dirty[/color].\n\n'
 	elif globals.state.condition <= 60:
@@ -1528,7 +1541,7 @@ func _on_jailpanel_visibility_changed():
 	if temp == '':
 		text = 'You have no prisoners at this moment.'
 	else:
-		text = 'You have '+str(prisoners.size()) + '/'+str(globals.state.mansionupgrades.jailcapacity) + ' prisoners.'
+		text = 'You have '+str(prisoners.size()) + ' prisoner(s).\nYou have ' + str(globals.state.mansionupgrades.jailcapacity-prisoners.size()) + ' free cell(s).\nPrisoners can be disciplined at "Interactions" with abuse setting. '
 	if globals.state.mansionupgrades.jailincenses:
 		text += "\n[color=green]Your jail is decently furnished and tiled. [/color]"
 	if globals.state.mansionupgrades.jailincenses:
@@ -1807,7 +1820,7 @@ var mainquestdict = {
 '29': "Report back to Theron about your findings. ",
 '30': "Decide on the solution for Frostford's issue. ",
 '31': "Let Theron know about Zoe's decision.",
-'32': "Bring Zoe 500 units of food, 15 Nature Essences and 5 Fluid Substances.",
+'32': "Return to Zoe while having total 500 units of food, 15 Nature Essences and 5 Fluid Substances.",
 '33': "Return to Theron.",
 '34': "Return to Theron.",
 '35':"Return to Theron.",
@@ -2188,9 +2201,9 @@ func reputationword(value):
 	elif value >= 10:
 		text = "[color=green]Positive[/color]"
 	elif value <= -10:
-		text = "[color=red]Bad[/color]"
+		text = "[color=#ff4949]Bad[/color]"
 	elif value <= -30:
-		text = "[color=red]Terrible[/color]"
+		text = "[color=#ff4949]Terrible[/color]"
 	else:
 		text = "Neutral"
 	return text
@@ -2251,7 +2264,7 @@ func selfabilityselect(ability):
 			ref = slave[i]
 		if ref < ability.reqs[i]:
 			confirmbutton.set_disabled(true)
-			text += '[color=red]'+dict[i] + ': ' + str(ability.reqs[i]) + '[/color], '
+			text += '[color=#ff4949]'+dict[i] + ': ' + str(ability.reqs[i]) + '[/color], '
 		else:
 			text += '[color=green]'+dict[i] + ': ' + str(ability.reqs[i]) + '[/color], '
 	text = text.substr(0, text.length() - 2) + '.'
@@ -2421,7 +2434,7 @@ func _on_orderbutton_pressed():
 ####### PORTALS
 func _on_portals_pressed():
 	if globals.state.calculateweight().overload == true:
-		infotext("[color=red]Your backpack is too heavy to leave[/color]")
+		infotext("Your backpack is too heavy to leave", 'red')
 		return
 	_on_mansion_pressed()
 	if OS.get_name() != 'HTML5' && globals.rules.fadinganimation == true:
@@ -2561,7 +2574,7 @@ func farmassignpanel(slave):
 		else:
 			get_node("MainScreen/mansion/farmpanel/slavetofarm/addhen").set_disabled(false)
 			get_node("MainScreen/mansion/farmpanel/slavetofarm/addhen").set_tooltip("")
-	get_node("MainScreen/mansion/farmpanel/slavetofarm/slaveassigntext").set_bbcode("Selected servant - " + slave.name_long()+ '. \nLactation: ' +globals.fastif(slave.lactation == true, '[color=green]present[/color]', '[color=red]not present[/color]')+ '. \nTits size : '+slave.titssize)
+	get_node("MainScreen/mansion/farmpanel/slavetofarm/slaveassigntext").set_bbcode("Selected servant - " + slave.name_long()+ '. \nLactation: ' +globals.fastif(slave.lactation == true, '[color=green]present[/color]', '[color=#ff4949]not present[/color]')+ '. \nTits size : '+slave.titssize)
 
 func _on_releasefromfarm_pressed():
 	var slave = get_node("MainScreen/mansion/farmpanel/slavefarminsepct/releasefromfarm").get_meta('slave')
@@ -2655,7 +2668,7 @@ func _on_startcombat_pressed():
 			i[j] = 100
 	get_node("outside").gooutside()
 	globals.state.backpack.stackables.rope = 3
-	get_node("explorationnode").zoneenter("mountains")
+	get_node("explorationnode").zoneenter(startcombatzone)
 	#get_node("combat").start_battle()
 
 func checkplayergroup():
@@ -2708,15 +2721,21 @@ func _on_popupclosebutton_pressed():
 	get_node("popupmessage").set_hidden(true)
 
 
-func infotext(newtext):
+func infotext(newtext, color = null):
 	if (enddayprocess == true && newtext.findn("trait") < 0) || newtext == '' || (get_node("combat").is_visible() && get_node("combat/win").is_hidden()):
 		return
 	if get_node("infotext").get_children().size() >= 15:
 		get_node("infotext").get_child(get_node("infotext").get_children().size() - 14).queue_free()
-	var text = '[right]'+ newtext + '[/right]'
+	var text = newtext
 	var label = get_node("infotext/Label").duplicate()
-	label.set_bbcode(text + " ")
+	label.set_text(text)
 	label.set_opacity(1)
+	if color == 'red':
+		label.set('custom_colors/font_color', Color(1,0.29,0.29))
+	elif color == 'green':
+		label.set('custom_colors/font_color', Color(0,1,0))
+	elif color == 'yellow':
+		label.set('custom_colors/font_color', Color(1,1,0))
 	var timer = Timer.new()
 	timer.set_wait_time(4)
 	timer.start()
@@ -2978,7 +2997,7 @@ func itemselected(button, backpack = false):
 	var text = ''
 	var item = button.get_meta("item")
 	itemselected = item
-	for i in get_node("inventory/Panel/ScrollContainer/GridContainer").get_children():
+	for i in get_node("inventory/Panel/ScrollContainer/GridContainer").get_children() + get_node("inventory/Panel/backpackcontainer/GridContainer").get_children():
 		i.set_pressed(i == button)
 	if item.type in ['costume','underwear','armor','weapon','accessory']:
 		get_node("inventory/Panel/applytoslave").set_text("Equip")
@@ -3075,7 +3094,7 @@ func useitem(slave):
 		if itemselected.reqs != null:
 			get_node("itemnode").slave = slave
 			if get_node("itemnode").checkreqs(itemselected) == false:
-				infotext(slave.dictionary("[color=red]$name does not pass the requirements for ") + itemselected.name + '[/color]')
+				infotext(slave.dictionary("$name does not pass the requirements for ") + itemselected.name, 'red')
 				return
 		if slave.gear[itemselected.type] != null && !slave.gear[itemselected.type] in ['clothcommon','underwearplain']:
 			tempitem = globals.state.unstackables[slave.gear[itemselected.type]]
@@ -3182,7 +3201,7 @@ func sexselect():
 			i.queue_free()
 	for i in globals.slaves:
 		if sexmode == 'sex':
-			if i.consent == false || i.away.duration > 0 || i.sleep in ['jail','farm']:
+			if i.consent == false || i.away.duration != 0 || i.sleep in ['jail','farm']:
 				continue
 			newbutton = get_node("sexselect/ScrollContainer/VBoxContainer/Button").duplicate()
 			get_node("sexselect/ScrollContainer/VBoxContainer").add_child(newbutton)
@@ -3195,7 +3214,7 @@ func sexselect():
 				newbutton.set_disabled(true)
 				newbutton.set_tooltip(i.dictionary('You have already interacted with $name today.'))
 		elif sexmode == 'abuse':
-			if i.away.duration > 0 || i.sleep in ['farm']:
+			if i.away.duration != 0 || i.sleep in ['farm']:
 				continue
 			newbutton = get_node("sexselect/ScrollContainer/VBoxContainer/Button").duplicate()
 			get_node("sexselect/ScrollContainer/VBoxContainer").add_child(newbutton)
@@ -3285,7 +3304,7 @@ func _on_startbutton_pressed():
 	globals.state.sexactions -= 1
 	var mode = 'normal'
 	if sexmode == 'abuse':
-		mode = 'rape'
+		mode = 'abuse'
 		get_node("interactions").startsequence([globals.player] + sexassist, mode, sexslaves)
 	else:
 		get_node("interactions").startsequence([globals.player] + sexslaves + sexassist, mode)
@@ -3329,10 +3348,10 @@ func _on_headgirlbehavior_item_selected( ID ):
 		text += "Headgirl will not interfere with others' business. "
 	if ID == 1:
 		globals.state.headgirlbehavior = 'kind'
-		text += "Headgirl will focus on kind approach and improve stress and loyalty of others."
+		text += 'The Headgirl will focus on a kind approach and reduce the stress of others, trying to endrose acceptance of their master. '
 	if ID == 2:
 		globals.state.headgirlbehavior = 'strict'
-		text += "Headgirl will focus on putting other servants in line at the cost of thier stress. "
+		text += "Headgirl will focus on putting other servants in line at the cost of their stress. "
 	var headgirl = null
 	for i in globals.slaves:
 		if i.work == 'headgirl':

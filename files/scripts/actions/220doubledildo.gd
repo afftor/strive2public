@@ -10,6 +10,8 @@ const targeteffects = {lust = 50, sens = 100}
 const giverpart = 'vagina'
 const takerpart = 'vagina'
 const virginloss = true
+const giverconsent = 'advanced'
+const takerconsent = 'advanced'
 
 func getname(state = null):
 	return "Double Dildo"
@@ -59,6 +61,7 @@ func takereffect(member):
 func initiate():
 	var text = ''
 	text += "[name1] insert[s/1] a double dildo into [his1] and [names2] pussies, {^grinding:pumping:gyrating} [his1] hips against [partner2]."
+
 	return text
 
 func reaction(member):

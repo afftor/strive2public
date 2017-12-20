@@ -54,9 +54,9 @@ func show():
 		for i in slave.get_traits():
 			text2 += '[url=' + i.name + ']' + i.name + "[/url]"
 			if i.tags.find('sexual') >= 0:
-				text2 = "[color=#ff00bf]" + text2 + '[/color]'
+				text2 = "[color=#ff5ace]" + text2 + '[/color]'
 			elif i.tags.find('detrimental') >= 0:
-				text2 = "[color=red]" + text2 + '[/color]'
+				text2 = "[color=#ff4949]" + text2 + '[/color]'
 			text2 += ', '
 			text += text2
 		text = text.substr(0, text.length() - 2) + '.'

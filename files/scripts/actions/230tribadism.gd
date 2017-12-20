@@ -10,6 +10,8 @@ const targeteffects = {lust = 50, sens = 100}
 const giverpart = 'vagina'
 const takerpart = 'vagina'
 const virginloss = false
+const giverconsent = 'basic'
+const takerconsent = 'basic'
 
 func getname(state = null):
 	return "Tribadism"

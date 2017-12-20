@@ -257,7 +257,6 @@ __meta__ = {
 
 [node name="grouppanel" type="Panel" parent="."]
 
-editor/display_folded = true
 anchor/top = 1
 anchor/right = 1
 anchor/bottom = 1
@@ -301,7 +300,7 @@ toggle_mode = true
 enabled_focus_mode = 2
 shortcut = null
 textures/normal = ExtResource( 4 )
-params/resize_mode = 0
+params/resize_mode = 1
 params/stretch_mode = 7
 
 [node name="Label" type="Label" parent="grouppanel/skilline/skill"]
@@ -371,7 +370,6 @@ alignment = 0
 
 [node name="character" type="Button" parent="grouppanel/groupline"]
 
-editor/display_folded = true
 visibility/visible = false
 rect/min_size = Vector2( 200, 0 )
 focus/ignore_mouse = false
@@ -520,7 +518,6 @@ margin/bottom = 85.0
 
 [node name="enemypanel" type="Panel" parent="."]
 
-editor/display_folded = true
 anchor/right = 1
 focus/ignore_mouse = false
 focus/stop_mouse = true
@@ -566,7 +563,7 @@ flat = false
 
 [node name="hpbar" type="ProgressBar" parent="enemypanel/enemyline/character"]
 
-focus/ignore_mouse = false
+focus/ignore_mouse = true
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 0
@@ -757,7 +754,6 @@ flat = false
 
 [node name="abilitites" type="Button" parent="."]
 
-editor/display_folded = true
 anchor/left = 1
 anchor/top = 1
 anchor/right = 1
@@ -780,6 +776,7 @@ flat = false
 
 [node name="Panel" type="Panel" parent="abilitites"]
 
+editor/display_folded = true
 visibility/visible = false
 anchor/left = 3
 anchor/top = 3
@@ -831,7 +828,7 @@ size_flags/vertical = 2
 margin/left = 0.0
 margin/top = 0.0
 margin/right = 150.0
-margin/bottom = 30.0
+margin/bottom = 36.0
 custom_fonts/font = ExtResource( 1 )
 toggle_mode = true
 enabled_focus_mode = 2

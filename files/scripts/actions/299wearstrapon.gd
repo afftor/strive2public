@@ -10,6 +10,8 @@ const targeteffects = {lust = 0, sens = 0, pain = 0}
 const giverpart = 'strapon'
 const takerpart = ''
 const virginloss = false
+const giverconsent = 'basic'
+const takerconsent = 'any'
 
 func getname(state = null):
 	return "Wear Strap-on"

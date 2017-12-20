@@ -10,6 +10,8 @@ const targeteffects = {lust = 50, sens = 50}
 const giverpart = 'mouth'
 const takerpart = 'mouth'
 const virginloss = false
+const giverconsent = 'basic'
+const takerconsent = 'basic'
 
 func getname(state = null):
 	if givers.size() > 1 || takers.size() > 1:

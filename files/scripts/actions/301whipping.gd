@@ -10,6 +10,8 @@ const targeteffects = {lust = 0, sens = 0, pain = 5}
 const giverpart = ''
 const takerpart = ''
 const virginloss = false
+const giverconsent = 'basic'
+const takerconsent = 'any'
 
 func getname(state = null):
 	return "Whipping"
@@ -40,18 +42,15 @@ func givereffect(member):
 
 func takereffect(member):
 	var result
-	var effects = {sens = 45, pain = 2, tags = ['sexpain']}
-	member.person.obed += rand_range(15,20)
+	var effects = {sens = 45, pain = 2, tags = ['punish'], obed = rand_range(14,22), stress = rand_range(5,10)}
 	if (member.person.traits.find("Likes it rough") >= 0 && member.lewd >= 30) || member.person.traits.find('Masochist') >= 0:
 		result = 'good'
 		effects.lust = 70
 	elif member.person.traits.find("Likes it rough") >= 0 || member.lust >= 700:
 		result = 'average'
 		effects.lust = 30
-		member.person.stress += rand_range(3,5)
 	else:
 		result = 'bad'
-		member.person.stress += rand_range(4,9)
 	return [result, effects]
 
 func initiate():

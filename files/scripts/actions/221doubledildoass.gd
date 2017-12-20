@@ -10,6 +10,8 @@ const targeteffects = {lust = 50, sens = 100}
 const giverpart = 'anus'
 const takerpart = 'anus'
 const virginloss = true
+const giverconsent = 'advanced'
+const takerconsent = 'advanced'
 
 func getname(state = null):
 	return "Double Anal Dildo"

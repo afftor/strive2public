@@ -10,6 +10,9 @@ const targeteffects = {lust = 0, sens = 0, pain = 0}
 const giverpart = ''
 const takerpart = ''
 const virginloss = false
+const giverconsent = 'any'
+const takerconsent = 'any'
+
 
 func getname(state = null):
 	return "Wait"

@@ -10,6 +10,8 @@ const targeteffects = {lust = 50, sens = 100}
 const giverpart = ''
 const takerpart = 'penis'
 const virginloss = false
+const giverconsent = 'basic'
+const takerconsent = 'any'
 
 func getname(state = null):
 	return "Handjob"

@@ -824,7 +824,7 @@ func _on_piercing_pressed():
 		if i != get_node("piercingpanel/ScrollContainer/VBoxContainer/piercingline"):
 			i.set_hidden(true)
 			i.queue_free()
-	if slave.lewd >= 20:
+	if slave.lewdness >= 20:
 		get_node("piercingpanel/piercestate").set_text(slave.dictionary('$name does not seems to mind you piercing $his private places.'))
 	else:
 		get_node("piercingpanel/piercestate").set_text(slave.dictionary('$name refuses to let you pierce $his private places'))
@@ -840,7 +840,7 @@ func _on_piercing_pressed():
 	
 	
 	for ii in array:
-		if ii.requirement == null || (slave.consent == true && ii.requirement == 'lewdness') || (slave.penis.number >= 1 && ii.id == 10) || (slave.vagina != 'none' && (ii.id == 8 || ii.id == 9)):
+		if ii.requirement == null || (slave.consent == true && ii.requirement == 'lewdness') || (slave.penis != 'none' && ii.id == 10) || (slave.vagina != 'none' && (ii.id == 8 || ii.id == 9)):
 			var newline = get_node("piercingpanel/ScrollContainer/VBoxContainer/piercingline").duplicate()
 			newline.set_hidden(false)
 			get_node("piercingpanel/ScrollContainer/VBoxContainer").add_child(newline)

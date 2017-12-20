@@ -10,6 +10,8 @@ const targeteffects = {lust = 50, sens = 100}
 const giverpart = 'tail'
 const takerpart = 'penis'
 const virginloss = false
+const giverconsent = 'advanced'
+const takerconsent = 'any'
 
 func getname(state = null):
 	return "Tailjob"

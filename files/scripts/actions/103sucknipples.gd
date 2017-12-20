@@ -10,6 +10,8 @@ const targeteffects = {lust = 50, sens = 50}
 const giverpart = 'mouth'
 const takerpart = ''
 const virginloss = false
+const giverconsent = 'basic'
+const takerconsent = 'any'
 
 func getname(state = null):
 	return "Nipple Sucking"

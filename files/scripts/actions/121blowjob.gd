@@ -10,6 +10,8 @@ const targeteffects = {lust = 50, sens = 100}
 const giverpart = 'mouth'
 const takerpart = 'penis'
 const virginloss = false
+const giverconsent = 'basic'
+const takerconsent = 'basic'
 
 func getname(state = null):
 	return "Blowjob"

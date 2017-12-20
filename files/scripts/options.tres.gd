@@ -25,6 +25,10 @@ func _ready():
 	get_node("TabContainer/Game/permadeath").set_pressed(globals.rules.permadeath)
 	get_node("TabContainer/Game/aliseoption").select(globals.rules.enddayalise)
 	get_node("TabContainer/Settings/spritesindialogues").set_pressed(globals.rules.spritesindialogues)
+	get_node("TabContainer/Settings/screenresize/width").set_text(str(globals.rules.screenwidth))
+	get_node("TabContainer/Settings/screenresize/height").set_text(str(globals.rules.screenheight))
+	for i in get_node("TabContainer/Settings/screenresize").get_children():
+		i.set_hidden(!globals.rules.oldresize)
 	if globals.rules.children == true:
 		get_node("TabContainer/Game/noadults").set_hidden(false)
 		get_node("TabContainer/Game/noadults").set_pressed(globals.rules.noadults)
@@ -262,9 +266,11 @@ func _on_receive_pressed():
 func _on_screenresize_pressed():
 	globals.rules.oldresize = get_node("TabContainer/Settings/screenresize").is_pressed()
 	if globals.rules.oldresize == true:
-		get_tree().set_screen_stretch(1, 0, Vector2(1080,600))
+		get_tree().set_screen_stretch(1, 1, Vector2(1080,600))
 	else:
 		get_tree().set_screen_stretch(0, 1, Vector2(1080,600))
+	set_hidden(true)
+	set_hidden(false)
 
 
 func _on_fading_pressed():
@@ -314,3 +320,9 @@ func _on_unlockgallery_pressed():
 
 func _on_spritesindialogues_pressed():
 	globals.rules.spritesindialogues = get_node("TabContainer/Settings/spritesindialogues").is_pressed()
+
+
+func _on_screenconf_pressed():
+	globals.rules.screenwidth = int(get_node("TabContainer/Settings/screenresize/width").get_text())
+	globals.rules.screenheight = int(get_node("TabContainer/Settings/screenresize/height").get_text())
+	get_tree().set_screen_stretch(1, 1, Vector2(globals.rules.screenwidth,globals.rules.screenheight))

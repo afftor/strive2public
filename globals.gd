@@ -93,8 +93,8 @@ mountains = load("res://files/backgrounds/mountains.jpg"),
 borealforest = load("res://files/backgrounds/borealforest.jpg"),
 amberguard = load("res://files/backgrounds/amberguard.png"),
 amberroad = load("res://files/backgrounds/amberroad.png"),
-undercity = load("res://files/backgrounds/undercity.jpg"),
-tunnels = load("res://files/backgrounds/tunnels.jpg"),
+undercity = load("res://files/backgrounds/undercity.png"),
+tunnels = load("res://files/backgrounds/tunnels.png"),
 }
 var mansionupgradesdict = mansionupgrades.dict
 
@@ -186,13 +186,14 @@ func slaves_set(slave):
 	slave.originstrue = slave.origins
 	slave.gear.costume = 'clothcommon'
 	slave.gear.underwear = 'underwearplain'
+	slave.health = max(slave.health, 5)
 	slaves.append(slave)
 	if get_tree().get_current_scene().find_node('CharList'):
 		get_tree().get_current_scene().rebuild_slave_list()
 	if get_tree().get_current_scene().find_node('ResourcePanel'):
 		get_tree().get_current_scene().find_node('population').set_text(str(slavecount())) 
 	if globals.get_tree().get_current_scene().has_node("infotext"):
-		globals.get_tree().get_current_scene().infotext("[color=green]New person acquired: " + slave.name_long() + "[/color]")
+		globals.get_tree().get_current_scene().infotext("New person acquired: " + slave.name_long(),'green')
 
 func slavecount():
 	var number = 0
@@ -218,12 +219,14 @@ fontsize = 14,
 musicvol = 1,
 receiving = true,
 fullscreen = false,
-oldresize = false,
+oldresize = true,
 fadinganimation = true,
 permadeath = false,
 autoattack = true,
 enddayalise = 1,
 spritesindialogues = true,
+screenwidth = 1080,
+screenheight = 600,
 }
 
 
@@ -254,6 +257,7 @@ class resource:
 	
 	func gold_set(value):
 		value = round(value)
+		var color
 		var difference = gold - value
 		var text = ""
 		gold = value
@@ -265,12 +269,14 @@ class resource:
 		
 		if difference != 0:
 			if difference < 0:
-				text = "[color=green]Obtained " + str(abs(difference)) +  " gold[/color]"
+				text = "Obtained " + str(abs(difference)) +  " gold"
+				color = 'green'
 			else:
-				text = "[color=red]Lost " + str(abs(difference)) +  " gold[/color]"
+				color = 'red'
+				text = "Lost " + str(abs(difference)) +  " gold"
 		
 		if globals.get_tree().get_current_scene().has_node("infotext"):
-			globals.get_tree().get_current_scene().infotext(text)
+			globals.get_tree().get_current_scene().infotext(text,color)
 	
 	func day_set(value):
 		day = value
@@ -281,6 +287,7 @@ class resource:
 	
 	func food_set(value):
 		value = round(value)
+		var color
 		var difference = round(food - value)
 		var text = ""
 		food = value
@@ -292,14 +299,17 @@ class resource:
 			panel.get_node('food').set_text(str(food))
 		if difference != 0:
 			if difference < 0:
-				text = "[color=green]Obtained " + str(abs(difference)) +  " food[/color]"
+				text = "Obtained " + str(abs(difference)) +  " food"
+				color = 'green'
 			else:
-				text = "[color=red]Lost " + str(abs(difference)) +  " food[/color]"
+				text = "Lost " + str(abs(difference)) +  " food"
+				color = 'red'
 		if globals.get_tree().get_current_scene().has_node("infotext"):
-			globals.get_tree().get_current_scene().infotext(text)
+			globals.get_tree().get_current_scene().infotext(text,color)
 	
 	func mana_set(value):
 		value = round(value)
+		var color
 		var difference = mana - value
 		var text = ""
 		mana = value
@@ -308,17 +318,15 @@ class resource:
 		
 		if panel != null:
 			panel.get_node('mana').set_text(str(mana))
-		if globals.get_tree().get_current_scene().has_node("infotext"):
-			globals.get_tree().get_current_scene().infotext(text)
 		
 		if difference != 0:
 			if difference < 0:
-				text = "[color=green]Obtained " + str(abs(difference)) +  " mana[/color]"
+				text = "Obtained " + str(abs(difference)) +  " mana"
 			else:
-				text = "[color=aqua]Used " + str(abs(difference)) +  " mana[/color]"
+				text = "Used " + str(abs(difference)) +  " mana"
 		
 		if globals.get_tree().get_current_scene().has_node("infotext"):
-			globals.get_tree().get_current_scene().infotext(text)
+			globals.get_tree().get_current_scene().infotext(text,color)
 		
 		
 	
@@ -328,10 +336,10 @@ class resource:
 		upgradepoints = value
 		
 		if difference < 0:
-			text = "[color=green]Obtained " + str(abs(difference)) +  " Mansion Upgrade Points[/color]"
+			text = "Obtained " + str(abs(difference)) +  " Mansion Upgrade Points"
 		
 		if globals.get_tree().get_current_scene().has_node("infotext"):
-			globals.get_tree().get_current_scene().infotext(text)
+			globals.get_tree().get_current_scene().infotext(text,'green')
 	
 	func energy_set(value):
 		if panel != null:
@@ -429,22 +437,24 @@ class progress:
 		for i in array:
 			for k in i.gear.values():
 				if !k in ['underwearplain','clothcommon'] && k != null && globals.state.unstackables[k].code == 'acctravelbag': maxweight += 20
-					
 		var dict = {currentweight = currentweight, maxweight = maxweight, overload = maxweight < currentweight}
 		return dict
 	
 	func reputation_set(value):
 		var text = ''
+		var color
 		for i in value:
 			if ghostrep[i] != value[i]:
 				value[i] = min(max(value[i], -50),50)
 				if ghostrep[i] > value[i]:
-					text += "[color=red]Reputation with " + i.capitalize() + " has worsened![/color]"
+					text += "Reputation with " + i.capitalize() + " has worsened!"
+					color = 'red'
 				else:
-					text += "[color=green]Reputation with " + i.capitalize() + " has increased![/color]"
+					text += "Reputation with " + i.capitalize() + " has increased!"
+					color = 'green'
 				ghostrep[i] = value[i]
 		if globals.get_tree().get_current_scene().has_node("infotext"):
-			globals.get_tree().get_current_scene().infotext(text)
+			globals.get_tree().get_current_scene().infotext(text,color)
 
 	
 	func cond_set(value):
@@ -663,8 +673,8 @@ class slave:
 		else:
 			traits.append(trait.name)
 			if globals.get_tree().get_current_scene().has_node("infotext") && globals.slaves.find(self) >= 0 && away.at != 'hidden':
-				text += self.dictionary("[color=yellow]$name acquired new trait: " + trait.name + "[/color] ")
-				globals.get_tree().get_current_scene().infotext(text)
+				text += self.dictionary("$name acquired new trait: " + trait.name)
+				globals.get_tree().get_current_scene().infotext(text,'yellow')
 			if trait['effect'].empty() != true:
 				add_effect(trait['effect'])
 	
@@ -676,9 +686,9 @@ class slave:
 		traits.erase(trait.name)
 		if trait['effect'].empty() != true:
 			add_effect(trait['effect'], true)
-		text += self.dictionary("[color=yellow]$name lost trait: " + trait.name + "[/color] ")
+		text += self.dictionary("$name lost trait: " + trait.name)
 		if globals.get_tree().get_current_scene().has_node("infotext") && globals.slaves.find(self) >= 0 && away.at != 'hidden':
-			globals.get_tree().get_current_scene().infotext(text)
+			globals.get_tree().get_current_scene().infotext(text,'yellow')
 	
 	func levelupreqs_set(value):
 		levelupreqs = value
@@ -690,9 +700,9 @@ class slave:
 		realxp = 0
 		sexuals.affection += round(rand_range(5,10))
 		if self != globals.player:
-			globals.get_tree().get_current_scene().infotext(dictionary("$name has advanced to Level [color=aqua]" + str(level)+ '[/color]!'))
+			globals.get_tree().get_current_scene().infotext(dictionary("$name has advanced to Level " + str(level)),'green')
 		else:
-			globals.get_tree().get_current_scene().infotext(dictionary("You have advanced to Level [color=aqua]" + str(level)+ '[/color]'))
+			globals.get_tree().get_current_scene().infotext(dictionary("You have advanced to Level " + str(level)),'green')
 	
 	func xp_set(value):
 		var difference = value - realxp
@@ -763,6 +773,7 @@ class slave:
 	func obed_set(value):
 		var difference = stats.obed_cur - value
 		var string = ""
+		var color
 		var text = ""
 		if difference > 0:
 			difference = abs(difference)
@@ -773,7 +784,8 @@ class slave:
 			else:
 				string = "(---)"
 			stats.obed_cur -= difference
-			text = self.dictionary("[color=red]$name's obedience has decreased " + string + " [/color]")
+			text = self.dictionary("$name's obedience has decreased " + string)
+			color = 'red'
 		else:
 			difference = abs(difference)
 			if abs(difference) < 20:
@@ -782,18 +794,20 @@ class slave:
 				string = "(++)"
 			else:
 				string = "(+++)"
-			text = self.dictionary("[color=green]$name's obedience has grown " + string + " [/color]")
+			text = self.dictionary("$name's obedience has grown " + string)
+			color = 'green'
 			stats.obed_cur += difference*(1 + stats.obed_mod/100)
 		
 		stats.obed_cur = max(min(stats.obed_cur, stats.obed_max),stats.obed_min)
 		if stats.obed_cur < 50 && spec == 'executor':
 			stats.obed_cur = 50
 		if globals.get_tree().get_current_scene().has_node("infotext") && globals.slaves.find(self) >= 0 && away.at != 'hidden':
-			globals.get_tree().get_current_scene().infotext(text)
+			globals.get_tree().get_current_scene().infotext(text,color)
 	
 	func loyal_set(value):
 		var difference = stats.loyal_cur - value
 		var string = ""
+		var color
 		var text = ""
 		if difference > 0:
 			difference = abs(difference)
@@ -804,7 +818,8 @@ class slave:
 			else:
 				string = "(---)"
 			stats.loyal_cur -= difference
-			text = self.dictionary("[color=red]$name's loyalty decreased " + string + " [/color]")
+			text = self.dictionary("$name's loyalty decreased " + string)
+			color = 'red'
 		elif difference < 0:
 			difference = abs(difference)
 			if abs(difference) < 5:
@@ -813,19 +828,21 @@ class slave:
 				string = "(++)"
 			else:
 				string = "(+++)"
-			text = self.dictionary("[color=green]$name's loyalty grown " + string + " [/color]")
+			text = self.dictionary("$name's loyalty grown " + string)
+			color = 'green'
 			stats.loyal_cur += difference*(1 + stats.loyal_mod/100) 
 		
 		
 		stats.loyal_cur = max(min(stats.loyal_cur, stats.loyal_max),stats.loyal_min)
 		if globals.get_tree().get_current_scene().has_node("infotext") && globals.slaves.find(self) >= 0 && away.at != 'hidden':
-			globals.get_tree().get_current_scene().infotext(text)
+			globals.get_tree().get_current_scene().infotext(text,color)
 	
 	func stress_set(value):
 		
 		var difference = stats.stress_cur - value
 		var string = ""
 		var text = ""
+		var color
 		if difference < 0:
 			difference = abs(difference)
 			if abs(difference) < 15:
@@ -835,7 +852,8 @@ class slave:
 			else:
 				string = "(+++)"
 			stats.stress_cur += difference*(1 + stats.stress_mod/100)
-			text = self.dictionary("[color=red]$name's stress has grown " + string + " [/color]")
+			text = self.dictionary("$name's stress has grown " + string)
+			color = 'red'
 		else:
 			difference = abs(difference)
 			if abs(difference) < 15:
@@ -844,12 +862,13 @@ class slave:
 				string = "(--)"
 			else:
 				string = "(---)"
-			text = self.dictionary("[color=green]$name's stress has reduced " + string + " [/color]")
+			text = self.dictionary("$name's stress has reduced " + string)
+			color = 'green'
 			stats.stress_cur -= difference*(1 + stats.stress_mod/100)
 		
 		stats.stress_cur = max(min(stats.stress_cur, 150),stats.stress_min)
 		if globals.get_tree().get_current_scene().has_node("infotext") && globals.slaves.find(self) >= 0 && away.at != 'hidden':
-			globals.get_tree().get_current_scene().infotext(text)
+			globals.get_tree().get_current_scene().infotext(text,color)
 		if self == globals.player:
 			stats.stress_cur = 0
 		
@@ -957,31 +976,31 @@ class slave:
 	func health_icon():
 		var health
 		if float(stats.health_cur)/stats.health_max > 0.75: 
-			health = load("res://files/buttons/icons/health/2.png")#'res://files/buttons/health_high.png')
+			health = load("res://files/buttons/icons/health/2.png")
 		elif float(stats.health_cur)/stats.health_max > 0.4:
-			health = load("res://files/buttons/icons/health/1.png")#'res://files/buttons/health_med.png')
+			health = load("res://files/buttons/icons/health/1.png")
 		else:
-			health = load("res://files/buttons/icons/health/3.png")#'res://files/buttons/health_low.png')
+			health = load("res://files/buttons/icons/health/3.png")
 		return health
 	
 	func obed_icon():
 		var obed
 		if float(stats.obed_cur)/stats.obed_max > 0.75: 
-			obed = load("res://files/buttons/icons/obedience/2.png")#'res://files/buttons/obed_high.png')
+			obed = load("res://files/buttons/icons/obedience/2.png")
 		elif float(stats.obed_cur)/stats.obed_max > 0.4:
-			obed = load("res://files/buttons/icons/obedience/1.png")#'res://files/buttons/obed_med.png')
+			obed = load("res://files/buttons/icons/obedience/1.png")
 		else:
-			obed = load("res://files/buttons/icons/obedience/3.png")#'res://files/buttons/obed_low.png')
+			obed = load("res://files/buttons/icons/obedience/3.png")
 		return obed
 	
 	func stress_icon():
 		var stress
 		if stats.stress_cur >= 70: 
-			stress = load("res://files/buttons/icons/stress/3.png")#'res://files/buttons/stress_high.png')
+			stress = load("res://files/buttons/icons/stress/3.png")
 		elif stats.stress_cur > 35:
-			stress = load("res://files/buttons/icons/stress/1.png")#'res://files/buttons/stress_med.png')
+			stress = load("res://files/buttons/icons/stress/1.png")
 		else:
-			stress = load("res://files/buttons/icons/stress/2.png")#'res://files/buttons/stress_low.png')
+			stress = load("res://files/buttons/icons/stress/2.png")
 		return stress
 	
 	
@@ -1144,7 +1163,7 @@ class slave:
 			price = price*1.75
 		elif race == 'Fairy'|| race == 'Dryad' || race == 'Taurus' || race.find('Fox') >= 0:
 			price = price*2
-		elif race == 'Slime'||race == 'Lamia' || race == 'Arachna' || race == 'Harpy' || race == 'Scyalla':
+		elif race == 'Slime'||race == 'Lamia' || race == 'Arachna' || race == 'Harpy' || race == 'Scylla':
 			price = price*2.5
 		elif race == 'Dragonkin':
 			price = price*3.5
@@ -1170,6 +1189,12 @@ class slave:
 			price = 5
 		return round(price)
 	
+	func removefrommansion():
+		globals.slaves.erase(self)
+		globals.get_tree().get_current_scene().infotext(self.dictionary("$name $surname is no longer in your posession. "),'red')
+		for i in gear.values():
+			if !i in ['underwearplain','clothcommon'] && i != null:
+				globals.state.unstackables[i].owner = null
 	
 	func fetch(dict):
 		for key in dict:
@@ -1452,7 +1477,7 @@ func save_game(var savename):
 	overwritesettings()
 	savegame.store_line(nodedata.to_json())
 	savegame.close()
-	get_tree().get_current_scene().infotext("[color=green]Game Saved.[/color]")
+	get_tree().get_current_scene().infotext("Game Saved.",'green')
 
 func load_game(filename):
 	var savegame = File.new()

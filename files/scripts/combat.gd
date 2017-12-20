@@ -42,6 +42,7 @@ class fighter:
 	var party
 	var button
 	var icon
+	var passives = []
 	
 	func sendbuff():
 		var effect = str2var(var2str(globals.abilities.effects[action.effect]))
@@ -80,9 +81,9 @@ class fighter:
 				self[i] = self[i] + buff.stats[i]
 	
 	func removebuff(buffcode):
-		var buffexists = false
-		
 		if effects.has(buffcode):
+			if buffcode == 'stun':
+				state = 'normal'
 			for i in effects[buffcode].stats:
 				self[i] = self[i] - effects[buffcode].stats[i]
 			effects.erase(buffcode)
@@ -234,6 +235,9 @@ func damage(combatant, value):
 func speed(combatant, value):
 	combatant.speed += value
 
+func passive(combatant, value):
+	combatant.passives.append(value)
+
 func _process(delta):
 	var button
 	for i in playergroup:
@@ -245,6 +249,8 @@ func _process(delta):
 			button.get_node('Panel').set_hidden(false)
 		if i.target == null:
 			button.get_node('target').set_text('Nothing')
+			if i.state == 'chasing':
+				button.get_node('target').set_text('Chasing')
 		elif i.action.target == 'enemy':
 			button.get_node('target').set_text(i.action.name + ' - ' + enemygroup[i.target].name)
 		elif i.action.target == 'ally':
@@ -425,12 +431,14 @@ func choosecharacter(combatant):
 		for i in combatant.activeabilities:
 			newbutton = get_node("grouppanel/skilline/skill").duplicate()
 			get_node("grouppanel/skilline").add_child(newbutton)
-			if combatant.cooldowns.has(i.code):
-				newbutton.get_node("Panel").set_hidden(false)
-			else:
-				newbutton.get_node("Panel").set_hidden(true)
+			newbutton.set_disabled(combatant.cooldowns.has(i.code))
+#			if combatant.cooldowns.has(i.code):
+#				newbutton.set_disabled(true)
+#			else:
+#				newbutton.get_node("Panel").set_hidden(true)
 			newbutton.set_hidden(false)
 			newbutton.get_node("Label").set_text(i.name)
+			
 			newbutton.get_node("number").set_text(str(get_node("grouppanel/skilline").get_children().size()-1))
 			newbutton.set_meta("skill", i)
 			newbutton.connect("mouse_enter",self,'showskilltooltip',[i])
@@ -438,10 +446,15 @@ func choosecharacter(combatant):
 			if i.has('iconnorm'):
 				newbutton.set_normal_texture(i.iconnorm)
 				newbutton.set_pressed_texture(i.iconpressed)
+				newbutton.set_disabled_texture(i.icondisabled)
 			newbutton.connect("pressed",self,'activateskill',[i,combatant])
 			if combatant.action != null:
 				if combatant.action.name == i.name:
 					newbutton.set_pressed(true)
+			if newbutton.is_disabled():
+				newbutton.get_node("Label").set('custom_colors/font_color', Color(1,0,0,1))
+			elif newbutton.is_pressed():
+				newbutton.get_node("Label").set('custom_colors/font_color', Color(0,1,1,1))
 			newbutton.set_meta('skill', i)
 	elif selectmode == 'ally':
 		for i in get_node("grouppanel/groupline/").get_children():
@@ -560,7 +573,7 @@ func actionexecute(actor, target, skill):
 					return text
 		#checking hit chance
 		if skill.attributes.find('damage') >= 0:
-			if skill.can_miss == true && target.action.code != 'protect':
+			if skill.can_miss == true && target.action != null && target.action.code != 'protect':
 				hit = hitchance(actor, target)
 			else:
 				hit = 'hit'
@@ -577,8 +590,8 @@ func actionexecute(actor, target, skill):
 						damage = damage - damage*0.35
 			elif skill.type == 'spell':
 				damage = (actor.magic * 2.5) * skill.power
-			if actor.energy == 0:
-				damage = damage/2
+				if skill.code == 'mindblast':
+					damage += target.healthmax/5
 			actor.energy = max(actor.energy - skill.costenergy,0)
 			if actor.person != null && actor.person.spec == 'assassin':
 				damage += 5
@@ -747,7 +760,7 @@ func _on_confirm_pressed():
 		return
 	var text = ''
 	for combatant in playergroup:
-		if combatant.action == null:
+		if combatant.action == null && combatant.state in ['normal']:
 			if globals.rules.autoattack == false:
 				combatant.action = globals.abilities.abilitydict['pass']
 				combatant.target = playergroup.find(combatant)
@@ -757,6 +770,9 @@ func _on_confirm_pressed():
 					if i.state == 'normal':
 						combatant.target = enemygroup.find(i)
 						continue
+		elif combatant.state == 'chasing':
+			combatant.action = globals.abilities.abilitydict['pass']
+			combatant.target = playergroup.find(combatant)
 	for combatant in enemygroup:
 		combatant.action = null
 		for i in combatant.cooldowns:
@@ -775,10 +791,12 @@ func _on_confirm_pressed():
 	for combatant in playergroup:
 		if combatant.action.target == 'enemy':
 			text += actionexecute(combatant, enemygroup[combatant.target], combatant.action) + '\n'
-		if combatant.action.target == 'self':
+		elif combatant.action.target == 'self':
 			text += actionexecute(combatant, combatant, combatant.action) + '\n'
-		if combatant.action.target == 'ally' && combatant.action.code != 'protect':
+		elif combatant.action.target == 'ally' && combatant.action.code != 'protect':
 			text += actionexecute(combatant, playergroup[combatant.target], combatant.action) + '\n'
+		if combatant.passives.has('doubleattack') && randf() < 0.5 && combatant.action.code == 'attack':
+			text += "[color=aqua][Double Attack][/color]" + actionexecute(combatant, enemygroup[combatant.target], combatant.action) + '\n'
 		for i in combatant.cooldowns:
 			combatant.cooldowns[i] -= 1
 			if combatant.cooldowns[i] <= 0:
@@ -925,15 +943,16 @@ func _on_escapeconfirm_pressed():
 		var chaseslave = playergroup[ID]
 		chaseslave.state = 'chasing'
 		basechance = chaseslave.speed
+		chaseslave.action = {code = 'chasing'}
 		chaseslave.energy -= 30
 		if chaseslave.person.spec == 'trapper':
 			basechance += 5
 		if basechance > slave.speed * 2:
 			captured = true
-			text = '[color=green]'+chaseslave.name + ' swiftly caught helpless ' + slave.name + '. [/color] '
+			text = '[color=aqua]'+chaseslave.name + ' swiftly caught helpless ' + slave.name + '. [/color] '
 		elif (basechance - slave.speed) + rand_range(0, 10) > 8:
 			captured = true
-			text = '[color=green]'+slave.name + ' has been caught and subdued by ' + chaseslave.name + '. [/color]'
+			text = '[color=aqua]'+slave.name + ' has been caught and subdued by ' + chaseslave.name + '. [/color]'
 		else:
 			captured = false
 			text = '[color=red]'+chaseslave.name + ' failed to catch escaping ' + slave.name + '. [/color]'

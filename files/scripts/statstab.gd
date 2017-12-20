@@ -84,7 +84,7 @@ func chooseability(ability):
 			ref = slave[i]
 		if ref < ability.reqs[i]:
 			confirmbutton.set_disabled(true)
-			text += '[color=red]'+dict[i] + ': ' + str(ability.reqs[i]) + '[/color], '
+			text += '[color=#ff4949]'+dict[i] + ': ' + str(ability.reqs[i]) + '[/color], '
 		else:
 			text += '[color=green]'+dict[i] + ': ' + str(ability.reqs[i]) + '[/color], '
 	text = text.substr(0, text.length() - 2) + '.'
@@ -97,7 +97,7 @@ func chooseability(ability):
 		confirmbutton.set_disabled(true)
 		text += slave.dictionary('\n[color=green]$name already knows this ability. [/color]')
 	elif globals.resources.gold < ability.price:
-		text += '\n\n[color=red]Price to learn: ' + str(ability.price) + ' gold.[/color]' 
+		text += '\n\n[color=#ff4949]Price to learn: ' + str(ability.price) + ' gold.[/color]' 
 		confirmbutton.set_disabled(true)
 	else:
 		text += '\n\n[color=green]Price to learn: ' + str(ability.price) + ' gold.[/color]' 
@@ -106,7 +106,7 @@ func chooseability(ability):
 	if ability.has('requiredspell') == true:
 		if globals.spelldict[ability.requiredspell].learned == false:
 			confirmbutton.set_disabled(true)
-			text += slave.dictionary('\n[color=red]You must purchase this spell before you will be able to teach it others. [/color]')
+			text += slave.dictionary('\n[color=#ff4949]You must purchase this spell before you will be able to teach it others. [/color]')
 	get_node("trainingabilspanel/abilitytext").set_bbcode(text)
 
 func levelfirst(first, second):
@@ -418,10 +418,10 @@ func action(actionname):
 		slave.stress += rand_range(15,25)
 		slave.health -= rand_range(5,10)
 		if slave.health <= 0:
-			text += "\n\n[color=red]Due to $his already poor health that was simply too much for $name and $he falls into a coma. You are unable to resuscitate $him despite trying for a while, and eventually can't help but to accept $his death.[/color] "
+			text += "\n\n[color=#ff4949]Due to $his already poor health that was simply too much for $name and $he falls into a coma. You are unable to resuscitate $him despite trying for a while, and eventually can't help but to accept $his death.[/color] "
 			globals.slaves.erase(slave)
 			if globals.slaves.size() > 1:
-				text += "\n[color=red]Your other servants are shocked by this incident. [/color]"
+				text += "\n[color=#ff4949]Your other servants are shocked by this incident. [/color]"
 				for i in globals.slaves:
 					i.obed += rand_range(10, 50)
 					i.stress += rand_range(25, 50)
@@ -567,7 +567,7 @@ func action(actionname):
 
 
 func release():
-	get_tree().get_current_scene().yesnopopup(slave.dictionary("[color=red]Let $name leave? You can't cancel this action.[/color]"),'getridof')
+	get_tree().get_current_scene().yesnopopup(slave.dictionary("[color=#ff4949]Let $name leave? You can't cancel this action.[/color]"),'getridof')
 
 
 

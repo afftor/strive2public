@@ -69,12 +69,14 @@ func paperdollpressed(button):
 	if button.get_name() == 'costume' && slave.gear.costume != "clothcommon":
 		newbutton = get_node("selectitem/selectpanel/ScrollContainer/VBoxContainer/button").duplicate()
 		get_node("selectitem/selectpanel/ScrollContainer/VBoxContainer").add_child(newbutton)
+		newbutton.get_node("icon").set_texture(load("res://files/images/items/clothcommon.png"))
 		newbutton.set_text("Common Clothes")
 		newbutton.set_hidden(false)
 		newbutton.connect("pressed", self, 'selectitemforslot', ['clothcommon'])
 	elif button.get_name() == 'underwear' && slave.gear.underwear != 'underwearplain':
 		newbutton = get_node("selectitem/selectpanel/ScrollContainer/VBoxContainer/button").duplicate()
 		get_node("selectitem/selectpanel/ScrollContainer/VBoxContainer").add_child(newbutton)
+		newbutton.get_node("icon").set_texture(load("res://files/images/items/underwear.png"))
 		newbutton.set_text("Plain Underwear")
 		newbutton.set_hidden(false)
 		newbutton.connect("pressed", self, 'selectitemforslot', ['underwearplain'])
@@ -86,6 +88,8 @@ func paperdollpressed(button):
 			get_node("selectitem/selectpanel/ScrollContainer/VBoxContainer").add_child(newbutton)
 			newbutton.set_text(i.name)
 			newbutton.set_hidden(false)
+			if i.icon != null:
+				newbutton.get_node("icon").set_texture(load(i.icon))
 			if get_tree().get_current_scene().get_node("itemnode").checkreqs(i) == false:
 				newbutton.set_disabled(true)
 				newbutton.set_tooltip(slave.dictionary("$name does not meet the requirements. "))

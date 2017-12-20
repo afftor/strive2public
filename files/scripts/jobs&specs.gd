@@ -210,7 +210,7 @@ tags = ['gorn','social'],
 code = 'research',
 name = "U - Research Subject",
 type = 'social',
-description = "$name will be used in harsh experiments in Umbra. \n\n[color=yellow]\n\nWill earn a lot of money, but quickly deteriorate physical and mental health.[/color] \n[color=red]Possess number of risks leading to bad events up to losing a servant. [/color]",
+description = "$name will be used in harsh experiments in Umbra. \n\n[color=yellow]\n\nWill earn a lot of money, but quickly deteriorate physical and mental health.[/color] \n[color=#ff4949]Possess number of risks leading to bad events up to losing a servant. [/color]",
 workline = "$name will be used in harsh experiments in Umbra.",
 reqs = "true",
 unlockreqs = 'globals.state.portals.umbra.enabled == true',
@@ -701,18 +701,18 @@ func research(slave):
 	if rand_range(0,100) < 30:
 		array = ['conf','cour','wit','charm']
 		slave[array[rand_range(0,array.size())]] -= rand_range(15,25)
-		text += "[color=red]$name's mental health has been damaged. [/color]"
+		text += "[color=#ff4949]$name's mental health has been damaged. [/color]"
 	if rand_range(0,100) < 20 && slave.send >= 1:
 		slave.send -= 1
-		text += "[color=red]$name's physical health has been damaged. [/color]"
+		text += "[color=#ff4949]$name's physical health has been damaged. [/color]"
 	if slave.wit >= 65 && slave.cour >= 65 && rand_range(0,100) <= 15:
-		text = "[color=red]$name has managed to break free from place of $his employment and hasn't returned to mansion. [/color]"
+		text = "[color=#ff4949]$name has managed to break free from place of $his employment and hasn't returned to mansion. [/color]"
 		dead = true
 	slave.stress += rand_range(10,25)
 	if rand_range(35,50) > slave.health && rand_range(0,100) < 15:
 		slave.health -= 200
 		dead = true
-		text = "[color=red]Due to life-threatening experiments $name has deceased.[/color]"
+		text = "[color=#ff4949]Due to life-threatening experiments $name has deceased.[/color]"
 	var dict = {text = slave.dictionary(text), gold = gold, dead = dead}
 	return dict
 

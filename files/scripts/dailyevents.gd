@@ -34,7 +34,7 @@ pervertevent = ["Walking through the mansion you spot how $name distracts $2name
 var eventsdict = {
 play = {function = 'play', reqs = "slave.age in ['teen', 'child'] && slave.mindage != 'adult'" },
 spendtime = {function = 'spendtime', reqs = "slave.age in ['teen', 'adult'] && slave.mindage != 'child'" },
-horny = {function = 'horny', reqs = "slave.lust >= 50 && slave.sexuals.unlocked == true" },
+horny = {function = 'horny', reqs = "slave.lust >= 50 && slave.consent == true" },
 forestfind = {function = 'forestfind', reqs = "slave.work in ['forage','hunt']" },
 prositutebuyout = {function = 'prositutebuyout', reqs = "slave.work in ['prostitution','escort']" },
 abortion = {function = 'abortion', reqs = "slave.preg.duration >= 9 && slave.loyal < 40" },
@@ -425,7 +425,7 @@ func gift(stage = 0):
 		slave.obed += -rand_range(20,35)
 		slave.loyal += -rand_range(2,5)
 	elif stage == 3:
-		if slave.sexuals.unlocked == false:
+		if slave.consent == false:
 			slave.obed += -rand_range(20,40)
 			slave.loyal += -rand_range(5,10)
 			showntext += slave.dictionary("$name is disgusted by your implications and leaves infuriated. ")
@@ -526,7 +526,7 @@ func devotedevent(stage = 0):
 	showntext = slave.dictionary(eventstext[currentevent][stage])
 	if stage == 0:
 		slave2 = globals.newslave(globals.wimbornraces[rand_range(0,globals.wimbornraces.size())], 'random', 'random', origins[rand_range(0, origins.size())])
-		showntext += '\n' + slave2.description_small()
+		showntext += '\n' + slave2.descriptionsmall()
 		tempbuttons = [["Accept",1],["Reject",2]]
 	if stage == 1:
 		showntext = slave2.dictionary(eventstext[currentevent][stage])
@@ -561,15 +561,15 @@ func masochistevent(stage = 0):
 	if stage == 0:
 		tempbuttons = [["Punish $name (-25 energy)",1],["Punish $name sexually (-25 energy)",2], ["Ignore", 3]]
 	if stage == 1:
-		slave.lust = rand_range(5,10)
+		slave.lust += rand_range(5,10)
 		slave.obed += rand_range(15,25)
 		slave.loyal += rand_range(3,6)
 		globals.player.energy -= 25
 	elif stage == 2:
-		slave.lust = -rand_range(15,25)
+		slave.lust += -rand_range(15,25)
 		slave.obed += rand_range(15,25)
 		slave.loyal += rand_range(10,15)
-		get_parent().impregnation(slave, globals.player)
+		globals.impregnation(slave, globals.player)
 	elif stage == 3:
 		slave.loyal += -rand_range(5,10)
 		slave.obed += -rand_range(15,35)
@@ -603,8 +603,8 @@ func fickleevent(stage = 0):
 		globals.player.energy -= 25
 	elif stage == 2:
 		slave.loyal += rand_range(5,10)
-		slave.sexuals.unlocked == true
-		get_parent().impregnation(slave)
+		slave.consent = true
+		globals.impregnation(slave)
 		slave.lust = -rand_range(10,20)
 		globals.player.energy -= 25
 		globals.resources.mana += rand_range(4,10)

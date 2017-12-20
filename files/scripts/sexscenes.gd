@@ -161,7 +161,7 @@ swingforced = "After tying up resisting $name's hands, you order $2name teach $h
 },'hbondage': {
 consensual = "After completely restricting $name's body, blindfolding and gagging $him, you slowly discipline $him with unharming tools, focusing on privates and erogenous zones. As room fills with $his lustful moans, you proceed to overpower $his helpless body and fuck $his reddened privates. ",
 swing = "After completely restricting $name's body, blindfolding and gagging $him, $2name slowly discipline $him with unharming tools, focusing on privates and erogenous zones. As the room fills with $his lustful moans, $2name proceed to  overpower $his helpless body and fuck $his reddened privates. ",
-rape = "With force, you secure, tie, blindfold and gag $name as $he tries to resist. With that you give $him a full course of discipline with specially designed tools, focusing on private places, until $his moans show his arousal, after which you finally rape $his restrained body. ",
+rape = "With force, you secure, tie, blindfold and gag $name as $he tries to resist. With that you give $him a full course of discipline with specially designed tools, focusing on private places, until $his moans show $his arousal, after which you finally rape $his restrained body. ",
 swingforced = "With force, you secure, tie, blindfold and gag $name as $he tries to resist. With that you order $2name to give $him a full course of discipline with specially designed tools, focusing on their private places. After $name's moans starts to show a reasonable amount of arousal, $2name finally rape $his restrained body. ",
 },
 'frottage': {
