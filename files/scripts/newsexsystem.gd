@@ -252,8 +252,8 @@ func rebuildparticipantslist():
 		newnode.get_node("lust").set_texture(statsicons['lust' + str(max(1,ceil(i.lust/200)))])
 		newnode.get_node("sens").set_texture(statsicons['sens' + str(max(1,ceil(i.sens/200)))])
 		newnode.get_node("lube").set_texture(statsicons['lub' + str(clamp(ceil(i.lube/2), 1, 5))])
-		#newnode.get_node("stress").set_texture(statsicons['stress'+str(clamp(round(i.person.stress/33)+1,1,3))])
-		#newnode.get_node("stress").set_tooltip("Stress: " + str(floor(i.person.stress))+"%")
+		newnode.get_node("stress").set_texture(statsicons['stress'+str(clamp(round(i.person.stress/33)+1,1,3))])
+		newnode.get_node("stress").set_tooltip("Stress: " + str(floor(i.person.stress))+"%")
 		newnode.get_node("give").connect("pressed",self,'switchsides',[newnode, 'give'])
 		newnode.get_node("take").connect("pressed",self,'switchsides',[newnode, 'take'])
 		
