@@ -1,7 +1,7 @@
 extends Node
 
 const category = 'fucking'
-const code = 'revlotus'
+const code = 'sitting'
 var givers
 var takers
 const canlast = true
@@ -33,10 +33,10 @@ func requirements():
 	return valid
 
 func getname(state = null):
-	return "Rev. Lotus"
+	return "Sitting"
 
 func getongoingname(givers, takers):
-	return "[name1] fuck[s/1] [name2] in the reverse lotus position."
+	return "[name1] fuck[s/1] [name2] as [he2] sits on [his1] lap."
 
 func givereffect(member):
 	var result
@@ -69,7 +69,7 @@ func takereffect(member):
 const rotation1 = Quat(0.0,0.0,0.0,0.0)
 const rotation2 = Quat(0.0,0.0,0.0,1.0)
 
-const initiate = ['start_1_revlotus','start_2_sexv']
+const initiate = ['start_1_sitting','start_2_sexv']
 
 const ongoing = ['main_1_sexv','main_2_sexv','main_3_sex']
 

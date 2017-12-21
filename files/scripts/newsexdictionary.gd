@@ -13,8 +13,8 @@ const linksets = {
 		"doggyanal",
 		"lotus",
 		"lotusanal",
-		"revlotus",
-		"revlotusanal",
+		"sitting",
+		"sittinganal",
 	],
 }
 
@@ -63,9 +63,9 @@ start_1_missionary = {
 		"[name1] {^loosen:release}[s/1] [his1] {^grip:hold} and {^push[es/1]:shove[s/1]} [name2] onto [his2] back[/s2]",
 	]},
 	
-	revlotus_nice = {
+	sitting_nice = {
 	conditions = {
-		link = ["revlotus", "revlotusanal"],
+		link = ["sitting", "sittinganal"],
 		consent = [true],
 	},
 	lines = [
@@ -73,9 +73,9 @@ start_1_missionary = {
 		"[name1] {^loosen:release}[s/1] [his1] {^embrace:hold} and {^flip:roll:turn}[s/1] [name2] onto [his2] back",
 	]},
 	
-	revlotus_mean = {
+	sitting_mean = {
 	conditions = {
-		link = ["revlotus", "revlotusanal"],
+		link = ["sitting", "sittinganal"],
 		consent = [false],
 	},
 	lines = [
@@ -168,9 +168,9 @@ start_1_doggy = {
 		"[name1] {^loosen:release}[s/1] [his1] {^grip:hold} and {^flip:roll:turn}[s/1] [name2] onto {^all fours:[his2] knees:[his2] hands and knees}",
 	]},
 	
-	revlotus_nice = {
+	sitting_nice = {
 	conditions = {
-		link = ["revlotus", "revlotusanal"],
+		link = ["sitting", "sittinganal"],
 		consent = [true],
 	},
 	lines = [
@@ -178,9 +178,9 @@ start_1_doggy = {
 		"[name1] {^loosen:release}[s/1] [his1] {^embrace:hold} and {^roll:shift}[s/1] [name2] onto {^all fours:[his2] knees:[his2] hands and knees}",
 	]},
 	
-	revlotus_mean = {
+	sitting_mean = {
 	conditions = {
-		link = ["revlotus", "revlotusanal"],
+		link = ["sitting", "sittinganal"],
 		consent = [false],
 	},
 	lines = [
@@ -253,9 +253,9 @@ start_1_lotus = {
 		"[name1] {^roughly :}{^grabs[s/1]:seize[s/1]} [name2] by [his2] [hips2]",
 	]},
 	
-	revlotus_nice = {
+	sitting_nice = {
 	conditions = {
-		link = ["revlotus", "revlotusanal"],
+		link = ["sitting", "sittinganal"],
 		consent = [true],
 	},
 	lines = [
@@ -263,9 +263,9 @@ start_1_lotus = {
 		"[name1] {^grab:hold}[s/1] [name2] by [his2] [hips2] and {^flip:spin:turn}[s/1] [him2] around on [his1] lap[/s1]",
 	]},
 	
-	revlotus_mean = {
+	sitting_mean = {
 	conditions = {
-		link = ["revlotus", "revlotusanal"],
+		link = ["sitting", "sittinganal"],
 		consent = [false],
 	},
 	lines = [
@@ -335,11 +335,11 @@ start_1_lotus = {
 	
 },
 
-start_1_revlotus = {
+start_1_sitting = {
 	
 	repeat_nice = {
 	conditions = {
-		link = ["revlotus", "revlotusanal"],
+		link = ["sitting", "sittinganal"],
 		consent = [true],
 	},
 	lines = [
@@ -350,7 +350,7 @@ start_1_revlotus = {
 	
 	repeat_mean = {
 	conditions = {
-		link = ["revlotus", "revlotusanal"],
+		link = ["sitting", "sittinganal"],
 		consent = [false],
 	},
 	lines = [
