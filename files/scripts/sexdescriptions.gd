@@ -280,17 +280,13 @@ func him(group):
 func name(group):
 	var text = ''
 	for i in group:
-		if group == givers:
+		if i in givers:
 			text += '[color=yellow]'
 			if i.person == globals.player:
 				text += 'you'
 			else:
 				text += i.name
 			text += '[/color]'
-			if i != givers.back() && givers.find(i) != givers.size()-2:
-				text += ', '
-			elif givers.find(i) == givers.size()-2:
-				text += ' and '
 		else:
 			text += '[color=aqua]'
 			if i.person == globals.player:
@@ -298,45 +294,43 @@ func name(group):
 			else:
 				text += i.name
 			text += '[/color]'
-			if i != takers.back() && takers.find(i) != takers.size()-2:
-				text += ', '
-			elif takers.find(i) == takers.size()-2:
-				text += ' and '
+		if i != group.back() && group.find(i) != group.size()-2:
+			text += ', '
+		elif group.find(i) == group.size()-2:
+			text += ' and '
 	return text
 
 func names(group):
 	var text = ''
 	for i in group:
-		if group == givers:
+		if i in givers:
 			text += '[color=yellow]'
 			if i.person == globals.player:
-				if group.size() == 1:
+				if i == group.back():
 					text += 'your'
 				else:
 					text += 'you'
 			else:
 				text += i.name
+				if i == group.back():
+					text += "'s"
 			text += '[/color]'
-			if i != givers.back() && givers.find(i) != givers.size()-2:
-				text += ', '
-			elif givers.find(i) == givers.size()-2:
-				text += ' and '
 		else:
 			text += '[color=aqua]'
 			if i.person == globals.player:
-				if group.size() == 1:
+				if i == group.back():
 					text += 'your'
 				else:
 					text += 'you'
 			else:
 				text += i.name
+				if i == group.back():
+					text += "'s"
 			text += '[/color]'
-			if i != takers.back() && takers.find(i) != takers.size()-2:
-				text += ', '
-			elif takers.find(i) == takers.size()-2:
-				text += ' and '
-	if group.size() > 1 or (group.size() > 0 && group[0].person != globals.player):
-		text += "'s"
+		if i != group.back() && group.find(i) != group.size()-2:
+			text += ', '
+		elif group.find(i) == group.size()-2:
+			text += ' and '
 	return text
 
 #no recursive functions allowed in godot so this looks semi-horrible, but whatever
