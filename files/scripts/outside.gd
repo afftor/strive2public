@@ -1,11 +1,11 @@
 
 extends Node
 
-onready var maintext = get_node("outsidetextbox")
 onready var main = get_tree().get_current_scene()
 onready var buttoncontainer = get_node("outsidebuttoncontainer")
 onready var button = get_node("outsidebuttoncontainer/buttontemplate")
 onready var questtext = globals.questtext
+onready var mansion = get_parent()
 var location = ''
 var questgiveawayslave
 
@@ -78,7 +78,25 @@ func buildbuttons(array, target = self):
 			newbutton.set_disabled(true)
 		if i.has('tooltip'):
 			newbutton.set_tooltip(i.tooltip)
+		if i.has('textcolor'):
+			newbutton.set('custom_colors/font_color', Color(0,1,0))
 		counter += 1
+
+func addbutton(i, target = self):
+	var newbutton = button.duplicate()
+	buttoncontainer.add_child(newbutton)
+	newbutton.set_text(str(buttoncontainer.get_children().size()-1) +'. ' +  i.name)
+	newbutton.set_hidden(false)
+	if i.has('args'):
+		newbutton.connect('pressed', target, i.function, [i.args])
+	else:
+		newbutton.connect('pressed', target, i.function)
+	if i.has('disabled'):
+		newbutton.set_disabled(true)
+	if i.has('tooltip'):
+		newbutton.set_tooltip(i.tooltip)
+	if i.has('textcolor'):
+		newbutton.set('custom_colors/font_color', Color(0,1,0))
 
 func _on_leave_pressed():
 	if globals.state.calculateweight().overload == true:
@@ -273,12 +291,12 @@ func slaveguild(guild = 'wimborn'):
 			text += "\n\nMaple gives you a playful, warm look."
 		elif globals.state.sidequests.maple == 7:
 			text = "You enter through the guild’s doors, and are greeted once again by the busy sights and sounds of customers, slaves, and workers shuffling around at blistering speeds. You give a polite bow to one of the receptionists and grab a pen to sign in."
-		maintext.set_bbcode(globals.player.dictionary(text))
+		mansion.maintext = globals.player.dictionary(text)
 		buildbuttons(array)
 	elif guild == 'gorn':
 		clearselection()
 		slavearray = globals.guildslaves.gorn
-		maintext.set_bbcode(globals.player.dictionaryplayer("Huge part of supposed guild takes a makeshift platform and tents on the outside with few half-empty cages. In the middle, you can see a presentation podium which is easily observable from main street. Despite Gorn being very different from common, primarily human-populated towns, it still directly follows Mage's Order directives — race diversity and casual slavery are very omnipresent. \n\nAs you walk in, one of the goblin receptionists quickly recognizes you as an Order member and hastily grabs your attention, sensing a profitable customer.\n\n— $sir interested in some heat-tolerant 'orkers? *chuckles* Or you are in preference of short girls? We quite often get those as well, for every taste and color!"))
+		mansion.maintext = globals.player.dictionaryplayer("Huge part of supposed guild takes a makeshift platform and tents on the outside with few half-empty cages. In the middle, you can see a presentation podium which is easily observable from main street. Despite Gorn being very different from common, primarily human-populated towns, it still directly follows Mage's Order directives — race diversity and casual slavery are very omnipresent. \n\nAs you walk in, one of the goblin receptionists quickly recognizes you as an Order member and hastily grabs your attention, sensing a profitable customer.\n\n— $sir interested in some heat-tolerant 'orkers? *chuckles* Or you are in preference of short girls? We quite often get those as well, for every taste and color!")
 		var array = [{name = 'See slaves for sale',function = 'slaveguildslaves'}, {name = 'Offer your servants',function = 'slaveguildsells'}, {name = 'See custom requests', function = 'slaveguildquests'},{name = 'Services for Slaves',function = 'slaveservice'}, {name = 'Leave',function = 'togorn'}]
 		if globals.state.sidequests.emily in [14,15]:
 			array.insert(1, {name = 'Search for Tisha', function = 'tishaquest'})
@@ -286,7 +304,10 @@ func slaveguild(guild = 'wimborn'):
 	elif guild == 'frostford':
 		clearselection()
 		slavearray = globals.guildslaves.frostford
-		maintext.set_bbcode(globals.player.dictionaryplayer("A humble local guild building is bright and warm inside. Just as the whole of Frostford, this place is serene in its mood compared to what you are used to. Realizing you belong to the Mage's Order, attendant politely greets you and asks how he could assist you. "))
+		text = "A humble local guild building is bright and warm inside. Just as the whole of Frostford, this place is serene in its mood compared to what you are used to. "
+		if globals.state.mainquest >= 2:
+			text += "Realizing you belong to the Mage's Order, attendant politely greets you and asks how he could assist you. "
+		mansion.maintext = globals.player.dictionaryplayer(text)
 		var array = [{name = 'See slaves for sale',function = 'slaveguildslaves'},{name = 'Offer your servants',function = 'slaveguildsells'}, {name = 'See custom requests', function = 'slaveguildquests'}, {name = 'Services for Slaves',function = 'slaveservice'}, {name = 'Leave', function = 'tofrostford'}]
 		buildbuttons(array)
 	get_node("playergrouppanel/VBoxContainer").set_hidden(true)
@@ -305,7 +326,7 @@ func slaveguildfairy(stage = 0):
 		globals.state.mainquest = 3.1
 		globals.state.sidequests.maple = 1
 		slaveguild()
-		maintext.set_bbcode(globals.player.dictionary(text))
+		mansion.maintext = globals.player.dictionary(text)
 		return
 	elif stage == 1:
 		if globals.player.penis == 'none':
@@ -388,7 +409,7 @@ func slaveguildslaves():
 		newbutton.get_node('price').set_text(str(price)+ ' gold')
 		newbutton.set_meta('price', price)
 		newbutton.connect('pressed',self,'selectslavebuy',[slave])
-	maintext.set_bbcode('You get a simple catalogue with currently present slaves available for purchase.')
+	mansion.maintext = 'You get a simple catalogue with currently present slaves available for purchase.'
 	get_node("slavebuypanel/statspanel").set_hidden(true)
 	clearbuttons()
 
@@ -409,7 +430,7 @@ func selectslavebuy(slave):
 	if slave.vagvirgin == true && slave.vagina != 'none':
 		text += "After a gesture, $name reveals to you $his [color=aqua]virgin[/color] pussy. \n\n"
 	text += "As you finish inspection, you are being reminded, that you can purchase $him for mere [color=yellow]"+str(price)+ " gold[/color].[/color] "
-	maintext.set_bbcode(slave.descriptionsmall() + '\n\n[color=#ff5df8]'+ slave.dictionary(text))
+	mansion.maintext = slave.descriptionsmall() + '\n\n[color=#ff5df8]'+ slave.dictionary(text)
 	if globals.resources.gold < price:
 		get_node("slavebuypanel/purchasebutton").set_disabled(true)
 	else:
@@ -452,7 +473,7 @@ func selectslavesell(slave = null, type = 'guild'):
 	else:
 		text += slave.dictionary("\n\n[color=#ff4949]You won't get any upgrade points from selling this slave currently $he's too rebellious.[/color]")
 	#get_node("slavesellpanel/slavedescription").set_bbcode(text)
-	maintext.set_bbcode(text)
+	mansion.maintext = text
 	get_node("slavesellpanel/slavesellbutton").set_disabled(false)
 	
 	for i in get_node("slavesellpanel/ScrollContainer/VBoxContainer").get_children():
@@ -478,7 +499,7 @@ func _on_purchasebutton_pressed():
 	main.popup('You pay ' + str(selectedslaveprice) + selectedslave.dictionary(" gold for $name. With that, guild's helper brands $him for you and $he's sent to your mansion. "))
 	selectedslave.brand = 'basic'
 	slaveguildslaves()
-	maintext.set_bbcode(globals.player.dictionary("A finest choice, $sir. Anyone else caught your attention?"))
+	mansion.maintext = globals.player.dictionary("A finest choice, $sir. Anyone else caught your attention?")
 	clearselection('buy')
 
 
@@ -513,7 +534,7 @@ func _on_slavesellbutton_pressed():
 	main.rebuild_slave_list()
 	slaveguildsells()
 	clearselection('sell')
-	maintext.set_bbcode(text)
+	mansion.maintext = text
 
 
 func slaveguildsells():
@@ -523,7 +544,7 @@ func sellslavelist(type = 'guild'):
 	var text = 'Select a person you wish to sell. '
 	if type == 'guild':
 		text += "You will receive Mansion Upgrade points if slave haven't been registered before and is not rebellious."
-	maintext.set_bbcode(text)
+	mansion.maintext = text
 	get_node("slavesellpanel").set_hidden(false)
 	clearbuttons()
 	var slavelist = get_node("slavesellpanel/ScrollContainer/VBoxContainer")
@@ -545,7 +566,7 @@ func sellslavelist(type = 'guild'):
 			elif type == 'umbra':
 				newbutton.get_node('price').set_text(str(max(round(slave.calculateprice(true)*0.6),20))+ ' gold')
 			if type in ['sebastian','umbra']:
-				maintext.set_bbcode("[color=aqua]Selling slaves here will still provide upgrade points even if they are rebellious, but will lower your reputation. [/color]")
+				mansion.maintext = "[color=aqua]Selling slaves here will still provide upgrade points even if they are rebellious, but will lower your reputation. [/color]"
 			newbutton.set_meta('slave', slave)
 			newbutton.connect('pressed',self,'selectslavesell',[slave, type])
 
@@ -563,11 +584,11 @@ func _on_slavesellcancel_pressed():
 func clearselection(temp = ''):
 	selectedslave = ''
 	selectedslaveprice = 0
-	maintext.set_bbcode('')
+	mansion.maintext = ''
 	if temp == 'buy':
-		maintext.set_bbcode('[color=yellow]Your newly purchased slave has been sent to your mansion. [/color]')
+		mansion.maintext = '[color=yellow]Your newly purchased slave has been sent to your mansion. [/color]'
 	elif temp == 'sell':
-		maintext.set_bbcode("[color=yellow]You receive a nice purse of gold for your freshly selled servant. [/color]")
+		mansion.maintext = "[color=yellow]You receive a nice purse of gold for your freshly selled servant. [/color]"
 	get_node("slavebuypanel/purchasebutton").set_disabled(true)
 	get_node("slavesellpanel/slavesellbutton").set_disabled(true)
 	for i in get_node("slavebuypanel/slavebuypanel/ScrollContainer/VBoxContainer").get_children():
@@ -584,7 +605,7 @@ func slaveguildquests():
 	clearbuttons()
 	get_node("slaveguildquestpanel/questaccept").set_disabled(true)
 	get_node("slaveguildquestpanel/questcancel").set_hidden(true)
-	maintext.set_bbcode('')
+	mansion.maintext = ''
 	text = "You walk to the Slaver Guild's request board.\n\n[color=yellow]Completing repeatable missions will earn you Mansion Upgrade points. [/color]"
 	get_node("slaveguildquestpanel").set_hidden(false)
 	var list = get_node("slaveguildquestpanel/ScrollContainer/VBoxContainer")
@@ -618,7 +639,7 @@ func slaveguildquests():
 			newbutton.get_node("difficulty").set('custom_colors/font_color', fontcolor)
 			newbutton.connect("pressed",self,'questbuttonpressed',[i])
 			text = "[color=yellow]— Are you ready to fulfil your task? Your reward will be waiting. [/color]"
-			maintext.set_bbcode(text)
+			mansion.maintext = text
 			return
 	for i in questarray:
 		var fontcolor
@@ -636,14 +657,14 @@ func slaveguildquests():
 		newbutton.get_node("difficulty").set_text(i.difficulty.capitalize())
 		newbutton.get_node("difficulty").set('custom_colors/font_color', fontcolor)
 		newbutton.connect("pressed",self,'questbuttonpressed',[i])
-	maintext.set_bbcode(text)
+	mansion.maintext = text
 
 func _on_questhide_pressed():
 	get_node("slaveguildquestpanel").set_hidden(true)
 	slaveguild(location)
 
 func questbuttonpressed(quest):
-	maintext.set_bbcode(slavequesttext(quest))
+	mansion.maintext = slavequesttext(quest)
 
 func _on_questcancel_pressed():
 	main.yesnopopup("Cancel this quest?", 'removequest', self)
@@ -661,7 +682,7 @@ func _on_questaccept_pressed():
 	if selectedquest.taken == false:
 		selectedquest.taken = true
 		slaveguildquests()
-		maintext.set_bbcode("You sign under the request and take a copy of it.")
+		mansion.maintext = "You sign under the request and take a copy of it."
 	else:
 		if get_node("slaveguildquestpanel/questaccept").get_text() == 'Turn in':
 			main.popup(offeredslave.dictionary('You hand away $name and receive your reward. \n[color=yellow]You have gained ' + str(selectedquest.reward/10) + ' XP.[/color]\n\n[color=green]Your reputation with ' + location.capitalize() + " has increased.[/color]"))
@@ -698,43 +719,47 @@ func slaveforquestselected(slave):
 				ref = ref[i]
 		else:
 			ref = slave[i[0]]
+		var ref2 = i[2]
 		if i[0] == 'hairlength':
 			ref = globals.hairlengtharray.find(slave.hairlength)
 		if i[0] == 'titssize':
 			ref = globals.sizearray.find(slave.titssize)
 		if i[0] == 'sexuals.unlocks':
 			ref = slave.sexuals.unlocks.size()
+		if i[0] == 'origins':
+			ref = globals.originsarray.find(slave.origins)
+			ref2 = globals.originsarray.find(ref2)
 		if i[1] == 'gte':
-			if ref < i[2]:
+			if ref < ref2:
 				slavefits = false
 				text = text + '[color=#ff4949]' + repeatablesdict[i[0]] + '[/color]\n'
 			else:
 				text = text + '[color=green]' + repeatablesdict[i[0]] + '[/color]\n'
 		elif i[1] == 'eq':
-			if ref != i[2]:
+			if ref != ref2:
 				slavefits = false
 				text = text + '[color=#ff4949]' + repeatablesdict[i[0]] + '[/color]\n'
 			else:
 				text = text + '[color=green]' + repeatablesdict[i[0]] + '[/color]\n'
 		elif i[1] == 'lte':
-			if ref > i[2]:
+			if ref > ref2:
 				slavefits = false
 				text = text + '[color=#ff4949]' + repeatablesdict[i[0]] + '[/color]\n'
 			else:
 				text = text + '[color=green]' + repeatablesdict[i[0]] + '[/color]\n'
 	if slavefits == true:
-		maintext.set_bbcode("There seems to be no problems with neeeded requirements.\n" + text)
+		mansion.maintext = "There seems to be no problems with neeeded requirements.\n" + text
 		get_node("slaveguildquestpanel/questaccept").set_text("Turn in")
 		offeredslave = slave
 	else:
-		maintext.set_bbcode(slave.dictionary("You have not completed all the requirements. \n") + text)
+		mansion.maintext = slave.dictionary("You have not completed all the requirements. \n") + text
 		offeredslave = null
 
 
 
 var repeatablesdict = {
 sex = 'Sex',obed = 'Obedience', cour = 'Courage',conf = 'Confidence',wit = 'Wit', charm = 'Charm', 
-'beauty':'Beauty',lewd = 'Lewdness', dom = 'Role Preference', 
+'beauty':'Beauty',lewd = 'Lewdness', asser = 'Role Preference', 
 'sexuals.unlocks' : "Unlocked Sex Categories",
 'sstr' : 'Strength', 'sagi' : 'Agility', 'smaf' : 'Magic Affinity', 'send' : 'Endurance',
 loyal = 'Loyalty', race = 'Race', age = 'Age', hairlength = 'Hair Length', origins = 'Origins',
@@ -762,7 +787,7 @@ func slavequesttext(quest):
 		elif i[0] == 'titssize':
 			text2 = text2 + 'Breast size — ' + str(globals.sizearray[i[2]]) + operators[i[1]]
 		elif i[0] == 'origins':
-			text2 = text2 + 'Origins — ' +globals.fastif(i[1] == 'neq', 'not '+ str(i[2]), str(i[2])) + ';\n'
+			text2 = text2 + 'Origins — ' + str(i[2]) + operators[i[1]]
 		else:
 			text2 = text2 + repeatablesdict[i[0]] + ' — '+ str(i[2]) + operators[i[1]]
 		if i[0] == 'sex':
@@ -792,7 +817,7 @@ var serviceoperation
 
 func slaveservice():
 	clearbuttons()
-	maintext.set_bbcode('')
+	mansion.maintext = ''
 	get_node("slaveservicepanel/hairlengthbutton").set_hidden(true)
 	get_node("slaveservicepanel").set_hidden(false)
 	serviceselected()
@@ -811,7 +836,7 @@ func serviceselected(slave = null):
 		slaveserviceselected = null
 		get_node("slaveservicepanel/selectslavebutton").set_text('Select Slave')
 		get_node("slaveservicepanel/serviceconfirm").set_disabled(true)
-		maintext.set_bbcode('Slave service allows you to perform many special, important operations with your servants. Select servant, then choose desired action. \n\n[color=yellow]This will cost money and likely withdraw servant for a time. Choose operation for further information.[/color]')
+		mansion.maintext = 'Slave service allows you to perform many special, important operations with your servants. Select servant, then choose desired action. \n\n[color=yellow]This will cost money and likely withdraw servant for a time. Choose operation for further information.[/color]'
 	else:
 		slaveserviceselected = slave
 		get_node("slaveservicepanel/selectslavebutton").set_text('Deselect')
@@ -892,7 +917,7 @@ func operationselected(operation):
 				get_node("slaveservicepanel/hairlengthbutton").add_item(i.capitalize()+' length')
 	else:
 		get_node("slaveservicepanel/hairlengthbutton").set_hidden(true)
-	maintext.set_bbcode(text)
+	mansion.maintext = text
 
 
 func _on_serviceconfirm_pressed():
@@ -952,7 +977,7 @@ func specchosen(button):
 			i.set_pressed(false)
 	var spec = button.get_meta('spec') 
 	var text = "[center]" + spec.name + '[/center]\n' + spec.descript + "\nBonus: [color=aqua]" + spec.descriptbonus + "[/color]\n\nRequirements: [color=yellow]" + spec.descriptreqs + "[/color]\n\nCost: 500 gold.\nDuration: 5 days."
-	maintext.set_bbcode(text)
+	mansion.maintext = text
 	globals.currentslave = slaveserviceselected
 	if globals.resources.gold >= 500 && globals.evaluate(spec.reqs) == true:
 		get_node("slaveservicepanel/serviceconfirm").set_disabled(false)
@@ -1033,7 +1058,13 @@ func mageorder():
 	if OS.get_name() != "HTML5" && globals.rules.fadinganimation == true:
 		yield(main, 'animfinished')
 	var array = []
-	maintext.set_bbcode("This massive building takes a large part of the street. The Wimborn's Mage's Order is the centerpiece of your career achievments. Here you'll be able to buy necessary equipment and learn spells, assuming you are part of it of course.")
+	if globals.state.mainquest == 40:
+		globals.events.orderfinale()
+#		main.background_set('mainorderfinale')
+#		if OS.get_name() != "HTML5" && globals.rules.fadinganimation == true:
+#			yield(main, 'animfinished')
+		return
+	mansion.maintext = "This massive building takes a large part of the street. The Wimborn's Mage's Order is the centerpiece of your career achievments. Here you'll be able to buy necessary equipment and learn spells, assuming you are part of it of course."
 	if globals.state.mainquest <= 1:
 		array.append({name = 'Seek Audience', function = 'mageorderquest1'})
 	elif globals.state.mainquest == 2:
@@ -1061,7 +1092,7 @@ func capitalteleport():
 		text = questtext.MainQuestFrostfordMainOrder
 		globals.state.mainquest = 28
 	
-	main.dialogue(state, self, text, buttons, sprites)
+	main.dialogue(state, self, text, buttons, sprites, 'mainorder')
 	mageorder()
 
 
@@ -1184,7 +1215,8 @@ func mageorderquest1(slave = null):
 	elif globals.state.mainquest >= 27 && globals.state.mainquest <= 35:
 		text = "You decide there's nothing you can gain from visiting Melissa right now. "
 	elif globals.state.mainquest >= 36:
-		text = "[color=yellow]— Wow, that's quite an accomplishment, making it this far. I'm sorry, but this story is not finished yet and you will have to wait for some time. Thank you for staying with us and see you next time, $name.[/color]"
+		text = questtext.MainQuestFinaleOrder
+		globals.state.mainquest = 37
 		globals.resources.upgradepoints += 10
 		sprites = [['melissafriendly','pos1','opac']]
 	main.dialogue(state, self, text, buttons, sprites)
@@ -1207,7 +1239,7 @@ func givecompanion():
 	if globals.state.mainquest == 1:
 		if slave != null:
 			globals.state.mainquest = 2
-			text = ("— Now that you are a member of the guild, I trust you’ll keep in mind that with status comes responsibility, and that you will not besmirch the guild’s name with your actions. As a neophyte, we have a variety of simple spells you may pay to learn. And, to repay an old debt to the fool you’re succeeding, I’ll teach you something basic for free. Mind Read is fairly simple and straightforward, allowing you limited insight into the subject’s thoughts and feelings. Much more informative than simply reading one’s expression and body language, but somewhat draining.\n\n[color=green]You are now a Neophyte in Mage guild.[/color]\n\n[color=green]You've learned a new spell: Mind Read. [/color]\n\n[color=green]Your main quest has been updated. [/color]\n[color=yellow]You have gained an extra level.[/color]")
+			text = ("— Now that you are a member of the guild, I trust you’ll keep in mind that with status comes responsibility, and that you will not besmirch the guild’s name with your actions. As a neophyte, we have a variety of simple spells you may pay to learn. And, to repay an old debt to the fool you’re succeeding, I’ll teach you something basic for free. Mind Read is fairly simple and straightforward, allowing you limited insight into the subject’s thoughts and feelings. Much more informative than simply reading one’s expression and body language, but somewhat draining.\n\n[color=green]You are now a Neophyte in Mage guild.[/color]\n\n[color=green]You've learned a new spell: Mind Read. [/color]\n\n[color=green]Your main quest has been updated. [/color]")
 			main.currentslave = globals.slaves.find(slave)
 			globals.spelldict.mindread.learned = true
 			if globals.abilities.abilitydict.has('mindread') == true:
@@ -1383,7 +1415,7 @@ func market():
 			text += slave.dictionary('\nYou can see $name helping around one of the shops.')
 		elif slave.work == 'entertainer':
 			text += slave.dictionary('\nYou spot $name giving minor performance at one of the corners. ')
-	maintext.set_bbcode(text)
+	mansion.maintext = text
 	if globals.state.mainquest == 5:
 		array.insert(1, {name = 'Look for Sebastian', function = 'sebastian'})
 	elif globals.state.mainquest >= 7:
@@ -1799,27 +1831,27 @@ func sebastian():
 	var array = [{name = 'Return',function = 'market'}]
 	if globals.state.mainquest == 5:
 		globals.state.mainquest = 6
-		maintext.set_bbcode("After spending some time asking around, you finally find a shady looking warehouse, poorly decorated as some obscure workshop. Inside of it you meet a rather flamboyant man dressed head to toe in several layers of brightly colored clothing. He takes notice of your presence and comes to greet you, giving a flashy bow as he approaches. He speaks with a rather obvious accent, though you can’t quite place it.\n\n— Welcome, friend! Do I know you? We are not quite open to public you see...\n\nYou let him know that you are from Melissa and a part of the Mage's Order, at which he shines.\n\n— Oh, I see, Mister "+globals.player.name+"; a new face in our dependable government! I'm very pleased to meet you. Yes... about Melissa, I wanted to warn her but... It has been very rowdy these last few days... Yes, her elixir...\n\n— Well, sadly, I don't have it. Yes, I know I promised to get it last week, but our alchemist is lost... Not literally. He was experimenting with some new stuff he got his hands on and now he seems to have lost his senses; even spending too much time at the bar too...\n\n— Look, you are no stranger to working with magic, are you? Alchemy shouldn't be too much work either. Since you are in the Order, you must have a sizeable property. Why don't you get an alchemy kit and get milady what she wants? I'll share some formulas with you and you cover this up for me. I can see that you are a capable person.\n\nAfter some consideration, you agree with the offer, deciding that it will be a useful experience for your future researches.\n\n— Milady wants Youthing Elixir. No, I don't know why, and neither should you want to know. The thing allows you to reverse your aging a bit, which makes it very desirable with the ladies. You will need few rare ingredients to cook it, and I'll provide you those.[color=yellow] You should keep in mind though, nearly any magical potion will apply some toxicity to the subject's body, which may produce some nasty effects. I’m telling you this just in case you try to experiment. Try to keep the doses small, as toxicity will dissipate after some time. [/color]\n\n[color=green]Youthing Elixir recipe unlocked.\nMaturing Elixir recipe unlocked.[/color]")
+		mansion.maintext = "After spending some time asking around, you finally find a shady looking warehouse, poorly decorated as some obscure workshop. Inside of it you meet a rather flamboyant man dressed head to toe in several layers of brightly colored clothing. He takes notice of your presence and comes to greet you, giving a flashy bow as he approaches. He speaks with a rather obvious accent, though you can’t quite place it.\n\n— Welcome, friend! Do I know you? We are not quite open to public you see...\n\nYou let him know that you are from Melissa and a part of the Mage's Order, at which he shines.\n\n— Oh, I see, Mister "+globals.player.name+"; a new face in our dependable government! I'm very pleased to meet you. Yes... about Melissa, I wanted to warn her but... It has been very rowdy these last few days... Yes, her elixir...\n\n— Well, sadly, I don't have it. Yes, I know I promised to get it last week, but our alchemist is lost... Not literally. He was experimenting with some new stuff he got his hands on and now he seems to have lost his senses; even spending too much time at the bar too...\n\n— Look, you are no stranger to working with magic, are you? Alchemy shouldn't be too much work either. Since you are in the Order, you must have a sizeable property. Why don't you get an alchemy kit and get milady what she wants? I'll share some formulas with you and you cover this up for me. I can see that you are a capable person.\n\nAfter some consideration, you agree with the offer, deciding that it will be a useful experience for your future researches.\n\n— Milady wants Youthing Elixir. No, I don't know why, and neither should you want to know. The thing allows you to reverse your aging a bit, which makes it very desirable with the ladies. You will need few rare ingredients to cook it, and I'll provide you those.[color=yellow] You should keep in mind though, nearly any magical potion will apply some toxicity to the subject's body, which may produce some nasty effects. I’m telling you this just in case you try to experiment. Try to keep the doses small, as toxicity will dissipate after some time. [/color]\n\n[color=green]Youthing Elixir recipe unlocked.\nMaturing Elixir recipe unlocked.[/color]"
 		globals.itemdict.minoruspot.amount += 1
 		globals.itemdict.magicessenceing.amount += 2
 		globals.itemdict.youthingpot.unlocked = true
 		globals.itemdict.maturingpot.unlocked = true
 	elif globals.state.mainquest >= 7 && globals.state.farm == 0:
 		globals.state.farm = 1
-		maintext.set_bbcode("— Hey, "+globals.player.name+"! You took care of that little errand? Great, great! So what are you up to? Me? I'm working with not-so-easy-to-get merchandise. Since you're working with Melissa, I suppose you'd be interested as well! Yes, rare black market ingredients, mythical creatures, and forbidden magical devices; I tend to deal with many of those! Of course the service won't be cheap, as the rarity and legality is the main issue.\n\n— I can offer you one rare slave every couple of days, but I'll warn you: I only deal with rare species. Their obedience and branding is entirely up to you, so don't come back complaining if they bite you in your sleep!\n\nHe gives a mirthful chuckle.\n\n— Otherwise, a plesure doing business with you. I'll let you know when I get something in that might interest you. Speaking of which, I have one proposal which may interest you, as I heard you own a nice isolated place, and tend to keep slaves around to help you.")
+		mansion.maintext = "— Hey, "+globals.player.name+"! You took care of that little errand? Great, great! So what are you up to? Me? I'm working with not-so-easy-to-get merchandise. Since you're working with Melissa, I suppose you'd be interested as well! Yes, rare black market ingredients, mythical creatures, and forbidden magical devices; I tend to deal with many of those! Of course the service won't be cheap, as the rarity and legality is the main issue.\n\n— I can offer you one rare slave every couple of days, but I'll warn you: I only deal with rare species. Their obedience and branding is entirely up to you, so don't come back complaining if they bite you in your sleep!\n\nHe gives a mirthful chuckle.\n\n— Otherwise, a plesure doing business with you. I'll let you know when I get something in that might interest you. Speaking of which, I have one proposal which may interest you, as I heard you own a nice isolated place, and tend to keep slaves around to help you."
 	elif globals.state.mainquest >= 7:
 		if globals.state.sebastianorder.taken == false:
-			maintext.set_bbcode("— Glad to see you well, "+globals.player.name+"! How are you doing? Got a special order?")
+			mansion.maintext = "— Glad to see you well, "+globals.player.name+"! How are you doing? Got a special order?"
 		elif globals.state.sebastianorder.taken == true && globals.state.sebastianorder.duration != 0:
-			maintext.set_bbcode("— Glad to see you well, "+globals.player.name+"! Your special order is not here yet, but worry not! Everything goes as planned. ")
+			mansion.maintext = "— Glad to see you well, "+globals.player.name+"! Your special order is not here yet, but worry not! Everything goes as planned. "
 		else:
-			maintext.set_bbcode("— Oh, Come in, " + globals.player.name + "! Your special order has been waiting for you. ")
+			mansion.maintext = "— Oh, Come in, " + globals.player.name + "! Your special order has been waiting for you. "
 		if globals.resources.gold >= 100 && globals.state.sebastianorder.taken == false:
 			array.insert(0, {name = 'Make a special request',function = 'sebastianorder'})
 		elif globals.state.sebastianorder.taken == true && globals.state.sebastianorder.duration == 0:
 			array.insert(0, {name = 'See special order', function = 'sebastianorder'})
 		elif globals.state.sebastianorder.taken == false:
-			maintext.set_bbcode(maintext.get_bbcode()+"[color=#ff4949]\nYou don't have enough gold to make request (100 needed)[/color]")
+			mansion.maintext = mansion.maintext.get_bbcode()+"[color=#ff4949]\nYou don't have enough gold to make request (100 needed)[/color]"
 	if globals.state.farm == 1:
 		array.insert(0, {name = 'Consult on proposal', function = 'sebastianfarm'})
 	elif globals.state.farm == 2:
@@ -1840,11 +1872,11 @@ func sebastianquest(stage = 0):
 	if stage == 0:
 		globals.state.sidequests.calibarsex = 'sebastian'
 		sebastian()
-		maintext.set_bbcode(questtext.CaliBarAskSebastian)
+		mansion.maintext = questtext.CaliBarAskSebastian
 	elif stage == 1:
 		globals.state.sidequests.sebastianumbra = 1
 		sebastian()
-		maintext.set_bbcode(globals.player.dictionary(questtext.sebastianumbra))
+		mansion.maintext = globals.player.dictionary(questtext.sebastianumbra)
 	elif stage == 2:
 		shopinitiate('sebastian')
 		sebastian()
@@ -1854,12 +1886,12 @@ func sebastianquest(stage = 0):
 	elif stage == 4:
 		globals.state.sidequests.sebastianumbra = 2
 		sebastian()
-		maintext.set_bbcode(globals.player.dictionary(questtext.sebastianumbra2))
+		mansion.maintext = globals.player.dictionary(questtext.sebastianumbra2)
 	#sebastian()
 
 func sebastianorder():
 	if globals.state.sebastianorder.taken == false:
-		maintext.set_bbcode("— If you need someone of a specific race, I'll make sure to get one next time you come.  That will cost you 100 gold though. Money up front!")
+		mansion.maintext = "— If you need someone of a specific race, I'll make sure to get one next time you come.  That will cost you 100 gold though. Money up front!"
 		clearbuttons()
 		get_node("sebastiannode").set_hidden(false)
 		if globals.rules.furry == false:
@@ -1872,7 +1904,7 @@ func sebastianorder():
 	else:
 		var slave = globals.state.sebastianslave
 		var array = [{name = "Pay", function = "sebastianpay"}, {name = "Refuse", function = "sebastianrefuse"}]
-		maintext.set_bbcode("After few moments, Sebastian presents to you a chained " + slave.race + slave.dictionary(" $child, who still looks pretty rebellious.\n\n— Got you what you asked for!\n\nYou slowly inspect $him.") + slave.descriptionsmall() + "\n\n— I would like to receive " + str(slave.calculateprice()) + slave.dictionary(" gold for my service. If you don't want $him, it's fine, since I can find another buyer in huge town like this."))
+		mansion.maintext = "After few moments, Sebastian presents to you a chained " + slave.race + slave.dictionary(" $child, who still looks pretty rebellious.\n\n— Got you what you asked for!\n\nYou slowly inspect $him.") + slave.descriptionsmall() + "\n\n— I would like to receive " + str(slave.calculateprice()) + slave.dictionary(" gold for my service. If you don't want $him, it's fine, since I can find another buyer in huge town like this.")
 		buildbuttons(array)
 
 func sebastianpay():
@@ -1903,7 +1935,7 @@ func _on_sebastianconfirm_pressed():
 	globals.resources.gold -= 100
 	var caste = ['slave','poor','commoner','rich','noble']
 	globals.state.sebastianslave = globals.newslave(globals.state.sebastianorder.race, 'random', 'random', caste[rand_range(0,caste.size())])
-	maintext.set_bbcode("— "+race+", huh? Got ya! Come see me in "+ str(globals.state.sebastianorder.duration)+ " days and don't forget the coins! Those are not cheap after all. ")
+	mansion.maintext = "— "+race+", huh? Got ya! Come see me in "+ str(globals.state.sebastianorder.duration)+ " days and don't forget the coins! Those are not cheap after all. "
 	get_node("sebastiannode").set_hidden(true)
 	var array = [{name = 'Leave', function = 'market'}]
 	buildbuttons(array)
@@ -1916,10 +1948,10 @@ func _on_sebastiancancel_pressed():
 func sebastianfarm():
 	var array = [{name = 'Return', function = 'market'}]
 	if globals.state.farm == 1:
-		maintext.set_bbcode("— Do you know about farms? No, not the rural kind. You can use girls to make milk. Truthfully speaking, I have some of the necessary gear on my hands. So, if you ever consider starting your own small business, I'll gladly sell it to you.\n\n— You would need some space for that first though. I actually can help you with all that, for 1000 gold I'll get you builders and all basic equipment you will need to set your farm up. Let me know if you are interested. ")
+		mansion.maintext = "— Do you know about farms? No, not the rural kind. You can use girls to make milk. Truthfully speaking, I have some of the necessary gear on my hands. So, if you ever consider starting your own small business, I'll gladly sell it to you.\n\n— You would need some space for that first though. I actually can help you with all that, for 1000 gold I'll get you builders and all basic equipment you will need to set your farm up. Let me know if you are interested. "
 		globals.state.farm = 2
 	elif globals.state.farm == 2:
-		maintext.set_bbcode("— You are done with your preparations? Great, great! Now I'll pass you the rest of necessary equipment for 1000 gold.")
+		mansion.maintext = "— You are done with your preparations? Great, great! Now I'll pass you the rest of necessary equipment for 1000 gold."
 		if globals.resources.gold >= 1000:
 			array.insert(0,{name = 'Purchase farm equipment', function = 'sebastianfarmpurchase'})
 	buildbuttons(array)
@@ -1927,29 +1959,29 @@ func sebastianfarm():
 func sebastianfarmpurchase():
 	globals.state.farm = 3
 	globals.resources.gold -= 1000
-	maintext.set_bbcode("— Pleased to have business with you!\n\n[color=yellow]Your mansion has now been fitted with an underground farm.[/color]\n\n— Oh, and by the way, that is not the only method to utilize your servants. Have you heard about giant snails? Their eggs are quite a delicacy, but they are really picky about where they lay them. I’ve heard that you can make them lay some in a human's orifices. — he slyly winks you — It looks like a human’s body temperature makes them attractive nests.")
+	mansion.maintext = "— Pleased to have business with you!\n\n[color=yellow]Your mansion has now been fitted with an underground farm.[/color]\n\n— Oh, and by the way, that is not the only method to utilize your servants. Have you heard about giant snails? Their eggs are quite a delicacy, but they are really picky about where they lay them. I’ve heard that you can make them lay some in a human's orifices. — he slyly winks you — It looks like a human’s body temperature makes them attractive nests."
 	var array = [{name = 'Return', function = 'sebastian'}]
 	buildbuttons(array)
 
 ################ backstreets
 func backstreets():
+	var text = "This part of town is populated by criminals and the poor. Brothel is located here. "
 	main.background_set('wimborn')
-	maintext.set_bbcode("This part of town is populated by criminals and the poor. Brothel is located here. ")
 	var array = [{name = 'Enter Brothel',function = 'brothel'}, {name = 'Return', function = 'town'}]
 	if globals.state.sidequests.cali in [14,15,16]:
 		array.insert(1,{name = "Visit local bar", function = "calibarquest"})
 	if globals.state.sidequests.emily <= 1:
-		maintext.set_bbcode(maintext.get_bbcode() + '\n\nYou see an urchin girl trying to draw your attention')
+		text += '\n\nYou see an urchin girl trying to draw your attention'
 		array.insert(1,{name = 'Respond to the urchin girl', function = 'emily'})
 	if globals.state.sidequests.emily == 13:
 		array.insert(1,{name = 'Search Backstreets', function = 'tishaquest'})
+	mansion.maintext = text
 	buildbuttons(array)
 
 func emily(state = 1):
 	var buttons = []
 	var text = ''
 	var sprites = null
-	main.close_dialogue()
 	globals.state.sidequests.emily = state
 	if state == 1:
 		globals.charactergallery.emily.unlocked = true
@@ -1979,8 +2011,10 @@ func emily(state = 1):
 		backstreets()
 	elif state == 5:
 		backstreets()
+		main.close_dialogue()
 	elif state == 0:
 		backstreets()
+		main.close_dialogue()
 
 
 func brothel(slave = null):
@@ -1989,7 +2023,7 @@ func brothel(slave = null):
 	for slave in globals.slaves:
 		if slave.work == 'prostitution' || slave.work == 'escort' || slave.work == 'fucktoy':
 			text = text + slave.dictionary('\nYou can see $name waiting for clients here.')
-	maintext.set_bbcode(text)
+	mansion.maintext = text
 	var array = [{name = 'Return', function = 'backstreets'}]
 	if globals.state.sidequests.brothel == 0:
 		array.insert(0,{name = 'Request your servants work here', function = 'brothelquest'})
@@ -1998,11 +2032,11 @@ func brothel(slave = null):
 			array.insert(0,{name = 'Offer slave for quest', function = 'selectslavebrothelquest'})
 		else:
 			if slave.race in ['Elf','Dark Elf','Drow']:
-				maintext.set_bbcode("— An elf, indeed. So, do you wanna trade?")
+				mansion.maintext = "— An elf, indeed. So, do you wanna trade?"
 				array = [{name = 'Give away ' + slave.name,function = 'brothelquest'}, {name = 'Choose another slave', function = 'selectslavebrothelquest'}, {name = 'Leave', function = 'backstreets'}]
 				questgiveawayslave = slave
 			else:
-				maintext.set_bbcode("— I don't think this is an Elf. Please, don't waste my time. ")
+				mansion.maintext = "— I don't think this is an Elf. Please, don't waste my time. "
 				array = [{name = 'Offer slave for quest', function = 'selectslavebrothelquest'},{name = 'Leave',function = 'backstreets'}]
 				questgiveawayslave = null
 	buildbuttons(array)
@@ -2013,12 +2047,12 @@ func selectslavebrothelquest():
 func brothelquest():
 	var array = []
 	if globals.state.sidequests.brothel == 0:
-		maintext.set_bbcode("— Huh, you want to whore your employees? You don't expect me to provide such opportunity for free, do you? How about a deal? You bring me an elf girl and I will consider such option. Elves are really in demand pretty much every season. \n\n[color=green]You obtained new sidequest. [/color] ")
+		mansion.maintext = "— Huh, you want to whore your employees? You don't expect me to provide such opportunity for free, do you? How about a deal? You bring me an elf girl and I will consider such option. Elves are really in demand pretty much every season. \n\n[color=green]You obtained new sidequest. [/color] "
 		array = [{name = 'Leave', function = 'backstreets'}]
 		globals.state.sidequests.brothel = 1
 	elif globals.state.sidequests.brothel == 1:
 		globals.slaves.remove(globals.slaves.find(questgiveawayslave))
-		maintext.set_bbcode("— Fine, you can send your servants to me and we'll offer them to clients. Keep in mind though we gonna keep some share of earnings for obvious reasons. Now we can't tell how much she'll made but I can give you few hints. Allure and endurance play some role here, but nothing can beat a sexually proactive girl who knows how to please her partner, especially if she has a pretty face.\n\n— Yeah, we'll keep her safe from possible aggression but don't blame on us if she decides to escape. We can't really watch her every movement. Although slaves rarely do that since they are basically outlaws at that point. \n\n[color=green]You have unlocked brothel as a workplace. [/color] ")
+		mansion.maintext = "— Fine, you can send your servants to me and we'll offer them to clients. Keep in mind though we gonna keep some share of earnings for obvious reasons. Now we can't tell how much she'll made but I can give you few hints. Allure and endurance play some role here, but nothing can beat a sexually proactive girl who knows how to please her partner, especially if she has a pretty face.\n\n— Yeah, we'll keep her safe from possible aggression but don't blame on us if she decides to escape. We can't really watch her every movement. Although slaves rarely do that since they are basically outlaws at that point. \n\n[color=green]You have unlocked brothel as a workplace. [/color] "
 		array = [{name = 'Leave', function = 'backstreets'}]
 		globals.state.sidequests.brothel = 2
 	buildbuttons(array)
@@ -2173,11 +2207,11 @@ func useitem(item, slave):
 		globals.state.backpack.stackables.erase(item.code)
 	if item.code == 'bandage':
 		if slave.effects.has('bandaged') == false:
-			get_parent().infotext(slave.dictionary("Bandage used on $name.",'green'))
+			get_parent().infotext(slave.dictionary("Bandage used on $name."),'green')
 			slave.health += slave.stats.health_max/2.5
 			slave.add_effect(globals.effectdict.bandaged)
 		else:
-			get_parent().infotext(slave.dictionary("Bandage used on $name with reduced efficiency.",'green'))
+			get_parent().infotext(slave.dictionary("Bandage used on $name with reduced efficiency."),'green')
 			slave.health += slave.stats.health_max/5
 	elif item.code == 'teleportseal':
 		if slave == globals.player:

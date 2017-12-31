@@ -91,7 +91,7 @@ class fighter:
 
 
 
-func start_battle():
+func start_battle(nosound = false):
 	if get_parent().get_node("new slave button").is_visible() == false:
 		get_node("autowin").set_hidden(true)
 	var slave
@@ -99,7 +99,8 @@ func start_battle():
 	trapper = false
 	get_node("autoattack").set_pressed(globals.rules.autoattack)
 	get_tree().get_current_scene().get_node("outside").set_hidden(true)
-	get_tree().get_current_scene().music_set('combat')
+	if nosound == false:
+		get_tree().get_current_scene().music_set('combat')
 	deads = []
 	playergroup.clear()
 	enemygroup.clear()

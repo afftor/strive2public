@@ -90,7 +90,7 @@ func questarray():
 	code = '005',
 	shortdescription = 'Brothel owner looking for a new resident.',
 	description = "As the last $race girl has been bought out by one of her frequent customers, there's a dire need for a new one. ",
-	reqs = [['obed','gte', 90], ['sexuals.unlocks', 'gte', 5], ['beauty','gte',40]],
+	reqs = [['obed','gte', 90], ['lewd', 'gte', 25], ['beauty','gte',40]],
 	reqstemp = [['race','eq',commonrace()]],
 	time = round(rand_range(4,6)),
 	reward = round(rand_range(45,70))*10,
@@ -123,7 +123,7 @@ func questarray():
 	code = '008',
 	shortdescription = "Local nobleman wants a dominant slave for bed-play. ",
 	description = "An anonymous request was made by a certain nobleman, who is looking for a girl with strong character for his eccentric lewd plays. ",
-	reqs = [['obed','gte', 90], ['sex','eq','female'], ['sexuals.unlocks', 'gte', 4],['conf','gte',65], ['dom','gte',50]],
+	reqs = [['obed','gte', 90], ['sex','eq','female'], ['lewd', 'gte', 25],['conf','gte',65], ['asser','gte',50]],
 	reqstemp = [],
 	time = round(rand_range(4,8)),
 	reward = round(rand_range(75,110))*10,
@@ -207,6 +207,17 @@ func questarray():
 	reward = round(rand_range(40,50))*10,
 	location = ['gorn','wimborn'],
 	difficulty = 'easy'
+	},
+	quest016 = {
+	code = '016',
+	shortdescription = "Unspecified person desires a lively slave.",
+	description = "A note desiring a high grade $sex slave. Taming is not needed. ",
+	reqs = [['origins','gte','rich'], ['sex', 'eq', randsex()]],
+	reqstemp = [],
+	time = round(rand_range(6,8)),
+	reward = round(rand_range(70,90))*10,
+	location = ['any'],
+	difficulty = 'medium'
 	},
 	}
 	return questsarray

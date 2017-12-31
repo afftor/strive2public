@@ -173,8 +173,8 @@ func race():
 	return text
 
 func entry():
-	var text
-	if globals.slaves.find(slave) >= 0 || globals.player == slave:
+	var text = ''
+	if globals.slaves.find(slave) >= 0 || globals.player == slave || slave.fromguild == true:
 		if slave.sleep == 'jail':
 			text = 'Behind the iron bars you see '
 		elif globals.player == slave:
@@ -186,6 +186,7 @@ func entry():
 		else:
 			text = text + slave.name + ' "'+slave.nickname+'" ' + slave.surname + '. '
 	else:
+		
 		text = 'Tied and bound [color=yellow]$sex[/color] looking at you with fear and hatred. '
 	text = text.replace(" .", ".")
 	return text

@@ -820,6 +820,8 @@ func endencounter():
 	
 	globals.resources.mana += totalmana 
 	
+	ongoingactions.clear()
+	
 	get_node("Control").set_hidden(false)
 	get_node("Control/Panel/RichTextLabel").set_bbcode(text)
 

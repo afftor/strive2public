@@ -33,7 +33,7 @@ func requirements():
 	return valid
 
 func getname(state = null):
-	return "Rev. Lotus"
+	return "Lap Sitting"
 
 func getongoingname(givers, takers):
 	return "[name1] fuck[s/1] [name2] in the reverse lotus position."

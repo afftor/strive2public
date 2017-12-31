@@ -1,6 +1,8 @@
 
 extends Node
 
+onready var mansion = get_parent()
+
 var progress = 0.0
 var enemygroup
 var defeated = {}
@@ -13,7 +15,6 @@ var scout
 var launchonwin = null
 var combatdata = load("res://files/scripts/combatdata.gd").new()
 var deeperregion = false
-
 
 var enemygrouppools = combatdata.enemygrouppools
 var capturespool = combatdata.capturespool
@@ -136,9 +137,24 @@ description = "You climb over small hills in search for any activity in these el
 enemies = [{value = 'slaversmedium', weight = 1},{value = 'harpy', weight = 2},{value = 'banditsmedium', weight = 3}, {value = 'fewcougars', weight = 4}],
 encounters = [],
 length = 6,
-exits = ['gornoutskirts'],
+exits = ['gornoutskirts','mountaincave'],
 tags = ['gorn'],
 races = [{value = 'Dragonkin', weight = 1},{value = 'Seraph', weight = 2.5},{value = 'Gnome', weight = 3},{value = 'Centaur', weight = 2},{value = 'Goblin', weight = 4},{value = 'Orc', weight = 8}]
+},
+
+mountaincave = {
+background = 'tunnels',
+reqs = "true",
+combat = true,
+code = 'mountaincave',
+name = 'Mountain Caves',
+description = "You step onto the damp cave floor. These underground systems server home to many various beasts and semisentient creatures.",
+enemies = [],
+encounters = [],
+length = 8,
+exits = ['mountains'],
+tags = ['gorn'],
+races = []
 },
 
 sea = {
@@ -421,7 +437,7 @@ func zoneenter(zone):
 	text += '\n\n'+ zone.description
 	if zone.code in ['wimborn','gorn','amberguard','frostford']:
 		text += "\n\n[color=yellow]You can use public teleport to return to mansion from this location.[/color]"
-	outside.maintext.set_bbcode(text)
+	mansion.maintext = text
 	if zone.combat == false:
 		call(zone.exits[0])
 		return
@@ -466,18 +482,26 @@ func zoneenter(zone):
 		array.append({name = "Search for Ivran's location",function = 'event',args = 'gornivran'})
 	if zone.code == 'undercitytunnels' && progress >= 6 && globals.state.lorefound.find('amberguardlog1') < 0:
 		globals.state.lorefound.append('amberguardlog1')
-		outside.maintext.set_bbcode(outside.maintext.get_bbcode() + "[color=yellow]\n\nYou've found some old writings in the ruins. Does not look like what you came for, but you can read them later.[/color]")
+		mansion.maintext = outside.maintext.get_bbcode() + "[color=yellow]\n\nYou've found some old writings in the ruins. Does not look like what you came for, but you can read them later.[/color]"
 	if zone.code == 'undercityruins' && progress >= 5 && globals.state.lorefound.find('amberguardlog2') < 0:
 		globals.state.lorefound.append('amberguardlog2')
-		outside.maintext.set_bbcode(outside.maintext.get_bbcode() + "[color=yellow]\n\nYou've found some old writings in the ruins. Does not look like what you came for, but you can read them later.[/color]")
+		mansion.maintext = outside.maintext.get_bbcode() + "[color=yellow]\n\nYou've found some old writings in the ruins. Does not look like what you came for, but you can read them later.[/color]"
 	if zone.code == 'frostfordoutskirts' && globals.state.mainquest in [27,30,32] && progress >= 5:
 		array.append({name = "Explore hunting grounds to South-East", function = 'event', args = 'frostforddryad'})
 	if zone.code == 'frostfordoutskirts' && globals.state.sidequests.zoe == 1 && progress >= 3:
 		globals.state.sidequests.zoe = 2
-		main.dialogue(true, self, globals.questtext.MainQuestFrostfordBeforeForestZoe, [], null)
+		main.dialogue(true, self, globals.questtext.MainQuestFrostfordBeforeForestZoe, [], [['zoehappy','pos1','opac']])
+	if zone.code == 'mountaincave' && globals.state.mainquest == 38:
+		array.append({name = "Search for Ayda's location",function = 'event',args = 'mountainelfcamp'})
+	if zone.code == 'mountains' && globals.state.mainquest == 39 && globals.state.decisions.has("goodroute"):
+		event('garthorencounter')
 	if progress == 0 && lastzone != zone.code && globals.evaluate(zones[lastzone].reqs) == true:
 		array.append({name = "Return to " + zones[lastzone].name, function = "zoneenter", args = lastzone})
 	outside.buildbuttons(array, self)
+
+func teleportmansion():
+	globals.resources.gold -= 25
+	mansionreturn()
 
 func deepzone(currentzonecode):
 	deeperregion = true
@@ -651,7 +675,7 @@ func enemyencounter():
 			encounterbuttons()
 		else:
 			call(enemygroup.special)
-	outside.maintext.set_bbcode(text)
+	mansion.maintext = text
 
 func buildenemies(enemyname = null):
 	if enemyname == null:
@@ -703,13 +727,13 @@ func patrolbribe(sum):
 	var array = []
 	globals.resources.gold -= sum
 	array.append({name = "Leave", function = "enemyleave"})
-	outside.maintext.set_bbcode("You bribe Patrol's leader and hastily escape from the scene. ")
+	mansion.maintext = "You bribe Patrol's leader and hastily escape from the scene. "
 	outside.buildbuttons(array, self)
 
 func slavers():
 	globals.get_tree().get_current_scene().get_node('outside').clearbuttons()
 	newbutton = button.duplicate()
-	outside.maintext.set_bbcode(encounterdictionary(enemygroup.description))
+	mansion.maintext = encounterdictionary(enemygroup.description)
 	buttoncontainer.add_child(newbutton)
 	newbutton.set_text('Greet them')
 	newbutton.set_hidden(false)
@@ -740,7 +764,7 @@ func banditcamp():
 
 func slaversgreet():
 	globals.get_tree().get_current_scene().get_node('outside').clearbuttons()
-	globals.get_tree().get_current_scene().get_node('outside').maintext.set_bbcode(globals.player.dictionary("You reveal yourself to the slavers' group and wondering if they'd be willing to part with their merchandise saving them hassle of transportation.\n\n- You, $sir, know how to bargain. We'll agree to part with our treasure here for ")+str(max(round(enemygroup.captured.calculateprice()*0.3),40))+" gold.\n\nYou still might try to take their hostage by force, but given they know about your presence, you are at considerable disadvantage. ")
+	globals.get_tree().get_current_scene().get_node('outside').maintext = globals.player.dictionary("You reveal yourself to the slavers' group and wondering if they'd be willing to part with their merchandise saving them hassle of transportation.\n\n- You, $sir, know how to bargain. We'll agree to part with our treasure here for ")+str(max(round(enemygroup.captured.calculateprice()*0.3),40))+" gold.\n\nYou still might try to take their hostage by force, but given they know about your presence, you are at considerable disadvantage. "
 	newbutton = button.duplicate()
 	buttoncontainer.add_child(newbutton)
 	newbutton.set_text('Inspect')
@@ -775,7 +799,7 @@ func slaversgreet():
 
 func snailevent():
 	var array = []
-	outside.maintext.set_bbcode("You come across a humongous snail making its way through the trees. It makes you remember hearing how you could use it for farming additional income but you will likely need to sacrifice some food to tame it first. ")
+	mansion.maintext = "You come across a humongous snail making its way through the trees. It makes you remember hearing how you could use it for farming additional income but you will likely need to sacrifice some food to tame it first. "
 	if globals.resources.food >= 200:
 		array.append({name = 'Feed Snail (200 food)', function = 'snailget'})
 	else:
@@ -824,14 +848,14 @@ func enemyleave():
 		slave.energy -= max(5-floor((slave.sagi+slave.send)/2),1)
 	zoneenter(currentzone.code)
 	if text != '':
-		outside.maintext.set_bbcode(outside.maintext.get_bbcode()+'\n[color=yellow]'+text+'[/color]')
+		mansion.maintext = outside.maintext.get_bbcode()+'\n[color=yellow]'+text+'[/color]'
 
-func enemyfight():
-	outside.maintext.set_bbcode('')
+func enemyfight(soundkeep = false):
+	mansion.maintext = ''
 	outside.clearbuttons()
 	main.get_node("combat").currentenemies = enemygroup.units
 	main.get_node('combat').area = currentzone
-	main.get_node("combat").start_battle()
+	main.get_node("combat").start_battle(soundkeep)
 
 var capturedtojail = 0
 var enemyloot = {stackables = {}, unstackables = []}
@@ -1261,6 +1285,12 @@ func _on_sellconfirm_pressed():
 
 func wimborn():
 	main.get_node('outside').wimborn()
+	
+	if globals.state.location != 'wimborn':
+		if globals.resources.gold >= 25 :
+			outside.addbutton({name = 'Teleport to Mansion - 25 gold', function = 'teleportmansion', textcolor = 'green', tooltip = '25 gold'}, self)
+		else:
+			outside.addbutton({name = 'Teleport to Mansion - 25 gold', function = 'teleportmansion', textcolor = 'green', tooltip = '25 gold', disabled = true}, self)
 
 func gorn():
 	outside.location = 'gorn'
@@ -1269,7 +1299,7 @@ func gorn():
 	var array = []
 	array.append({name = "Visit local Slave Guild", function = 'gornslaveguild'})
 	array.append({name = "Visit local bar", function = 'gornbar'})
-	if globals.state.mainquest in [12,13,14,15]:
+	if globals.state.mainquest in [12,13,14,15,37]:
 		array.append({name = "Visit Palace", function = 'gornpalace'})
 	if globals.state.sidequests.ivran in ['tobetaken','tobealtered','potionreceived'] || globals.state.mainquest >= 16:
 		array.append({name = "Visit Alchemist", function = 'gornayda'})
@@ -1277,7 +1307,13 @@ func gorn():
 	array.append({name = "Outskirts", function = 'zoneenter', args = 'gornoutskirts'})
 	if globals.state.location == 'gorn':
 		array.append({name = "Return to Mansion",function = 'mansion'})
+	else:
+		if globals.resources.gold >= 25 :
+			array.append({name = 'Teleport to Mansion - 25 gold', function = 'teleportmansion', textcolor = 'green', tooltip = '25 gold'})
+		else:
+			array.append({name = 'Teleport to Mansion - 25 gold', function = 'teleportmansion', textcolor = 'green', tooltip = '25 gold', disabled = true})
 	outside.buildbuttons(array,self)
+	
 
 func mansion():
 	get_parent().mansion()
@@ -1292,7 +1328,7 @@ func gornbar():
 	elif globals.state.sidequests.yris < 6:
 		array.append({name = "Approach Yris", function = 'gornyris'}) 
 	array.append({name = "Leave",function = 'zoneenter', args = 'gorn'})
-	outside.maintext.set_bbcode(text)
+	mansion.maintext = text
 	outside.buildbuttons(array,self)
 
 func gornyris():
@@ -1416,10 +1452,10 @@ func gornyrisaccept(stage):
 func amberguard():
 	var array = []
 	outside.location = 'amberguard'
-	main.music_set('gorn')
+	main.music_set('frostford')
 	if globals.state.portals.amberguard.enabled == false:
 		globals.state.portals.amberguard.enabled = true
-		outside.maintext.set_bbcode(outside.maintext.get_bbcode() + "\n\n[color=yellow]You have unlocked new portal![/color]")
+		mansion.maintext = outside.maintext.get_bbcode() + "\n\n[color=yellow]You have unlocked new portal![/color]"
 	if globals.state.mainquest == 17:
 		globals.state.mainquest = 18
 	elif globals.state.mainquest == 19:
@@ -1430,6 +1466,11 @@ func amberguard():
 	array.append({name = "Return to Elven Grove", function = 'zoneenter', args = 'elvenforest'})
 	array.append({name = "Move to the Amber Road", function = 'zoneenter', args = 'amberguardforest'})
 	outside.buildbuttons(array,self)
+	if globals.state.location != 'amberguard':
+		if globals.resources.gold >= 25 :
+			outside.addbutton({name = 'Teleport to Mansion - 25 gold', function = 'teleportmansion', textcolor = 'green', tooltip = '25 gold'}, self)
+		else:
+			outside.addbutton({name = 'Teleport to Mansion - 25 gold', function = 'teleportmansion', textcolor = 'green', tooltip = '25 gold', disabled = true}, self)
 
 func amberguardsearch(stage = 1):
 	var text
@@ -1462,7 +1503,7 @@ func witchhut():
 	var array = []
 	if globals.state.mainquest == 21:
 		globals.state.mainquest = 22
-		outside.maintext.set_bbcode(globals.questtext.MainQuestAmberguardWitch)
+		mansion.maintext = globals.questtext.MainQuestAmberguardWitch
 		array.append({name = "Go inside", function = 'shuriyavisit', args = 1})
 	else:
 		array.append({name = "Go inside", function = 'shuriyavisit', args = 2})
@@ -1590,7 +1631,7 @@ func gornayda():
 
 func frostford():
 	outside.location = 'frostford'
-	main.music_set('gorn')
+	main.music_set('frostford')
 	var array = []
 	if globals.state.mainquest in [28, 29, 30, 31, 33, 34, 35]:
 		array.append({name = "Visit City Hall", function = "frostfordcityhall"})
@@ -1606,7 +1647,13 @@ func frostford():
 	array.append({name = "Outskirts", function = 'zoneenter', args = 'frostfordoutskirts'})
 	if globals.state.location == 'frostford':
 		array.append({name = "Return to Mansion",function = 'mansion'})
+	else:
+		if globals.resources.gold >= 25 :
+			array.append({name = 'Teleport to Mansion - 25 gold', function = 'teleportmansion', textcolor = 'green', tooltip = '25 gold'})
+		else:
+			array.append({name = 'Teleport to Mansion - 25 gold', function = 'teleportmansion', textcolor = 'green', tooltip = '25 gold', disabled = true})
 	outside.buildbuttons(array,self)
+	
 
 func frostfordzoe(stage):
 	var text
@@ -1647,7 +1694,7 @@ func shaliq():
 	array.append({name = "Leave to the Eerie Grove", function = 'zoneenter', args = 'grove'})
 	if globals.state.sidequests.chloe == 15:
 		globals.state.sidequests.chloe = 16
-		outside.maintext.set_bbcode("You lead Chloe back to her house and give her some time to rest and clean herself.")
+		mansion.maintext = "You lead Chloe back to her house and give her some time to rest and clean herself."
 		
 	outside.buildbuttons(array,self)
 
@@ -1657,7 +1704,7 @@ func shaliqshop():
 func umbra():
 	if globals.state.umbrafirstvisit == true:
 		globals.state.umbrafirstvisit = false
-		outside.maintext.set_bbcode(outside.maintext.get_bbcode() + "\n\n" + globals.questtext.UmbraFirstVisit)
+		mansion.maintext = outside.maintext.get_bbcode() + "\n\n" + globals.questtext.UmbraFirstVisit
 	var array = []
 	outside.location = 'umbra'
 	array.append({name = "Visit Black Market", function = 'umbrashop'})

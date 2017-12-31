@@ -7,11 +7,14 @@ tisha = "Emily's older sister. Since an early age she has aimed to work hard to 
 cali = "Halfkin wolf-girl who ended up in Wimborn due to some unfortunate events. Although her age and appearance might not suggest it, she is quite cheeky. ",
 chloe = "A gnome girl from Shaliq village, who decided to venture out of her homeland due to her research or in search of adventure. Contrary to that, she's pretty timid and seems to be insecure about her height. ",
 yris = "A beastkin resident of Gorn's bar. A Catgirl with a playful nature who loves thrill and challenges. ",
-zoe = "Young member of Frostford's ruling wolven clan. Being discontent with her suggested position, she seeks a way to prove herself and try a different life. ",
+zoe = "Young member of Frostford's ruling wolven clan. Being discontent with her suggested position, she seeks a way to prove herself and try a different life. Theron's niece. ",
 ayneris = "Youngest child of a powerful elven clan with declining prosperity. Her attempts to rival her siblings didn't worked out in a way she wanted, but in return she may have discovered something exciting about herself... ",
 melissa = "Second-in-command of the Wimborn's Mage's Order and your direct mentor. Despite her friendly appearance she seems to have her own undisclosed goals. ",
 fairy = "One of the Wimborn Slaver Guild's main attendants. Her cheerful and friendly nature helps new customers to settle in quickly. ",
 ayda = "Resident alchemist in Gorn's Palace. Though she prefers to keep to herself, she is forced to cooperate to fulfill her needs. ",
+garthor = "One of the leading persons around Gorn. As a head of his clan, he's very dependanble and a skillful politician.",
+theron = "Frostford's leader and a chieftain of his clan. His high moral standards and combat skills earned him great respect around Frostford. ",
+hade = "An unknown man recently appearing around The Empire with hidden intentions. Few authorities around The Order believe he might be a dangerous hostile. ",
 }
 
 var charactergallery = { 
@@ -53,6 +56,18 @@ scenes = [{code = 'mapleflirt', name = 'Risky Affair', unlocked = false, text = 
 },
 ayda = {
 unlocked = false, name = 'Ayda', descript = chardescript.ayda, sprite = 'aydanormal', naked = 'null', nakedunlocked = false,
+scenes = []
+},
+garthor = {
+unlocked = false, name = 'Garthor', descript = chardescript.garthor, sprite = 'garthor', naked = 'null', nakedunlocked = false,
+scenes = []
+},
+theron = {
+unlocked = false, name = 'Garthor', descript = chardescript.theron, sprite = 'theron', naked = 'null', nakedunlocked = false,
+scenes = []
+},
+hade = {
+unlocked = false, name = 'Hade', descript = chardescript.hade, sprite = 'hadeneutral', naked = 'null', nakedunlocked = false,
 scenes = []
 },
 } setget charactergallery_set
@@ -352,5 +367,10 @@ zoesadnaked = load("res://files/images/zoe/zoesadnaked.png"),
 
 theron = load("res://files/images/theron.png"),
 garthor = load("res://files/images/garthor.png"),
+
+hadeneutral = load("res://files/images/hadeneutral.png"),
+hadesmile = load("res://files/images/hadesmile.png"),
+hadesad = load("res://files/images/hadesad.png"),
+hadeangry = load("res://files/images/hadeangry.png"),
 }
 

@@ -35,6 +35,7 @@ var slavedialogues = load("res://files/scripts/slavedialogues.gd").new()
 var characters = gallery
 
 var modsfile = load("res://mods/init.gd").new()
+var main
 
 var slaves = [] setget slaves_set
 var starting_pc_races = ['Human', 'Elf', 'Dark Elf', 'Orc', 'Demon', 'Beastkin Cat', 'Beastkin Wolf', 'Beastkin Fox', 'Halfkin Cat', 'Halfkin Wolf', 'Halfkin Fox', 'Taurus']
@@ -52,16 +53,15 @@ var partner
 
 var spritedict = gallery.sprites
 var musicdict = {
-combat1 = load("res://files/music/Corruption.ogg"),
-combat2 = load("res://files/music/Crossing_the_Chasm.ogg"),
-combat3 = load("res://files/music/Evil_Incoming.ogg"),
-mansion1 = load("res://files/music/Bittersweet.ogg"),
-mansion2 = load("res://files/music/mansion1.ogg"),
-mansion3 = load("res://files/music/mansion2.ogg"),
-mansion4 = load("res://files/music/mansion3.ogg"),
-mansion5 = load("res://files/music/mansion4.ogg"),
+combat1 = load("res://files/music/battle1.ogg"),
+combat2 = load("res://files/music/battle2.ogg"),
+mansion1 = load("res://files/music/mansion1.ogg"),
+mansion2 = load("res://files/music/mansion2.ogg"),
+mansion3 = load("res://files/music/mansion3.ogg"),
+mansion4 = load("res://files/music/mansion4.ogg"),
 wimborn = load("res://files/music/wimborn.ogg"),
 gorn = load("res://files/music/gorn.ogg"),
+frostford = load("res://files/music/frostford.ogg"),
 explore = load("res://files/music/exploration.ogg"),
 maintheme = load("res://files/music/opening.ogg"),
 }
@@ -95,6 +95,11 @@ amberguard = load("res://files/backgrounds/amberguard.png"),
 amberroad = load("res://files/backgrounds/amberroad.png"),
 undercity = load("res://files/backgrounds/undercity.png"),
 tunnels = load("res://files/backgrounds/tunnels.png"),
+mainorder = load("res://files/backgrounds/mainorder.png"),
+mainorderfinale = load("res://files/backgrounds/mainorderfinale.png"),
+}
+var scenes = {
+finale = load("res://files/backgrounds/finale.png")
 }
 var mansionupgradesdict = mansionupgrades.dict
 

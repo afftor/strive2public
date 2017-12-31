@@ -569,16 +569,15 @@ custom_styles/panel = SubResource( 3 )
 
 [node name="outsidetextbox" type="RichTextLabel" parent="."]
 
-anchor/right = 3
-anchor/bottom = 1
+rect/min_size = Vector2( 300, 300 )
 focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
 margin/left = 314.0
 margin/top = 67.0
-margin/right = -193.0
-margin/bottom = 98.0
+margin/right = 734.0
+margin/bottom = 499.0
 custom_fonts/normal_font = ExtResource( 6 )
 bbcode/enabled = true
 bbcode/bbcode = ""
@@ -2557,6 +2556,7 @@ flat = false
 
 [node name="shoppanel" type="Control" parent="."]
 
+editor/display_folded = true
 visibility/visible = false
 anchor/right = 1
 anchor/bottom = 1

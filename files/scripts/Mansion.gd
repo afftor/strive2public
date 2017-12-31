@@ -9,11 +9,23 @@ var testslaveorigin = ['slave','poor','commoner','rich','noble']
 var currentslave = 0 setget currentslave_set
 var selectedslave = -1
 var texture = null
-var startcombatzone = "sea"
+var startcombatzone = "mountaincave"
+onready var maintext = '' setget maintext_set
 onready var exploration = get_node("explorationnode")
 onready var slavepanel = get_node("MainScreen/slave_tab")
 
 signal animfinished
+
+func _process(delta):
+	if get_node("dialogue").is_hidden() == true && get_node("popupmessage").is_hidden() == true && checkforevents == true:
+		nextdayevents()
+		checkforevents = false
+	for i in get_tree().get_nodes_in_group("messages"):
+		if i.get_opacity() != 0:
+			i.set_opacity(i.get_opacity() - delta)
+
+func maintext_set(value):
+	get_node("outside/outsidetextbox").set_bbcode(value)
 
 func currentslave_set(value):
 	currentslave = value
@@ -80,6 +92,7 @@ func _ready():
 	_on_mansion_pressed()
 	set_process_input(true)
 	rebuildrepeatablequests()
+	globals.main = self
 	globals.resources.panel = get_node("ResourcePanel")
 	if globals.player.name == '':
 		#_on_leavenode_mouse_enter()
@@ -190,7 +203,7 @@ func _on_new_slave_button_pressed():
 	globals.state.sidequests.cali = 14
 	#globals.state.decisions.append('')
 	globals.state.rank = 3
-	globals.state.mainquest = 30
+	globals.state.mainquest = 40
 	globals.resources.mana = 200
 	globals.state.farm = 3
 	globals.state.mansionupgrades.mansionlab = 1
@@ -203,6 +216,7 @@ func _on_new_slave_button_pressed():
 	globals.player.sagi = 5
 	globals.state.reputation.frostford = 50
 	globals.state.condition -= 100
+	globals.state.decisions = ['tishaemilytricked','chloebrothel','ivrantaken','goodroute']
 	#lobals.state.upcomingevents.append({code = 'tishaappearance',duration =1})
 #	for i in globals.characters.characters:
 #		slave = globals.characters.create(i)
@@ -369,6 +383,10 @@ func _on_prisonbutton_pressed():
 var enddayprocess = false
 
 func _on_end_pressed():
+	if globals.state.mainquest == 40:
+		popup("You can't afford to wait. You must go to the Mage's Order.")
+		return
+	
 	var text = ''
 	var temp = ''
 	var poorcondition = false
@@ -1017,13 +1035,6 @@ func alisebuild(state):
 func alisehide():
 	get_node("FinishDayPanel/alise").set_hidden(true)
 
-func _process(delta):
-	if get_node("dialogue").is_hidden() == true && get_node("popupmessage").is_hidden() == true && checkforevents == true:
-		nextdayevents()
-		checkforevents = false
-	for i in get_tree().get_nodes_in_group("messages"):
-		if i.get_opacity() != 0:
-			i.set_opacity(i.get_opacity() - delta)
 
 var thread = Thread.new()
 
@@ -1098,13 +1109,18 @@ func _on_popupmessagetext_meta_clicked( meta ):
 var spritedict = globals.spritedict
 onready var nodedict = {pos1 = get_node("dialogue/charactersprite1"), pos2 = get_node("dialogue/charactersprite2")}
 
-func dialogue(showclose, destination, dialogtext, dialogbuttons = null, sprites = null): #for arrays: 0 - boolean to show close button or not. 1 - node to return connection back. 2 - text to show 3+ - arrays of buttons and functions in those
+func dialogue(showclose, destination, dialogtext, dialogbuttons = null, sprites = null, background = null): #for arrays: 0 - boolean to show close button or not. 1 - node to return connection back. 2 - text to show 3+ - arrays of buttons and functions in those
 	var text = get_node("dialogue/dialoguetext")
 	var buttons = get_node("dialogue/popupbuttoncenter/popupbuttons")
 	var closebutton
 	var newbutton
 	var counter = 1
-	get_node("dialogue").set_hidden(false)
+	get_node("dialogue/background").set_texture(null)
+	if background != null:
+		get_node("dialogue/background").set_texture(globals.backgrounds[background])
+	if get_node("dialogue").is_hidden() == true:
+		get_node("dialogue").set_hidden(false)
+		get_node("dialogue/AnimationPlayer").play("fading")
 	text.set_bbcode('')
 	for i in buttons.get_children():
 		if i != get_node("dialogue/popupbuttoncenter/popupbuttons/Button"):
@@ -1175,9 +1191,52 @@ func dialoguebuttons(array, destination, counter):
 	get_node("dialogue/popupbuttoncenter/popupbuttons").add_child(newbutton)
 
 func close_dialogue():
+	get_node("dialogue/AnimationPlayer").play_backwards("fading")
+	if OS.get_name() != "HTML5" && globals.rules.fadinganimation == true:
+		yield(get_node("dialogue/AnimationPlayer"), 'finished')
 	get_node("dialogue").set_hidden(true)
 	for i in nodedict.values():
 		i.set_texture(null)
+
+
+
+
+
+func scene(target, image, scenetext, scenebuttons = null):
+	if get_node("scene").is_hidden() == true:
+		get_node("scene").set_hidden(false)
+		get_node("scene/AnimationPlayer").play("fading")
+	get_node("scene").set_hidden(false)
+	get_node("scene")
+	get_node("scene/Panel/scenepicture").set_normal_texture(globals.scenes[image])
+	get_node("scene/textpanel/scenetext").set_bbcode(globals.player.dictionary(scenetext))
+	for i in get_node("scene/buttonpanel/popupbuttoncenter/popupbuttons").get_children():
+		if i.get_name() != 'Button':
+			i.set_hidden(true)
+			i.queue_free()
+	for i in scenebuttons:
+		newbuttonscene(i, target)
+
+func newbuttonscene(button, target):
+	var newbutton = get_node("scene/buttonpanel/popupbuttoncenter/popupbuttons/Button").duplicate()
+	get_node("scene/buttonpanel/popupbuttoncenter/popupbuttons").add_child(newbutton)
+	newbutton.set_hidden(false)
+	newbutton.set_text(button.text)
+	newbutton.get_node("Label").set_text(str(get_node("scene/buttonpanel/popupbuttoncenter/popupbuttons").get_children().size()-1))
+	newbutton.connect("pressed", target, button.function , [button.args])
+
+func _on_scenepicture_pressed():
+	if get_node("scene/Panel/scenepicture").is_pressed():
+		get_node("scene/Panel/scenepicture").set_size(get_node("scene/Panel/Panel2").get_size())
+	else:
+		get_node("scene/Panel/scenepicture").set_size(get_node("scene/Panel").get_size())
+
+func closescene():
+	print(true)
+	get_node("scene/AnimationPlayer").play_backwards("fading")
+	if OS.get_name() != "HTML5" && globals.rules.fadinganimation == true:
+		yield(get_node("scene/AnimationPlayer"), 'finished')
+	get_node("scene").set_hidden(true)
 
 func _on_menu_pressed():
 	get_node("music").set_paused(true)
@@ -1378,11 +1437,11 @@ func music_set(text):
 	var array = []
 	music.set_autoplay(true)
 	if text == 'combat':
-		array = ['combat1','combat2','combat3']
+		array = ['combat1']
 		path = musicdict[array[rand_range(0,array.size())]]
 	elif text == 'mansion':
 		music.set_autoplay(false)
-		array = ['mansion1','mansion2','mansion3','mansion4','mansion5']
+		array = ['mansion1','mansion2','mansion3','mansion4']
 		path = musicdict[array[rand_range(0,array.size())]]
 	else:
 		path = musicdict[text]
@@ -1824,7 +1883,11 @@ var mainquestdict = {
 '33': "Return to Theron.",
 '34': "Return to Theron.",
 '35':"Return to Theron.",
-'36': "You have finished currently available quest line. ",
+'36': "Visit Melissa",
+'37': "Visit Garthor at Gorn",
+'38': "Search for Ayda at her shop",
+'39': "Search for Ayda at Gorn's Mountain region",
+'40': "Return to Wimborn's Mage Order"
 }
 var chloequestdict = {
 '3':"Chloe from Shaliq wants you to get 25 mana and visit her to trade it for a spell.",

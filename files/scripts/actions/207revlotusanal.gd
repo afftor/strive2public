@@ -31,10 +31,7 @@ func requirements():
 	return valid
 
 func getname(state = null):
-	if givers[0].strapon != null:
-		return "Rev. Lotus Pegging"
-	else:
-		return "Rev. Lotus Anal"
+	return "Lap Sitting Anal"
 
 func getongoingname(givers, takers):
 	return "[name1] fuck[s/1] [names2] ass[/es2] in the reverse lotus position."

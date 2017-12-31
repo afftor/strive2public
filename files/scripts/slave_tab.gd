@@ -342,12 +342,6 @@ func _on_SelectButtonSleep_button_selected( value ):
 	if oldsleep == 'jail':
 		if globals.state.playergroup.find(slave.id):
 			globals.state.playergroup.erase(slave.id)
-		if slave.work == 'jailer':
-			globals.state.jailer = -1
-		elif slave.work == 'labassist':
-			globals.state.labassist = -1
-		elif slave.work == 'farmmanager':
-			globals.state.farmmanager = -1
 		slave.work = 'rest'
 		get_tree().get_current_scene()._on_mansion_pressed()
 		get_tree().get_current_scene().rebuild_slave_list()
