@@ -23,6 +23,21 @@ func _process(delta):
 	for i in get_tree().get_nodes_in_group("messages"):
 		if i.get_opacity() != 0:
 			i.set_opacity(i.get_opacity() - delta)
+	#print(get_node("music").get_volume())
+	if musicfading == true && get_node("music").get_volume() != 0 && !get_node("music").is_paused():
+		get_node("music").set_volume(get_node('music').get_volume() - delta)
+		if get_node("music").get_volume() <= 0:
+			musicfading = false
+			get_node("music").set_volume(0)
+			get_node("music").set_paused(true)
+	if musicraising == true && get_node("music").get_volume() < globals.rules.musicvol && !get_node("music").is_paused():
+		get_node("music").set_volume(get_node('music').get_volume() + delta)
+		if get_node("music").get_volume() >= globals.rules.musicvol:
+			musicraising = false
+			get_node("music").set_volume(globals.rules.musicvol)
+
+var musicfading = false
+var musicraising = false
 
 func maintext_set(value):
 	get_node("outside/outsidetextbox").set_bbcode(value)
@@ -144,7 +159,23 @@ func _ready():
 		get_node("buttonpanel/leavenode").set_hidden(true)
 	elif globals.gameloaded == true:
 		infotext("Game Loaded.",'green')
+	#startending()
 
+
+func startending():
+	var name = globals.player.name + " - Main Quest Completed"
+	var scene = load("res://files/ending.tscn").instance()
+	get_node("screenchange/AnimationPlayer").play("slowfade")
+	if globals.developmode == false:
+		globals.save_game('user://saves/'+name)
+	yield(get_node("screenchange/AnimationPlayer"), 'finished')
+	scene.add_to_group('blockmaininput')
+	add_child(scene)
+	move_child(scene, 23)
+	get_node("screenchange/AnimationPlayer").play_backwards("slowfade")
+	yield(get_node("screenchange/AnimationPlayer"), 'finished')
+	get_node("screenchange").set_hidden(true)
+	globals.state.mainquestcomplete = true
 
 
 func _on_new_slave_button_pressed():
@@ -568,7 +599,7 @@ func _on_end_pressed():
 				slave.sexuals.affection += round(rand_range(1,2))
 				if slave.loyal > 30:
 					slave.stress -= slave.loyal/7
-				if slave.lust > 40 && slave.sexuals.unlocked == true && slave.vagvirgin == false && slave.tags.find('nosex') < 0:
+				if slave.lust > 40 && slave.consent && slave.vagvirgin == false && slave.tags.find('nosex') < 0:
 					text2.set_bbcode(text2.get_bbcode() + slave.dictionary('$name went down on you being unable to calm $his lust.\n'))
 					slave.lust = -rand_range(10,15)
 					slave.metrics.sex += 1
@@ -1190,9 +1221,9 @@ func dialoguebuttons(array, destination, counter):
 			newbutton.connect('pressed',destination,array[1],[array[2]])
 	get_node("dialogue/popupbuttoncenter/popupbuttons").add_child(newbutton)
 
-func close_dialogue():
+func close_dialogue(mode = 'normal'):
 	get_node("dialogue/AnimationPlayer").play_backwards("fading")
-	if OS.get_name() != "HTML5" && globals.rules.fadinganimation == true:
+	if OS.get_name() != "HTML5" && globals.rules.fadinganimation == true && mode != 'instant':
 		yield(get_node("dialogue/AnimationPlayer"), 'finished')
 	get_node("dialogue").set_hidden(true)
 	for i in nodedict.values():
@@ -1207,43 +1238,52 @@ func scene(target, image, scenetext, scenebuttons = null):
 		get_node("scene").set_hidden(false)
 		get_node("scene/AnimationPlayer").play("fading")
 	get_node("scene").set_hidden(false)
-	get_node("scene")
+	get_node("infotext").set_hidden(true)
+	get_node("scene/Panel/sceneeffects").set_texture(null)
 	get_node("scene/Panel/scenepicture").set_normal_texture(globals.scenes[image])
 	get_node("scene/textpanel/scenetext").set_bbcode(globals.player.dictionary(scenetext))
-	for i in get_node("scene/buttonpanel/popupbuttoncenter/popupbuttons").get_children():
+	get_node("scene/resources/gold").set_text(str(globals.resources.gold))
+	get_node("scene/resources/food").set_text(str(globals.resources.food))
+	get_node("scene/resources/mana").set_text(str(globals.resources.mana))
+	get_node("scene/resources/energy").set_text(str(globals.player.energy))
+	for i in get_node("scene/popupbuttoncenter/popupbuttons").get_children():
 		if i.get_name() != 'Button':
 			i.set_hidden(true)
 			i.queue_free()
+	var counter = 1
 	for i in scenebuttons:
-		newbuttonscene(i, target)
+		newbuttonscene(i, target, counter)
+		counter += 1
 
-func newbuttonscene(button, target):
-	var newbutton = get_node("scene/buttonpanel/popupbuttoncenter/popupbuttons/Button").duplicate()
-	get_node("scene/buttonpanel/popupbuttoncenter/popupbuttons").add_child(newbutton)
+func newbuttonscene(button, target, counter):
+	var newbutton = get_node("scene/popupbuttoncenter/popupbuttons/Button").duplicate()
+	get_node("scene/popupbuttoncenter/popupbuttons").add_child(newbutton)
 	newbutton.set_hidden(false)
 	newbutton.set_text(button.text)
-	newbutton.get_node("Label").set_text(str(get_node("scene/buttonpanel/popupbuttoncenter/popupbuttons").get_children().size()-1))
+	newbutton.get_node("Label").set_text(str(counter))
 	newbutton.connect("pressed", target, button.function , [button.args])
 
 func _on_scenepicture_pressed():
 	if get_node("scene/Panel/scenepicture").is_pressed():
 		get_node("scene/Panel/scenepicture").set_size(get_node("scene/Panel/Panel2").get_size())
+		get_node("scene/Panel/coverpanel").set_hidden(true)
 	else:
 		get_node("scene/Panel/scenepicture").set_size(get_node("scene/Panel").get_size())
+		get_node("scene/Panel/coverpanel").set_hidden(false)
 
 func closescene():
-	print(true)
 	get_node("scene/AnimationPlayer").play_backwards("fading")
+	get_node("infotext").set_hidden(false)
 	if OS.get_name() != "HTML5" && globals.rules.fadinganimation == true:
 		yield(get_node("scene/AnimationPlayer"), 'finished')
 	get_node("scene").set_hidden(true)
 
 func _on_menu_pressed():
-	get_node("music").set_paused(true)
+	music_set('pause')
 	get_node("menucontrol").popup()
 
 func _on_closemenu_pressed():
-	get_node("music").set_paused(false)
+	music_set('start')
 	get_node("menucontrol").set_hidden(true)
 
 func _on_closegamebuttonm_pressed():
@@ -1426,15 +1466,29 @@ func background_set(text):
 		#get_node("screenchange").set_hidden(true)
 
 var musicdict = globals.musicdict
+var musicvolume = 0
+
 
 func music_set(text):
 	var music = get_node("music")
 	if music.is_paused() == true && globals.rules.musicvol > 0:
 		music.set_paused(false)
+	if text == 'stop':
+		musicfading = true
+		music.seek_pos(0)
+		return
+	elif text == 'pause':
+		musicfading = true
+		return
+	elif text == 'start':
+		musicraising = true
+		music.set_paused(false)
+		return
 	if globals.rules.musicvol == 0 || (music.get_meta("currentsong") == text && music.get_pos() != music.get_length()):
 		return
 	var path = ''
 	var array = []
+	musicraising = true
 	music.set_autoplay(true)
 	if text == 'combat':
 		array = ['combat1']
@@ -3441,7 +3495,6 @@ func _on_supplybuy_pressed():
 
 func _on_close_pressed():
 	get_node("mansionsettings").set_hidden(true)
-
 
 
 

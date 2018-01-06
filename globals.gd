@@ -99,7 +99,8 @@ mainorder = load("res://files/backgrounds/mainorder.png"),
 mainorderfinale = load("res://files/backgrounds/mainorderfinale.png"),
 }
 var scenes = {
-finale = load("res://files/backgrounds/finale.png")
+finale = load("res://files/images/scene/finale.png"),
+finale2 = load("res://files/images/scene/finale2.png")
 }
 var mansionupgradesdict = mansionupgrades.dict
 
@@ -365,6 +366,7 @@ class progress:
 	var itemlist = {}
 	var spelllist = {}
 	var mainquest = 0
+	var mainquestcomplete = false
 	var rank = 0
 	var password = ''
 	var sidequests = {emily = 0, brothel = 0, cali = 0, chloe = 0, ayda = 0, ivran = '', yris = 0, zoe = 0, ayneris = 0, sebastianumbra = 0, maple = 0}

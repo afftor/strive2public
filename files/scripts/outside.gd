@@ -52,6 +52,9 @@ func _input(event):
 			elif event.is_action_pressed(str(key)) == true && get_parent().get_node("dailyevents").is_hidden() == false && get_parent().get_node("dailyevents/buttonpanel/ScrollContainer/VBoxContainer").get_children().size() >= key+1:
 				if get_parent().get_node("dailyevents/buttonpanel/ScrollContainer/VBoxContainer").get_child(key).is_disabled() == false:
 					get_parent().get_node("dailyevents/buttonpanel/ScrollContainer/VBoxContainer").get_child(key).emit_signal("pressed")
+			elif event.is_action_pressed(str(key)) == true && get_parent().get_node("scene").is_hidden() == false && get_parent().get_node("scene/popupbuttoncenter/popupbuttons").get_children().size() >= key+1:
+				if get_parent().get_node("scene/popupbuttoncenter/popupbuttons").get_child(key).is_disabled() == false:
+					get_parent().get_node("scene/popupbuttoncenter/popupbuttons").get_child(key).emit_signal("pressed")
 		if event.is_action_pressed("B") && get_node("playergrouppanel/details").is_visible():
 			_on_details_pressed()
 

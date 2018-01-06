@@ -487,7 +487,7 @@ tail = {
 },
 height = {
 	tiny = '$His stature is [color=aqua]extremely small[/color], barely half the size of a normal person. ',
-	petite = '$His stature is [color=aqua]petite[/color], almost child-like. ',
+	petite = '$His stature is quite [color=aqua]petite[/color]. ',
 	short = '$His height is quite [color=aqua]short[/color]. ',
 	average = '$He is of pretty normal, [color=aqua]average[/color] height. ',
 	tall = '$He is quite [color=aqua]tall[/color] compared to an average person. ',
