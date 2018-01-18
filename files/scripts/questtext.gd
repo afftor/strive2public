@@ -312,22 +312,11 @@ var MainQuestFinaleGoodChoiceLeaveGarthor = "You strip Garthor and his orcs of t
 var MainQuestFinaleGoodWimborn = "You burst into The Mage’s Order’s local branch and take a quick look around, but Melissa is nowhere to be found. People report some unusual commotion going on at the main headquarters and, despite their multiple warnings, you rush through the portal while it’s still functioning."
 var MainQuestFinaleGoodMainOrder = "As the teleportation finishes, you meet with an unexpected sight - the floor of the room is littered with unconscious or injured Mages.. You hear sounds of combat upstairs and rush up to help. The halls are mostly occupied by Hade's followers fighting back forces coming from other regions. Other groups are either shutting down still functioning portals to prevent new teleportations or gathering unconscious bodies in secured rooms. You realize there's little point in waiting for backup and rush into the council room. "
 var MainQuestFinaleGoodHade = "As you enter, you notice Hade, along with a small group of masked followers, already present inside. Several council members are bound in the corner, barely moving. \n\n[color=yellow]— You know, you could've easily avoided all this and I might've ignored your existence for quite some time, given the amount of power and connections you have. It was quite stupid of you to rush in here on your own; The Order can’t be of any help to you now. But of course, you’ve come to fight. Fine, I'll grant you your last moments. Consider it my gratitude for your invaluable help. [/color]"
-#===Wimborn===
+
 
 var MainQuestFinaleGoodHadeDefeat = "Hade kneels before you in defeat, but before you are able to claim victory, a familiar voice calls out from behind, stopping you. As you turn around, you see Melissa holding [color=aqua]$name[/color], bound in ropes with a dagger held against $his neck. \n\nThe dagger seems to be enchanted with powerful magic, leaving no doubt that it would deliver a fatal wound.\n\n[color=yellow]— Stop now, [Playername]! We may not have lost had I come sooner, but I suppose there's no point regretting things now. I propose a trade: your slave's life for my brother's freedom. This battle is already lost. I promise we won’t oppose The Order or yourself again, if you let us leave. [/color]\n\nYou look to Hade, but he seems too shaken up by his defeat to respond."
 
-#===On win===
 
-#
-#[if slave cour < 60] $name stares at you with wide pleading eyes.
-#[elif slave conf < 60] $name shows no signs of panic but is clearly exhausted.
-#[else] $name remains determined and composed in spite of $his unfavorable position. In $his eyes, see a hint of remorse.
-#
-#
-#[Let Hade go]
-#[Let $name die]
-#
-#===Let Hade Go===
 
 var MainQuestFinaleGoodReleaseHade = "You nod and release Hade, who silently skulks to Melissa's side. She passes him a teleportation seal and Hade forces himself to look up at you one last time before disappearing into thin air. \n\n[color=yellow]— He should have apologised to those, who've chosen to support us, at least. It's quite ironic how my personal subordinate unraveled our plans and undid years of my work."
 
@@ -336,13 +325,16 @@ var MainQuestFinaleGoodTakeHade = "Instead of replying you dash toward Melissa, 
 
 
 
-var MainQuestFinaleBadAccept = "[color=yellow]— Excellent! Then let's not waste any time as the preparations are nearly complete. Proceed to Wimborn.From there, make your way to The Order’s main branch before sunset. Oh yes, just one more little thing. In case you drop in too soon, use this mixture on yourself and your team, it will make you immune to our special weapon. I'll meet you there.[/color]\n\nWith this, Hade's party use their teleportation seals and vanish. You decide to hurry to Wimborn, but the road is blocked by a familiar face. The investigator named David and a couple of his subordinates seem to be aware of the plan and block your way. \n\n[color=yellow]— You are under arrest, $name. Don't try to resist and surrender immediately. [/color]\n\nThere's no going back now and you prepare your weapons. "
+var MainQuestFinaleBadAccept = "[color=yellow]— Excellent! Then let's not waste any time as the preparations are nearly complete. Proceed to Wimborn.From there, make your way to The Order’s main branch before sunset. Oh yes, just one more little thing. In case you drop in too soon, use this mixture on yourself and your team, it will make you immune to our special weapon. I'll meet you there.[/color]\n\nWith this, Hade's party use their teleportation seals and vanish. "
+var MainQuestFinaleBadDavid = "The previously met investigator David and a couple of his subordinates seem to be aware of the plan and block your way. \n\n[color=yellow]— You are under arrest, $name. Don't try to resist and surrender immediately. [/color]\n\nThere's no going back now and you unsheathe your weapons. "
 
-var MainQuestFinaleBadWin = "After returning to Wimborn you take a brief rest and head to The Mage's Order. Melissa seems to be absent from her usual post. After using the mixture given to you by Hade, you transport to The Order’s headquarters. \n\nYou don't immediately recognize the location you teleported into; unlike before, there are signs of battle and bodies litter the floor. Most of The Order's mages seem to be unconscious or defeated and Hade's allies secure the hallways and entrances. One of them spots you and tells you to hurry upstairs to the council room. \n\nAt the entrance to the council floor you find Hade with a uncanny smile on his face.\n\n[color=yellow]— So you came right in time. Your effort getting those schematics paid out quite well. It was originally designed to knock out regular magic users, as our bodies are in resonance with the raw energy we use. It took us quite some time to recreate and fine-tune it, but it ended up being our trump card. Once we take care of the remaining forces, we can declare our victory.\n\n— Now, I believe the council chambers have yet to be taken. I want you to prove your worth by dealing with them.[/color] \n\nYou set out in the direction of your final confrontation."
 
+var MainQuestFinaleBadWin = "As David is defeated, you realize, you are getting out of time to return to Wimborn. "
 
-#===After win===
-#
-#As you defeat the remnants of The Order, Hade walks into the room and congratulates you. 
-#
-#— Splendid! This is the start of a new era for humanity. 
+var MainQuestFinaleBadWimborn = "After returning to Wimborn you take a brief rest and head to The Mage's Order. Melissa seems to be absent from her usual post. After using the mixture given to you by Hade, you transport to The Order’s headquarters."
+
+var MainQuestFinaleBadOrder = "You don't immediately recognize the location you teleported into; unlike before, there are signs of battle and bodies litter the floor. Most of The Order's mages seem to be unconscious or defeated and Hade's allies secure the hallways and entrances. One of them spots you and tells you to hurry upstairs to the council room. \n\nAt the entrance to the council floor you find Hade with a uncanny smile on his face.\n\n[color=yellow]— So you came right in time. Your effort getting those schematics paid out quite well. It was originally designed to knock out regular magic users, as our bodies are in resonance with the raw energy we use. It took us quite some time to recreate and fine-tune it, but it ended up being our trump card. Once we take care of the remaining forces, we can declare our victory.\n\n— Now, I believe the council chambers have yet to be taken. I want you to prove your worth by dealing with them.[/color]"
+
+var MainQuestFinaleBadOrder2 = "At the final council room you see couple of soldiers protecting weakened council remnants which you can recognize from before the Frostford's mission. The old man who you've seen before, addresses you. \n\n[color=yellow]— $name... so you are responsible for this as well. Don't think we will go down easily. [/color]"
+
+var MainQuestFinaleBadOrderWin = "Hade enters the room with huge smile on his face. After observing your deeds, he makes an announcement. \n\n[color=yellow]— Splendid! This is the start of a new era for Humanity. [/color]"

@@ -2,15 +2,14 @@ extends Control
 
 var scenearray = []
 var currentscene
-onready var player = get_node("AnimationPlayer")
+onready var player = get_parent().get_node("screenchange/AnimationPlayer")
 var timer = Timer.new()
 var timer2 = Timer.new()
 var stage
 
-var patrons = ["Samantha Monroe","William Strable","Alex Hernandez","littlekingdeath","JEX","Stuart Faulds","King of Kings","ben falls","Kind Phantom","David Hall","amon koth","War God","Martin Fendl","Sam Klingspor","tom illingworth","Lucid Fayt","Kentrop","Zefyr590","Balazsi Szilard","Krow","Hapilex","retchit","John Foster","klaas444","K. Nguyen","Ghostfield","Joshua","Brown Man","NovaShards","Benji Steel","Lenrir","BeeBrett","Brennen Nichols","Aleksis Lindewall","Shaun Holmes","Neverstorm","Benny Castillo","Kriskon","sarcasm2k1","Blacktouch","Greg P Weimar","Cimbri","Jackson Sossaman","Terje","Thomas Phykos","Sho McDoom","Tim Coleman","Zivich","Knugen","Ted Frick","moleman","Kirin","Bryce Cole","Marr","Ai Muhao","Jakob RichtnГ©r Ahlin","Andrea Durall","Coiasira Luminarium","Richard Pembroke","B J","Birbsus","MrIncognito","S.P.","Strykerclaw96","Ern Flor","Spencer (iruleatgames) Geller","Spooks Skeleman","Martin Dokken","Amstaad","lhopitallier","Destroyer-x","Samuel Jennings","Reed","Jonathan M Osborne","Von Neely","AnonEMoose","Matthew Jultak","Andrew","Joshua Edwards","Johnny G","Fandley","Altruin","Jason Fejfar","Goldmember","Sean Daugherty","Tickle_myPickle23","Mike Wells","John Blakeley","Benjamin Choi","cody drewiega","John","John F Schmidley","Steve B","Storme","Chatles Stonewall","Der sonderbare MufflonkГ¶nig","Glenn Kingston","WeirdPete","Alex Clausen","Matty","Doc","JacenHaggard","Petter","Joseph","Diogenes","Nick","Cody Hicks","Tim Ater","The Storyteller","Dan","Skynin","Logon Bays","Kevin SaoPaulo","abomasal","James Michael McClendon","Dirty Whelk","Stephen Wright","Rutger","jhag","eduardo espinoza","Malphas","Felix Argyle","crakkyboii","Sung Jun Yang","Tyler Lee","Mia Amyton","JC","Caim S Pact","ncricket42","Alex Proasheck","Abaddon_Almighty","Griever","Mr. Mann","Michael Ian Baillie","Richie191","Drone of war","Onlyheretofollow","IronHandKnight","DJ BadDad","Jon Conner","Ryan Pangle","Tim Santiago","MrAbusay","Rax Ixor","Alexander Kampfer","John Ash","Joe Meeks","nickolas evans","Zamiel Sailgait","Tofuman","Brittney Alexander","Mike Rathbone","Random","VikC","Manraj Dhanda","Woodrow Howard","Kevin Craig","Karsten Bock","Zach","Michael","Tray Johnson","Corick Khaal","Grizzer","Larius","Kelvin Ng","john m barnett","Ansemslayer","Chris","Malleator","Royce Love","CJ","Joar Rost","Colby","Jibob","Citillara","Brandon Robinet","Martin Hunt","Joseph Marquez-Ruiz","Owen Castle","Nunya","Casey Freeburg","Sagaritus","simez","DS","Forban Jones","Kevin Ma","Aaron Wilcox","mackenzie Woodliffe","ja som anon","lightningshifter","Chris","RogueRandom","CamperNQQB","Apollo81","Ryan Norman-Adams","August Cochi","Espadron","Michael Bourne","Adrian Arcila","Jakub Czerczak","Dark","Rezz7399","Mack Legendary","Rob","D C","Toby","Chris Thomas","Daniel J Pitzer","ReaDavid","Chronos189","john hop","dr klayton","Christiane bingham","Random Havoc","Adrian Lee","Skinnybastrd","Shiver Metimbers","Per Hans","Austin Ely","Arcseraphim","victor montes","Luke","Bored_Immortal","Knut Ivar Hellsten","Kevin","Landon Plyler","Joshua Copley","Chandler Simonds","t","Mikael Dahlberg","dougal heimer","Patrick Eperjesi","Philip Robbins","David Braga","No","K","Michael Abravanel","NK","Robin Lindholm","John Smith","Serizawa","Tony Venvik","Andrew","Matt Bellamy","John Smith","Drew","Dale Wong","Beaureguard","materpuppet13","Glib Gentleman","Regelios","Obsidian Razor","Anthony Teare","Kts","R","Andrew Wright","Tyler Crowl","Deadlysinners","Mortume","Salvador","Sveny","Adam Wood","Mackenzie Buckle","J'ree","Julian Shadoan","James Whitaker","W","Daniel Dainwood","A guy","NBaron","Mac Echrain","HeyTosa","CrazeStasis","Eric Bellinger","Ashley Gray","Will Nolens","Griffinblitz","Jason","Chris Sims","varden","Edwin Fame","AKen","Zantengetsu","David Ramsey","Steve Martinez","Gregory Johnson","Rielly Johnson","Shane Weaver","Jim Cantrell","Marshal Case","Charles Fey","Jerome Stokes","NoStereotype","Ryan Cooper","Tom Erik Trydal Soldal","Kevin Brown","RFW","Gabriel Valdes","matt richman","Shayne","Jordan Covarrubias","Jason Kite","Thomas","Deathcat","Kay Tomassi","Alan Glas","Sunny","Ben","Lazer Elf","ScaredEnigma","Bruno Gameiro","IAmHiding","RafaЕ‚ Malek","Blaat","jaron","Michael Foat","Ryan Pulliam","nate starr","Michael Hupton","Mark","InAHoleInTheWoods","Joel Denlinger","Patrik Andersson","Jordan Pugeda","zedither","Cil","Karim Oubouzar","cameron d fike","Christopher T","Anonim Demisan","Christopher","Andrew Stapleton","Joshua Helsel","Adhelkab","Jack Larson","Cody","Chris Leeds","raul barreto","Trevor Frye","PW1747","P4Nd0RaS","evilkarma213","Cornelius","asafsdf","Friggitt","Killroy","Victor","Ilya Grin","Marvin Ma","D00D","DapperDog","TenMinuteTom","Kaukis","SPANU","Maliver","Tom Meyers","Strafe","Kiwi Byrde","Jack Bauer","WINGKAI","Miller Wiens","mystic","KT Daxon","kv315","David J. Rosequist","lewis newhouse","Thunder","Mike","Quartz","Jim Reel","Garder190","Dick Maximus","meme lord","Loric","OrderAbove","justforpretend","HuWatWenY","Quinton Alexander Glazebrooks","Garion437","silvercrest","Landar","Russ","Gavin Lane","michael Blackwood","Tobias Pedersen","Altan Tagrin","Austin Humphrey","Hunter","Kejpi","Jo Heine","myles simpson","Andrew Gallant","Joseph Hendricks","richard","Niels Wever","Reverant","Madness","Bryce White","D.M.","Kotr","Haruka Erizawa","Kenny","Anime guy 117","christopher bezic","Swift Shot","Problemchild","JP","Nobody679","Kirk Lund","Tim","P.G","Florid Lunacy","Christian Igametse","Brad","Dracsis","Scarecrowlust","sibobb","Nicol Liu","dotdotdot","Gapho","Auruum","Dick Jones","Parker Christiansen","James Sutton","Billy Pollock","mitchel serwa","Tristan Harden","Lucas Ibister","Tony","Dutchess","AltonV","Jackle","Vister1","FriendlyNeighborhood Wolfman","trenadegun11","Nick Farlee","Dominic Trottier","Kevin Van den Bosch","Mikael Trkulja","Carl Johannes Huglen","IngГіlfur","John Limbacher","zachary bohuslar","Teach","Wayne Ledbetter","Adel Konig","hashkov","Kyle Long","Mohammed Ali Mohammed","leif ericson","Chris Corbett","Brandon","BackSpin","Ivan Sizi","Jonah Homp","jordan lindsay","Arden Kopistoff","Zakory Slingerland","James","Adrian Sinclair","hog_jockey","Geoffrey Austin Magness","celestialkitsune","Aemiliana","Renny","Patrick Spencer","Alexander","Amanda Pleva","montresor","Nicholas Rocco","Ozzie Din","Scott Keller","Sedjet","Greg","Kyle Mac","Shuuu","Taran MacDonald","Isaiah Soles","Gene","Hans","jesse case-allan","James Borden","Jack Black","Kenneth Rowe","jeffb","Malcolm Easton","Reece Dempsey","Gwaxer","Gullindjemprins","CaptVix","Hogle","Brian Dillon","Seth Lou","gurlag gurlag","simrhe18","shdwfsh63","Aelandill","D.Devil","Damian Wiechmann","Conner Weston","Brendan Dore","Martian.Craig","Sir Spanky","dave salisbury","Elliott Moore","vees","DBry","Sabledean","Luis Garza","Richard Beasley","Ragadadadoda","Angela Matthews","Ming The Merciless","ethan adams","Paul","Albert Viereckl","N113","Vikteren","Paulet Michel Junior","Adam","Anton D.","Rain91","dave rhodes","Canochick","alqp","Nuclear_Dice","EroCK","Aaron Grandy","DeathbyKimchi","Charles Brakley","LoversLab","Verhext","Isuma Oni","Marcus Karlsson","Trevor Smith","Eric Lin","Tikinosu","patman","eduardo barajas","Felix Meyer-Hoitz","Christhereaper","Dylan A. Sanchez","Kharnos Strayder","Tanner Mortimer","Isabella","Kenneth","Isaiah Emond","Randy Maxey","Anon Ymous","Inyx","Will Leitheiser","...","Zef","Puget Dolphin","Jonathan","Ken-ГҐge","michael j robinson","Xig","Tony","BadKarma89","Jonathan Harper","voper45","Vernon Loeb","Zackary Smith","Isaac Lucas Grainger","Kohey","Rel","Redep","Lukas Nyman","Khinzaw","OGK","Jasraj Panesar","Zack Polster","Billy Olsson","John Jimmson","H Dizzie","Sanhae","z","Concave Paradox","loga delarosa","Kris Frye","Myshella","thedark1","Promenade","ybo678","jefferson wright","Shirro","silentark","Elin Stefansdottir","Shelby Simpler","SotF","curt raley","Will Ross","Nathaniel scheil","Ackerlight","david casort","Jerry","Adam Barnette","Torinir","DibbyDabba","brandon","Aron Whidden","john applesea","ElCrazy1","Aaron Small","Kasper Rude Wind","Diablo8x","Nick Tinsley","Ann Fowler Avery","Michael Cummings","Jashin","Jacob Rayman","CompilerError","Mike","Hyrikul","sheng","mcdade","Nevyn","Chikuzenni","FrГ©dГ©ric","Ramon Diaz","Strausenhat","Fenris","Alessandro Ginex","Chris Baldwin","Lithos","Angry Panini","Benjamin","Fou","Evangleline","Marvs","Aisha king","Adrian Carroll","Chance Carroll","Ethan Visser","Envoy","claus sandgreen jensen","kyle bastien","Thomas Cromwell","Shovern","Xero Soul","EtherLicker","Omnimagnus","Georg Lechner","Gleb Blgakow","Thomas Martin","Robert Black","grim42","Christopher Garrison","Treize82","D.T.","Schell Oldham","onecoolzuchini","Leho Landman","Patch","Tobias Krupp","Kaitlynn","Vkad 64","Steve Madden","Christopher Abel","Darkfirephoenix","Serialpeacemaker","William Black","Bobbington","GIBTheDoctor","Jonathan Murphy","Emil Larsen","DavyJones","Connor Johns","Azuregene","ValosDaNightmare","Anti-No","Llywelyn Thomas","Zalavier","Swift Assassin","Just a Genius","Danny Banger","Halb Blahson","vedeh","Cryostorm","Phaos","Paween Hinmuangkao","Sihong Fu","jeroen verboom","Thomas M&uuml;ller","maxwellccm","Ross Johnson","Mark Lillington","awk1995","Jemma Hurley","Kaya Blue","Joey Unicorn","Christy","wootifus","Alex Moreno","zane graham","kristoffer Wirenfeldt Johanensen","Whatever","Remsiv","Haise Kaneki","Swigglez","joe","Calrak","Xagnam","Liam","Curtis","NeoMage","Sawyer Gardner","Robert L Allen","Charles Welker","Gundraub","Prutus","raska42","Thomas Charville","KleptoKobold","Bonin","Zeke LeGrow","Daniel Iwar Brekke","Verden","Mathieu Duval","Ali Mutlu","Tom","Smo Queed","Dassath","Destont","jezzjoker","James A. Messick III","HentaiHeitai","Trisynth","Nebula Fox","Konomori","Lorem.Ipsum","rhogleg","Spigot Frigate","Michael Hoover","Doob","J R","Jean-SГ©bastien Sirois","aliquis","Demosbane","random poster","DisturbJin","BjГёrn Zederkof","Nathan Smith","ozxecho","John Pierce","Fleming Folster","Mirokasi","pfargtl","Kevin2533","James Ahlstrom","Zekuro","Thordain","Oldcityguy","Alice Carlan","Carl Miller","Rikkatyra","Tom Hourie","Beolwin Norgannon","Shawn McAuley","Justanx","David Johnson","Matt Miller","jacques","Dominic Leach","SwoctorDales","Kaerea Shine","Grnd91","Jack Peverall","D. A.","thomas790","Rainef","Kurt","Scott","Parker Mcqueen","Reuben","David Donnelly","Human Brown","Erok","Crette","jonas","Callum Dunn","matthew c sisti","Kubebzz","Litland","Jeremy Springer","Scott S.","overkill9","kirk hamman","Maraistan","Tiberiumkyle","Cecil Kane","Somedude","Joshua Smith","Lys","Alex McGregor","Guy Gower","concon361","Crazybue","Ornithorhynchus","KnightSky","Tom Skelton","Alfredo J Sanchez","CyclopsSlayer","morraisen","foolfirefly","Haapy","Mister Luke","Christoffer Carlsson","jake m","Lish Zero","Hadrian","Daniel Downie","Dat Boss","Alex Clark","Leif Bonderud","M.L.","Phillip Horwitz","Tomasu","avid farmer","Antonio Martinez","David Boniface","Ziggy Lam","Kazama","Jay","Marius Berven Worren","Ross Ramsay","Daniel Power","Kallen Bodily","oliver kuspiel","Knapen Michel","Brett Poe","DemonFish","Jessica Ahlberg","Dwight","Managarmr","Introspective Ninja","Sleepless","bianca pandino","Ryii","Theodore Chaos","John Yarbrough","RazRazor","miguel diaz","Prepare to Crab","Jules Corbel","Yunus Demirag","mcmounes","Karol DoliЕ„ski","Phatez Anonimal","Sarah Baptiste","Lisa","rock","Bru","Jason Bradtmueller","Eachwaythief","MrAnderson","Brock Wienandt","Slaanesh06","Sqinatima Produ","Tobias","Marshall Johnson","Lightness","BasNek","Selie Siena","Angry Gorilla","Siao","Tove","Crim at Studio 1-14","Tazanik","iltonham","manshy","Robert Salender","zdront"]
+var patrons = globals.patronlist.patrons
 
 func _ready():
-	globals.state.decisions = ['goodroute']
 	currentscene = finale()
 	timer.connect("timeout", self, 'advance')
 	timer2.connect("timeout", self, 'patronlist')
@@ -18,10 +17,8 @@ func _ready():
 	add_child(timer)
 	add_child(timer2)
 	stage = 'epilogue'
-	if globals.state.decisions.has('goodroute'):
-		scenearray = ['finale']
-	#launch()
-	#show(currentscene)
+#	launch()
+#	advance()
 
 func patronlist():
 	var counter = 4
@@ -65,7 +62,8 @@ func launch():
 	scenearray.clear()
 	scenearray += ["finale","wimborn","gorn","frostford"]
 	if globals.state.decisions.has('goodroute'):
-		pass
+		if globals.state.decisions.has("melissanoslave"):
+			scenearray.append("melissa")
 	else:
 		scenearray.append("amberguard")
 	scenearray.append("maple")
@@ -82,6 +80,10 @@ func launch():
 		scenearray.append("zoe")
 	if globals.state.sidequests.ayneris > 0:
 		scenearray.append("ayneris")
+	currentscene = scenearray[0]
+	show(call(currentscene))
+	timer.set_wait_time(15)
+	timer.start()
 
 func show(dict):
 	get_node("background").set_texture(globals.backgrounds[dict.background])
@@ -94,6 +96,17 @@ func show(dict):
 		get_node("character").set_modulate(Color(0.1,0.1,0.1))
 	else:
 		get_node("character").set_modulate(Color(1,1,1))
+	if dict.has('sprite2'):
+		get_node("character2").set_texture(globals.spritedict[dict.sprite2])
+	else:
+		get_node("character2").set_texture(null)
+	if dict.has("spriteblack2"):
+		get_node("character2").set_modulate(Color(0.1,0.1,0.1))
+	else:
+		get_node("character2").set_modulate(Color(1,1,1))
+	yield(get_tree(), "idle_frame")
+	get_node("textpanel/RichTextLabel").set_size(Vector2(get_node("textpanel/RichTextLabel").get_size().width, get_node("textpanel/RichTextLabel").get_v_scroll().get_max()))
+	get_node("textpanel").set_size(Vector2(get_node("textpanel").get_size().x, get_node("textpanel/RichTextLabel").get_size().y + 30))
 
 func advance():
 	if stage == 'epilogue':
@@ -105,11 +118,10 @@ func advance():
 			advance()
 			return
 		currentscene = scenearray[scenearray.find(currentscene)+1]
-		get_node("Panel 2").set_hidden(false)
 		player.play("blackout")
 		yield(player, 'finished')
 		show(call(currentscene))
-		timer.set_wait_time(9)
+		timer.set_wait_time(15)
 		timer.start()
 		player.play_backwards("blackout")
 	elif stage == 'credits':
@@ -142,16 +154,14 @@ func advance():
 func _on_continue_pressed():
 	timer.stop()
 	timer2.stop()
+	get_parent()._on_mansion_pressed()
 	get_node("TextureFrame/alise/continue").disconnect("pressed",self,'_on_continue_pressed')
 	player.play('blackout')
-	get_parent()._on_mansion_pressed()
 	yield(player, 'finished')
 	get_parent().close_dialogue('instant')
 	set_hidden(true)
-	get_parent().get_node("screenchange").set_hidden(false)
-	get_parent().get_node("screenchange/AnimationPlayer").play_backwards("slowfade")
-	yield(get_parent().get_node("screenchange/AnimationPlayer"), 'finished')
-	get_parent().get_node("screenchange").set_hidden(true)
+	player.play_backwards("slowfade")
+	#yield(get_parent().get_node("screenchange/AnimationPlayer"), 'finished')
 
 
 
@@ -167,7 +177,7 @@ func finale():
 			dict.text += "\n\nA few distant perpetrators managed to stay hidden but, due to Melissa's letter, a couple officials, including a few prominent slave traders, were arrested. "
 		elif globals.state.decisions.has('hadekeep'):
 			dict.text += "\n\nHade was publicly executed and, at your request, Melissa has been entrusted to you as payment for killing your servant; her fate now is in your hands. "
-	elif globals.state.decision.has('badroute'):
+	elif globals.state.decisions.has('badroute'):
 		dict.text = "After the reformation, a set of new laws and regulations were adopted by The Order. The overthrow was not well publicized as Hade kept his profile relatively low, but many non-humans have been expelled from governing structures around The Empire. Some local Orders including Wimborn's have changed their operational rules to provide headmasters absolute power across the region. You were quickly instated as one of them."
 	
 	return dict
@@ -193,7 +203,7 @@ func gorn():
 	if globals.state.decisions.has('goodroute') && !globals.state.decisions.has('killgarthor'):
 		dict.spriteblack = true
 		dict.text += "Garthor has gone missing and has not been seen since the incident. His clan lost most of their power and has been subject to harsh oversight. "
-	elif globals.state.decicions.has('killgarthor'):
+	elif globals.state.decisions.has('killgarthor'):
 		dict.text += "Garhor's death served a grim reminder for those clans willing to oppose The Empire's influence. His clan lost most of their power and has been subject to harsh oversight. "
 		dict.spriteblack = true
 	else:
@@ -216,13 +226,18 @@ func frostford():
 
 func amberguard():
 	var dict = {text = "", background = 'amberguard', sprite = null}
-	var text = ''
-	text += "The Elves of Amberguard are treated harshly and received a new set of discriminatory laws after Hade took over. "
+	dict.text += "The Elves of Amberguard are treated harshly and received a new set of discriminatory laws after Hade took over. "
 	
 	return dict
 
+func melissa():
+	var dict = {text = "", background = "wimborn", sprite = 'melissaneutral'}
+	dict.text = "Melissa has disappeared from Wimborn and hasn't been seen again. Some said she was one of perpetraitors, but you weren't able to confirm that. "
+	dict.spriteblack = true
+	return dict
+
 func emilytisha():
-	var dict = {text = "", background = null, sprite = null}
+	var dict = {text = "", background = 'wimborn', sprite = null}
 	var text = ''
 	var slaves = {emily = false, tisha = false}
 	
@@ -245,11 +260,11 @@ func emilytisha():
 			dict.text = "Emily returned to the orphanage, eventually helping to raise younger orphans."
 			dict.sprite2 = 'emilyneutral'
 		if slaves.tisha && (globals.state.decisions.has("tishatricked") || globals.state.decisions.has("tishaemilytricked")):
-			dict.text2 = "With time, Tisha grew more accepting of your deeds, but she's still very cautious around you."
+			dict.text += "\n\nWith time, Tisha grew more accepting of your deeds, but she's still very cautious around you."
 			dict.sprite = 'tishaneutral' 
 			dict.background = 'mansion'
 		elif slaves.tisha:
-			dict.text2 = "Tisha continued working at Wimborn, trying her best to make a life for herself."
+			dict.text += "\n\nTisha continued working at Wimborn, trying her best to make a life for herself."
 			dict.sprite = 'tishaneutral'
 		if !slaves.emily && !slaves.tisha:
 			dict.text = "Tisha brought Emily to live with her. Their living conditions are anything but luxurious, but Emily tries her best to help her sister out. "
@@ -257,7 +272,7 @@ func emilytisha():
 			dict.sprite = 'tishaneutral'
 		if slaves.emily && !slaves.tisha && globals.state.sidequests.emily < 16:
 			dict.spriteblack2 = true
-			dict.text2 = "You heard nothing more about Tisha’s whereabouts following her disappearance. Perhaps she suffered some grim fate or simply started a new life."
+			dict.text += "\n\nYou heard nothing more about Tisha’s whereabouts following her disappearance. Perhaps she suffered some grim fate or simply started a new life."
 		
 	return dict
 
@@ -271,7 +286,7 @@ func cali():
 			cali = true
 	
 	
-	if cali == false && !globals.state.decisions.has("calibadleft") || !globals.state.decisions.has("calireturnedhome"):
+	if cali == false &&  !globals.state.decisions.has("calireturnedhome"):
 		dict.text = "After Cali's disappearance, you stood no chance of hearing from her again. Her quick wits may have helped her to return home or at least to survive on her own."
 		dict.sprite = "calineutral"
 		dict.background = 'wimborn'
@@ -335,9 +350,9 @@ func yris():
 			yris = true
 	
 	if yris:
-		dict = {text = "Yris stays with you to this day. Surprisingly to her, she seems content with your ownership.", background = "mansion", sprite = 'yrisaltdressed'}
+		dict = {text = "Yris stays with you to this day. Surprisingly to her, she seems content with your ownership.", background = "mansion", sprite = 'yrisalt'}
 	else:
-		dict = {text = "Yris still looking for a ways to survive around Gorn using her charm and wits.", background = "gorn", sprite = 'yrisaltdressed'}
+		dict = {text = "Yris still looking for a ways to survive around Gorn using her charm and wits.", background = "gorn", sprite = 'yrisalt'}
 	return dict
 
 

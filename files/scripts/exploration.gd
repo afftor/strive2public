@@ -149,7 +149,7 @@ combat = true,
 code = 'mountaincave',
 name = 'Mountain Caves',
 description = "You step onto the damp cave floor. These underground systems server home to many various beasts and semisentient creatures.",
-enemies = [],
+enemies = [{value = 'oozesgroup', weight = 2}, {value = 'solospider', weight = 2}, {value = 'goblingroup', weight = 4}],
 encounters = [],
 length = 8,
 exits = ['mountains'],
@@ -442,7 +442,10 @@ func zoneenter(zone):
 		call(zone.exits[0])
 		return
 	else:
-		main.music_set('explore')
+		if zone.code in ['mountaincave','undercitytunnels','undercityruins','undercityhall']:
+			main.music_set('dungeon')
+		else:
+			main.music_set('explore')
 	var array = []
 	if zone.combat == true && progress >= zone.length:
 		for i in zone.exits:
@@ -482,19 +485,21 @@ func zoneenter(zone):
 		array.append({name = "Search for Ivran's location",function = 'event',args = 'gornivran'})
 	if zone.code == 'undercitytunnels' && progress >= 6 && globals.state.lorefound.find('amberguardlog1') < 0:
 		globals.state.lorefound.append('amberguardlog1')
-		mansion.maintext = outside.maintext.get_bbcode() + "[color=yellow]\n\nYou've found some old writings in the ruins. Does not look like what you came for, but you can read them later.[/color]"
+		mansion.maintext = mansion.maintext + "[color=yellow]\n\nYou've found some old writings in the ruins. Does not look like what you came for, but you can read them later.[/color]"
 	if zone.code == 'undercityruins' && progress >= 5 && globals.state.lorefound.find('amberguardlog2') < 0:
 		globals.state.lorefound.append('amberguardlog2')
-		mansion.maintext = outside.maintext.get_bbcode() + "[color=yellow]\n\nYou've found some old writings in the ruins. Does not look like what you came for, but you can read them later.[/color]"
+		mansion.maintext = mansion.maintext + "[color=yellow]\n\nYou've found some old writings in the ruins. Does not look like what you came for, but you can read them later.[/color]"
 	if zone.code == 'frostfordoutskirts' && globals.state.mainquest in [27,30,32] && progress >= 5:
 		array.append({name = "Explore hunting grounds to South-East", function = 'event', args = 'frostforddryad'})
 	if zone.code == 'frostfordoutskirts' && globals.state.sidequests.zoe == 1 && progress >= 3:
 		globals.state.sidequests.zoe = 2
 		main.dialogue(true, self, globals.questtext.MainQuestFrostfordBeforeForestZoe, [], [['zoehappy','pos1','opac']])
-	if zone.code == 'mountaincave' && globals.state.mainquest == 38:
+	if zone.code == 'mountaincave' && globals.state.mainquest == 39:
 		array.append({name = "Search for Ayda's location",function = 'event',args = 'mountainelfcamp'})
-	if zone.code == 'mountains' && globals.state.mainquest == 39 && globals.state.decisions.has("goodroute"):
+	if zone.code == 'mountains' && globals.state.mainquest == 40 && globals.state.decisions.has("goodroute"):
 		event('garthorencounter')
+	if zone.code == 'gornoutskirts' && globals.state.mainquest == 40 && globals.state.decisions.has("badroute"):
+		event('davidencounter')
 	if progress == 0 && lastzone != zone.code && globals.evaluate(zones[lastzone].reqs) == true:
 		array.append({name = "Return to " + zones[lastzone].name, function = "zoneenter", args = lastzone})
 	outside.buildbuttons(array, self)
@@ -686,17 +691,22 @@ func buildenemies(enemyname = null):
 	var tempunits = str2var(var2str(enemygroup.units))
 	var unitcounter = {}
 	enemygroup.units = []
+	var addnumbers
 	for i in tempunits:
+		addnumbers = false
 		var count = round(rand_range(i[1], i[2]))
 		if deeperregion:
 			count = round(count * rand_range(1.2,1.6))
+		if count >= 2:
+			addnumbers = true
 		while count >= 1:
 			var newunit = str2var(var2str(enemypool[i[0]]))
 			if unitcounter.has(newunit.name) == false:
 				unitcounter[newunit.name] = 1
 			else:
 				unitcounter[newunit.name] += 1
-			newunit.name = newunit.name + " " + str(unitcounter[newunit.name])
+			if addnumbers:
+				newunit.name = newunit.name + " " + str(unitcounter[newunit.name])
 			enemygroup.units.append(newunit)
 			count -= 1
 
@@ -848,7 +858,7 @@ func enemyleave():
 		slave.energy -= max(5-floor((slave.sagi+slave.send)/2),1)
 	zoneenter(currentzone.code)
 	if text != '':
-		mansion.maintext = outside.maintext.get_bbcode()+'\n[color=yellow]'+text+'[/color]'
+		mansion.maintext = mansion.maintext +'\n[color=yellow]'+text+'[/color]'
 
 func enemyfight(soundkeep = false):
 	mansion.maintext = ''
@@ -1301,7 +1311,7 @@ func gorn():
 	array.append({name = "Visit local bar", function = 'gornbar'})
 	if globals.state.mainquest in [12,13,14,15,37]:
 		array.append({name = "Visit Palace", function = 'gornpalace'})
-	if globals.state.sidequests.ivran in ['tobetaken','tobealtered','potionreceived'] || globals.state.mainquest >= 16:
+	if (globals.state.sidequests.ivran in ['tobetaken','tobealtered','potionreceived'] || globals.state.mainquest >= 16) && !globals.state.decisions.has("mainquestslavers"):
 		array.append({name = "Visit Alchemist", function = 'gornayda'})
 	array.append({name = "Gorn's Market", function = 'gornmarket'})
 	array.append({name = "Outskirts", function = 'zoneenter', args = 'gornoutskirts'})
@@ -1455,7 +1465,7 @@ func amberguard():
 	main.music_set('frostford')
 	if globals.state.portals.amberguard.enabled == false:
 		globals.state.portals.amberguard.enabled = true
-		mansion.maintext = outside.maintext.get_bbcode() + "\n\n[color=yellow]You have unlocked new portal![/color]"
+		mansion.maintext = mansion.maintext + "\n\n[color=yellow]You have unlocked new portal![/color]"
 	if globals.state.mainquest == 17:
 		globals.state.mainquest = 18
 	elif globals.state.mainquest == 19:
@@ -1704,7 +1714,7 @@ func shaliqshop():
 func umbra():
 	if globals.state.umbrafirstvisit == true:
 		globals.state.umbrafirstvisit = false
-		mansion.maintext = outside.maintext.get_bbcode() + "\n\n" + globals.questtext.UmbraFirstVisit
+		mansion.maintext = mansion.maintext + "\n\n" + globals.questtext.UmbraFirstVisit
 	var array = []
 	outside.location = 'umbra'
 	array.append({name = "Visit Black Market", function = 'umbrashop'})

@@ -28,6 +28,7 @@ func gornpalace():
 		state = false
 	elif globals.state.mainquest == 37:
 		text = textnode.MainQuestFinaleGorn
+		globals.state.mainquest = 38
 		state = true
 		sprite = [['garthor','pos1','opac']]
 	
@@ -141,7 +142,7 @@ func gornayda():
 	var state = true
 	var sprite
 	var buttons = []
-	if globals.state.mainquest < 37:
+	if globals.state.mainquest < 37 || globals.state.mainquestcomplete && globals.state.decisions.has("mainquestelves"):
 		outside.setcharacter('aydanormal')
 		if globals.state.mainquest == 15 && !globals.state.sidequests.ivran in ['tobealtered','potionreceived']:
 			text = textnode.MainQuestGornAydaIvran
@@ -168,11 +169,14 @@ func gornayda():
 		if state == true:
 			buttons.append({name = "Leave", function = 'leaveayda'})
 		outside.get_node("charactersprite").set_hidden(false)
-		outside.maintext.set_bbcode(globals.player.dictionary(text))
+		globals.main.maintext = globals.player.dictionary(text)
 		outside.buildbuttons(buttons, self)
-	elif globals.state.mainquest == 37:
+	elif globals.state.mainquest == 38:
 		text = textnode.MainQuestFinaleAydaShop
-		globals.state.mainquest = 38
+		globals.state.mainquest = 39
+		globals.main.dialogue(true, self, text, buttons, sprite)
+	else:
+		text = "You try to enter Ayda's shop but she does not appear to be around. "
 		globals.main.dialogue(true, self, text, buttons, sprite)
 	
 
@@ -198,7 +202,7 @@ func gornaydatalk(stage = 0):
 	
 	buttons.append({name = "Continue", function = "gornayda"})
 	
-	outside.maintext.set_bbcode(globals.player.dictionary(text))
+	globals.main.maintext = globals.player.dictionary(text)
 	outside.buildbuttons(buttons, self)
 
 
@@ -216,7 +220,7 @@ func gornaydaselect(slave = null):
 		slave.away.at = 'away'
 		globals.state.sidequests.ivran = 'potionreceived'
 		buttons.append({name = "Continue", function = "gornayda"})
-		outside.maintext.set_bbcode(globals.player.dictionary(text))
+		globals.main.maintext = globals.player.dictionary(text)
 		outside.buildbuttons(buttons, self)
 		#globals.main.dialogue(state, self, text, buttons, sprite)
 	
@@ -237,7 +241,7 @@ func gornaydaivran(stage = 0):
 		text = textnode.MainQuestGornAydaIvranReject
 	
 	buttons.append({name = "Continue", function = "gornayda"})
-	outside.maintext.set_bbcode(globals.player.dictionary(text))
+	globals.main.maintext = globals.player.dictionary(text)
 	outside.buildbuttons(buttons, self)
 	#globals.main.dialogue(state, self, text, buttons, sprite)
 
@@ -518,19 +522,19 @@ func mountainelfcamp(stage = 0):
 		buttons.append({text = "Side with Slavers", function = 'mountainelfcamp', args = 2})
 		globals.main.dialogue(state, self, text, buttons, sprite)
 	elif stage == 1:
-		globals.state.mainquest = 39
+		globals.state.mainquest = 40
 		globals.state.decisions.append("mainquestelves")
 		globals.main.close_dialogue()
-		globals.main.get_node("explorationnode").buildenemies("frostforddryadquest")
+		globals.main.get_node("explorationnode").buildenemies("finaleslavers")
 		globals.main.get_node("explorationnode").launchonwin = 'mountainwin'
 		globals.main.get_node("combat").nocaptures = true
 		globals.main.get_node("explorationnode").enemyfight()
 		
 	elif stage == 2:
-		globals.state.mainquest = 39
+		globals.state.mainquest = 40
 		globals.state.decisions.append("mainquestslavers")
 		globals.main.close_dialogue()
-		globals.main.get_node("explorationnode").buildenemies("frostforddryadquest")
+		globals.main.get_node("explorationnode").buildenemies("finaleelves")
 		globals.main.get_node("explorationnode").launchonwin = 'mountainwin'
 		globals.main.get_node("combat").nocaptures = true
 		globals.main.get_node("explorationnode").enemyfight()
@@ -590,7 +594,7 @@ func mountainwin(stage = 0):
 			counter += 1
 		text += "[/color]"
 		
-		globals.state.mainquest = 39
+		globals.state.mainquest = 40
 		
 		if counter >= 3:
 			text += '\n\n' + textnode.MainQuestFinaleHadeSpeechAdditional
@@ -615,15 +619,23 @@ func garthorencounter(stage = 0):
 	var sprite = [['garthor','pos1','opac']]
 	var buttons = []
 	var text = textnode.MainQuestFinaleGoodGarthor
-	globals.state.mainquest = 40
+	globals.state.mainquest = 41
+	buttons.append({text = "Fight", function = 'semifinalfight'})
+	globals.main.dialogue(false, self, text, buttons, sprite)
+
+func davidencounter(stage = 0):
+	var sprite = null
+	var buttons = []
+	var text = textnode.MainQuestFinaleBadDavid
+	globals.state.mainquest = 41
 	buttons.append({text = "Fight", function = 'semifinalfight'})
 	globals.main.dialogue(false, self, text, buttons, sprite)
 
 func semifinalfight():
 	if globals.state.decisions.has("goodroute"):
-		globals.main.get_node("explorationnode").buildenemies("frostforddryadquest")
+		globals.main.get_node("explorationnode").buildenemies("finalegarthor")
 	elif globals.state.decisions.has("badroute"):
-		globals.main.get_node("explorationnode").buildenemies("frostforddryadquest")
+		globals.main.get_node("explorationnode").buildenemies("finaledavid")
 	
 	globals.main.get_node("explorationnode").launchonwin = 'semifinalewin'
 	globals.main.get_node("combat").nocaptures = true
@@ -642,8 +654,8 @@ func semifinalewin():
 		buttons.append({text = "Kill Garthor", function = 'garthordecide', args = 1})
 		buttons.append({text = "Leave", function = 'garthordecide', args = 2})
 	elif globals.state.decisions.has("badroute"):
-		text = 'After defeating David you continue on your way. '
-		globals.main.get_node("explorationnode").zoneenter('mountains')
+		text = "As David's body drops on the ground you continue on your way paying it no additional attention. "
+		globals.main.get_node("explorationnode").zoneenter('gornoutskirts')
 	globals.main.dialogue(state, self, text, buttons, sprite)
 
 func garthordecide(stage = 0):
@@ -672,6 +684,12 @@ func orderfinale(stage = 0):
 	if globals.state.decisions.has('goodroute'):
 		if stage == 0:
 			text = textnode.MainQuestFinaleGoodWimborn
+			text += "\n\n[color=yellow]Party's health and energy restored.[/color]"
+			globals.player.health = 200
+			globals.player.energy = 200
+			for i in globals.slaves:
+				i.health = 200
+				i.energy = 200
 			buttons.append({text = "Continue", function = 'orderfinale', args = 1})
 		elif stage == 1:
 			globals.main.background_set('mainorderfinale')
@@ -687,7 +705,7 @@ func orderfinale(stage = 0):
 			text = textnode.MainQuestFinaleGoodHade
 			buttons.append({text = "Engage Hade", function = 'orderfinale', args = 3})
 		elif stage == 3:
-			globals.main.get_node("explorationnode").buildenemies("frostforddryadquest")
+			globals.main.get_node("explorationnode").buildenemies("finalehade")
 			globals.main.get_node("explorationnode").launchonwin = 'finalemelissa'
 			globals.main.get_node("combat").nocaptures = true
 			globals.main.close_dialogue()
@@ -695,8 +713,42 @@ func orderfinale(stage = 0):
 			return
 	elif globals.state.decisions.has('badroute'):
 		if stage == 0:
-			text = textnode.MainQuestFinaleGoodWimborn
+			text = textnode.MainQuestFinaleBadWimborn
+			text += "\n\n[color=yellow]Party's health and energy restored.[/color]"
+			globals.player.health = 200
+			globals.player.energy = 200
+			for i in globals.slaves:
+				i.health = 200
+				i.energy = 200
 			buttons.append({text = "Continue", function = 'orderfinale', args = 1})
+		elif stage == 1:
+			globals.main.background_set('mainorderfinale')
+			globals.main.close_dialogue()
+			if OS.get_name() != "HTML5" && globals.rules.fadinganimation == true:
+				yield(globals.main, 'animfinished')
+			outside.clearbuttons()
+			globals.main.maintext = ''
+			text = textnode.MainQuestFinaleBadOrder
+			sprite = [['hadesmile','pos1','opac']]
+			buttons.append({text = "Continue", function = 'orderfinale', args = 2})
+		elif stage == 2:
+			text = textnode.MainQuestFinaleBadOrder2
+			buttons.append({text = "Fight", function = 'orderfinale', args = 3})
+		elif stage -- 3:
+			globals.main.get_node("explorationnode").buildenemies("finalecouncil")
+			globals.main.get_node("explorationnode").launchonwin = 'finalebadroute'
+			globals.main.get_node("combat").nocaptures = true
+			globals.main.close_dialogue()
+			globals.main.get_node("explorationnode").enemyfight(true)
+			return
+	globals.main.dialogue(state, self, text, buttons, sprite, background)
+
+func finalebadroute():
+	var state = false
+	var text = textnode.MainQuestFinaleBadOrderWin
+	var buttons = [{text = "...", function = 'ending'}]
+	var sprite = [['hadesmile','pos1','opac']]
+	var background = 'mainorderfinale'
 	globals.main.dialogue(state, self, text, buttons, sprite, background)
 
 var finaleslave
@@ -712,7 +764,7 @@ func finalemelissa(stage = 0):
 		slavelist.append({slave = i, score = score})
 	slavelist.sort_custom(self, 'bestslave')
 	if globals.slaves.size() == 0:
-		stage = 4
+		stage = 5
 	if stage == 0:
 		finaleslave = slavelist[0].slave
 		text = finaleslave.dictionary(textnode.MainQuestFinaleGoodHadeDefeat)
@@ -724,8 +776,8 @@ func finalemelissa(stage = 0):
 		globals.state.decisions.append("haderelease")
 	elif stage == 2:
 		text = finaleslave.dictionary(textnode.MainQuestFinaleGoodTakeHade)
+		globals.main.sound('stab')
 		image = 'finale2'
-		#globals.main.get_node("scene/Panel/sceneeffects").set_texture(load("res://files/images/scene/finaleblood.png"))
 		buttons.append({text = "Subdue Melissa", function = 'finalemelissa', args = 4})
 		globals.state.decisions.append("hadekeep")
 		globals.main.music_set('stop')
@@ -738,15 +790,24 @@ func finalemelissa(stage = 0):
 		globals.main.dialogue(state, self, text, buttons, sprite)
 		return
 	elif stage == 4:
-		text = "After subduing both Hade and Melissa, with your building is secured and order is restored. "
+		text = finaleslave.dictionary("You subdue and capture Melissa, but $name is above saving... ")
 		globals.main.closescene()
 		var sprite = [["melissaworried", 'pos1', 'opac'], ['hadesad','pos2','opac']]
-		buttons.append({text = finaleslave.dictionary("..."), function = 'ending'})
+		buttons.append({text = "...", function = 'ending'})
+		globals.main.dialogue(state, self, text, buttons, sprite)
+		return
+	elif stage == 5:
+		text = "With Hade's defeat you secure this victory..."
+		globals.main.closescene()
+		globals.state.decisions.append("melissanoslave")
+		var sprite = [['hadesad','pos1','opac']]
+		buttons.append({text = "...", function = 'ending'})
 		globals.main.dialogue(state, self, text, buttons, sprite)
 		return
 	globals.main.scene(self, image, text, buttons)
 
 func ending():
+	globals.state.mainquest = 42
 	globals.main.startending()
 
 
@@ -756,20 +817,6 @@ func bestslave(first, second):
 	else:
 		return false
 
-
-
-func finalewimborn():
-	var text
-	var state = false
-	var buttons = []
-	var sprite = []
-	if globals.state.decisions.has("goodroute"):
-		text = textnode.MainQuestFinaleGoodWimborn
-		sprite = [['hadeangry','pos1','opac']]
-	elif globals.state.decisions.has('badroute'):
-		text = textnode.MainQuestFinaleBadWin
-	
-	globals.main.dialogue(state, self, text, buttons, sprite)
 
 func mapletimepass():
 	globals.state.sidequests.maple = 3

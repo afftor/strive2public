@@ -222,7 +222,7 @@ func forestfind(stage = 0):
 		tempbuttons = [[slave2.dictionary('Imprison the $child'), 1], [slave2.dictionary('Return $him to town (-25 energy)'),2], [slave2.dictionary("Don't bother with $him"), 3]]
 	if stage == 1:
 		showntext = slave2.dictionary(eventstext[currentevent][stage])
-		globals.get_tree().get_current_scene().get_node("explorationnode").enemycapture(slave2)
+		globals.get_tree().get_current_scene().get_node("explorationnode").captureslave(slave2)
 	elif stage == 2:
 		showntext = slave2.dictionary(eventstext[currentevent][stage])
 		globals.resources.gold += rand_range(50,100)

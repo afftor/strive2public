@@ -637,10 +637,19 @@ func actionexecute(actor, target, skill):
 			actor.energy = max(actor.energy - skill.costenergy,0)
 		elif skill.code == 'escape' && globals.get_tree().get_current_scene().get_node("explorationnode").launchonwin != null:
 			globals.get_tree().get_current_scene().popup("You can't escape from this fight")
+	elif skill.target == 'ally':
+		if group == 'enemy':#Checking for blockers
+			targetparty = enemygroup
+		else:
+			targetparty = playergroup
 	if skill.effect != null && (skill.type == 'spell' || hit in ['precise','hit'] || skill.target in ['ally','self']):
 		actor.sendbuff()
 	if skill.code == 'heal':
 		globals.abilities.restorehealth(actor,target)
+	elif skill.code == "masshealcouncil":
+		for i in targetparty:
+				if i != actor:
+					globals.abilities.restorehealth(actor,i)
 	target.health = ceil(target.health)
 	if target.health < 0:
 		target.health = 0
@@ -786,9 +795,14 @@ func _on_confirm_pressed():
 			combatant.action = i
 		if combatant.action == null:
 			combatant.action = combatant.abilities[0]
-		combatant.target = floor(rand_range(0,playergroup.size())-1)
+		if combatant.action.target == 'enemy':
+			combatant.target = floor(rand_range(0,playergroup.size())-1)
+		elif combatant.action.target == 'ally':
+			combatant.target = floor(rand_range(0,enemygroup.size())-1)
 		if combatant.action.target == 'enemy' && combatant.state in ['normal']:
 			text += actionexecute(combatant, playergroup[combatant.target], combatant.action) + '\n'
+		elif combatant.action.target == 'ally' && combatant.state in ['normal']:
+			text += actionexecute(combatant, enemygroup[combatant.target], combatant.action) + '\n'
 	for combatant in playergroup:
 		if combatant.action.target == 'enemy':
 			text += actionexecute(combatant, enemygroup[combatant.target], combatant.action) + '\n'

@@ -33,6 +33,8 @@ var mansionupgrades = load("res://files/scripts/mansionupgrades.gd").new()
 var gallery = load("res://files/scripts/gallery.gd").new()
 var slavedialogues = load("res://files/scripts/slavedialogues.gd").new()
 var characters = gallery
+var patronlist = load("res://files/scripts/patronlists.gd").new()
+
 
 var modsfile = load("res://mods/init.gd").new()
 var main
@@ -64,7 +66,11 @@ gorn = load("res://files/music/gorn.ogg"),
 frostford = load("res://files/music/frostford.ogg"),
 explore = load("res://files/music/exploration.ogg"),
 maintheme = load("res://files/music/opening.ogg"),
+ending = load("res://files/music/ending.ogg"),
+dungeon = load("res://files/music/dungeon.ogg"),
 }
+var sounddict = {
+stab = load("res://files/sounds/stab.ogg")}
 var backgrounds = {
 mansion = load("res://files/backgrounds/mansion.png"),
 jail = load("res://files/backgrounds/jail.png"),
@@ -1307,26 +1313,25 @@ var baby
 
 
 func showtooltip(text):
-	get_tree().get_current_scene().get_node("tooltip/RichTextLabel").set_bbcode(text)
-	var pos = get_tree().get_current_scene().get_global_mouse_pos()
+	main.get_node("tooltip/RichTextLabel").set_bbcode(text)
+	var pos = main.get_global_mouse_pos()
 	pos = Vector2(pos.x+20, pos.y+20)
-	get_tree().get_current_scene().get_node("tooltip").set_pos(pos)
+	main.get_node("tooltip").set_pos(pos)
 	var screen = get_viewport().get_visible_rect()
-	var tooltipsize = get_tree().get_current_scene().get_node("tooltip").get_rect()
+	var tooltipsize = main.get_node("tooltip").get_rect()
 	if tooltipsize.pos.x + tooltipsize.size.x >= screen.size.x:
-		get_tree().get_current_scene().get_node("tooltip").set_pos(Vector2(tooltipsize.pos.x + (screen.size.x - (tooltipsize.pos.x + tooltipsize.size.x)) , tooltipsize.pos.y))
-	tooltipsize = get_tree().get_current_scene().get_node("tooltip").get_rect()
+		main.get_node("tooltip").set_pos(Vector2(tooltipsize.pos.x + (screen.size.x - (tooltipsize.pos.x + tooltipsize.size.x)) , tooltipsize.pos.y))
+	tooltipsize = main.get_node("tooltip").get_rect()
 	if tooltipsize.pos.y + tooltipsize.size.y >= screen.size.y:
-		get_tree().get_current_scene().get_node("tooltip").set_pos(Vector2(tooltipsize.pos.x, tooltipsize.pos.y + (screen.size.y - (tooltipsize.pos.y + tooltipsize.size.y))-10))
-	get_tree().get_current_scene().get_node("tooltip").set_hidden(false)
-	#get_tree().get_current_scene().get_node("tooltip").set_as_toplevel(true)
+		main.get_node("tooltip").set_pos(Vector2(tooltipsize.pos.x, tooltipsize.pos.y + (screen.size.y - (tooltipsize.pos.y + tooltipsize.size.y))-10))
+	main.get_node("tooltip").set_hidden(false)
 	yield(get_tree(), "idle_frame")
-	get_tree().get_current_scene().get_node("tooltip/RichTextLabel").set_size(Vector2(get_tree().get_current_scene().get_node("tooltip/RichTextLabel").get_size().width, get_tree().get_current_scene().get_node("tooltip/RichTextLabel").get_v_scroll().get_max()))
-	get_tree().get_current_scene().get_node("tooltip").set_size(Vector2(get_tree().get_current_scene().get_node("tooltip").get_size().x, get_tree().get_current_scene().get_node("tooltip/RichTextLabel").get_size().y + 30))
+	main.get_node("tooltip/RichTextLabel").set_size(Vector2(main.get_node("tooltip/RichTextLabel").get_size().width, main.get_node("tooltip/RichTextLabel").get_v_scroll().get_max()))
+	main.get_node("tooltip").set_size(Vector2(main.get_node("tooltip").get_size().x, main.get_node("tooltip/RichTextLabel").get_size().y + 30))
 
 
 func hidetooltip():
-	get_tree().get_current_scene().get_node("tooltip").set_hidden(true)
+	main.get_node("tooltip").set_hidden(true)
 
 static func merge(target, patch):
 	for key in patch:

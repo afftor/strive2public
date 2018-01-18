@@ -2,7 +2,7 @@
 extends Node
 
 var test = File.new()
-var testslaverace = globals.allracesarray
+var testslaverace = ["Centaur"]#globals.allracesarray
 var testslaveage = 'random'
 var testslavegender = 'random'
 var testslaveorigin = ['slave','poor','commoner','rich','noble']
@@ -23,6 +23,7 @@ func _process(delta):
 	for i in get_tree().get_nodes_in_group("messages"):
 		if i.get_opacity() != 0:
 			i.set_opacity(i.get_opacity() - delta)
+	get_node("screenchange").set_hidden(get_node("screenchange").get_opacity() == 0)
 	#print(get_node("music").get_volume())
 	if musicfading == true && get_node("music").get_volume() != 0 && !get_node("music").is_paused():
 		get_node("music").set_volume(get_node('music').get_volume() - delta)
@@ -161,20 +162,25 @@ func _ready():
 		infotext("Game Loaded.",'green')
 	#startending()
 
+func sound(value):
+	get_node("soundeffect").play(value)
 
 func startending():
 	var name = globals.player.name + " - Main Quest Completed"
 	var scene = load("res://files/ending.tscn").instance()
 	get_node("screenchange/AnimationPlayer").play("slowfade")
-	if globals.developmode == false:
-		globals.save_game('user://saves/'+name)
 	yield(get_node("screenchange/AnimationPlayer"), 'finished')
 	scene.add_to_group('blockmaininput')
 	add_child(scene)
-	move_child(scene, 23)
+	move_child(scene, 40)
+	scene.launch()
+	music_set('ending')
+	#scene.advance()
 	get_node("screenchange/AnimationPlayer").play_backwards("slowfade")
-	yield(get_node("screenchange/AnimationPlayer"), 'finished')
-	get_node("screenchange").set_hidden(true)
+	if globals.developmode == false:
+		globals.save_game('user://saves/'+name)
+	if globals.state.decisions.has('hadekeep'):
+		globals.slaves = globals.characters.create("Melissa")
 	globals.state.mainquestcomplete = true
 
 
@@ -213,7 +219,7 @@ func _on_new_slave_button_pressed():
 			i.amount += 10
 	globals.slaves = slave
 	slave.stats.health_cur = 5
-	globals.state.reputation.wimborn = 40
+	globals.state.reputation.wimborn = 41
 	globals.state.sidequests.ivran = 'potionreceived'
 	globals.player.ability.append("mindread")
 	globals.player.abilityactive.append("mindread")
@@ -231,10 +237,10 @@ func _on_new_slave_button_pressed():
 		var tmpitem = get_node("itemnode").createunstackable(i)
 		globals.state.unstackables[str(tmpitem.id)] = tmpitem
 	globals.state.sidequests.brothel = 1
-	globals.state.sidequests.cali = 14
+	globals.state.sidequests.chloe = 3
 	#globals.state.decisions.append('')
 	globals.state.rank = 3
-	globals.state.mainquest = 40
+	globals.state.mainquest = 41
 	globals.resources.mana = 200
 	globals.state.farm = 3
 	globals.state.mansionupgrades.mansionlab = 1
@@ -248,6 +254,7 @@ func _on_new_slave_button_pressed():
 	globals.state.reputation.frostford = 50
 	globals.state.condition -= 100
 	globals.state.decisions = ['tishaemilytricked','chloebrothel','ivrantaken','goodroute']
+	globals.player.stats.armor_cur = 100
 	#lobals.state.upcomingevents.append({code = 'tishaappearance',duration =1})
 #	for i in globals.characters.characters:
 #		slave = globals.characters.create(i)
@@ -1146,6 +1153,7 @@ func dialogue(showclose, destination, dialogtext, dialogbuttons = null, sprites 
 	var closebutton
 	var newbutton
 	var counter = 1
+	get_node("dialogue/blockinput").set_hidden(true)
 	get_node("dialogue/background").set_texture(null)
 	if background != null:
 		get_node("dialogue/background").set_texture(globals.backgrounds[background])
@@ -1223,6 +1231,7 @@ func dialoguebuttons(array, destination, counter):
 
 func close_dialogue(mode = 'normal'):
 	get_node("dialogue/AnimationPlayer").play_backwards("fading")
+	get_node("dialogue/blockinput").set_hidden(false)
 	if OS.get_name() != "HTML5" && globals.rules.fadinganimation == true && mode != 'instant':
 		yield(get_node("dialogue/AnimationPlayer"), 'finished')
 	get_node("dialogue").set_hidden(true)
@@ -1941,7 +1950,8 @@ var mainquestdict = {
 '37': "Visit Garthor at Gorn",
 '38': "Search for Ayda at her shop",
 '39': "Search for Ayda at Gorn's Mountain region",
-'40': "Return to Wimborn's Mage Order"
+'41': "Return to Wimborn's Mage Order",
+'42': "Main story quest Finished"
 }
 var chloequestdict = {
 '3':"Chloe from Shaliq wants you to get 25 mana and visit her to trade it for a spell.",

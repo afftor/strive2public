@@ -355,6 +355,27 @@ costother = '',
 attributes = ['damage','allparty'],
 reqs = {level = 0}
 },
+alwayshitattack = {
+name = 'Precise Attack',
+code = 'alwayshitattack',
+iconnorm = load("res://files/buttons/abils/Attack.png"),
+iconpressed = load("res://files/buttons/abils/Attack2.png"),
+learnable = false,
+description = 'Attempts to attack chosen enemy.',
+usetext = '$name uses [color=aqua]Precise attack[/color] landing on $targetname. ',
+target = 'enemy',
+effect = null,
+can_miss = false,
+power = 1.2,
+cooldown = 5,
+type = 'physical',
+price = 0,
+costenergy = 0,
+costmana = 0,
+costother = '',
+attributes = ['damage'],
+reqs = {level = 0}
+},
 stunattack = {
 name = 'Stun',
 code = 'stunattack',
@@ -397,6 +418,29 @@ costmana = 0,
 costother = '',
 attributes = ['damage'],
 reqs = {level = 0},
+},
+masshealcouncil = {
+name = 'Mass Heal',
+code = 'masshealcouncil',
+iconnorm = null,
+iconpressed = null,
+learnable = false,
+description = 'Attempts to attack chosen enemy.',
+usetext = '$name [color=aqua]casts mass heal[/color]. ',
+target = 'ally',
+effect = null,
+can_miss = false,
+power = 1,
+accuracy = 1,
+cooldown = 4,
+type = 'spell',
+price = 0,
+costenergy = 0,
+costmana = 0,
+costother = '',
+attributes = [],
+reqs = {level = 0},
+ai = 'masshealai',
 },
 }
 
@@ -470,7 +514,6 @@ func restorehealth(caster, target):
 	target.health = min(target.health + value, target.healthmax)
 	text = '$name restores ' + str(value) + ' health.'
 	return text
-
 
 
 

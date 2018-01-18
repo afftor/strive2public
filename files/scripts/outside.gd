@@ -1061,18 +1061,15 @@ func mageorder():
 	if OS.get_name() != "HTML5" && globals.rules.fadinganimation == true:
 		yield(main, 'animfinished')
 	var array = []
-	if globals.state.mainquest == 40:
+	if globals.state.mainquest in [40,41]:
 		globals.events.orderfinale()
-#		main.background_set('mainorderfinale')
-#		if OS.get_name() != "HTML5" && globals.rules.fadinganimation == true:
-#			yield(main, 'animfinished')
 		return
 	mansion.maintext = "This massive building takes a large part of the street. The Wimborn's Mage's Order is the centerpiece of your career achievments. Here you'll be able to buy necessary equipment and learn spells, assuming you are part of it of course."
 	if globals.state.mainquest <= 1:
 		array.append({name = 'Seek Audience', function = 'mageorderquest1'})
 	elif globals.state.mainquest == 2:
 		array.append({name = 'Consult on further promotions',function = 'mageorderquest1'})
-	elif globals.state.mainquest >= 3:
+	elif globals.state.mainquest >= 3 && globals.state.mainquestcomplete != true:
 		array.append({name = 'Find Melissa', function = 'mageorderquest1'})
 	if globals.state.rank >= 1:
 		array.append({name = 'Purchase New Spells',function = 'mageservices'})
@@ -1217,11 +1214,13 @@ func mageorderquest1(slave = null):
 		text = questtext.MainQuestFrostfordMelissa
 	elif globals.state.mainquest >= 27 && globals.state.mainquest <= 35:
 		text = "You decide there's nothing you can gain from visiting Melissa right now. "
-	elif globals.state.mainquest >= 36:
+	elif globals.state.mainquest == 36:
 		text = questtext.MainQuestFinaleOrder
 		globals.state.mainquest = 37
 		globals.resources.upgradepoints += 10
 		sprites = [['melissafriendly','pos1','opac']]
+	elif globals.state.mainquest == 37:
+		text = "You decide there's nothing you can gain from visiting Melissa right now. "
 	main.dialogue(state, self, text, buttons, sprites)
 	mageorder()
 
