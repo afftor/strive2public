@@ -1,11 +1,10 @@
 
 extends Node
 
-var itemdict = {}
 var spelldict = {}
 var effectdict = {}
 var guildslaves = {wimborn = [], gorn = [], frostford = [], umbra = []}
-var gameversion = 5300
+var gameversion = 5400
 var state = progress.new()
 var developmode = false
 var gameloaded = false
@@ -23,6 +22,8 @@ var repeatables = load("res://files/scripts/repeatable_quests.gd").new()
 var abilities = load("res://files/scripts/abilities.gd").new()
 var effects = load("res://files/scripts/effects.gd").new()
 var events = load("res://files/scripts/events.gd").new()
+var items = load("res://files/scripts/items.gd").new()
+var itemdict = items.itemlist
 var questtext = events.textnode
 var racefile = load("res://files/scripts/characters/races.gd").new()
 var races = racefile.races
@@ -106,7 +107,12 @@ mainorderfinale = load("res://files/backgrounds/mainorderfinale.png"),
 }
 var scenes = {
 finale = load("res://files/images/scene/finale.png"),
-finale2 = load("res://files/images/scene/finale2.png")
+finale2 = load("res://files/images/scene/finale2.png"),
+emilyshower = load("res://files/images/sexscenes/emilyshower.png"),
+emilyshowerrape = load("res://files/images/sexscenes/emilyshowerrape.png"),
+tishabj = load("res://files/images/sexscenes/tishabj.png"),
+tishafinale = load("res://files/images/sexscenes/tishafinale.png"),
+tishatable = load("res://files/images/sexscenes/tishatable.png"),
 }
 var mansionupgradesdict = mansionupgrades.dict
 
@@ -189,6 +195,8 @@ func clearstate():
 	state = progress.new()
 	slaves.clear()
 	events = load("res://files/scripts/events.gd").new()
+	items = load("res://files/scripts/items.gd").new()
+	itemdict = items.itemlist
 	resources.reset()
 
 func newslave(race, age, sex, origins = 'slave'):
@@ -196,8 +204,6 @@ func newslave(race, age, sex, origins = 'slave'):
 
 func slaves_set(slave):
 	slave.originstrue = slave.origins
-	slave.gear.costume = 'clothcommon'
-	slave.gear.underwear = 'underwearplain'
 	slave.health = max(slave.health, 5)
 	slaves.append(slave)
 	if get_tree().get_current_scene().find_node('CharList'):
@@ -344,11 +350,17 @@ class resource:
 	
 	func upgradepoints_set(value):
 		var difference = upgradepoints - value
+		if difference < 0:
+			for i in globals.slaves:
+				if i.traits.has("Gifted"):
+					value *= 1.2
 		var text = ""
 		upgradepoints = value
 		
+		
 		if difference < 0:
 			text = "Obtained " + str(abs(difference)) +  " Mansion Upgrade Points"
+		
 		
 		if globals.get_tree().get_current_scene().has_node("infotext"):
 			globals.get_tree().get_current_scene().infotext(text,'green')
@@ -393,7 +405,7 @@ class progress:
 	var reputation = {wimborn = 0, frostford = 0, gorn = 0, amberguard = 0} setget reputation_set
 	var dailyeventcountdown = 0
 	var dailyeventprevious = 0
-	var currentversion = 4480
+	var currentversion = 5000
 	var unstackables = {}
 	var supplykeep = 10
 	var foodbuy = 200
@@ -444,12 +456,13 @@ class progress:
 		for i in globals.state.backpack.stackables:
 			if globals.itemdict[i].has('weight'):
 				currentweight += globals.itemdict[i].weight * globals.state.backpack.stackables[i]
-		for i in globals.state.backpack.unstackables:
-			if i.has('weight'):
+		
+		for i in globals.state.unstackables.values():
+			if i.has('weight') && str(i.owner) == 'backpack':
 				currentweight += i.weight
 		for i in array:
 			for k in i.gear.values():
-				if !k in ['underwearplain','clothcommon'] && k != null && globals.state.unstackables[k].code == 'acctravelbag': maxweight += 20
+				if k != null && globals.state.unstackables[k].code == 'acctravelbag': maxweight += 20
 		var dict = {currentweight = currentweight, maxweight = maxweight, overload = maxweight < currentweight}
 		return dict
 	
@@ -887,7 +900,7 @@ class slave:
 		
 	
 	func tox_set(value):
-		stats.tox_cur = max(min(stats.tox_cur + value, stats.tox_max),stats.tox_min)
+		stats.tox_cur = max(min(value, stats.tox_max),stats.tox_min)
 	
 	func energy_set(value):
 		value = round(value)
@@ -1157,7 +1170,7 @@ class slave:
 			luxury = luxury/2
 		return luxury
 	
-	func calculateprice(alternative = false):
+	func calculateprice():
 		var price = 0
 		price = beautybase*2.5 + beautytemp*1.5
 		price += (level-1)*50
@@ -1180,8 +1193,6 @@ class slave:
 			price = price*2.5
 		elif race == 'Dragonkin':
 			price = price*3.5
-		#if self.health < 50:
-		#	price = price/2
 		if self.toxicity >= 60:
 			price = price/2
 		if origins == 'slave':
@@ -1196,11 +1207,25 @@ class slave:
 			price = price*2
 		if traits.has('Uncivilized') == true:
 			price = price/1.5
-		if effects.has('captured') == true && alternative == false:
-			price = price/2
+		
 		if price < 0:
 			price = 5
 		return round(price)
+	
+	func buyprice():
+		return calculateprice()
+	
+	func sellprice(alternative = false):
+		var price = calculateprice()*0.6
+		
+		if effects.has('captured') == true && alternative == false:
+			price = price/2
+		for i in globals.slaves:
+			if i.traits.has("Influential"):
+				price *= 1.2
+		price = max(round(price), 10)
+		return price
+	
 	
 	func removefrommansion():
 		globals.slaves.erase(self)
@@ -1436,14 +1461,18 @@ var sleepdict = {communal = {name = 'Communal Room'}, jail = {name = "Jail"}, pe
 
 func itemdescription(item):
 	var text = ''
-	text = '[center]' + item.name + '[/center]\n' + item.description
+	var name = ''
+	name = item.name 
+	text = item.description
 	if item.has('owner'):
 		text += '\n\n'
+		if item.enchant == 'basic':
+			name = '[color=green]' + name + '[/color]'
 		for i in item.effects:
 			text += i.descript + "\n"
 	if item.has('weight'):
 		text += "\n\n[color=yellow]Weight: " + str(item.weight) + "[/color]"
-	return text
+	return '[center]' + name + '[/center]\n' + text
 
 #saveload system
 func save():
@@ -1511,8 +1540,9 @@ func load_game(filename):
 		if state.reputation.has(i) == false:
 			state.reputation[i] = statetemp.reputation[i]
 	for i in state.itemlist:
-		itemdict[i].amount = state.itemlist[i].amount
-		itemdict[i].unlocked = state.itemlist[i].unlocked
+		if itemdict.has(i):
+			itemdict[i].amount = state.itemlist[i].amount
+			itemdict[i].unlocked = state.itemlist[i].unlocked
 	for i in statetemp.sidequests:
 		if state.sidequests.has(i) == false:
 			state.sidequests[i] = statetemp.sidequests[i]
@@ -1551,6 +1581,14 @@ func load_game(filename):
 
 func repairsave():
 	state.currentversion = gameversion
+	for slave in [player] + slaves:
+		if slave.gear.costume == 'clothcommon':
+			slave.gear.costume = null
+		if slave.gear.underwear == 'underwearplain':
+			slave.gear.underwear = null
+	for i in globals.state.unstackables.values():
+		if i.enchant == null:
+			i.enchant = ''
 
 var showalisegreet = false
 

@@ -71,7 +71,8 @@ func buildbuttons(array, target = self):
 	for i in array:
 		var newbutton = button.duplicate()
 		buttoncontainer.add_child(newbutton)
-		newbutton.set_text(str(counter+1) +'. ' +  i.name)
+		newbutton.set_text(i.name)
+		newbutton.get_node("Label").set_text(str(counter+1))
 		newbutton.set_hidden(false)
 		if i.has('args'):
 			newbutton.connect('pressed', target, i.function, [i.args])
@@ -82,13 +83,14 @@ func buildbuttons(array, target = self):
 		if i.has('tooltip'):
 			newbutton.set_tooltip(i.tooltip)
 		if i.has('textcolor'):
-			newbutton.set('custom_colors/font_color', Color(0,1,0))
+			newbutton.set('custom_colors/font_color', Color(0.2,0.6,0.2))
 		counter += 1
 
 func addbutton(i, target = self):
 	var newbutton = button.duplicate()
 	buttoncontainer.add_child(newbutton)
-	newbutton.set_text(str(buttoncontainer.get_children().size()-1) +'. ' +  i.name)
+	newbutton.set_text(i.name)
+	newbutton.get_node("Label").set_text(str(buttoncontainer.get_children().size()-1))
 	newbutton.set_hidden(false)
 	if i.has('args'):
 		newbutton.connect('pressed', target, i.function, [i.args])
@@ -99,11 +101,11 @@ func addbutton(i, target = self):
 	if i.has('tooltip'):
 		newbutton.set_tooltip(i.tooltip)
 	if i.has('textcolor'):
-		newbutton.set('custom_colors/font_color', Color(0,1,0))
+		newbutton.set('custom_colors/font_color', Color(0.2,0.6,0.2))
 
 func _on_leave_pressed():
 	if globals.state.calculateweight().overload == true:
-		get_parent().infotext("]Your backpack is too heavy to leave",'red')
+		get_parent().infotext("Your backpack is too heavy to leave",'red')
 		return
 	gooutside()
 	get_parent().get_node("explorationnode").currentzone = get_parent().get_node("explorationnode").zones[globals.state.location]
@@ -298,6 +300,9 @@ func slaveguild(guild = 'wimborn'):
 		buildbuttons(array)
 	elif guild == 'gorn':
 		clearselection()
+		get_node("charactersprite").set_hidden(false)
+		get_node("AnimationPlayer").play("show")
+		setcharacter('goblin')
 		slavearray = globals.guildslaves.gorn
 		mansion.maintext = globals.player.dictionaryplayer("Huge part of supposed guild takes a makeshift platform and tents on the outside with few half-empty cages. In the middle, you can see a presentation podium which is easily observable from main street. Despite Gorn being very different from common, primarily human-populated towns, it still directly follows Mage's Order directives — race diversity and casual slavery are very omnipresent. \n\nAs you walk in, one of the goblin receptionists quickly recognizes you as an Order member and hastily grabs your attention, sensing a profitable customer.\n\n— $sir interested in some heat-tolerant 'orkers? *chuckles* Or you are in preference of short girls? We quite often get those as well, for every taste and color!")
 		var array = [{name = 'See slaves for sale',function = 'slaveguildslaves'}, {name = 'Offer your servants',function = 'slaveguildsells'}, {name = 'See custom requests', function = 'slaveguildquests'},{name = 'Services for Slaves',function = 'slaveservice'}, {name = 'Leave',function = 'togorn'}]
@@ -404,7 +409,7 @@ func slaveguildslaves():
 		newbutton.get_node('name').set_text(slave.dictionary('$name, ')+ slave.race + ', '+ slave.sex)
 		newbutton.get_node('age').set_text(slave.age.capitalize())
 		newbutton.get_node('origins').set_text(slave.dictionary('Grade: '+slave.origins))
-		var price = max(slave.calculateprice()*0.8,50)
+		var price = max(slave.buyprice()*0.8,50)
 		if globals.state.reputation.has(location) && globals.state.reputation[location] <= -10 && location != 'umbra':
 			price *= (abs(globals.state.reputation[location])/20.0)
 		price = round(price)
@@ -461,11 +466,11 @@ func _on_mindreadbutton_pressed():
 
 func selectslavesell(slave = null, type = 'guild'):
 	if type == 'guild':
-		selectedslaveprice = (round(max(slave.calculateprice()*0.6,10)))
+		selectedslaveprice = slave.sellprice()
 	elif type == 'sebastian':
-		selectedslaveprice = (round(max(slave.calculateprice(true)*0.45, 10)))
+		selectedslaveprice = round(slave.sellprice(true)*0.7)
 	elif type == 'umbra':
-		selectedslaveprice = (round(max(slave.calculateprice(true)*0.6, 20)))
+		selectedslaveprice = slave.sellprice(true)
 	selectedslave = slave
 	var text = ''
 	text = 'After some time, you get an offer to sell this servant for [color=yellow]' + str(selectedslaveprice) + ' gold[/color]. '
@@ -563,11 +568,11 @@ func sellslavelist(type = 'guild'):
 			newbutton.set_hidden(false)
 			newbutton.get_node('name').set_text(slave.dictionary('$name, ')+ slave.race + ', '+ slave.sex + ', ' + slave.age + ', ' + slave.work)
 			if type == 'guild':
-				newbutton.get_node('price').set_text(str(max(round(slave.calculateprice()*0.6),10))+ ' gold')
+				newbutton.get_node('price').set_text(str(slave.sellprice()) + ' gold')
 			elif type == 'sebastian':
-				newbutton.get_node('price').set_text(str(max(round(slave.calculateprice(true)*0.45),10))+ ' gold')
+				newbutton.get_node('price').set_text(str(round(slave.sellprice(true)*0.7))+ ' gold')
 			elif type == 'umbra':
-				newbutton.get_node('price').set_text(str(max(round(slave.calculateprice(true)*0.6),20))+ ' gold')
+				newbutton.get_node('price').set_text(str(slave.sellprice(true))+ ' gold')
 			if type in ['sebastian','umbra']:
 				mansion.maintext = "[color=aqua]Selling slaves here will still provide upgrade points even if they are rebellious, but will lower your reputation. [/color]"
 			newbutton.set_meta('slave', slave)
@@ -762,7 +767,7 @@ func slaveforquestselected(slave):
 
 var repeatablesdict = {
 sex = 'Sex',obed = 'Obedience', cour = 'Courage',conf = 'Confidence',wit = 'Wit', charm = 'Charm', 
-'beauty':'Beauty',lewd = 'Lewdness', asser = 'Role Preference', 
+'beauty':'Beauty',lewdness = 'Lewdness', asser = 'Role Preference', 
 'sexuals.unlocks' : "Unlocked Sex Categories",
 'sstr' : 'Strength', 'sagi' : 'Agility', 'smaf' : 'Magic Affinity', 'send' : 'Endurance',
 loyal = 'Loyalty', race = 'Race', age = 'Age', hairlength = 'Hair Length', origins = 'Origins',
@@ -895,8 +900,7 @@ func operationselected(operation):
 			array.append(i)
 		array.sort_custom(globals, 'sortbyname')
 		get_node("slaveservicepanel/speccontainer").set_hidden(false)
-		if slave.levelupreqs.has('code') && slave.levelupreqs.code == 'specialization':
-			slave.levelup()
+		
 		for i in array:
 			var newbutton = get_node("slaveservicepanel/speccontainer/VBoxContainer/Button").duplicate()
 			get_node("slaveservicepanel/speccontainer/VBoxContainer").add_child(newbutton)
@@ -960,6 +964,8 @@ func _on_serviceconfirm_pressed():
 			slave.levelup()
 		slave.away.duration = 1 + globals.originsarray.find(slave.origins)
 	elif operation.code == 'spec':
+		if slave.levelupreqs.has('code') && slave.levelupreqs.code == 'specialization':
+			slave.levelup()
 		globals.resources.gold -= 500
 		if slave.effects.has('bodyguardeffect'): slave.add_effect(globals.effectdict.bodyguardeffect, true)
 		slave.spec = get_node("slaveservicepanel/serviceconfirm").get_meta('spec').code
@@ -1393,13 +1399,13 @@ func tishaquest():
 
 var shops = {
 wimbornmarket = {code = 'wimbornmarket', sprite = 'merchant', name = "Wimborn's Market", items =  ['teleportwimborn','food','supply','bandage','rope','teleportseal', 'basicsolutioning','hairdye', 'aphrodisiac' ,'beautypot', 'magicessenceing', 'natureessenceing','armorleather','armorchain','weapondagger','weaponsword','clothsundress','clothmaid','clothbutler','underwearlacy','underwearboxers', 'acctravelbag'], selling = true},
-shaliqshop = {code = 'shaliqshop', name = "Village's Trader", items = ['teleportseal','hairdye','beautypot','armorleather','clothmiko','clothkimono','clothninja', 'acctravelbag'], selling = true},
+shaliqshop = {code = 'shaliqshop', name = "Village's Trader", items = ['teleportseal','lockpick','hairdye','beautypot','armorleather','clothmiko','clothkimono','armorninja', 'acctravelbag'], selling = true},
 gornmarket = {code = 'gornmarket', name = "Gorn's Market", items = ['teleportgorn','food', 'supply','bandage','rope','teleportseal','magicessenceing',"armorleather",'armorchain','weaponclaymore','clothbedlah','accslavecollar','acchandcuffs'], selling = true},
 frostfordmarket = {code = 'frostfordmarket', name = "Frostford's Market", items = ['teleportfrostford', 'supply','bandage','rope','teleportseal', 'basicsolutioning','bestialessenceing','clothpet', 'weaponsword','accgoldring', 'acctravelbag'], selling = true},
 aydashop = {code = 'aydashop', name = "Ayda's Assortments", items = ['regressionpot', 'beautypot', 'hairdye', 'basicsolutioning','bestialessenceing','taintedessenceing','fluidsubstanceing'], selling = false},
 amberguardmarket = {code = 'amberguardmarket', name = "Amberguard's Market", items = ['teleportamberguard','beautypot','bestialessenceing','magicessenceing','fluidsubstanceing','armorelvenchain','armorrobe'], selling = true},
 sebastian = {code = 'sebastian', name = "Sebastian", items = ['teleportumbra'], selling = false},
-blackmarket = {code = 'blackmarket', name = 'Black Market', items = ['accslavecollar','acchandcuffs','armorleather','armorchain','weaponsword'], selling = true}
+blackmarket = {code = 'blackmarket', name = 'Black Market', items = ['lockpick','accslavecollar','acchandcuffs','armorleather','armorchain','weaponsword'], selling = true}
 }
 
 func market():
@@ -1480,12 +1486,10 @@ func shopbuy():
 		newbutton.get_node("price").set_text(str(item.cost))
 		newbutton.get_node("amount").set_hidden(true)
 		newbutton.set_tooltip(item.name)
-		if item.icon != null:
-			newbutton.get_node("icon").set_texture(item.icon)
+		if typeof(item.icon) == TYPE_STRING:
+			newbutton.get_node("icon").set_texture(load(item.icon))
 		else:
-			newbutton.get_node("icon").set_texture(null)
-			newbutton.get_node("name").set_text(item.name)
-			newbutton.get_node("name").set_hidden(false)
+			newbutton.get_node("icon").set_texture(item.icon)
 		itemlist.add_child(newbutton)
 		newbutton.set_meta('item', item)
 		newbutton.connect('pressed',self,'selectshopitem', [newbutton])
@@ -1522,7 +1526,7 @@ func shopsell(backpack = false):
 		for item in globals.state.backpack.stackables:
 			array.append(globals.itemdict[item].code)
 	
-	array.sort_custom(get_parent().get_node("itemnode"),'sortbytype')
+	array.sort_custom(globals.items,'sortbytype')
 	
 	
 	for tempitem in array:
@@ -1545,16 +1549,18 @@ func shopsell(backpack = false):
 		itemlist.add_child(newbutton)
 		newbutton.set_meta('item', item)
 		newbutton.connect('pressed',self,'selectshopitem', [newbutton])
-	if backpack == true:
-		array = globals.state.backpack.unstackables
-	else:
-		array = globals.state.unstackables.values()
+	
+	array = globals.state.unstackables.values()
 	
 	var unstackarray = []
 	
 	for item in array:
-		if item.owner != null:
-			continue
+		if backpack == true:
+			if str(item.owner) != 'backpack':
+				continue
+		else:
+			if item.owner != null:
+				continue
 		var groupfound = false
 		var counter = -1
 		for i in unstackarray:
@@ -1566,42 +1572,15 @@ func shopsell(backpack = false):
 		if groupfound == false:
 			unstackarray.append([item])
 	
-	
-#	for items in unstackarray:
-#		item = items[0]
-#		var tempitem = globals.itemdict[item.code]
-#		newbutton = itembutton.duplicate()
-#		newbutton.set_hidden(false)
-#		newbutton.set_tooltip(item.name)
-#		newbutton.get_node('amount').set_hidden(false)
-#		newbutton.get_node('amount').set_text(str(items.size()))
-#		newbutton.get_node("price").set_text(str(round(tempitem.cost/5)))
-#		if item.icon != null:
-#			if typeof(item.icon) == TYPE_STRING:
-#				newbutton.get_node("icon").set_texture(globals.itemdict[item.code].icon)
-#			else:
-#				newbutton.get_node("icon").set_texture(item.icon)
-#		else:
-#			newbutton.get_node("icon").set_texture(null)
-#			newbutton.get_node("name").set_text(item.name)
-#			newbutton.get_node("name").set_hidden(false)
-#		itemlist.add_child(newbutton)
-#		newbutton.set_meta('item', tempitem)
-#		newbutton.set_meta('unstuck', items)
-#		newbutton.connect('pressed',self,'selectshopitem', [newbutton, item])
-#	
 	for item in array:
-		if item.owner == null:
+		if (item.owner == null && backpack == false) || (str(item.owner) == 'backpack' && backpack == true):
 			var tempitem = globals.itemdict[item.code]
 			newbutton = itembutton.duplicate()
 			newbutton.set_hidden(false)
 			newbutton.set_tooltip(item.name)
 			newbutton.get_node("price").set_text(str(round(tempitem.cost/5)))
 			if item.icon != null:
-				if typeof(item.icon) == TYPE_STRING:
-					newbutton.get_node("icon").set_texture(globals.itemdict[item.code].icon)
-				else:
-					newbutton.get_node("icon").set_texture(item.icon)
+				newbutton.get_node("icon").set_texture(load(item.icon))
 			else:
 				newbutton.get_node("icon").set_texture(null)
 				newbutton.get_node("name").set_text(item.name)
@@ -1625,15 +1604,14 @@ func selectshopitem(tempitem, unstuck = null):
 	tempitem.set_pressed(true)
 	get_node("shoppanel/itempanel/iconbig").set_hidden(true)
 	selecteditem = tempitem
-	text = "[center]" + item.name + "[/center]\n"
+	if item.type != 'dummy' && item.type != 'gear':
+		text += "\nIn Possession: " + str(item.amount)
+	text += globals.itemdescription(item) + "\n\n"
 	if mode == 'buy':
 		text +=  "Price: [color=yellow]" + str(item.cost) + "[/color]"
 		get_node("shoppanel/itempanel/buysellbackpack").set_hidden(item.type == 'dummy')
 	else:
 		text +=  "Selling Price: [color=yellow]" + str(round(item.cost/5)) + "[/color]"
-	if item.type != 'dummy' && item.type != 'gear':
-		text += "\nIn Possession: " + str(item.amount)
-	text += "\n\n" + item.description
 	if item.code.find('teleport') >= 0 && item.code != 'teleportseal':
 		get_node("shoppanel/itempanel/buysellbutton/SpinBox").set_hidden(true)
 		get_node("shoppanel/itempanel/buysellbutton/SpinBox").set_val(1)
@@ -1643,15 +1621,11 @@ func selectshopitem(tempitem, unstuck = null):
 	if item.icon != null:
 		get_node("shoppanel/itempanel/iconbig").set_hidden(false)
 		if typeof(item.icon) == TYPE_STRING:
-			get_node("shoppanel/itempanel/iconbig").set_texture(globals.itemdict[item.code].icon)
+			get_node("shoppanel/itempanel/iconbig").set_texture(load(globals.itemdict[item.code].icon))
 		else:
 			get_node("shoppanel/itempanel/iconbig").set_texture(item.icon)
 	else:
 		get_node("shoppanel/itempanel/iconbig").set_hidden(true)
-	if item.type == 'gear' && item.effect.size() > 0:
-		text += "\n\n[color=green]Effects: [/color]"
-		for i in item.effect:
-			text += '\n' + i.descript
 	if item.code in ["supply",'teleportwimborn','teleportgorn','teleportfrostford','teleportamberguard','teleportumbra']:
 		get_node("shoppanel/itempanel/iconbig").set_hidden(false)
 		get_node("shoppanel/itempanel/iconbig").set_texture(item.icon)
@@ -1689,17 +1663,18 @@ func _on_buysellbutton_pressed(backpack = false):
 		elif item.type == 'gear':
 			var counter = amount
 			while counter >= 1:
-				var tmpitem = get_parent().get_node("itemnode").createunstackable(item.code)
+				var tmpitem = globals.items.createunstackable(item.code)
 				if backpack == false:
 					globals.state.unstackables[str(tmpitem.id)] = tmpitem
 				else:
-					globals.state.backpack.unstackables.append(tmpitem)
+					globals.state.unstackables[str(tmpitem.id)] = tmpitem
+					tmpitem.owner = 'backpack'
 				counter -= 1
 				get_parent().infotext("Obtained: " + item.name, 'green')
 		if item.code in ['food']:
-			get_parent().get_node("itemnode").call(item.effect)
+			globals.items.call(item.effect)
 		elif item.code.find('teleport') >= 0 && item.code != 'teleportseal':
-			get_parent().get_node("itemnode").call(item.effect, item)
+			globals.items.call(item.effect, item)
 			selecteditem = null
 			shopbuy()
 			return
@@ -1722,10 +1697,7 @@ func _on_buysellbutton_pressed(backpack = false):
 		else:
 			var tempitem = selecteditem.get_meta("unstuck")
 			globals.resources.gold += round(item.cost/5)
-			if mode == 'sell':
-				globals.state.unstackables.erase(tempitem.id)
-			else:
-				globals.state.backpack.unstackables.erase(tempitem)
+			globals.state.unstackables.erase(tempitem.id)
 		if mode == 'sell':
 			selectshopitem(selecteditem)
 		else:
@@ -1826,6 +1798,7 @@ func caliqueststart(value = ''):
 	main.dialogue(false, self, text, buttons, sprites)
 
 func sebastian():
+	var text = ''
 	if get_node("charactersprite").get_texture() != get_parent().spritedict['sebastian'] || get_node("charactersprite").is_hidden() == true :
 		get_node("AnimationPlayer").play("show")
 		get_node("charactersprite").set_hidden(false)
@@ -1853,7 +1826,7 @@ func sebastian():
 		elif globals.state.sebastianorder.taken == true && globals.state.sebastianorder.duration == 0:
 			array.insert(0, {name = 'See special order', function = 'sebastianorder'})
 		elif globals.state.sebastianorder.taken == false:
-			mansion.maintext = mansion.maintext.get_bbcode()+"[color=#ff4949]\nYou don't have enough gold to make request (100 needed)[/color]"
+			mansion.maintext = mansion.maintext +"[color=#ff4949]\nYou don't have enough gold to make request (100 needed)[/color]"
 	if globals.state.farm == 1:
 		array.insert(0, {name = 'Consult on proposal', function = 'sebastianfarm'})
 	elif globals.state.farm == 2:
@@ -1906,19 +1879,19 @@ func sebastianorder():
 	else:
 		var slave = globals.state.sebastianslave
 		var array = [{name = "Pay", function = "sebastianpay"}, {name = "Refuse", function = "sebastianrefuse"}]
-		mansion.maintext = "After few moments, Sebastian presents to you a chained " + slave.race + slave.dictionary(" $child, who still looks pretty rebellious.\n\n— Got you what you asked for!\n\nYou slowly inspect $him.") + slave.descriptionsmall() + "\n\n— I would like to receive " + str(slave.calculateprice()) + slave.dictionary(" gold for my service. If you don't want $him, it's fine, since I can find another buyer in huge town like this.")
+		mansion.maintext = "After few moments, Sebastian presents to you a chained " + slave.race + slave.dictionary(" $child, who still looks pretty rebellious.\n\n— Got you what you asked for!\n\nYou slowly inspect $him.") + slave.descriptionsmall() + "\n\n— I would like to receive " + str(slave.buyprice()) + slave.dictionary(" gold for my service. If you don't want $him, it's fine, since I can find another buyer in huge town like this.")
 		buildbuttons(array)
 
 func sebastianpay():
 	var slave = globals.state.sebastianslave
-	if globals.resources.gold >= slave.calculateprice():
+	if globals.resources.gold >= slave.buyprice():
 		var effect = globals.effectdict.captured
 		var dict = {'slave':0.7, 'poor':1,'commoner':1.2,"rich": 2, "noble": 4}
 		effect.duration = round((4 + (slave.conf+slave.cour)/20) * dict[slave.origins])
 		slave.add_effect(effect)
 		slave.sleep = 'jail'
 		globals.slaves = slave
-		globals.resources.gold -= slave.calculateprice()
+		globals.resources.gold -= slave.buyprice()
 		globals.state.sebastianorder.taken = false
 		main.popup("You purchase your new toy and leave Sebastian. ")
 		market()
@@ -2312,7 +2285,7 @@ func _on_quicksell_pressed():
 	for i in globals.state.capturedgroup:
 		array.append(i)
 	for i in array:
-		gold += round(max(i.calculateprice()*0.3,10))+10
+		gold += i.sellprice()/2
 		globals.state.capturedgroup.erase(i)
 	main.popup('You furtively delivered your captives to the local slaver guild. This earned you [color=yellow]' + str(gold) + '[/color] gold. ')
 	globals.resources.gold += gold

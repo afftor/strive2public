@@ -1,0 +1,1347 @@
+[gd_scene load_steps=57 format=1]
+
+[ext_resource path="res://files/theme.tres" type="Theme" id=1]
+[ext_resource path="res://files/buttons/inventory/11-litter.png" type="Texture" id=2]
+[ext_resource path="res://files/inventory.gd" type="Script" id=3]
+[ext_resource path="res://files/buttons/inventory/1.png" type="Texture" id=4]
+[ext_resource path="res://files/buttons/inventory/12_chest.png" type="Texture" id=5]
+[ext_resource path="res://files/theme slavetab.tres" type="Theme" id=6]
+[ext_resource path="res://files/buttons/inventory/14(1).png" type="Texture" id=7]
+[ext_resource path="res://files/buttons/inventory/14(2).png" type="Texture" id=8]
+[ext_resource path="res://files/buttons/inventory/15(1).png" type="Texture" id=9]
+[ext_resource path="res://files/buttons/inventory/15(2).png" type="Texture" id=10]
+[ext_resource path="res://files/buttons/inventory/31.png" type="Texture" id=11]
+[ext_resource path="res://files/buttons/inventory/32.png" type="Texture" id=12]
+[ext_resource path="res://files/buttons/inventory/16(1).png" type="Texture" id=13]
+[ext_resource path="res://files/buttons/inventory/16(2).png" type="Texture" id=14]
+[ext_resource path="res://files/buttons/inventory/17(1).png" type="Texture" id=15]
+[ext_resource path="res://files/buttons/inventory/17(2).png" type="Texture" id=16]
+[ext_resource path="res://files/buttons/inventory/6-(item).png" type="Texture" id=17]
+[ext_resource path="res://files/images/items/armorleather.png" type="Texture" id=18]
+[ext_resource path="res://files/buttons/inventory/20(1).png" type="Texture" id=19]
+[ext_resource path="res://files/buttons/inventory/19(1).png" type="Texture" id=20]
+[ext_resource path="res://files/buttons/inventory/19(2).png" type="Texture" id=21]
+[ext_resource path="res://files/buttons/inventory/21(1).png" type="Texture" id=22]
+[ext_resource path="res://files/buttons/inventory/21(2).png" type="Texture" id=23]
+[ext_resource path="res://files/buttons/inventory/18(1).png" type="Texture" id=24]
+[ext_resource path="res://files/buttons/inventory/18(2).png" type="Texture" id=25]
+[ext_resource path="res://files/buttons/inventorypanel.png" type="Texture" id=26]
+[ext_resource path="res://files/buttons/inventory/7-(slave).png" type="Texture" id=27]
+[ext_resource path="res://files/buttons/inventory/36.png" type="Texture" id=28]
+[ext_resource path="res://files/buttons/inventory/35.png" type="Texture" id=29]
+[ext_resource path="res://files/buttons/icons/strength.png" type="Texture" id=30]
+[ext_resource path="res://files/buttons/icons/agility.png" type="Texture" id=31]
+[ext_resource path="res://files/buttons/icons/magic.png" type="Texture" id=32]
+[ext_resource path="res://files/buttons/icons/endurance.png" type="Texture" id=33]
+[ext_resource path="res://files/buttons/explorebar2.png" type="Texture" id=34]
+[ext_resource path="res://files/buttons/explorebar.png" type="Texture" id=35]
+[ext_resource path="res://files/buttons/inventory/1 (2).png" type="Texture" id=36]
+[ext_resource path="res://files/buttons/inventory/2 (1).png" type="Texture" id=37]
+[ext_resource path="res://files/buttons/inventory/3.png" type="Texture" id=38]
+[ext_resource path="res://files/buttons/inventory/25.png" type="Texture" id=39]
+[ext_resource path="res://files/buttons/inventory/8-(equipped_item).png" type="Texture" id=40]
+[ext_resource path="res://files/buttons/inventory/30.png" type="Texture" id=41]
+[ext_resource path="res://files/buttons/inventory/26.png" type="Texture" id=42]
+[ext_resource path="res://files/buttons/inventory/29.png" type="Texture" id=43]
+[ext_resource path="res://files/buttons/inventory/28.png" type="Texture" id=44]
+[ext_resource path="res://files/buttons/inventory/enchant.png" type="Texture" id=45]
+[ext_resource path="res://files/buttons/inventory/27.png" type="Texture" id=46]
+[ext_resource path="res://files/buttons/inventory/9.png" type="Texture" id=47]
+[ext_resource path="res://files/buttons/inventory/4.png" type="Texture" id=48]
+[ext_resource path="res://files/buttons/inventory/5.png" type="Texture" id=49]
+[ext_resource path="res://files/buttons/inventory/33.png" type="Texture" id=50]
+[ext_resource path="res://files/buttons/menupanel.png" type="Texture" id=51]
+
+[sub_resource type="StyleBoxTexture" id=16]
+
+content_margin/left = -1.0
+content_margin/right = -1.0
+content_margin/top = -1.0
+content_margin/bottom = -1.0
+texture = ExtResource( 26 )
+margin/left = 0.0
+margin/right = 0.0
+margin/top = 0.0
+margin/bottom = 0.0
+expand_margin/left = 0.0
+expand_margin/right = 0.0
+expand_margin/top = 0.0
+expand_margin/bottom = 0.0
+draw_center = true
+
+[sub_resource type="StyleBoxTexture" id=14]
+
+content_margin/left = -1.0
+content_margin/right = -1.0
+content_margin/top = -1.0
+content_margin/bottom = -1.0
+texture = ExtResource( 34 )
+margin/left = 5.0
+margin/right = 5.0
+margin/top = 5.0
+margin/bottom = 5.0
+expand_margin/left = 0.0
+expand_margin/right = 0.0
+expand_margin/top = 0.0
+expand_margin/bottom = 0.0
+draw_center = true
+
+[sub_resource type="StyleBoxTexture" id=15]
+
+content_margin/left = -1.0
+content_margin/right = -1.0
+content_margin/top = -1.0
+content_margin/bottom = -1.0
+texture = ExtResource( 35 )
+margin/left = 5.0
+margin/right = 5.0
+margin/top = 5.0
+margin/bottom = 5.0
+expand_margin/left = 0.0
+expand_margin/right = 0.0
+expand_margin/top = 0.0
+expand_margin/bottom = 0.0
+draw_center = true
+
+[sub_resource type="StyleBoxTexture" id=17]
+
+content_margin/left = -1.0
+content_margin/right = -1.0
+content_margin/top = -1.0
+content_margin/bottom = -1.0
+texture = ExtResource( 50 )
+margin/left = 0.0
+margin/right = 0.0
+margin/top = 0.0
+margin/bottom = 0.0
+expand_margin/left = 0.0
+expand_margin/right = 0.0
+expand_margin/top = 0.0
+expand_margin/bottom = 0.0
+draw_center = true
+
+[sub_resource type="StyleBoxTexture" id=18]
+
+content_margin/left = -1.0
+content_margin/right = -1.0
+content_margin/top = -1.0
+content_margin/bottom = -1.0
+texture = ExtResource( 51 )
+margin/left = 10.0
+margin/right = 10.0
+margin/top = 10.0
+margin/bottom = 10.0
+expand_margin/left = 0.0
+expand_margin/right = 0.0
+expand_margin/top = 0.0
+expand_margin/bottom = 0.0
+draw_center = true
+
+[node name="inventory" type="TextureFrame"]
+
+anchor/right = 1
+anchor/bottom = 1
+hint/tooltip = "Switch between Storage and Backpack"
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+theme/theme = ExtResource( 1 )
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 0.0
+margin/bottom = 0.0
+texture = ExtResource( 2 )
+expand = true
+stretch_mode = 0
+script/script = ExtResource( 3 )
+
+[node name="TextureFrame 2" type="TextureFrame" parent="."]
+
+anchor/right = 1
+anchor/bottom = 1
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 0.0
+margin/bottom = 0.0
+texture = ExtResource( 4 )
+expand = true
+stretch_mode = 0
+
+[node name="mode" type="TextureButton" parent="."]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 16.0
+margin/top = 29.0
+margin/right = 112.0
+margin/bottom = 78.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+textures/normal = ExtResource( 5 )
+params/resize_mode = 1
+params/stretch_mode = 5
+
+[node name="everything" type="TextureButton" parent="." groups=[
+"invcategory",
+]]
+
+hint/tooltip = "Everything"
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+theme/theme = ExtResource( 6 )
+margin/left = 154.0
+margin/top = 30.0
+margin/right = 211.0
+margin/bottom = 78.0
+toggle_mode = true
+enabled_focus_mode = 2
+shortcut = null
+textures/normal = ExtResource( 7 )
+textures/pressed = ExtResource( 8 )
+params/resize_mode = 1
+params/stretch_mode = 5
+
+[node name="potion" type="TextureButton" parent="." groups=[
+"invcategory",
+]]
+
+hint/tooltip = "Everything"
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+theme/theme = ExtResource( 6 )
+margin/left = 274.0
+margin/top = 30.0
+margin/right = 331.0
+margin/bottom = 78.0
+toggle_mode = true
+enabled_focus_mode = 2
+shortcut = null
+textures/normal = ExtResource( 9 )
+textures/pressed = ExtResource( 10 )
+params/resize_mode = 1
+params/stretch_mode = 5
+
+[node name="supply" type="TextureButton" parent="." groups=[
+"invcategory",
+]]
+
+hint/tooltip = "Supply"
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+theme/theme = ExtResource( 6 )
+margin/left = 214.0
+margin/top = 30.0
+margin/right = 271.0
+margin/bottom = 78.0
+toggle_mode = true
+enabled_focus_mode = 2
+shortcut = null
+textures/normal = ExtResource( 11 )
+textures/pressed = ExtResource( 12 )
+params/resize_mode = 1
+params/stretch_mode = 5
+
+[node name="ingredient" type="TextureButton" parent="." groups=[
+"invcategory",
+]]
+
+hint/tooltip = "Everything"
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+theme/theme = ExtResource( 6 )
+margin/left = 334.0
+margin/top = 30.0
+margin/right = 391.0
+margin/bottom = 78.0
+toggle_mode = true
+enabled_focus_mode = 2
+shortcut = null
+textures/normal = ExtResource( 13 )
+textures/pressed = ExtResource( 14 )
+params/resize_mode = 1
+params/stretch_mode = 5
+
+[node name="gear" type="TextureButton" parent="." groups=[
+"invcategory",
+]]
+
+hint/tooltip = "Everything"
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+theme/theme = ExtResource( 6 )
+margin/left = 394.0
+margin/top = 30.0
+margin/right = 451.0
+margin/bottom = 78.0
+toggle_mode = true
+enabled_focus_mode = 2
+shortcut = null
+textures/normal = ExtResource( 15 )
+textures/pressed = ExtResource( 16 )
+params/resize_mode = 1
+params/stretch_mode = 5
+
+[node name="ScrollContainer" type="ScrollContainer" parent="."]
+
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 13.0
+margin/top = 96.0
+margin/right = 489.0
+margin/bottom = 62.0
+scroll/horizontal = false
+scroll/vertical = true
+
+[node name="GridContainer" type="VBoxContainer" parent="ScrollContainer"]
+
+rect/min_size = Vector2( 400, 0 )
+focus/ignore_mouse = false
+focus/stop_mouse = false
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 400.0
+margin/bottom = 0.0
+custom_constants/separation = -2
+alignment = 0
+
+[node name="Button" type="TextureFrame" parent="ScrollContainer/GridContainer"]
+
+editor/display_folded = true
+visibility/visible = false
+rect/min_size = Vector2( 430, 85 )
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 430.0
+margin/bottom = 85.0
+texture = ExtResource( 17 )
+expand = true
+stretch_mode = 0
+
+[node name="icon" type="TextureFrame" parent="ScrollContainer/GridContainer/Button"]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 6.0
+margin/top = 7.0
+margin/right = 80.0
+margin/bottom = 79.0
+texture = ExtResource( 18 )
+expand = true
+stretch_mode = 6
+
+[node name="number" type="Label" parent="ScrollContainer/GridContainer/Button"]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 55.0
+margin/top = 59.0
+margin/right = 78.0
+margin/bottom = 79.0
+text = "20"
+align = 2
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="Label" type="Label" parent="ScrollContainer/GridContainer/Button"]
+
+anchor/right = 1
+anchor/bottom = 1
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 79.0
+margin/top = 3.0
+margin/right = 13.0
+margin/bottom = 49.0
+text = "Itemname"
+valign = 1
+autowrap = true
+clip_text = true
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="discard" type="TextureButton" parent="ScrollContainer/GridContainer/Button"]
+
+rect/min_size = Vector2( 36, 36 )
+hint/tooltip = "Discard"
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 384.0
+margin/top = 40.0
+margin/right = 420.0
+margin/bottom = 76.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+textures/normal = ExtResource( 19 )
+params/resize_mode = 1
+params/stretch_mode = 5
+
+[node name="use" type="TextureButton" parent="ScrollContainer/GridContainer/Button"]
+
+rect/min_size = Vector2( 36, 36 )
+hint/tooltip = "Use"
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 162.0
+margin/top = 43.0
+margin/right = 198.0
+margin/bottom = 79.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+textures/normal = ExtResource( 20 )
+textures/pressed = ExtResource( 21 )
+params/resize_mode = 1
+params/stretch_mode = 5
+
+[node name="move" type="TextureButton" parent="ScrollContainer/GridContainer/Button"]
+
+rect/min_size = Vector2( 36, 36 )
+hint/tooltip = "Move to backpack"
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 123.0
+margin/top = 43.0
+margin/right = 159.0
+margin/bottom = 79.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+textures/normal = ExtResource( 22 )
+textures/pressed = ExtResource( 23 )
+params/resize_mode = 1
+params/stretch_mode = 5
+
+[node name="info" type="TextureButton" parent="ScrollContainer/GridContainer/Button"]
+
+rect/min_size = Vector2( 36, 36 )
+hint/tooltip = "Info"
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 83.0
+margin/top = 43.0
+margin/right = 119.0
+margin/bottom = 79.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+textures/normal = ExtResource( 24 )
+textures/pressed = ExtResource( 25 )
+params/resize_mode = 1
+params/stretch_mode = 5
+
+[node name="Panel" type="Panel" parent="."]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 6.0
+margin/top = 89.0
+margin/right = 452.0
+margin/bottom = 717.0
+custom_styles/panel = SubResource( 16 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="slavelist" type="ScrollContainer" parent="."]
+
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 900.0
+margin/top = 33.0
+margin/right = 1344.0
+margin/bottom = 64.0
+scroll/horizontal = false
+scroll/vertical = true
+
+[node name="GridContainer" type="VBoxContainer" parent="slavelist"]
+
+rect/min_size = Vector2( 400, 0 )
+focus/ignore_mouse = false
+focus/stop_mouse = false
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 400.0
+margin/bottom = 0.0
+custom_constants/separation = -2
+alignment = 0
+
+[node name="Button" type="TextureButton" parent="slavelist/GridContainer" groups=[
+"inventoryslaves",
+]]
+
+visibility/visible = false
+rect/min_size = Vector2( 410, 85 )
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 410.0
+margin/bottom = 85.0
+toggle_mode = true
+enabled_focus_mode = 2
+shortcut = null
+textures/normal = ExtResource( 27 )
+params/resize_mode = 1
+params/stretch_mode = 1
+
+[node name="name" type="RichTextLabel" parent="slavelist/GridContainer/Button"]
+
+anchor/right = 1
+anchor/bottom = 1
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 142.0
+margin/top = 5.0
+margin/right = 20.0
+margin/bottom = 37.0
+bbcode/enabled = true
+bbcode/bbcode = ""
+visible_characters = -1
+
+[node name="portrait" type="TextureFrame" parent="slavelist/GridContainer/Button"]
+
+visibility/behind_parent = true
+rect/min_size = Vector2( 80, 80 )
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 3.0
+margin/top = 0.0
+margin/right = 88.0
+margin/bottom = 85.0
+expand = true
+stretch_mode = 6
+
+[node name="hpbar" type="TextureProgress" parent="slavelist/GridContainer/Button"]
+
+hint/tooltip = "Health"
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 90.0
+margin/top = 1.0
+margin/right = 112.0
+margin/bottom = 82.0
+range/min = 0.0
+range/max = 100.0
+range/step = 1.0
+range/page = 0.0
+range/value = 95.0
+range/exp_edit = false
+range/rounded = false
+texture/under = null
+texture/over = ExtResource( 28 )
+texture/progress = ExtResource( 29 )
+mode = 3
+radial_fill/fill_degrees = 360.0
+radial_fill/center_offset = Vector2( 0, 0 )
+
+[node name="TextureFrame" type="TextureFrame" parent="slavelist/GridContainer/Button"]
+
+hint/tooltip = "Strength"
+focus/ignore_mouse = false
+focus/stop_mouse = false
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 125.0
+margin/top = 56.0
+margin/right = 150.0
+margin/bottom = 81.0
+texture = ExtResource( 30 )
+stretch_mode = 0
+
+[node name="TextureFrame1" type="TextureFrame" parent="slavelist/GridContainer/Button"]
+
+hint/tooltip = "Agility"
+focus/ignore_mouse = false
+focus/stop_mouse = false
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 188.0
+margin/top = 56.0
+margin/right = 213.0
+margin/bottom = 81.0
+texture = ExtResource( 31 )
+stretch_mode = 0
+
+[node name="TextureFrame2" type="TextureFrame" parent="slavelist/GridContainer/Button"]
+
+hint/tooltip = "Magic Affinity"
+focus/ignore_mouse = false
+focus/stop_mouse = false
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 254.0
+margin/top = 56.0
+margin/right = 279.0
+margin/bottom = 81.0
+texture = ExtResource( 32 )
+stretch_mode = 0
+
+[node name="TextureFrame3" type="TextureFrame" parent="slavelist/GridContainer/Button"]
+
+hint/tooltip = "Endurance"
+focus/ignore_mouse = false
+focus/stop_mouse = false
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 322.0
+margin/top = 56.0
+margin/right = 347.0
+margin/bottom = 81.0
+texture = ExtResource( 33 )
+stretch_mode = 0
+
+[node name="sstr" type="Label" parent="slavelist/GridContainer/Button"]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 152.0
+margin/top = 60.0
+margin/right = 189.0
+margin/bottom = 80.0
+text = "1/5"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="send" type="Label" parent="slavelist/GridContainer/Button"]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 348.0
+margin/top = 60.0
+margin/right = 385.0
+margin/bottom = 80.0
+text = "1/5"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="smaf" type="Label" parent="slavelist/GridContainer/Button"]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 280.0
+margin/top = 60.0
+margin/right = 317.0
+margin/bottom = 80.0
+text = "1/5"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="sagi" type="Label" parent="slavelist/GridContainer/Button"]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 215.0
+margin/top = 60.0
+margin/right = 252.0
+margin/bottom = 80.0
+text = "1/5"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="noitems" type="Label" parent="."]
+
+visibility/visible = false
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 48.0
+margin/top = 80.0
+margin/right = 312.0
+margin/bottom = 123.0
+text = "Currently you have no suitable 
+items in possession "
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="weightmeter" type="ProgressBar" parent="."]
+
+anchor/left = 3
+anchor/top = 1
+anchor/right = 3
+anchor/bottom = 1
+hint/tooltip = "This displays your carry capacity"
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 512.0
+margin/top = 44.0
+margin/right = 245.0
+margin/bottom = 19.0
+custom_styles/fg = SubResource( 14 )
+custom_styles/bg = SubResource( 15 )
+range/min = 0.0
+range/max = 100.0
+range/step = 1.0
+range/page = 0.0
+range/value = 10.0
+range/exp_edit = false
+range/rounded = false
+percent/visible = false
+
+[node name="Label" type="Label" parent="weightmeter"]
+
+anchor/left = 3
+anchor/top = 3
+anchor/right = 3
+anchor/bottom = 3
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 297.5
+margin/top = 8.5
+margin/right = 139.5
+margin/bottom = -11.5
+text = "Carry Weight:"
+align = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="inventoryclose" type="Button" parent="."]
+
+anchor/left = 3
+anchor/top = 1
+anchor/right = 3
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 99.0
+margin/top = 58.0
+margin/right = -114.0
+margin/bottom = 19.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Close"
+flat = false
+
+[node name="gearpanel" type="TextureFrame" parent="."]
+
+focus/ignore_mouse = false
+focus/stop_mouse = false
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 501.0
+margin/top = 30.0
+margin/right = 877.0
+margin/bottom = 460.0
+texture = ExtResource( 36 )
+expand = true
+stretch_mode = 5
+
+[node name="charframe" type="TextureFrame" parent="gearpanel"]
+
+anchor/right = 1
+anchor/bottom = 1
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 0.0
+margin/bottom = 0.0
+texture = ExtResource( 37 )
+stretch_mode = 0
+
+[node name="TextureFrame" type="TextureFrame" parent="gearpanel"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = -5.0
+margin/top = -5.0
+margin/right = 382.0
+margin/bottom = 432.0
+texture = ExtResource( 38 )
+expand = true
+stretch_mode = 6
+
+[node name="costume" type="TextureButton" parent="gearpanel"]
+
+rect/min_size = Vector2( 0, 60 )
+hint/tooltip = "Costume"
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 30.0
+margin/top = 192.0
+margin/right = 95.0
+margin/bottom = 252.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+textures/normal = ExtResource( 39 )
+params/resize_mode = 1
+params/stretch_mode = 6
+
+[node name="TextureFrame 2" type="TextureFrame" parent="gearpanel/costume"]
+
+visibility/behind_parent = true
+anchor/right = 1
+anchor/bottom = 1
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 0.0
+margin/bottom = 0.0
+texture = ExtResource( 2 )
+modulate = Color( 0.957031, 0.957031, 0.957031, 1 )
+expand = true
+stretch_mode = 0
+
+[node name="TextureFrame" type="TextureFrame" parent="gearpanel/costume"]
+
+anchor/right = 1
+anchor/bottom = 1
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = -3.0
+margin/top = -2.0
+margin/right = -2.0
+margin/bottom = -3.0
+texture = ExtResource( 40 )
+expand = true
+stretch_mode = 0
+
+[node name="unequip" type="TextureButton" parent="gearpanel/costume"]
+
+visibility/visible = false
+hint/tooltip = "Unequip"
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 45.0
+margin/top = 46.0
+margin/right = 68.0
+margin/bottom = 65.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+textures/normal = ExtResource( 41 )
+params/resize_mode = 1
+params/stretch_mode = 0
+
+[node name="underwear" type="TextureButton" parent="gearpanel"]
+
+editor/display_folded = true
+rect/min_size = Vector2( 0, 60 )
+hint/tooltip = "underwear"
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 30.0
+margin/top = 293.0
+margin/right = 95.0
+margin/bottom = 353.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+textures/normal = ExtResource( 42 )
+params/resize_mode = 1
+params/stretch_mode = 5
+
+[node name="TextureFrame" type="TextureFrame" parent="gearpanel/underwear"]
+
+anchor/right = 1
+anchor/bottom = 1
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = -3.0
+margin/top = -2.0
+margin/right = -2.0
+margin/bottom = -3.0
+texture = ExtResource( 40 )
+expand = true
+stretch_mode = 0
+
+[node name="unequip" type="TextureButton" parent="gearpanel/underwear"]
+
+visibility/visible = false
+hint/tooltip = "Unequip"
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 45.0
+margin/top = 46.0
+margin/right = 68.0
+margin/bottom = 65.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+textures/normal = ExtResource( 41 )
+params/resize_mode = 1
+params/stretch_mode = 0
+
+[node name="weapon" type="TextureButton" parent="gearpanel"]
+
+editor/display_folded = true
+rect/min_size = Vector2( 0, 60 )
+hint/tooltip = "Weapon"
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 278.0
+margin/top = 42.0
+margin/right = 343.0
+margin/bottom = 103.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+textures/normal = ExtResource( 43 )
+params/resize_mode = 1
+params/stretch_mode = 5
+
+[node name="TextureFrame" type="TextureFrame" parent="gearpanel/weapon"]
+
+anchor/right = 1
+anchor/bottom = 1
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = -3.0
+margin/top = -2.0
+margin/right = -2.0
+margin/bottom = -3.0
+texture = ExtResource( 40 )
+expand = true
+stretch_mode = 0
+
+[node name="unequip" type="TextureButton" parent="gearpanel/weapon"]
+
+visibility/visible = false
+hint/tooltip = "Unequip"
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 45.0
+margin/top = 46.0
+margin/right = 68.0
+margin/bottom = 65.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+textures/normal = ExtResource( 41 )
+params/resize_mode = 1
+params/stretch_mode = 0
+
+[node name="armor" type="TextureButton" parent="gearpanel"]
+
+rect/min_size = Vector2( 0, 60 )
+hint/tooltip = "Armor"
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 278.0
+margin/top = 131.0
+margin/right = 343.0
+margin/bottom = 192.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+textures/normal = ExtResource( 44 )
+params/resize_mode = 1
+params/stretch_mode = 5
+
+[node name="TextureFrame" type="TextureFrame" parent="gearpanel/armor"]
+
+anchor/right = 1
+anchor/bottom = 1
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = -3.0
+margin/top = -2.0
+margin/right = -2.0
+margin/bottom = -3.0
+texture = ExtResource( 40 )
+expand = true
+stretch_mode = 0
+
+[node name="unequip" type="TextureButton" parent="gearpanel/armor"]
+
+visibility/visible = false
+hint/tooltip = "Unequip"
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 45.0
+margin/top = 46.0
+margin/right = 68.0
+margin/bottom = 65.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+textures/normal = ExtResource( 41 )
+params/resize_mode = 1
+params/stretch_mode = 0
+
+[node name="enchant" type="TextureFrame" parent="gearpanel/armor"]
+
+visibility/visible = false
+visibility/self_opacity = 0.8
+anchor/right = 1
+anchor/bottom = 1
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 0.0
+margin/bottom = 0.0
+texture = ExtResource( 45 )
+modulate = Color( 0.246094, 0.664276, 1, 1 )
+expand = true
+stretch_mode = 0
+
+[node name="accessory" type="TextureButton" parent="gearpanel"]
+
+editor/display_folded = true
+rect/min_size = Vector2( 0, 60 )
+hint/tooltip = "Accessory"
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 278.0
+margin/top = 337.0
+margin/right = 344.0
+margin/bottom = 398.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+textures/normal = ExtResource( 46 )
+params/resize_mode = 1
+params/stretch_mode = 5
+
+[node name="TextureFrame" type="TextureFrame" parent="gearpanel/accessory"]
+
+anchor/right = 1
+anchor/bottom = 1
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = -3.0
+margin/top = -2.0
+margin/right = -2.0
+margin/bottom = -3.0
+texture = ExtResource( 40 )
+expand = true
+stretch_mode = 0
+
+[node name="unequip" type="TextureButton" parent="gearpanel/accessory"]
+
+visibility/visible = false
+hint/tooltip = "Unequip"
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 45.0
+margin/top = 46.0
+margin/right = 68.0
+margin/bottom = 65.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+textures/normal = ExtResource( 41 )
+params/resize_mode = 1
+params/stretch_mode = 0
+
+[node name="enchant" type="TextureFrame" parent="gearpanel/accessory"]
+
+visibility/visible = false
+visibility/behind_parent = true
+anchor/right = 1
+anchor/bottom = 1
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 0.0
+margin/bottom = 0.0
+texture = ExtResource( 45 )
+expand = true
+stretch_mode = 0
+
+[node name="Panel" type="TextureFrame" parent="gearpanel"]
+
+visibility/behind_parent = true
+anchor/right = 1
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = -3.0
+margin/top = 445.0
+margin/right = -6.0
+margin/bottom = -238.0
+texture = ExtResource( 47 )
+expand = true
+stretch_mode = 0
+
+[node name="TextureFrame" type="TextureFrame" parent="gearpanel/Panel"]
+
+anchor/right = 1
+anchor/bottom = 1
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = -2.0
+margin/right = 3.0
+margin/bottom = 0.0
+texture = ExtResource( 48 )
+expand = true
+stretch_mode = 0
+
+[node name="RichTextLabel" type="RichTextLabel" parent="gearpanel"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 13.0
+margin/top = 462.0
+margin/right = 359.0
+margin/bottom = 653.0
+bbcode/enabled = true
+bbcode/bbcode = "Slave
+Info
+And
+Stats"
+visible_characters = -1
+
+[node name="TextureFrame 3" type="TextureFrame" parent="."]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 893.0
+margin/top = 25.0
+margin/right = 1316.0
+margin/bottom = 702.0
+texture = ExtResource( 49 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="iteminfo" type="PopupPanel" parent="."]
+
+editor/display_folded = true
+visibility/visible = false
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 187.0
+margin/top = 78.0
+margin/right = 1121.0
+margin/bottom = 424.0
+custom_styles/panel = SubResource( 17 )
+popup/exclusive = false
+
+[node name="RichTextLabel" type="RichTextLabel" parent="iteminfo"]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 364.0
+margin/top = 24.0
+margin/right = 911.0
+margin/bottom = 324.0
+bbcode/enabled = true
+bbcode/bbcode = ""
+visible_characters = -1
+
+[node name="TextureFrame" type="TextureFrame" parent="iteminfo"]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 35.0
+margin/top = 23.0
+margin/right = 335.0
+margin/bottom = 323.0
+expand = true
+stretch_mode = 6
+
+[node name="hairchange" type="PopupPanel" parent="."]
+
+visibility/visible = false
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 462.0
+margin/top = 175.0
+margin/right = 908.0
+margin/bottom = 398.0
+custom_styles/panel = SubResource( 18 )
+popup/exclusive = false
+
+[node name="TextEdit" type="LineEdit" parent="hairchange"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 52.0
+margin/top = 37.0
+margin/right = 391.0
+margin/bottom = 71.0
+placeholder/text = "Input desired hair color"
+placeholder/alpha = 0.6
+focus_mode = 2
+caret/caret_blink = false
+caret/caret_blink_speed = 0.65
+
+[node name="hairconfirm" type="Button" parent="hairchange"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 45.0
+margin/top = 167.0
+margin/right = 181.0
+margin/bottom = 206.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Confirm"
+flat = false
+
+[node name="haircancel" type="Button" parent="hairchange"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 255.0
+margin/top = 167.0
+margin/right = 391.0
+margin/bottom = 206.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Cancel"
+flat = false
+
+[connection signal="pressed" from="mode" to="." method="_on_mode_pressed"]
+
+[connection signal="pressed" from="inventoryclose" to="." method="_on_inventoryclose_pressed"]
+
+[connection signal="input_event" from="iteminfo" to="." method="_on_iteminfo_input_event"]
+
+[connection signal="pressed" from="hairchange/hairconfirm" to="." method="_on_hairconfirm_pressed"]
+
+[connection signal="pressed" from="hairchange/haircancel" to="." method="_on_haircancel_pressed"]
+
+

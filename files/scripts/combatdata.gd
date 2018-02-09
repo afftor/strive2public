@@ -2,6 +2,10 @@ extends Node
 
 
 var enemygrouppools = {
+treasurechest = { units = [['wolf',1,1]], awareness = 0, captured = null, special = 'treasurechest',
+description = 'You find a small [color=aqua]treasure chest[/color].',
+descriptionambush = '',
+},
 wolveseasy = { units = [['wolf',2,3]], awareness = 6, captured = null, special = null,
 description = 'You come across a [color=aqua]small pack of wolves[/color].',
 descriptionambush = 'You are attacked by a [color=aqua]small pack of wolves[/color].',

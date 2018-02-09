@@ -15,6 +15,8 @@ var scout
 var launchonwin = null
 var combatdata = load("res://files/scripts/combatdata.gd").new()
 var deeperregion = false
+var capturedtojail = 0
+var enemyloot = {stackables = {}, unstackables = []}
 
 var enemygrouppools = combatdata.enemygrouppools
 var capturespool = combatdata.capturespool
@@ -58,7 +60,7 @@ combat = true,
 code = 'forest',
 name = 'Ancient Forest',
 description = "You stand deep within this ancient forest. Giant trees tower above you, reaching into the skies and casting deep shadows on the ground below. As the wind whispers past, you can hear the movement of small creature in the undergrowth and birds singing from their perches above.",
-enemies = [{value = 'thugseasy', weight = 1},{value = 'banditseasy', weight = 1}, {value = 'peasant', weight = 2}, {value ='solobear', weight = 1.5}, {value = 'wolveseasy', weight = 3}],
+enemies = [{value = 'thugseasy', weight = 3},{value = 'banditseasy', weight = 3}, {value = 'peasant', weight = 6}, {value ='solobear', weight = 4}, {value = 'wolveseasy', weight = 9},{value = 'treasurechest', weight = 1}],
 encounters = [['chloeforest','globals.state.sidequests.chloe in [0,1]',10]],
 length = 5,
 exits = ['shaliq', 'wimbornoutskirts', 'elvenforest'],
@@ -73,7 +75,7 @@ combat = true,
 code = 'elvenforest',
 name = 'Elven Grove',
 description = "This portion of the forest is located dangerously close to eleven lands. They take poorly to intruders in their part of the woods so you should remain on your guard.",
-enemies = [{value = 'fairy', weight = 1},{value = 'solobear', weight = 3},{value = 'elfguards',weight = 3},{value = 'plantseasy', weight = 3},{value = 'wolveseasy', weight = 5}],
+enemies = [{value = 'fairy', weight = 2},{value = 'solobear', weight = 6},{value = 'elfguards',weight = 6},{value = 'plantseasy', weight = 6},{value = 'wolveseasy', weight = 8},{value = 'treasurechest', weight = 1}],
 encounters = [],
 length = 5,
 exits = ['amberguard','forest'],
@@ -119,7 +121,7 @@ combat = true,
 code = 'marsh',
 name = 'Marsh',
 description = "Dank bog lies at the border of the forest and swamps beyond. Noxious smells and a sinister aura prevail throughout. The landscape itself is hostile, with pitch-black pools of water mixed among the solid ground and you doubt that the creatures that live here are any more pleasant than the land they live in.",
-enemies = [{value = 'banditcamp',weight = 1},{value = 'monstergirl', weight = 1}, {value = 'oozesgroup', weight = 2}, {value = 'solospider', weight = 5}],
+enemies = [{value = 'banditcamp',weight = 1},{value = 'monstergirl', weight = 1}, {value = 'oozesgroup', weight = 2}, {value = 'solospider', weight = 5},{value = 'treasurechest', weight = 1}],
 encounters = [],
 length = 6,
 exits = ['frostfordoutskirts','grove'],
@@ -149,7 +151,7 @@ combat = true,
 code = 'mountaincave',
 name = 'Mountain Caves',
 description = "You step onto the damp cave floor. These underground systems server home to many various beasts and semisentient creatures.",
-enemies = [{value = 'oozesgroup', weight = 2}, {value = 'solospider', weight = 2}, {value = 'goblingroup', weight = 4}],
+enemies = [{value = 'oozesgroup', weight = 2}, {value = 'solospider', weight = 2}, {value = 'goblingroup', weight = 4},{value = 'treasurechest', weight = 1}],
 encounters = [],
 length = 8,
 exits = ['mountains'],
@@ -164,7 +166,7 @@ combat = true,
 code = 'sea',
 name = 'Sea',
 description = "You are at the beach of a Big Sea. Air smells of salt and you can spot some sea caves formed by plateau and incoming waves.",
-enemies = [{value = 'banditcamp', weight = 1},{value = 'monstergirl', weight = 3},{value = 'travelersgroup', weight = 5},{value = 'oozesgroup', weight = 5}],
+enemies = [{value = 'banditcamp', weight = 1},{value = 'monstergirl', weight = 3},{value = 'travelersgroup', weight = 5},{value = 'oozesgroup', weight = 5},{value = 'treasurechest', weight = 1}],
 encounters = [],
 length = 5,
 exits = ['prairie'],
@@ -226,7 +228,7 @@ combat = true,
 code = 'undercitytunnels',
 name = "Underground Tunnels",
 description = "The dark tunnels twist back and forth as they wind their way into the mountainside. Your light from your torches cast shadows around every corner. You cautiously move forward brushing spiderwebs and other hanging obstructions side. Passages repeatedly intersect some ending in short dead ends others going deeper.",
-enemies = [{value = 'solospider', weight = 1}, {value = 'oozesgroup', weight = 1}, {value = 'troglodytesmall', weight = 1}, {value = 'mutant', weight = 1}],
+enemies = [{value = 'solospider', weight = 3}, {value = 'oozesgroup', weight = 2}, {value = 'troglodytesmall', weight = 2}, {value = 'mutant', weight = 3},{value = 'treasurechest', weight = 1}],
 encounters = [],
 length = 8,
 exits = ['undercityentrance', 'undercityruins'],
@@ -240,7 +242,7 @@ combat = true,
 code = 'undercityruins',
 name = "Underground Ruins",
 description = "Dilapidated ruined buildings line long winding pathways that were once streets. Their age is hard to estimate, they could be 50 years they could be 500 years old. The air is damp and oppressive, there is little to no sound except for each of your steps which seem to echo on forever. ",
-enemies = [{value = 'spidergroup',weight = 5},{value = 'gembeetle', weight = 1}, {value = 'troglodytelarge', weight = 5}, {value = 'troglodytesmall', weight = 4}, {value = 'mutant', weight = 4}],
+enemies = [{value = 'spidergroup',weight = 5},{value = 'gembeetle', weight = 1}, {value = 'troglodytelarge', weight = 5}, {value = 'troglodytesmall', weight = 4}, {value = 'mutant', weight = 4},{value = 'treasurechest', weight = 2}],
 encounters = [],
 length = 8,
 exits = ['undercitytunnels','undercityhall'],
@@ -552,6 +554,9 @@ func enemyencounter():
 	outside.clearbuttons()
 	if globals.state.playergroup.size() > 0:
 		for i in globals.state.playergroup:
+			if globals.state.findslave(i) == null:
+				globals.state.playergroup.erase(i)
+				continue
 			scouttemp = globals.state.findslave(i)
 			if scouttemp.awareness() > scoutawareness:
 				scout = scouttemp
@@ -673,6 +678,7 @@ func enemyencounter():
 			encounterbuttons()
 		else:
 			call(enemygroup.specialambush)
+			return
 	else:
 		ambush = false
 		text = encounterdictionary(enemygroup.description)
@@ -680,6 +686,7 @@ func enemyencounter():
 			encounterbuttons()
 		else:
 			call(enemygroup.special)
+			return
 	mansion.maintext = text
 
 func buildenemies(enemyname = null):
@@ -740,6 +747,77 @@ func patrolbribe(sum):
 	mansion.maintext = "You bribe Patrol's leader and hastily escape from the scene. "
 	outside.buildbuttons(array, self)
 
+var treasurepool = [['armorninja',5],['armorplate',1],['armorleather',20],['armorchain',11],['armorelvenchain',3],['armorrobe',4],
+['weapondagger',20], ['weaponsword',9], ['weaponclaymore',3],
+['clothsundress',10], ['clothmaid',10], ['clothkimono',7], ['clothmiko',5], ['clothpet',3], ['clothbutler',10], ['clothbedlah',4],
+['accgoldring',3],['accslavecollar',4],['acchandcuffs',3],['acctravelbag',5],
+]
+var treasuremisc = [['magicessenceing',7],['taintedessenceing',7],['natureessenceing',7],['bestialessenceing',7],['fluidsubstanceing',7],['gem',1]]
+
+
+func treasurechest():
+	var array = []
+	
+	if randf() >= 0.33:
+		#chest locked
+		mansion.maintext = "You found a hidden [color=yellow]chest[/color]. However, it seems to be locked and too heavy to carry with you. "
+		if globals.state.backpack.stackables.has("lockpick"):
+			array.append({name = "Use a lockpick", function = 'treasurechestopen', args = 'lockpick'})
+		else:
+			array.append({name = "Use a lockpick", function = 'treasurechestopen', tooltip = 'You have no lockpicks with you',disabled = true})
+	else:
+		mansion.maintext = "You found a hidden chest. It seems to be tightly shut, but with some force you might crack it open. "
+		if globals.player.energy >= 20:
+			array.append({name = "Open (20 energy)", function = 'treasurechestopen'})
+		else:
+			array.append({name = "Open (20 energy)", function = 'treasurechestopen', disabled = true})
+	array.append({name = "Leave", function = 'enemyleave'})
+	outside.buildbuttons(array, self)
+
+func treasurechestopen(state = 'normal'):
+	var gear = {number = round(randf()*2), enchantchance = 65 }
+	var misc = 1 if randf() > 0.7 else 0
+	var text
+	var miscnumber = 1
+	if state == 'lockpick':
+		globals.state.backpack.stackables.lockpick -= 1
+		if globals.state.backpack.stackables.lockpick < 1:
+			globals.state.backpack.stackables.erase('lockpick')
+		text = "You lockpick the treasure chest and discover few items in it."
+	else:
+		text = 'You slam the old chest open and find some loot inside. '
+		globals.player.energy -= 20
+	if gear.number == 0 && misc == 0:
+		gear.number = 1
+	generaterandomloot(gear, misc, miscnumber, text)
+
+
+func generaterandomloot(gear = {number = 0, enchantchance = 0}, misc = 0, miscnumber = 0, text = ''):
+	var winpanel = get_node("winningpanel")
+	var tempitem
+	for i in winpanel.get_node("ScrollContainer/VBoxContainer").get_children():
+		if i != winpanel.get_node("ScrollContainer/VBoxContainer/Button"):
+			i.set_hidden(true)
+			i.free()
+	winscreenclear()
+	var lootarray = []
+	while gear.number > 0:
+		gear.number -= 1
+		tempitem = globals.items.createunstackable(globals.weightedrandom(treasurepool))
+		if randf() <= float(gear.enchantchance)/100:
+			globals.items.enchantrand(tempitem)
+		enemyloot.unstackables.append(tempitem)
+	while misc > 0:
+		misc -= 1
+		tempitem = globals.weightedrandom(treasuremisc)
+		if enemyloot.stackables.has(tempitem):
+			enemyloot.stackables[tempitem] += miscnumber
+		else:
+			enemyloot.stackables[tempitem] = miscnumber
+	winpanel.set_hidden(false)
+	winpanel.get_node("wintext").set_bbcode(text)
+	builditemlists()
+
 func slavers():
 	globals.get_tree().get_current_scene().get_node('outside').clearbuttons()
 	newbutton = button.duplicate()
@@ -774,7 +852,7 @@ func banditcamp():
 
 func slaversgreet():
 	globals.get_tree().get_current_scene().get_node('outside').clearbuttons()
-	globals.get_tree().get_current_scene().get_node('outside').maintext = globals.player.dictionary("You reveal yourself to the slavers' group and wondering if they'd be willing to part with their merchandise saving them hassle of transportation.\n\n- You, $sir, know how to bargain. We'll agree to part with our treasure here for ")+str(max(round(enemygroup.captured.calculateprice()*0.3),40))+" gold.\n\nYou still might try to take their hostage by force, but given they know about your presence, you are at considerable disadvantage. "
+	globals.get_tree().get_current_scene().get_node('outside').maintext = globals.player.dictionary("You reveal yourself to the slavers' group and wondering if they'd be willing to part with their merchandise saving them hassle of transportation.\n\n- You, $sir, know how to bargain. We'll agree to part with our treasure here for ")+str(max(round(enemygroup.captured.buyprice()*0.7),40))+" gold.\n\nYou still might try to take their hostage by force, but given they know about your presence, you are at considerable disadvantage. "
 	newbutton = button.duplicate()
 	buttoncontainer.add_child(newbutton)
 	newbutton.set_text('Inspect')
@@ -785,7 +863,7 @@ func slaversgreet():
 	newbutton.set_text('Agree on the deal')
 	newbutton.set_hidden(false)
 	newbutton.connect("pressed",self,'slaverbuy')
-	if globals.resources.gold < max((round(enemygroup.captured.calculateprice()*0.3)),40):
+	if globals.resources.gold < max(round(enemygroup.captured.buyprice()*0.7),40):
 		newbutton.set_disabled(true)
 		newbutton.set_tooltip("You don't have enough gold.")
 	if globals.spelldict.mindread.learned == true:
@@ -824,7 +902,7 @@ func snailget():
 	main._on_mansion_pressed()
 
 func slaverbuy():
-	globals.resources.gold -= max(round(enemygroup.captured.calculateprice()*0.3),30)
+	globals.resources.gold -= max(round(enemygroup.captured.buyprice()*0.7),30)
 	enemycapture()
 	globals.get_tree().get_current_scene().popup("You purchase slavers' captive and return to mansion. " )
 
@@ -867,27 +945,35 @@ func enemyfight(soundkeep = false):
 	main.get_node('combat').area = currentzone
 	main.get_node("combat").start_battle(soundkeep)
 
-var capturedtojail = 0
-var enemyloot = {stackables = {}, unstackables = []}
+
+func winscreenclear():
+	var winpanel = get_node("winningpanel")
+	defeated = {units = [], names = [], select = [], faction = []}
+	enemyloot = {stackables = {}, unstackables = []}
+	for i in winpanel.get_node("ScrollContainer/VBoxContainer").get_children():
+		if i != winpanel.get_node("ScrollContainer/VBoxContainer/Button"):
+			i.set_hidden(true)
+			i.free()
+	winpanel.get_node("ScrollContainer").set_hidden(true)
+	winpanel.get_node("Panel").set_hidden(true)
+	main.checkplayergroup()
 
 func enemydefeated():
 	if launchonwin != null:
 		globals.events.call(launchonwin)
 		launchonwin = null
 		return
-	main.checkplayergroup()
 	var text = 'You have defeated enemy group!\n'
-	defeated = {units = [], names = [], select = [], faction = []}
 	var ranger = false
 	for i in globals.state.playergroup:
 		if globals.state.findslave(i).spec == 'ranger':
 			ranger = true
+	winscreenclear()
 	capturedtojail = 0
 	#Fight rewards
-	var winpanel = main.get_node("explorationnode/winningpanel")
+	var winpanel = get_node("winningpanel")
 	var goldearned = 0
 	var expearned = 0
-	enemyloot = {stackables = {}, unstackables = []}
 	for unit in enemygroup.units:
 		if unit.state == 'escaped':
 			expearned += unit.rewardexp*0.66
@@ -917,7 +1003,7 @@ func enemydefeated():
 							else:
 								enemyloot.stackables[item.code] = 1
 						else:
-							var tempitem = get_parent().get_node("itemnode").createunstackable(item.code)
+							var tempitem = globals.items.createunstackable(item.code)
 							enemyloot.unstackables.append(tempitem)
 		expearned += unit.rewardexp
 	if deeperregion:
@@ -946,10 +1032,8 @@ func enemydefeated():
 			defeated.select.append(0)
 			defeated.faction.append('stranger')
 	
-	for i in winpanel.get_node("ScrollContainer/VBoxContainer").get_children():
-		if i != winpanel.get_node("ScrollContainer/VBoxContainer/Button"):
-			i.set_hidden(true)
-			i.free()
+	winpanel.get_node("ScrollContainer").set_hidden(false)
+	winpanel.get_node("Panel").set_hidden(false)
 	
 	winpanel.set_hidden(false)
 	winpanel.get_node("wintext").set_bbcode(text)
@@ -961,21 +1045,17 @@ func enemydefeated():
 			defeated.units[i].obed += rand_range(10,20)
 			defeated.units[i].loyal += rand_range(5,15)
 	buildcapturelist()
-	if !enemyloot.stackables.empty() || enemyloot.unstackables.size() >= 1:
-		get_node("winningpanel/lootpanel").set_hidden(false)
-		builditemlists()
-	else:
-		get_node("winningpanel/lootpanel").set_hidden(true)
+	builditemlists()
 	
 	if globals.state.sidequests.cali == 18 && defeated.names.find('Bandit 1') >= 0 && currentzone.code == 'forest':
 		main.popup("One of the defeated bandits in exchange for their life reveal location of their camp you've been in search for. ")
 		globals.state.sidequests.cali = 19
 
 func buildcapturelist():
-	var winpanel = main.get_node("explorationnode/winningpanel")
+	var winpanel = get_node("winningpanel")
 	var text = "Defeated and Captured | Free ropes left: "
 	text += str(globals.state.backpack.stackables.rope) if globals.state.backpack.stackables.has('rope') else '0'
-	winpanel.get_node("Label").set_text(text)
+	winpanel.get_node("Panel/Label").set_text(text)
 	for i in get_node("winningpanel/ScrollContainer/VBoxContainer").get_children():
 		i.free() if i.get_name() != 'Button' else print()
 	for i in range(0, defeated.units.size()):
@@ -1063,7 +1143,6 @@ func builditemlists():
 		newbutton.connect("mouse_exit", self, 'itemtooltiphide')
 	
 	
-	
 	for i in globals.state.backpack.stackables:
 		tempitem = globals.itemdict[i]
 		newbutton = get_node("winningpanel/lootpanel/backpack/VBoxContainer/Button").duplicate()
@@ -1076,7 +1155,9 @@ func builditemlists():
 		newbutton.set_meta("item", tempitem)
 		newbutton.connect("mouse_enter", self, 'itemtooltip', [tempitem])
 		newbutton.connect("mouse_exit", self, 'itemtooltiphide')
-	for i in globals.state.backpack.unstackables:
+	for i in globals.state.unstackables.values():
+		if str(i.owner) != 'backpack':
+			continue
 		newbutton = get_node("winningpanel/lootpanel/backpack/VBoxContainer/Button").duplicate()
 		get_node("winningpanel/lootpanel/backpack/VBoxContainer").add_child(newbutton)
 		newbutton.set_hidden(false)
@@ -1114,7 +1195,8 @@ func moveitemtobackpack(button):
 		else:
 			globals.state.backpack.stackables[item.code] = 1
 	else:
-		globals.state.backpack.unstackables.append(item)
+		globals.state.unstackables[item.id] = item
+		item.owner = 'backpack'
 		enemyloot.unstackables.erase(item)
 	itemtooltiphide()
 	builditemlists()
@@ -1131,20 +1213,12 @@ func moveitemtoenemy(button):
 			globals.state.backpack.stackables.erase(item.code)
 	else:
 		enemyloot.unstackables.append(item)
-		globals.state.backpack.unstackables.erase(item)
+		globals.state.unstackables.erase(item.id)
 	itemtooltiphide()
 	builditemlists()
 
 func itemtooltip(item):
-	var text = '[center]'+item.name + '[/center]\n' +item.description 
-	if item.has('weight'):
-		text += "\n\nWeight: [color=yellow]" + str(item.weight)+"[/color]"
-	if item.has('owner'):
-		if item.effects.size() > 0:
-			text += "\n\n[color=green]Effects: [/color]"
-			for k in item.effects:
-				text += "\n" + k.descript
-	globals.showtooltip(text)
+	globals.showtooltip(globals.itemdescription(item))
 
 func itemtooltiphide():
 	globals.hidetooltip()
@@ -1267,8 +1341,13 @@ func capturedecide(stage): #1 - no reward, 2 - material, 3 - sex, 4 - join
 		text = "$race $child is surprised by your generosity, and after thanking you again, leaves. "
 		globals.state.reputation[location] += 1
 	elif stage == 2:
-		text = "After getting through $his belongings, $name passes you some valueable and gold. "
-		globals.resources.gold += round(rand_range(3,6)*10)
+		if randf() >= 0.25:
+			text = "After getting through $his belongings, $name passes you some valueable and gold. "
+			globals.resources.gold += round(rand_range(3,6)*10)
+		else:
+			text = "After getting through $his belongings, $name passes you a piece of gear. "
+			var gear = {number = 1, enchantchance = 75 }
+			generaterandomloot(gear)
 	elif stage == 3:
 		if rand_range(0,100) >= 35 + globals.state.reputation[location]/2:
 			text = "$name hastily refuses and retreats excusing $himself. "
@@ -1463,9 +1542,9 @@ func amberguard():
 	var array = []
 	outside.location = 'amberguard'
 	main.music_set('frostford')
-	if globals.state.portals.amberguard.enabled == false:
-		globals.state.portals.amberguard.enabled = true
-		mansion.maintext = mansion.maintext + "\n\n[color=yellow]You have unlocked new portal![/color]"
+#	if globals.state.portals.amberguard.enabled == false:
+#		globals.state.portals.amberguard.enabled = true
+#		mansion.maintext = mansion.maintext + "\n\n[color=yellow]You have unlocked new portal![/color]"
 	if globals.state.mainquest == 17:
 		globals.state.mainquest = 18
 	elif globals.state.mainquest == 19:

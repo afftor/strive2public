@@ -179,7 +179,7 @@ Slime = {
 },
 Lamia = {
 	description = "Lamias are easily recognized and tend to be timid in their interactions, rarely showing themselves to majority of the population. Their population has been severely reduced by hunting and extermination expeditions launched by different races. Lamias are surprisingly intelligent, as the few captured and studied samples have shown.",
-	details = "[color=aqua]Racial trait: None.[/color]\n\n[color=yellow]Stat potential: Strength - 4, Agility - 5, Magic - 4, Endurance - 4 [/color]",
+	details = "[color=aqua]Racial trait: Elongated Tongue.[/color]\n\n[color=yellow]Stat potential: Strength - 4, Agility - 5, Magic - 4, Endurance - 4 [/color]",
 	bodyshape = 'halfsnake',
 	haircolor = ['white', 'green', 'purple', 'blue', 'blond', 'red', 'auburn'],
 	tail = 'snake tail',
@@ -189,6 +189,7 @@ Lamia = {
 	eyecolor = ['blue', 'green', 'amber', 'red'],
 	eyeshape = 'slit',
 	surname = '',
+	mods = {augmenttongue = 'augmenttongue'},
 	stats = {str_max = 4,
 	agi_max = 5,
 	maf_max = 4,

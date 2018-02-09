@@ -3,11 +3,11 @@ extends Node
 
 var slave
 var main
+var enchantscript = load("res://files/scripts/enchantments.gd").new()
 
 
-func _init():
-	globals.itemdict = itemlist
-
+func enchantrand(item, number = 1):
+	enchantscript.addrandomenchant(item, number)
 
 var itemlist = {
 food = {
@@ -92,13 +92,13 @@ lockpick = {
 	code = 'lockpick',
 	name = 'Lockpicks',
 	icon = load("res://files/images/items/lockpick.png"),
-	description = "",
-	effect = "supplypurchase",
+	description = "Assemblance of various tools for certain precisive tasks.",
+	effect = "",
 	recipe = '',
-	cost = 5,
+	cost = 20,
 	type = 'supply',
 	amount = 0,
-	weight = 1,
+	weight = 3,
 	unlocked = true,
 },
 
@@ -486,7 +486,7 @@ clothcommon = {
 	code = 'clothcommon',
 	name = 'Common Clothes',
 	iconbig = true,
-	icon = load("res://files/images/items/clothcommon.png"),
+	icon = "res://files/images/items/clothcommon.png",
 	description = "Bland common clothes without much of appeal. Thankfully there's no shortage of them.",
 	effect = '',
 	recipe = '',
@@ -500,7 +500,7 @@ clothcommon = {
 clothsundress = {
 	code = 'clothsundress',
 	name = 'Sundress',
-	icon = load("res://files/images/items/sundress.png"),
+	icon = "res://files/images/items/sundress.png",
 	iconbig = true,
 	description = "Simple, comfortable, and lighthearted. Perfect for relaxation and exposure to sudden wind gusts.",
 	effect = [{type = 'onendday', effect = 'sundresseffect', descript = "Reduces Stress by the end of a day"}],
@@ -516,7 +516,7 @@ clothsundress = {
 clothmaid = {
 	code = 'clothmaid',
 	name = 'Maid Uniform',
-	icon = load("res://files/images/items/maiduniform.png"),
+	icon = "res://files/images/items/maiduniform.png",
 	iconbig = true,
 	description = "A set of black and white frilly clothes with a mandatory skirt and garter belt. Makes cleaning duty pleasant to watch.",
 	effect = [{type = 'onendday', effect = 'maiduniformeffect', descript = "Increases Obedience by the end of a day"}],
@@ -532,7 +532,7 @@ clothmaid = {
 clothkimono = {
 	code = 'clothkimono',
 	name = 'Kimono',
-	icon = load("res://files/images/items/clothkimono.png"),
+	icon = "res://files/images/items/clothkimono.png",
 	description = "Brightly colored foreign clothes which are pretty popular for certain people.",
 	effect = [{type = 'onequip', effect = 'beauty', effectvalue = 10, descript = "Slightly increases beauty"}],
 	recipe = '',
@@ -547,7 +547,7 @@ clothkimono = {
 clothmiko = {
 	code = 'clothmiko',
 	name = 'Miko Outfit',
-	icon = load("res://files/images/items/clothmiko.png"),
+	icon = "res://files/images/items/clothmiko.png",
 	description = "Contrasting red and white clothes, originally worn by young women of certain foreign religions. They are now fetishized by certain people...",
 	effect = [{type = 'onendday', effect = 'mikoeffect', descript = "Reduces stress and lust by the end of a day"}],
 	recipe = '',
@@ -559,17 +559,17 @@ clothmiko = {
 	amount = 0,
 	unlocked = true,
 },
-clothninja = {
-	code = 'clothninja',
+armorninja = {
+	code = 'armorninja',
 	name = 'Ninja Suit',
-	icon = load("res://files/images/items/clothninja.png"),
+	icon = "res://files/images/items/clothninja.png",
 	description = "A compact and versatile outfit rumored to be used by foreign assassins.",
-	effect = [{type = 'onequip', effect = 'agi', effectvalue = 1, descript = "+1 Agility"}],
+	effect = [{type = 'incombat', effect = 'protection', effectvalue = 30, descript = "30% Protection"},{type = 'onequip', id = 'armoragi', effect = 'agi', effectvalue = 1, descript = "+1 Agility"}],
 	recipe = '',
 	reqs = null,
 	cost = 200,
 	type = 'gear',
-	subtype = 'costume',
+	subtype = 'armor',
 	weight = 5,
 	amount = 0,
 	unlocked = true,
@@ -577,7 +577,7 @@ clothninja = {
 clothpet = {
 	code = 'clothpet',
 	name = 'Pet Suit',
-	icon = load("res://files/images/items/clothpet.png"),
+	icon = "res://files/images/items/clothpet.png",
 	description = "Specially designed pieces of leather decoration which represent a domestic animal, and force the wearer to walk on all fours. For obvious reasons, this should generally not be worn outside.",
 	effect = [{type = 'onendday', effect = 'peteffect', descript = "Greatly increases obedience. If Confidence above 40, cause stress penalty and lowers it by the end of a day."}],
 	recipe = '',
@@ -607,7 +607,7 @@ clothchain = {
 clothbutler = {
 	code = 'clothbutler',
 	name = 'Butlers Uniform',
-	icon = load("res://files/images/items/clothbutler.png"),
+	icon = "res://files/images/items/clothbutler.png",
 	description = "This is the uniform of a butler, a well fitted suit comprising of a double-breasted coat, waistcoat and trousers, along with a small black tie.",
 	effect = [{type = 'onendday', effect = 'butleruniformeffect', descript = "Increases Obedience by the end of a day"}],
 	recipe = '',
@@ -622,7 +622,7 @@ clothbutler = {
 clothbedlah = {
 	code = 'clothbedlah',
 	name = 'Bedlah',
-	icon = load("res://files/images/items/clothbedlah.png"),
+	icon = "res://files/images/items/clothbedlah.png",
 	description = "Loose, translucent clothing from southern regions, generally worn by dancers and members of a harem.",
 	effect = [{type = 'onendday', effect = 'bedlaheffect', descript = "Slightly increases Charm by the end of a day."}],
 	recipe = '',
@@ -637,7 +637,7 @@ clothbedlah = {
 underwearplain = {
 	code = 'underwearplain',
 	name = 'Plain Underwear',
-	icon = load("res://files/images/items/underwear.png"),
+	icon = "res://files/images/items/underwear.png",
 	iconbig = true,
 	description = "Plain white cotton underwear for everyday life.",
 	effect = "",
@@ -652,7 +652,7 @@ underwearplain = {
 underwearlacy = {
 	code = 'underwearlacy',
 	name = 'Lacy Underwear',
-	icon = load("res://files/images/items/underwearlacy.png"),
+	icon = "res://files/images/items/underwearlacy.png",
 	description = "Fancy and cute underwear available for people with moderate income.\n[color=green]Increases slave's luxury[/color]",
 	effect = [],
 	recipe = '',
@@ -667,7 +667,7 @@ underwearlacy = {
 underwearboxers = {
 	code = 'underwearboxers',
 	name = 'Silk Boxers',
-	icon = load("res://files/images/items/underwearboxers.png"),
+	icon = "res://files/images/items/underwearboxers.png",
 	description = "Fancy and comfortable male underwear available for people with moderate income.\n[color=green]Increases slave's luxury[/color]",
 	effect = [],
 	recipe = '',
@@ -682,9 +682,9 @@ underwearboxers = {
 armorleather = {
 	code = 'armorleather',
 	name = 'Leather Armor',
-	icon = load("res://files/images/items/armorleather.png"),
+	icon = "res://files/images/items/armorleather.png",
 	description = "Suit of tanned leather, providing some protection while not restricting movement too much.",
-	effect = [{type = 'onequip', effect = 'armor', effectvalue = 2, descript = "+2 Armor"}],
+	effect = [{type = 'incombat', effect = 'protection', effectvalue = 20, descript = "20% Protection"},{type = 'onequip', effect = 'armor', effectvalue = 3, descript = "+3 Armor"}],
 	recipe = '',
 	reqs = null,
 	cost = 100,
@@ -697,9 +697,9 @@ armorleather = {
 armorchain = {
 	code = 'armorchain',
 	name = 'Chain Armor',
-	icon = load("res://files/images/items/armorchain.png"),
+	icon = "res://files/images/items/armorchain.png",
 	description = "A finely crafted suit of armor created from interwoven iron rings. Offers reasonable protection against sharp objects. ",
-	effect = [{type = 'onequip', effect = 'armor', effectvalue = 5, descript = "+5 Armor"}],
+	effect = [{type = 'incombat', effect = 'protection', effectvalue = 40, descript = "40% Protection"},{type = 'onequip', effect = 'armor', effectvalue = 5, descript = "+5 Armor"}],
 	recipe = '',
 	reqs = null,
 	cost = 250,
@@ -712,9 +712,9 @@ armorchain = {
 armorelvenchain = {
 	code = 'armorelvenchain',
 	name = 'Elven Chain Armor',
-	icon = load("res://files/images/items/armorelvenchain.png"),
+	icon = "res://files/images/items/armorelvenchain.png",
 	description = "A suit of elvish armor created from interwoven mithril rings. It is supple and light yet provides ample protection.",
-	effect = [{type = 'onequip', effect = 'armor', effectvalue = 7, descript = "+7 Armor"}, {type = 'incombat', effect = 'speed', effectvalue = 3, descript = "+5 speed"}],
+	effect = [{type = 'incombat', effect = 'protection', effectvalue = 35, descript = "35% Protection"},{type = 'onequip', effect = 'armor', effectvalue = 4, descript = "+4 Armor"}, {type = 'incombat', effect = 'speed', effectvalue = 3, descript = "+3 speed"}],
 	recipe = '',
 	reqs = null,
 	cost = 500,
@@ -727,9 +727,9 @@ armorelvenchain = {
 armorplate = {
 	code = 'armorplate',
 	name = 'Plate Armor',
-	icon = load("res://files/images/items/armorplate.png"),
+	icon = "res://files/images/items/armorplate.png",
 	description = "An old, durable suit of plate armor. Protects the wearer against most physical damage. ",
-	effect = [{type = 'onequip', effect = 'armor', effectvalue = 10, descript = "+10 Armor"}],
+	effect = [{type = 'incombat', effect = 'protection', effectvalue = 55, descript = "55% Protection"},{type = 'onequip', effect = 'armor', effectvalue = 10, descript = "+10 Armor"}],
 	recipe = '',
 	reqs = null,
 	cost = 750,
@@ -742,9 +742,9 @@ armorplate = {
 armorrobe = {
 	code = 'armorrobe',
 	name = "Wizard's Robe",
-	icon = load("res://files/images/items/armorrobe.png"),
+	icon = "res://files/images/items/armorrobe.png",
 	description = "Despite what might appear as a clunky piece of clothing, combat robes allow the wearer to hold and hide various items and potions for quick and unexpected use and don't restrict movement. Outer fabric is easily torn to prevent grabbing and tuckling and can be quickly repaired with magic later. ",
-	effect = [{type = 'onequip', effect = 'armor', effectvalue = 4, descript = "+4 Armor"},{type = 'onequip', effect = 'maf', effectvalue = 1, descript = "+1 Magic Affinity"}],
+	effect = [{type = 'incombat', effect = 'protection', effectvalue = 35, descript = "35% Protection"},{type = 'onequip', effect = 'armor', effectvalue = 4, descript = "+4 Armor"},{type = 'onequip', id = 'armormaf', effect = 'maf', effectvalue = 1, descript = "+1 Magic Affinity"}],
 	recipe = '',
 	reqs = null,
 	cost = 350,
@@ -757,7 +757,7 @@ armorrobe = {
 weapondagger = {
 	code = 'weapondagger',
 	name = 'Dagger',
-	icon = load("res://files/images/items/weapondagger.png"),
+	icon = "res://files/images/items/weapondagger.png",
 	description = "A simple weapon providing bare minimum of physical power. ",
 	effect = [{type = 'incombat', effect = 'damage', effectvalue = 4, descript = "+4 Damage"}],
 	recipe = '',
@@ -772,7 +772,7 @@ weapondagger = {
 weaponsword = {
 	code = 'weaponsword',
 	name = 'Long Sword',
-	icon = load("res://files/images/items/weaponsword.png"),
+	icon = "res://files/images/items/weaponsword.png",
 	description = "Medium sized sword perfectly balanced for close combat. \n[color=yellow]Requirements: 2 Agility[/color]",
 	effect = [{type = 'incombat', effect = 'damage', effectvalue = 7, descript = "+7 Damage"}],
 	recipe = '',
@@ -787,9 +787,9 @@ weaponsword = {
 weaponclaymore = {
 	code = 'weaponclaymore',
 	name = 'Claymore',
-	icon = load("res://files/images/items/weaponclaymore.png"),
+	icon = "res://files/images/items/weaponclaymore.png",
 	description = "Large, two-handed sword for extra punch. Slows the wielder a little due to its size and weight.\n[color=yellow]Requirements: 4 Strength[/color] ",
-	effect = [{type = 'incombat', effect = 'damage', effectvalue = 12, descript = "+12 Damage"}, {type = 'incombat', effect = 'speed', effectvalue = -3, descript = "-3 speed"}],
+	effect = [{type = 'incombat', effect = 'damage', effectvalue = 12, descript = "+12 Damage"}, {type = 'incombat', id = 'weaponspeed', effect = 'speed', effectvalue = -3, descript = "-3 speed"}],
 	recipe = '',
 	reqs = [{reqstat = 'sstr', oper = 'gte', reqvalue = 4}],
 	cost = 450,
@@ -802,7 +802,7 @@ weaponclaymore = {
 weaponaynerisrapier = {
 	code = 'weaponaynerisrapier',
 	name = "Ayneris's Rapier",
-	icon = load("res://files/images/items/weaponaynerisrapier.png"),
+	icon = "res://files/images/items/weaponaynerisrapier.png",
 	description = "\n[color=yellow]Requirements: 4 Agility[/color] ",
 	effect = [{type = 'incombat', effect = 'damage', effectvalue = 8, descript = "+8 Damage"}, {type = 'incombat', effect = 'passive', effectvalue = 'doubleattack', descript = '50% chance to attack twice'}],
 	recipe = '',
@@ -816,8 +816,8 @@ weaponaynerisrapier = {
 },
 accgoldring = {
 	code = 'accgoldring',
-	name = 'A Golden Ring',
-	icon = load("res://files/images/items/goldring.png"),
+	name = 'Golden Ring',
+	icon = "res://files/images/items/goldring.png",
 	description = "This finely crafted gold ring comprises of two intertwined bands.\n[color=green]Increases slave's luxury[/color]",
 	effect = [],
 	recipe = '',
@@ -832,7 +832,7 @@ accgoldring = {
 accslavecollar = {
 	code = 'accslavecollar',
 	name = 'A Leather Slave Collar',
-	icon = load("res://files/images/items/collar.png"),
+	icon = "res://files/images/items/collar.png",
 	description = "This leather collar is designed to fit tightly around the neck. It has rings to which bindings can be attached.\n",
 	effect = [{type = 'onendday', effect = 'slavecollareffect', descript = "Increases Obedience by the end of a day. "}],
 	recipe = '',
@@ -847,7 +847,7 @@ accslavecollar = {
 acchandcuffs = {
 	code = 'acchandcuffs',
 	name = 'A Pair Of Handcuffs',
-	icon = load("res://files/images/items/handcuffs.png"),
+	icon = "res://files/images/items/handcuffs.png",
 	description = "These handcuffs are lightly padded but robust enough to secure even the most troublesome slave.\n",
 	effect = [{type = 'onendday', effect = 'handcuffeffect', descript = "Increases Obedience by the end of a day and prevents escapes. "}],
 	recipe = '',
@@ -862,7 +862,7 @@ acchandcuffs = {
 acctravelbag = {
 	code = 'acctravelbag',
 	name = 'Travelling Bag',
-	icon = load("res://files/images/items/bag.png"),
+	icon = "res://files/images/items/bag.png",
 	description = "A great partner of any experienced adventurer. Despite minor wear, it looks really sturdy. \nIncreases party's total carry weight by 20. ",
 	effect = [],
 	recipe = '',
@@ -890,6 +890,24 @@ func maf(value):
 
 func end(value):
 	slave.stats.end_mod += value
+
+func cour(value):
+	slave.stats.cour_base += value
+
+func conf(value):
+	slave.stats.conf_base += value
+
+func wit(value):
+	slave.stats.wit_base += value
+
+func charm(value):
+	slave.stats.charm_base += value
+
+func health(value):
+	slave.stats.health_max += value
+
+func energy(value):
+	slave.stats.energy_max += value
 
 func beauty(value):
 	slave.beautytemp += value
@@ -986,7 +1004,7 @@ func handcuffeffect(slave):
 
 func createunstackable(itemcode):
 	var item = itemlist[itemcode]
-	var tempitem = {code = item.code, type = item.subtype, name = item.name, owner = null, effects = item.effect, enchant = null, reqs = item.reqs, icon = item.icon.get_path(), description = item.description, weight = item.weight}
+	var tempitem = {code = item.code, type = item.subtype, name = item.name, owner = null, effects = str2var(var2str(item.effect)), enchant = '', reqs = item.reqs, icon = item.icon, description = item.description, weight = item.weight}
 	tempitem.id = "I" + str(globals.state.itemcounter) 
 	globals.state.itemcounter += 1
 	return tempitem
@@ -1009,8 +1027,8 @@ func regressionpoteffect():
 	return text
 
 func hairdyeeffect():
-	get_node("hairdyepanel/TextEdit").set_text('')
-	get_node("hairdyepanel").set_hidden(false)
+	globals.main.get_node("itemnode/hairdyepanel/TextEdit").set_text('')
+	globals.main.get_node("itemnode/hairdyepanel").set_hidden(false)
 
 func hairgrowtheffect():
 	var text = ''
@@ -1170,42 +1188,6 @@ func beautyeffect():
 
 var currentpotion = ''
 
-func minoruseffect():
-	var buttons = []
-	var text = ''
-	currentpotion = globals.itemdict.minoruspot
-	if slave == globals.player:
-		text = (slave.dictionary('Choose where would you like to apply Minorus Potion on yourself?'))
-	else:
-		text = (slave.dictionary('Choose where would you like to apply Minorus Potion on $name?'))
-	if slave.asssize != 'flat' && slave.asssize != 'masculine':
-		buttons.append(['Butt','applybutt'])
-	if slave.titssize != 'flat' && slave.titssize != 'masculine':
-		buttons.append(['Breasts','applytits'])
-	if !slave.penis in ['none','small']:
-		buttons.append(['Penis','applypenis'])
-	if slave.balls != 'none' && slave.balls != 'small':
-		buttons.append(['Testicles','applytestic'])
-	main.dialogue(true, self, text, buttons)
-
-func majoruseffect():
-	currentpotion = globals.itemdict.majoruspot
-	var buttons = []
-	var text = ''
-	if slave == globals.player:
-		text = (slave.dictionary('Choose where would you like to apply Majorus Potion on yourself?'))
-	else:
-		text = (slave.dictionary('Choose where would you like to apply Majorus Potion on $name?'))
-	if slave.asssize != 'huge':
-		buttons.append(['Butt','applybutt'])
-	if slave.titssize != 'huge':
-		buttons.append(['Breasts','applytits'])
-	if slave.penis != 'big' && slave.penis != 'none':
-		buttons.append(['Penis','applypenis'])
-	if slave.balls != 'big' && slave.balls != 'none':
-		buttons.append(['Testicles','applytestic'])
-	main.dialogue(true, self, text, buttons)
-
 func bondageeffect():
 	globals.get_tree().get_current_scene().popup(slave.dictionary("You help $name to cover $his wounds. "))
 	if slave.effects.has('bandaged') == false:
@@ -1215,88 +1197,6 @@ func bondageeffect():
 		slave.health += slave.stats.health_max/5
 
 
-func applybutt():
-	var text = ''
-	main.close_dialogue()
-	if currentpotion.code == 'minoruspot':
-		slave.asssize = globals.sizearray[globals.sizearray.find(slave.asssize)-1]
-		if slave == globals.player:
-			text = slave.dictionary("You apply the Minorus Potion to your butt. A little while later, you notice that it has shrunken in size. ")
-		else:
-			text = slave.dictionary("You apply the Minorus Potion to $name's butt. A little while later, you notice that it has shrunken in size. ")
-	elif currentpotion.code == 'majoruspot':
-		if slave.asssize == 'masculine':
-			slave.asssize = globals.sizearray[globals.sizearray.find(slave.asssize)+2]
-		else:
-			slave.asssize = globals.sizearray[globals.sizearray.find(slave.asssize)+1]
-		if slave == globals.player:
-			text = slave.dictionary("You apply the Majorus Potion to your butt. A little while later, you notice that it has grown bigger. ")
-		else:
-			text = slave.dictionary("You apply the Majorus Potion to $name's butt. A little while later, you notice that it has grown bigger. ")
-	currentpotion.amount -= 1
-	slave.toxicity = currentpotion.toxicity
-	main.hide_everything()
-	main.popup(text)
-
-func applytits():
-	var text = ''
-	main.close_dialogue()
-	if currentpotion.code == 'minoruspot':
-		slave.titssize = globals.sizearray[globals.sizearray.find(slave.titssize)-1]
-		if slave == globals.player:
-			text = slave.dictionary("You apply the Minorus Potion to your breasts. A little while later, you notice that they have shrunken in size. ")
-		else:
-			text = slave.dictionary("You apply the Minorus Potion to $name's breasts. A little while later, you notice that they have shrunken in size. ")
-	elif currentpotion.code == 'majoruspot':
-		if slave.titssize == 'masculine':
-			slave.titssize = globals.sizearray[globals.sizearray.find(slave.titssize)+2]
-		else:
-			slave.titssize = globals.sizearray[globals.sizearray.find(slave.titssize)+1]
-		if slave == globals.player:
-			text = slave.dictionary("You apply the Majorus Potion to your breasts. A little while later, you notice that they have grown bigger. ")
-		else:
-			text = slave.dictionary("You apply the Majorus Potion to $name's breasts. A little while later, you notice that they have grown bigger. ")
-	currentpotion.amount -= 1
-	main.hide_everything()
-	main.popup(text)
-
-func applypenis():
-	var text = ''
-	main.close_dialogue()
-	if currentpotion.code == 'minoruspot':
-		slave.penis = globals.genitaliaarray[globals.genitaliaarray.find(slave.penis)-1]
-		if slave == globals.player:
-			text = slave.dictionary("You apply the Minorus Potion to your penis. A little while later, you notice that it has shrunken in size. ")
-		else:
-			text = slave.dictionary("You apply the Minorus Potion to $name's penis. A little while later, you notice that it has shrunken in size. ")
-	elif currentpotion.code == 'majoruspot':
-		slave.penis = globals.genitaliaarray[globals.genitaliaarray.find(slave.penis)+1]
-		if slave == globals.player:
-			text = slave.dictionary("You apply the Majorus Potion to your penis. A little while later, you notice that it has grown bigger. ")
-		else:
-			text = slave.dictionary("You apply the Majorus Potion to $name's penis. A little while later, you notice that it has grown bigger. ")
-	currentpotion.amount -= 1
-	main.hide_everything()
-	main.popup(text)
-
-func applytestic():
-	var text = ''
-	main.close_dialogue()
-	if currentpotion.code == 'minoruspot':
-		slave.balls = globals.genitaliaarray[globals.genitaliaarray.find(slave.balls)-1]
-		if slave == globals.player:
-			text = slave.dictionary("You apply the Minorus Potion to your balls. A little while later, you notice that they have shrunken in size. ")
-		else:
-			text = slave.dictionary("You apply the Minorus Potion to $name's balls. A little while later, you notice that they have shrunken in size. ")
-	elif currentpotion.code == 'majoruspot':
-		slave.balls = globals.genitaliaarray[globals.genitaliaarray.find(slave.balls)+1]
-		if slave == globals.player:
-			text = slave.dictionary("You apply the Majorus Potion to your balls. A little while later, you notice that they have grown bigger. ")
-		else:
-			text = slave.dictionary("You apply the Majorus Potion to $name's balls. A little while later, you notice that they have grown bigger. ")
-	currentpotion.amount -= 1
-	main.hide_everything()
-	main.popup(text)
 
 #recipes
 func recipedecrypt(item):
@@ -1403,26 +1303,26 @@ aphrodisiac = 2,
 stimulantpot = 1,
 taintedessenceing = 2
 }
-func _on_cancel_pressed():
-	get_node("hairdyepanel").set_hidden(true)
+#func _on_cancel_pressed():
+#	get_node("hairdyepanel").set_hidden(true)
+#
+#
+#func _on_hairdyepanel_visibility_changed():
+#	if get_node("itemnode/hairdyepanel/TextEdit").get_text() == '':
+#		get_node("itemnode/hairdyepanel/confirm").set_disabled(true)
+#	else:
+#		get_node("itemnode/hairdyepanel/confirm").set_disabled(false)
+#
+#
+#func _on_confirm_pressed():
+#	slave.haircolor = get_node("itemnode/hairdyepanel/TextEdit").get_text()
+#	get_node("itemnode/hairdyepanel").set_hidden(true)
+#	var temp = globals.itemdict['hairdye']
+#	temp.amount -= 1
+#	globals.main.hide_everything()
 
-
-func _on_hairdyepanel_visibility_changed():
-	if get_node("hairdyepanel/TextEdit").get_text() == '':
-		get_node("hairdyepanel/confirm").set_disabled(true)
-	else:
-		get_node("hairdyepanel/confirm").set_disabled(false)
-
-
-func _on_confirm_pressed():
-	slave.haircolor = get_node("hairdyepanel/TextEdit").get_text()
-	get_node("hairdyepanel").set_hidden(true)
-	var temp = globals.itemdict['hairdye']
-	temp.amount -= 1
-	main.hide_everything()
-
-func _on_TextEdit_text_changed( text ):
-	_on_hairdyepanel_visibility_changed()
+#func _on_TextEdit_text_changed( text ):
+#	_on_hairdyepanel_visibility_changed()
 
 
 func sortitems(first, second):

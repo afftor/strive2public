@@ -356,8 +356,6 @@ __meta__ = {
 
 [node name="stats" type="Tabs" parent="."]
 
-editor/display_folded = true
-visibility/visible = false
 anchor/right = 1
 anchor/bottom = 1
 focus/ignore_mouse = false
@@ -365,7 +363,7 @@ focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
 margin/left = 10.0
-margin/top = 33.0
+margin/top = 37.0
 margin/right = 10.0
 margin/bottom = 10.0
 script/script = ExtResource( 3 )
@@ -607,6 +605,7 @@ max_lines_visible = -1
 
 [node name="tooltip1" type="Panel" parent="stats"]
 
+editor/display_folded = true
 visibility/visible = false
 anchor/left = 3
 anchor/top = 3
@@ -727,6 +726,7 @@ flat = false
 
 [node name="trainingabilspanel" type="PopupPanel" parent="stats"]
 
+editor/display_folded = true
 visibility/visible = false
 anchor/left = 3
 anchor/top = 3
@@ -1010,9 +1010,9 @@ focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
 margin/left = 13.0
-margin/top = 284.0
+margin/top = 335.0
 margin/right = 160.0
-margin/bottom = 320.0
+margin/bottom = 375.0
 custom_fonts/font = ExtResource( 5 )
 toggle_mode = false
 enabled_focus_mode = 2
@@ -1080,20 +1080,21 @@ max_lines_visible = -1
 
 editor/display_folded = true
 margin/left = 12.0
-margin/top = 206.0
+margin/top = 212.0
 margin/right = 162.0
-margin/bottom = 242.0
+margin/bottom = 252.0
 
 [node name="useitem" type="Button" parent="stats"]
 
+visibility/visible = false
 focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
 margin/left = 13.0
-margin/top = 323.0
+margin/top = 286.0
 margin/right = 160.0
-margin/bottom = 359.0
+margin/bottom = 326.0
 custom_fonts/font = ExtResource( 5 )
 toggle_mode = false
 enabled_focus_mode = 2
@@ -1108,9 +1109,9 @@ focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
 margin/left = 13.0
-margin/top = 363.0
+margin/top = 293.0
 margin/right = 160.0
-margin/bottom = 399.0
+margin/bottom = 333.0
 custom_fonts/font = ExtResource( 5 )
 toggle_mode = false
 enabled_focus_mode = 2
@@ -1125,9 +1126,9 @@ focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
 margin/left = 13.0
-margin/top = 245.0
+margin/top = 252.0
 margin/right = 159.0
-margin/bottom = 281.0
+margin/bottom = 292.0
 custom_fonts/font = ExtResource( 5 )
 toggle_mode = false
 enabled_focus_mode = 2
@@ -1137,6 +1138,7 @@ flat = false
 
 [node name="selectspellpanel" type="PopupPanel" parent="stats"]
 
+editor/display_folded = true
 visibility/visible = false
 anchor/left = 3
 anchor/top = 3
@@ -1249,6 +1251,7 @@ visible_characters = -1
 
 [node name="callorder" type="PopupPanel" parent="stats"]
 
+editor/display_folded = true
 visibility/visible = false
 anchor/left = 3
 anchor/top = 3
@@ -1322,7 +1325,7 @@ focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
 margin/left = 10.0
-margin/top = 33.0
+margin/top = 37.0
 margin/right = 10.0
 margin/bottom = 10.0
 __meta__ = {
@@ -1520,7 +1523,7 @@ focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
 margin/left = 10.0
-margin/top = 33.0
+margin/top = 37.0
 margin/right = 10.0
 margin/bottom = 10.0
 __meta__ = {
@@ -3018,6 +3021,7 @@ show_hidden_files = false
 
 [node name="sexual" type="Tabs" parent="."]
 
+visibility/visible = false
 anchor/right = 1
 anchor/bottom = 1
 focus/ignore_mouse = false
@@ -3025,7 +3029,7 @@ focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
 margin/left = 10.0
-margin/top = 33.0
+margin/top = 37.0
 margin/right = 10.0
 margin/bottom = 10.0
 script/script = ExtResource( 18 )

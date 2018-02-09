@@ -290,6 +290,7 @@ var nakedspritesdict = {
 	Yris = {cons = 'yrisnormalnaked', rape = 'yrisshocknaked', clothcons = 'yrisnormal', clothrape = 'yrisshock'},
 	Ayneris = {cons = 'aynerisneutralnaked', rape = 'aynerisangrynaked', clothcons = 'aynerisneutral', clothrape = 'aynerisangry'},
 	Zoe = {cons = "zoehappynaked", rape = 'zoesadnaked', clothcons = 'zoehappy', clothrape = 'zoesad'},
+	Melissa = {cons = "melissanakedfriendly", rape = 'melissanakedneutral', clothcons = 'melissafriendly', clothrape = 'melissaneutral'},
 	}
 
 func sexinitiate(secondtime = false):
@@ -492,7 +493,7 @@ func sexinitiate(secondtime = false):
 		slave.energy -= action.cost
 		partner.energy -= action.cost
 		if slave.spec == 'nympho':
-			slave.energy -= action.cost/2
+			slave.energy += action.cost/2
 			text += "\n[color=green]$name's skills and training helped $him waste less energy.[/color]"
 		if globals.player != partner:
 			globals.player.energy -= action.cost

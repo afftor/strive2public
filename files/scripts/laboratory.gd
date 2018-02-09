@@ -204,6 +204,7 @@ description = '',
 options = [''],
 target = '',
 data = {
+tongue = {price = {mana = 75, gold = 250}, items = {natureessenceing = 3, magicessenceing = 1}, time = 3},
 fur = {price = {mana = 100, gold = 250}, items = {natureessenceing = 2, magicessenceing = 2}, time = 6},
 scales = {price = {mana = 100, gold = 250}, items = {natureessenceing = 2, magicessenceing = 2}, time = 6},
 hearing = {price = {mana = 50, gold = 150}, items = {bestialessenceing = 1, magicessenceing = 1}, time = 4},
@@ -355,6 +356,13 @@ func labbuttonselected(string):
 				get_node("labmodpanel/ScrollContainer1/secondarymodlist").add_child(newbutton)
 				newbutton.connect("pressed",self,'genetalia', [dict[string],'fur'])
 				newbutton.set_meta('effect', 'fur')
+			if slave.mods.has('augmenttongue') == false:
+				newbutton = get_node("labmodpanel/ScrollContainer1/secondarymodlist/buttontemp").duplicate()
+				newbutton.set_hidden(false)
+				newbutton.set_text('Elongated tongue')
+				get_node("labmodpanel/ScrollContainer1/secondarymodlist").add_child(newbutton)
+				newbutton.connect("pressed",self,'genetalia', [dict[string],'tongue'])
+				newbutton.set_meta('effect', 'tongue')
 			if slave.skincov == 'scales' && slave.mods.has('augmentscales') == false:
 				newbutton = get_node("labmodpanel/ScrollContainer1/secondarymodlist/buttontemp").duplicate()
 				newbutton.set_hidden(false)
@@ -527,6 +535,8 @@ func genetalia(dict, action):
 		text = "$name's fur will be magically augmented to provide better protection. \n\nRequirements:"
 	elif modification.code == 'mod' && action == 'scale':
 		text = "$name's scales will be magically augmented to provide better protection. \n\nRequirements:"
+	elif modification.code == 'mod' && action == 'tongue':
+		text = "$name's tongue will be elongated allowing better performance during oral sex. \n\nRequirements:"
 	elif modification.code == 'mod' && action == 'hearing':
 		text = "$name's hearing will be magically augmented and will raise $his awareness. \n\nRequirements:"
 	elif modification.code == 'mod' && action == 'str':
@@ -639,6 +649,8 @@ func _on_labconfirm_pressed():
 		if result == 'fur':
 			slave.mods['augmentfur'] = 'augmentfur'
 			slave.add_effect(globals.effectdict.augmentfur)
+		elif result == 'tongue':
+			slave.mods['augmenttongue'] = 'augmenttongue'
 		elif result == 'scales':
 			slave.mods['augmentscales'] = 'augmentscales'
 			slave.add_effect(globals.effectdict.augmentscales)

@@ -444,5 +444,136 @@ var traits = {
     "conflict": [
       ""
     ]    
-  }
+  },
+  "Small Eater": {
+    "name": "Small Eater",
+    "description": "[color=aqua]Food consumption reduced to 1/3. [/color]",
+    "effect": {
+      
+    },
+    "tags": [
+      "secondary",
+    ],
+    "conflict": [
+      ""
+    ]    
+  },
+  "Hard Worker": {
+    "name": "Hard Worker",
+    "description": "[color=aqua]+15% gold from non-sexual occupations. [/color]",
+    "effect": {
+      
+    },
+    "tags": [
+      "secondary",
+      "mental",
+    ],
+    "conflict": [
+      ""
+    ]    
+  },
+  "Sturdy": {
+    "name": "Sturdy",
+    "description": "[color=aqua]Takes 15% less damage in combat [/color]",
+    "effect": {
+      
+    },
+    "tags": [
+      "secondary",
+    ],
+    "conflict": [
+      ""
+    ]    
+  },
+  "Influential": {
+    "name": "Influential",
+    "description": "[color=aqua]Selling slaves worth 20% more gold. [/color]",
+    "effect": {
+      
+    },
+    "tags": [
+      "secondary",
+    ],
+    "conflict": [
+      ""
+    ]    
+  },
+  "Gifted": {
+    "name": "Gifted",
+    "description": "[color=aqua]+20% upgrade points received. [/color]",
+    "effect": {
+      
+    },
+    "tags": [
+      "secondary",
+    ],
+    "conflict": [
+      ""
+    ]    
+  },
+  "Scoundrel": {
+    "name": "Scoundrel",
+    "description": "[color=aqua]+15 gold per day. [/color]",
+    "effect": {
+      
+    },
+    "tags": [
+      "secondary",
+    ],
+    "conflict": [
+      ""
+    ]    
+  },
+  "Nimble": {
+    "name": "Nimble",
+    "description": "[color=aqua]+25% to hit chances. [/color]",
+    "effect": {
+      
+    },
+    "tags": [
+      "secondary",
+    ],
+    "conflict": [
+      ""
+    ]    
+  },
+  "Authority": {
+    "name": "Authority",
+    "description": "[color=aqua]If above 95 obedience, all other slaves gain +5 obedience per day. [/color]",
+    "effect": {
+      
+    },
+    "tags": [
+      "secondary",
+    ],
+    "conflict": [
+      ""
+    ]    
+  },
+  "Mentor": {
+    "name": "Mentor",
+    "description": "[color=aqua]Slaves below level 3 gain +5 exp points per day[/color]",
+    "effect": {
+      
+    },
+    "tags": [
+      "secondary",
+    ],
+    "conflict": [
+      ""
+    ]    
+  },
+  "Grateful": {
+    "name": "Grateful",
+    "description": "Due to your actions, $name will overlook certain hardships willing to stick close to you.\n\n [color=aqua]No luxury requirements. [/color]",
+    "effect": {
+      
+    },
+    "tags": [
+      "secondary",
+    ],
+    "conflict": [
+      ""
+    ]    
+  },
 }

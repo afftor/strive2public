@@ -208,7 +208,7 @@ helpproject = [
 var choices = {
 intro = [{text = "— Go on (enable tutorial help)", funct = 'basics'}, {text = "— No need (skip tutorial)", funct = "endtutorial"}],
 close = [{text = "End", funct = 'close'}],
-menu = [{text = "I want to ask about...", funct = 'help'}, {text = "I want to see the old help section", funct = "oldhelp"},{text = "Show me Character Gallery", funct = 'showgallery'}, {text = "I want you to change outfit", funct = 'alisewardrobe'},{text = "Nothing", funct = 'close'}],
+menu = [{text = "I want to ask about...", funct = 'help'},{text = "Show me Character Gallery", funct = 'showgallery'}, {text = "I want you to change outfit", funct = 'alisewardrobe'},{text = "Nothing", funct = 'close'}],
 slave = [
 {text = 'Characteristics', funct = 'slavechar'},
 {text = 'Leveling', funct = 'slavelevel'},
@@ -422,10 +422,7 @@ func slavechoice():
 func help():
 	showchoice('help')
 
-func oldhelp():
-	close()
-	get_node("tutsprite").set_as_toplevel(true)
-	get_parent().oldglossary()
+
 
 func alisegreet():
 	for i in globals.state.tutorial:

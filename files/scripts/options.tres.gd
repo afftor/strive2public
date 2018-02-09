@@ -16,7 +16,6 @@ func _ready():
 	get_node("TabContainer/Game/futasliderlabel").set_text('Random futa occurrence: ' + str(globals.rules['futa_chance']) + '% of females')
 	get_node("TabContainer/Game/futaslider").set_value(globals.rules['futa_chance'])
 	get_node("TabContainer/Settings/fullscreen").set_pressed(OS.is_video_mode_fullscreen())
-	get_node("TabContainer/Settings/screenresize").set_pressed(globals.rules.oldresize)
 	get_node("TabContainer/Supporter section/cheatpassword").set_text('')
 	get_node("TabContainer/Game/childlike").set_pressed(globals.rules['children'])
 	get_node("TabContainer/Settings/custommouse").set_pressed(globals.rules.custommouse)
@@ -25,10 +24,6 @@ func _ready():
 	get_node("TabContainer/Game/permadeath").set_pressed(globals.rules.permadeath)
 	get_node("TabContainer/Game/aliseoption").select(globals.rules.enddayalise)
 	get_node("TabContainer/Settings/spritesindialogues").set_pressed(globals.rules.spritesindialogues)
-	get_node("TabContainer/Settings/screenresize/width").set_text(str(globals.rules.screenwidth))
-	get_node("TabContainer/Settings/screenresize/height").set_text(str(globals.rules.screenheight))
-	for i in get_node("TabContainer/Settings/screenresize").get_children():
-		i.set_hidden(!globals.rules.oldresize)
 	if globals.rules.children == true:
 		get_node("TabContainer/Game/noadults").set_hidden(false)
 		get_node("TabContainer/Game/noadults").set_pressed(globals.rules.noadults)

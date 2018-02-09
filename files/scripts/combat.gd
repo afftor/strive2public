@@ -29,6 +29,7 @@ class fighter:
 	var energymax
 	var armor
 	var armorbase
+	var protection
 	var abilities
 	var activeabilities
 	var cooldowns
@@ -124,6 +125,7 @@ func start_battle(nosound = false):
 	combatant.energy = slave.stats.energy_cur
 	combatant.energymax = slave.stats.energy_max
 	combatant.armor = slave.stats.armor_cur
+	combatant.protection = 0
 	combatant.abilities = {}
 	combatant.activeabilities = []
 	combatant.cooldowns = {}
@@ -140,7 +142,7 @@ func start_battle(nosound = false):
 		if !i in ['clothcommon','underwearplain'] && i != null:
 			var tempitem = globals.state.unstackables[i]
 			for k in tempitem.effects:
-				if k.type == 'incombat':
+				if k.type == 'incombat' && has_method(k.effect):
 					call(k.effect, combatant, k.effectvalue)
 	
 	playergroup.append(combatant)
@@ -166,6 +168,7 @@ func start_battle(nosound = false):
 		combatant.energy = slave.stats.energy_cur
 		combatant.energymax = slave.stats.energy_max
 		combatant.armor = slave.stats.armor_cur
+		combatant.protection = 0
 		combatant.state = 'normal'
 		combatant.abilities = {}
 		combatant.activeabilities = []
@@ -205,6 +208,7 @@ func start_battle(nosound = false):
 		combatant.energy = i.stats.energy
 		combatant.energymax = i.stats.energy
 		combatant.armor = i.stats.armor
+		combatant.protection = 0
 		combatant.state = 'normal'
 		combatant.abilities = []
 		combatant.cooldowns = {}
@@ -233,11 +237,17 @@ func start_battle(nosound = false):
 func damage(combatant, value):
 	combatant.power += value
 
+func armor(combatant, value):
+	combatant.armor += value
+
 func speed(combatant, value):
 	combatant.speed += value
 
 func passive(combatant, value):
 	combatant.passives.append(value)
+
+func protection(combatant, value):
+	combatant.protection += value
 
 func _process(delta):
 	var button
@@ -581,7 +591,7 @@ func actionexecute(actor, target, skill):
 			
 			if skill.type == 'physical':
 				if skill.attributes.find('physpen') < 0:
-					damage = ((actor.power * 2.5)*skill.power) - target.armor
+					damage = float((actor.power * 2.5)*skill.power) * float(float(100-target.protection)/100) - target.armor
 				else:
 					damage = ((actor.power * 2.5)*skill.power)
 				if target.action.code == 'protect':
@@ -593,6 +603,8 @@ func actionexecute(actor, target, skill):
 				damage = (actor.magic * 2.5) * skill.power
 				if skill.code == 'mindblast':
 					damage += target.healthmax/5
+			if target.person != null and target.person.traits.has("Sturdy"):
+				damage = damage*0.85
 			actor.energy = max(actor.energy - skill.costenergy,0)
 			if actor.person != null && actor.person.spec == 'assassin':
 				damage += 5
@@ -703,6 +715,8 @@ func hitchance(attacker, target):
 	var hit = ''
 	var attackspeed = attacker.speed
 	var targetspeed = target.speed
+	if attacker.person != null && attacker.person.traits.has("Nimble"):
+		attackspeed *= 1.25
 	if attacker.action.has('accuracy'):
 		attackspeed = attackspeed*attacker.action.accuracy
 	if playergroup.find(target) >= 0:
@@ -752,7 +766,7 @@ func enemytooltip(enemy):
 	if enemy.person != null:
 		text += enemy.person.race + ' ' + enemy.person.age + ' ' + enemy.person.sex + '.\n'
 	if playergroup[0].effects.has('mindreadeffect'):
-		text += "Power: " + str(enemy.power) + " Speed: " + str(enemy.speed) + " Armor: " + str(enemy.armor)
+		text += "Power: " + str(enemy.power) + " Speed: " + str(enemy.speed) + " Protection: " + str(enemy.protection) + " Armor: " + str(enemy.armor)
 		if enemy.person != null:
 			text += "\nOrigins: " + enemy.person.origins
 	get_node("tooltippanel/tooltiptext").set_bbcode(text)

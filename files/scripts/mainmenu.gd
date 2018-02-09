@@ -30,8 +30,8 @@ func _ready():
 	get_node("TextureFrame/creditpanel/RichTextLabel").set_bbcode(text)
 	if globals.rules.fullscreen == true:
 		OS.set_window_fullscreen(true)
-	if globals.rules.oldresize == true:
-		get_tree().set_screen_stretch(1, 1, Vector2(globals.rules.screenwidth,globals.rules.screenheight))
+#	if globals.rules.oldresize == true:
+#		get_tree().set_screen_stretch(1, 1, Vector2(globals.rules.screenwidth,globals.rules.screenheight))
 	charcreateinitiate()
 	globals.modsfile._ready()
 
@@ -849,11 +849,9 @@ func _on_slaveconfirm_pressed():
 			i += 15
 	else:
 		globals.state.reputation.wimborn += 30
-	#backgroundbonus
-	var tempnode = load("res://files/scripts/items.gd").new()
 	if background == 'mercenary':
 		for i in ['armorleather','armorleather','weaponsword','weaponsword']:
-			var tempitem = tempnode.createunstackable(i)
+			var tempitem = globals.items.createunstackable(i)
 			globals.state.unstackables[str(tempitem.id)] = tempitem
 	elif background == 'farmer':
 		globals.resources.gold += 250
@@ -861,7 +859,7 @@ func _on_slaveconfirm_pressed():
 	elif background == 'noble':
 		globals.resources.gold += 300
 		for i in ['clothmaid','clothmaid']:
-			var tempitem = tempnode.createunstackable(i)
+			var tempitem = globals.items.createunstackable(i)
 			globals.state.unstackables[str(tempitem.id)] = tempitem
 	elif background == 'mage':
 		globals.spelldict.heal.learned = true
@@ -923,8 +921,6 @@ func _on_slaveconfirm_pressed():
 		globals.state.sidequests.sebastianumbra = 2
 		globals.state.portals.umbra.enabled = true
 	
-	globals.player.gear.costume = 'clothcommon'
-	globals.player.gear.underwear = 'underwearplain'
 
 var backstorydescription = {
 '$sibling' : 'After the news about your fortune, your $sibling asked to go with you offering $his help. You never quite could refuse $name and so you went with $him. ',

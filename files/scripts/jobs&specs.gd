@@ -659,6 +659,8 @@ func ffprostitution(slave):
 	if slave.traits.has('Sex-crazed') == true:
 		slave.stress += -counter*4
 		gold = gold*1.2
+	if slave.mods.has("augmenttongue"):
+		gold = gold * 1.15
 	slave.metrics.randompartners += round(rand_range(2,4))
 	slave.metrics.sex += round(rand_range(2,5))
 	if slave.sexuals.unlocks.find('penetration') && slave.vagina != 'none':
@@ -752,6 +754,8 @@ func fucktoy(slave):
 		slave.metrics.oral += round(rand_range(1,4))
 	if slave.sexuals.unlocks.find('orgy') >= 0:
 		slave.metrics.orgy += round(rand_range(1,3))
+	if slave.mods.has("augmenttongue"):
+		gold = gold * 1.15
 	gold = round(gold)
 	if slave.wit >= 25:
 		slave.loyal -= 8
@@ -880,6 +884,8 @@ func whorewimborn(slave):
 	if slave.traits.has('Sex-crazed') == true:
 		slave.stress += -counter*4
 		gold = gold*1.2
+	if slave.mods.has("augmenttongue"):
+		gold = gold * 1.15
 	if counter < 4:
 		text += "\nBrothel owner complained that $name does not have sufficient skill and didn't satisfy many customers. $His salary was cut by half. \n"
 		gold = gold/2
@@ -944,6 +950,8 @@ func escortwimborn(slave):
 		gold = gold*1.2
 	if slave.spec == 'geisha':
 		gold = gold*1.25
+	if slave.mods.has("augmenttongue"):
+		gold = gold * 1.15
 	gold = round(gold)
 	slave.xp += gold/6
 	slave.metrics.randompartners += round(rand_range(1,2))
@@ -987,6 +995,8 @@ func fucktoywimborn(slave):
 		gold = gold*1.1
 	if slave.mods.has("hollownipples") == true:
 		gold = gold*1.2
+	if slave.mods.has("augmenttongue"):
+		gold = gold * 1.15
 	if counter < 4:
 		text += "\nBrothel owner complained that $name does not have sufficient skill and didn't satisfy many customers. $His salary was cut by half. \n"
 		slave.conf += -rand_range(5,10)

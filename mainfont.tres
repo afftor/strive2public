@@ -4,7 +4,7 @@
 
 [resource]
 
-font/size = 14
+font/size = 18
 extra_spacing/top = 1
 font/use_mipmaps = false
 font/use_filter = true

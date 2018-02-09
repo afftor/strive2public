@@ -63,7 +63,7 @@ unlocked = false, name = 'Garthor', descript = chardescript.garthor, sprite = 'g
 scenes = []
 },
 theron = {
-unlocked = false, name = 'Garthor', descript = chardescript.theron, sprite = 'theron', naked = 'null', nakedunlocked = false,
+unlocked = false, name = 'Theron', descript = chardescript.theron, sprite = 'theron', naked = 'null', nakedunlocked = false,
 scenes = []
 },
 hade = {
@@ -113,6 +113,7 @@ conf = 90,
 wit = 97,
 charm = 84,
 skin = 'fair',
+traits = ['Authority']
 },
 Emily = {
 basics = ['Human', 'teen', 'female', 'poor'],
@@ -137,6 +138,7 @@ conf = 28,
 wit = 54,
 charm = 41,
 skin = 'pale',
+traits = ['Small Eater']
 },
 Tisha = {
 basics = ['Human', 'adult', 'female', 'commoner'],
@@ -159,6 +161,7 @@ charm = 71,
 height = 'average',
 relatives = {father = -1, mother = 2, siblings = [], children =[]},
 imageportait = "res://files/images/tisha/tishaportrait.png",
+traits = ['Hard Worker']
 },
 Cali = {
 basics = ['Halfkin Wolf', 'child', 'female', 'commoner'],
@@ -182,6 +185,7 @@ conf = 55,
 wit = 35,
 charm = 20,
 unique = "Cali",
+traits = ['Sturdy']
 },
 Chloe = {
 basics = ['Gnome', 'adult', 'female', 'commoner'],
@@ -204,6 +208,7 @@ conf = 34,
 wit = 77,
 charm = 51,
 obed = 90,
+traits = ['Grateful', 'Gifted']
 },
 Tia = {
 basics = ['Human', 'teen', 'female', 'commoner'],
@@ -249,6 +254,7 @@ sagi = 2,
 sstr = 1,
 skillpoints = 2,
 obed = 90,
+traits = ['Grateful', 'Nimble']
 },
 Yris = {
 basics = ['Beastkin Cat', 'adult', 'female', 'commoner'],
@@ -276,6 +282,7 @@ sagi = 1,
 send = 1,
 loyal = 25,
 obed = 90,
+traits = ['Grateful', 'Scoundrel']
 },
 Maple = {
 basics = ['Fairy', 'adult', 'female', 'rich'],
@@ -300,7 +307,7 @@ charm = 92,
 level = 5,
 skillpoints = 14,
 obed = 90,
-traits = ['Ascetic']
+traits = ['Grateful', 'Influential']
 },
 Zoe = {
 basics = ['Beastkin Wolf', 'teen', 'female', 'noble'],
@@ -326,6 +333,7 @@ obed = 90,
 loyal = 25,
 imageportait = 'res://files/images/zoe/zoeportrait.png',
 smaf = 1,
+traits = ['Grateful', 'Mentor']
 },
 }
 
@@ -337,6 +345,8 @@ fairynaked = load("res://files/images/maple/maplenaked.png"),
 melissafriendly = load("res://files/images/melissa/melissafriendly.png"),
 melissaneutral = load("res://files/images/melissa/melissaneutral.png"),
 melissaworried = load("res://files/images/melissa/melissaworried.png"),
+melissanakedfriendly = load("res://files/images/melissa/melissanakedfriendly.png"),
+melissanakedneutral = load("res://files/images/melissa/melissanakedneutral.png"),
 emilyhappy = load("res://files/images/emily/emilyhappy.png"),
 emilynormal = load("res://files/images/emily/emilyneutral.png"),
 emily2normal = load("res://files/images/emily/emily2neutral.png"),
@@ -394,5 +404,6 @@ hadeneutral = load("res://files/images/hadeneutral.png"),
 hadesmile = load("res://files/images/hadesmile.png"),
 hadesad = load("res://files/images/hadesad.png"),
 hadeangry = load("res://files/images/hadeangry.png"),
+goblin = load("res://files/images/goblin.png"),
 }
 

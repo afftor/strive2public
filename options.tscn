@@ -49,84 +49,9 @@ focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
 margin/left = 10.0
-margin/top = 33.0
+margin/top = 37.0
 margin/right = 10.0
 margin/bottom = 10.0
-
-[node name="screenresize" type="CheckBox" parent="TabContainer/Settings"]
-
-anchor/top = 3
-anchor/bottom = 3
-hint/tooltip = "Change screen stretching mode (might require game relaunch to properly apply)"
-focus/ignore_mouse = false
-focus/stop_mouse = true
-size_flags/horizontal = 2
-size_flags/vertical = 2
-margin/left = 0.0
-margin/top = 17.0
-margin/right = 170.0
-margin/bottom = -10.0
-toggle_mode = true
-enabled_focus_mode = 2
-shortcut = null
-text = "Screen resize by scale"
-flat = false
-align = 0
-
-[node name="width" type="LineEdit" parent="TabContainer/Settings/screenresize"]
-
-anchor/top = 3
-anchor/bottom = 3
-focus/ignore_mouse = false
-focus/stop_mouse = true
-size_flags/horizontal = 2
-size_flags/vertical = 2
-margin/left = 14.0
-margin/top = -27.5
-margin/right = 72.0
-margin/bottom = -57.5
-text = "1080"
-placeholder/alpha = 0.6
-focus_mode = 2
-caret/caret_blink = false
-caret/caret_blink_speed = 0.65
-
-[node name="height" type="LineEdit" parent="TabContainer/Settings/screenresize"]
-
-anchor/top = 3
-anchor/bottom = 3
-focus/ignore_mouse = false
-focus/stop_mouse = true
-size_flags/horizontal = 2
-size_flags/vertical = 2
-margin/left = 97.0
-margin/top = -27.5
-margin/right = 154.0
-margin/bottom = -57.5
-text = "600"
-placeholder/alpha = 0.6
-focus_mode = 2
-caret/caret_blink = false
-caret/caret_blink_speed = 0.65
-
-[node name="screenconf" type="Button" parent="TabContainer/Settings/screenresize"]
-
-anchor/top = 3
-anchor/bottom = 3
-hint/tooltip = "Sets basic resolution which should be used to upscale (might make gui parts relatively smaller)"
-focus/ignore_mouse = false
-focus/stop_mouse = true
-size_flags/horizontal = 2
-size_flags/vertical = 2
-margin/left = 27.0
-margin/top = -77.5
-margin/right = 141.0
-margin/bottom = -116.5
-toggle_mode = false
-enabled_focus_mode = 2
-shortcut = null
-text = "Confirm"
-flat = false
 
 [node name="fading" type="CheckBox" parent="TabContainer/Settings"]
 
@@ -189,9 +114,9 @@ focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
 margin/left = 0.0
-margin/top = 45.0
-margin/right = 136.0
-margin/bottom = 18.0
+margin/top = 105.0
+margin/right = 167.0
+margin/bottom = 76.0
 toggle_mode = true
 enabled_focus_mode = 2
 shortcut = null
@@ -270,23 +195,6 @@ margin/top = -25.0
 margin/right = 121.0
 margin/bottom = -7.0
 text = "Music volume"
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
-
-[node name="Label" type="Label" parent="TabContainer/Settings"]
-
-anchor/top = 3
-anchor/bottom = 3
-focus/ignore_mouse = true
-focus/stop_mouse = true
-size_flags/horizontal = 2
-size_flags/vertical = 0
-margin/left = 1.0
-margin/top = 67.0
-margin/right = 128.0
-margin/bottom = 51.0
-text = "Screen Settings"
 percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
@@ -1130,10 +1038,6 @@ text = "Cancel"
 flat = false
 
 [connection signal="visibility_changed" from="." to="." method="_on_options_visibility_changed"]
-
-[connection signal="pressed" from="TabContainer/Settings/screenresize" to="." method="_on_screenresize_pressed"]
-
-[connection signal="pressed" from="TabContainer/Settings/screenresize/screenconf" to="." method="_on_screenconf_pressed"]
 
 [connection signal="pressed" from="TabContainer/Settings/fading" to="." method="_on_fading_pressed"]
 

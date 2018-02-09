@@ -2,7 +2,7 @@
 extends Node
 
 var test = File.new()
-var testslaverace = ["Centaur"]#globals.allracesarray
+var testslaverace = globals.allracesarray
 var testslaveage = 'random'
 var testslavegender = 'random'
 var testslaveorigin = ['slave','poor','commoner','rich','noble']
@@ -10,7 +10,7 @@ var currentslave = 0 setget currentslave_set
 var selectedslave = -1
 var texture = null
 var startcombatzone = "mountaincave"
-onready var maintext = '' setget maintext_set
+onready var maintext = '' setget maintext_set, maintext_get
 onready var exploration = get_node("explorationnode")
 onready var slavepanel = get_node("MainScreen/slave_tab")
 
@@ -43,9 +43,12 @@ var musicraising = false
 func maintext_set(value):
 	get_node("outside/outsidetextbox").set_bbcode(value)
 
+func maintext_get():
+	return get_node("outside/outsidetextbox").get_bbcode()
+
 func currentslave_set(value):
 	currentslave = value
-	get_node("itemnode").slave = globals.slaves[currentslave]
+	globals.items.slave = globals.slaves[currentslave]
 	get_node("spellnode").slave = globals.slaves[currentslave]
 
 func _input(event):
@@ -112,7 +115,7 @@ func _ready():
 	globals.resources.panel = get_node("ResourcePanel")
 	if globals.player.name == '':
 		#_on_leavenode_mouse_enter()
-		get_tree().set_screen_stretch(1, 1, Vector2(1080,600))
+		#get_tree().set_screen_stretch(1, 1, Vector2(1080,600))
 		globals.player = globals.newslave('Human', 'teen', 'male')
 		globals.player.relatives.father = 0
 		globals.player.relatives.mother = 0
@@ -121,14 +124,13 @@ func _ready():
 		globals.player.abilityactive.append('escape')
 		globals.player.abilityactive.append('acidspit')
 		globals.state.supporter = true
-#		for i in globals.charactergallery.values():
-#			i.unlocked = true
-#			i.nakedunlocked = true
-#			for k in i.scenes:
-#				k.unlocked = true
+		for i in globals.charactergallery.values():
+			i.unlocked = true
+			i.nakedunlocked = true
+			for k in i.scenes:
+				k.unlocked = true
 		_on_new_slave_button_pressed()
 	rebuild_slave_list()
-	get_node("itemnode").main = get_tree().get_current_scene()
 	get_node("spellnode").main = get_tree().get_current_scene()
 	get_node("birthpanel/raise/childpanel/child").connect('pressed', self, 'babyage', ['child'])
 	get_node("birthpanel/raise/childpanel/teen").connect('pressed', self, 'babyage', ['teen'])
@@ -217,6 +219,10 @@ func _on_new_slave_button_pressed():
 		i.unlocked = true
 		if !i.type in ['gear','dummy']:
 			i.amount += 10
+	for i in ['armorchain','weaponclaymore','clothpet','clothkimono','underwearlacy','weaponaynerisrapier']:
+		var tmpitem = globals.items.createunstackable(i)
+		globals.state.unstackables[str(tmpitem.id)] = tmpitem
+		#globals.items.enchantrand(tmpitem)
 	globals.slaves = slave
 	slave.stats.health_cur = 5
 	globals.state.reputation.wimborn = 41
@@ -227,34 +233,31 @@ func _on_new_slave_button_pressed():
 	globals.player.ability.append('heal')
 	#globals.player.stats.maf_cur = 3
 	globals.state.branding = 2
-	globals.resources.gold += 100
+	globals.resources.gold += 1000
 	globals.resources.food += 1000
 	globals.resources.mana += 5
 	globals.player.energy += 100
 	globals.player.xp += 50
 	globals.resources.upgradepoints += 100
-	for i in ['armorchain','weaponclaymore','clothpet','clothninja','clothkimono','underwearlacy','weaponaynerisrapier']:
-		var tmpitem = get_node("itemnode").createunstackable(i)
-		globals.state.unstackables[str(tmpitem.id)] = tmpitem
+	
 	globals.state.sidequests.brothel = 1
-	globals.state.sidequests.chloe = 3
+	globals.state.sidequests.emily = 14
 	#globals.state.decisions.append('')
 	globals.state.rank = 3
-	globals.state.mainquest = 41
+	globals.state.mainquest = 32
 	globals.resources.mana = 200
 	globals.state.farm = 3
 	globals.state.mansionupgrades.mansionlab = 1
 	globals.state.mansionupgrades.mansionalchemy = 1
 	globals.state.mansionupgrades.mansionparlor = 1
-	globals.state.backpack.stackables.rope = 4
-	globals.player.sstr = 5
+	globals.state.backpack.stackables.rope = 1
+	globals.player.sstr = 1
 	globals.player.send = 5
 	globals.player.stats.agi_max = 5
-	globals.player.sagi = 5
+	globals.player.sagi = 1
 	globals.state.reputation.frostford = 50
 	globals.state.condition -= 100
 	globals.state.decisions = ['tishaemilytricked','chloebrothel','ivrantaken','goodroute']
-	globals.player.stats.armor_cur = 100
 	#lobals.state.upcomingevents.append({code = 'tishaappearance',duration =1})
 #	for i in globals.characters.characters:
 #		slave = globals.characters.create(i)
@@ -421,7 +424,7 @@ func _on_prisonbutton_pressed():
 var enddayprocess = false
 
 func _on_end_pressed():
-	if globals.state.mainquest == 40:
+	if globals.state.mainquest == 41:
 		popup("You can't afford to wait. You must go to the Mage's Order.")
 		return
 	
@@ -487,7 +490,7 @@ func _on_end_pressed():
 		slave.metrics.ownership += 1
 		var handcuffs = false
 		for i in slave.gear.values():
-				if !i in ['underwearplain','clothcommon'] && i != null:
+				if i != null:
 					var tempitem = globals.state.unstackables[i]
 					if tempitem.code in ['acchandcuffs']:
 						handcuffs = true
@@ -504,11 +507,14 @@ func _on_end_pressed():
 						if workdict.has('dead') && workdict.dead == true:
 							deads_array.append({number = count, reason = workdict.text})
 							continue
-						if slave.traits.find("Clumsy") >= 0 && get_node("MainScreen/slave_tab").jobdict[slave.work].tags.find("physical"):
+						if slave.traits.has("Clumsy") && get_node("MainScreen/slave_tab").jobdict[slave.work].tags.has("physical"):
 							if workdict.has('gold'):
 								workdict.gold *= 0.7
 							if workdict.has('food'):
 								workdict.food *= 0.7
+						if slave.traits.has("Hard Worker") && !get_node("MainScreen/slave_tab").jobdict[slave.work].tags.has("sex"):
+							if workdict.has('gold'):
+								workdict.gold *= 1.15
 						for i in globals.state.reputation:
 							if globals.state.reputation[i] < -10 && rand_range(0,100) < 33 && get_node("MainScreen/slave_tab").jobdict[slave.work].tags.find(i) >= 0:
 								slave.obed -= max(abs(globals.state.reputation[i])*2 - slave.loyal/6,0)
@@ -541,6 +547,8 @@ func _on_end_pressed():
 					var consumption = max(3, 10 - (chef.sagi + (chef.wit/20))/2)
 					if chef.race == 'Scylla':
 						consumption = max(3, consumption - 1)
+					if slave.traits.has("Small Eater"):
+						consumption = consumption/3
 					globals.resources.food -= consumption
 				else:
 					globals.resources.food -= 10
@@ -633,11 +641,11 @@ func _on_end_pressed():
 			elif slave.race == 'Orc':
 				slave.health += 15
 			elif slave.race == 'Slime':
-				slave.toxicity = -200
+				slave.toxicity -= 200
 			#Traits
 			if slave.traits.find("Uncivilized") >= 0:
 				for i in globals.slaves:
-					if i.spec == 'tamer' && (i.work == slave.work || i.work in ['rest','headgirl','jailer']):
+					if i.spec == 'tamer' && (i.work == slave.work || i.work in ['rest','headgirl','jailer']) && i.away.duration == 0:
 						slave.obed += 30
 						slave.loyal += 5
 						if rand_range(0,100) < 10:
@@ -656,6 +664,17 @@ func _on_end_pressed():
 					slave.trait_remove('Pliable')
 					slave.add_trait('Slutty')
 					text0.set_bbcode(text0.get_bbcode() + slave.dictionary('[color=green]$name has become Slutty. $His willpower strengthened.[/color]\n'))
+			if slave.traits.has("Scoundrel"):
+				globals.resources.gold += 15
+				text1.set_bbcode(text1.get_bbcode() + slave.dictionary('[color=green]$name has brought some additional gold by the end of day.[/color]\n'))
+			if slave.traits.has("Authority") && slave.obed >= 95:
+				for i in globals.slaves:
+					if i.away.duration == 0 && i != slave:
+						i.obed += 5
+			if slave.traits.has("Mentor"):
+				for i in globals.slaves:
+					if i.away.duration == 0 && i != slave && i.level < 3:
+						i.xp += 5
 			#Rules and clothes effect
 			if slave.rules.contraception == true:
 				if globals.resources.gold >= 5:
@@ -704,7 +723,7 @@ func _on_end_pressed():
 					var tempitem = globals.state.unstackables[i]
 					for k in tempitem.effects:
 						if k.type == 'onendday':
-							text2.set_bbcode(text2.get_bbcode() + slave.dictionary(get_node("itemnode").call(k.effect, slave)))
+							text2.set_bbcode(text2.get_bbcode() + slave.dictionary(globals.items.call(k.effect, slave)))
 			if slave.toxicity > 0:
 				if slave.toxicity > 35 && rand_range(0,10) > 6.5:
 					slave.stress += rand_range(10,15)
@@ -713,21 +732,21 @@ func _on_end_pressed():
 				if slave.toxicity > 60 && rand_range(0,10) > 7.5:
 					get_node("spellnode").slave = slave
 					text0.set_bbcode(text0.get_bbcode()+get_node("spellnode").mutate(slave.toxicity/30, true) + "\n\n")
-				slave.toxicity = -rand_range(1,5)
-			if slave.gear.armor == null && slave.gear.costume == null:
-				slave.obed += rand_range(10,20)
-				if slave.traits.find('Pervert') >= 0 && slave.traits.find('Sex-crazed') < 0 && slave.conf > 40:
-					slave.stress += rand_range(10,15)
-					text2.set_bbcode(text2.get_bbcode() + slave.dictionary("Your denial of upper clothing to $name causes $him to take you more seriously, but $he certainly is stressed out having to walk around almost naked.\n"))
-				else:
-					text2.set_bbcode(text2.get_bbcode() + slave.dictionary("Your denial of upper clothing to $name causes $him to take you more seriously, however, it does not seem that $he's feels too bothered about being almost naked.\n"))
-			if slave.gear.underwear == null:
-				slave.lust = rand_range(5,10)
-				if slave.traits.find('Pervert') < 0 && slave.traits.find('Sex-crazed') < 0:
-					slave.obed -= rand_range(10,20)
-					text2.set_bbcode(text2.get_bbcode() + slave.dictionary("Wearing no underwear causes $name to become more open to dirty behavior, although $he does not seem to be very happy about it.\n"))
-				else:
-					text2.set_bbcode(text2.get_bbcode() + slave.dictionary("Wearing no underwear causes $name to become more open to dirty behavior, but $he seems to accept it surprisingly well.\n"))
+				slave.toxicity -= rand_range(1,5)
+#			if slave.gear.armor == null && slave.gear.costume == null:
+#				slave.obed += rand_range(10,20)
+#				if slave.traits.find('Pervert') >= 0 && slave.traits.find('Sex-crazed') < 0 && slave.conf > 40:
+#					slave.stress += rand_range(10,15)
+#					text2.set_bbcode(text2.get_bbcode() + slave.dictionary("Your denial of upper clothing to $name causes $him to take you more seriously, but $he certainly is stressed out having to walk around almost naked.\n"))
+#				else:
+#					text2.set_bbcode(text2.get_bbcode() + slave.dictionary("Your denial of upper clothing to $name causes $him to take you more seriously, however, it does not seem that $he's feels too bothered about being almost naked.\n"))
+#			if slave.gear.underwear == null:
+#				slave.lust = rand_range(5,10)
+#				if slave.traits.find('Pervert') < 0 && slave.traits.find('Sex-crazed') < 0:
+#					slave.obed -= rand_range(10,20)
+#					text2.set_bbcode(text2.get_bbcode() + slave.dictionary("Wearing no underwear causes $name to become more open to dirty behavior, although $he does not seem to be very happy about it.\n"))
+#				else:
+#					text2.set_bbcode(text2.get_bbcode() + slave.dictionary("Wearing no underwear causes $name to become more open to dirty behavior, but $he seems to accept it surprisingly well.\n"))
 			if slave.stress > 80 && slave.sleep != 'jail' && slave.sleep != 'farm' && slave.away.duration < 1:
 				text0.set_bbcode(text0.get_bbcode() + slave.dictionary("$name complained "+globals.fastif(headgirl == null, "to you, ", "to your headgirl, ")+"that $he's having it too hard and hoped to get some rest.\n"))
 			if slave.stress >= 100 && slave.cour+slave.conf+slave.wit+slave.charm > 50:
@@ -768,7 +787,7 @@ func _on_end_pressed():
 								text0.set_bbcode(text0.get_bbcode() + headgirl.dictionary('[color=yellow]$name reports, that ') + slave.dictionary('$name will likely give birth soon. [/color]\n'))
 				if rand_range(0,100) < 40:
 					slave.stress += rand_range(15,20)
-			if slave.away.duration == 0 && !slave.sleep in ['jail','farm']:
+			if slave.away.duration == 0 && !slave.sleep in ['jail','farm'] && !slave.traits.has("Grateful"):
 				var slaveluxury = slave.calculateluxury()
 				var luxurycheck = slave.countluxury()
 				var luxury = luxurycheck.luxury
@@ -1270,7 +1289,10 @@ func newbuttonscene(button, target, counter):
 	newbutton.set_hidden(false)
 	newbutton.set_text(button.text)
 	newbutton.get_node("Label").set_text(str(counter))
-	newbutton.connect("pressed", target, button.function , [button.args])
+	if button.has('args'):
+		newbutton.connect("pressed", target, button.function , [button.args])
+	else:
+		newbutton.connect("pressed", target, button.function)
 
 func _on_scenepicture_pressed():
 	if get_node("scene/Panel/scenepicture").is_pressed():
@@ -1449,9 +1471,7 @@ func hide_everything():
 	get_node("MainScreen/mansion/selfinspect").set_hidden(true)
 	get_node("MainScreen/mansion/portalspanel").set_hidden(true)
 	get_node("MainScreen/mansion/upgradespanel").set_hidden(true)
-	get_node("paperdoll").set_hidden(true)
 	globals.hidetooltip()
-	#rebuild_slave_list()
 
 
 
@@ -1752,19 +1772,19 @@ func _on_alchemy_pressed():
 			i.queue_free()
 	var array = []
 	for i in globals.itemdict.values():
-		array.append(i)
-	array.sort_custom(get_node("itemnode"),'sortitems')
-	for i in array:
 		if i.recipe != '' && i.unlocked == true:
-			var newpotline = potline.duplicate()
-			potlist.add_child(newpotline)
-			if i.icon != null:
-				newpotline.get_node("potbutton/icon").set_texture(i.icon)
-			newpotline.set_hidden(false)
-			newpotline.get_node("potnumber").set_text(str(i.amount))
-			newpotline.get_node("potbutton").set_text(i.name)
-			newpotline.get_node("potbutton").connect('pressed', self, 'brewlistpressed', [i])
-			newpotline.set_name(i.name)
+			array.append(i)
+	array.sort_custom(globals.items,'sortitems')
+	for i in array:
+		var newpotline = potline.duplicate()
+		potlist.add_child(newpotline)
+		if i.icon != null:
+			newpotline.get_node("potbutton/icon").set_texture(i.icon)
+		newpotline.set_hidden(false)
+		newpotline.get_node("potnumber").set_text(str(i.amount))
+		newpotline.get_node("potbutton").set_text(i.name)
+		newpotline.get_node("potbutton").connect('pressed', self, 'brewlistpressed', [i])
+		newpotline.set_name(i.name)
 	alchemyclear()
 
 func alchemyclear():
@@ -1782,11 +1802,11 @@ func brewlistpressed(potion):
 	var text = ''
 	var recipedict = {}
 	var brewable = true
-	recipedict = get_node('itemnode')[potion.recipe]
+	recipedict = globals.items[potion.recipe]
 	var array = []
 	for i in recipedict:
 		array.append(i)
-	array.sort_custom(get_node("itemnode"),'sortbytype')
+	array.sort_custom(globals.items,'sortbytype')
 	alchemyclear()
 	if potselected.icon != null:
 		get_node("MainScreen/mansion/alchemypanel/Panel 2").set_hidden(false)
@@ -1824,7 +1844,7 @@ func _on_brewbutton_pressed():
 	var counter = get_node("MainScreen/mansion/alchemypanel/brewcounter").get_value()
 	while counter > 0:
 		counter -= 1
-		get_node("itemnode").recipemake(potselected)
+		globals.items.recipemake(potselected)
 	brewlistpressed(potselected)
 	_on_alchemy_pressed()
 	get_node("MainScreen/mansion/alchemypanel/brewbutton").set_disabled(true)
@@ -2205,61 +2225,8 @@ func babyage(age):
 
 
 
-#
-# Glossarynode
-#
-
-
-func _on_closeglossary_pressed():
-	get_node("glossarynode").set_hidden(true)
-	get_node("glossarynode/Panel/glossarysearch").set_text("")
-
-func glossarysearch():
-	var list = get_node("glossarynode/Panel/Container/VBoxContainer")
-	var button = get_node("glossarynode/Panel/Container/VBoxContainer/glossarybutton")
-	var searchtext = get_node("glossarynode/Panel/glossarysearch").get_text()
-	for i in list.get_children():
-		if i != button:
-			i.set_hidden(true)
-			i.free()
-	
-	for i in globals.glossary.glossarylist:
-		if i.text.findn(searchtext) >= 0 || i.name.findn(searchtext) >= 0 || searchtext == "":
-			var newbutton = button.duplicate()
-			newbutton.set_hidden(false)
-			newbutton.set_text(i.name)
-			newbutton.connect('pressed',self,'glossaryselect',[i])
-			list.add_child(newbutton)
-
-
-func _on_glossarysearch_text_changed( text ):
-	glossarysearch()
-
-
-func glossaryselect(element):
-	for i in get_node("glossarynode/Panel/Container/VBoxContainer").get_children():
-		if i.is_pressed == true && i.get_text() != element.name:
-			i.set_pressed(false)
-		elif i.get_text() == element.name:
-			i.set_pressed(true)
-	get_node("glossarynode/Panel/glossarytext").set_bbcode(element.text)
-
 func _on_helpglossary_pressed():
 	get_node("tutorialnode").callalise()
-
-func oldglossary():
-	get_node("glossarynode").popup()
-	get_node("glossarynode/Panel/glossarysearch").set_text("")
-	glossarysearch()
-
-func _on_glossarytext_meta_clicked( meta ):
-	for i in globals.glossary.glossarylist:
-		if i.code == meta:
-			meta = i
-			break
-	get_node("glossarynode/Panel/glossarysearch").set_text(meta)
-	glossaryselect(meta)
-
 
 #### selfinsepct
 
@@ -2316,7 +2283,7 @@ func _on_selfinspectclose_pressed():
 
 
 func _on_selfgear_pressed():
-	get_node("itemnode").slave = globals.player
+	globals.items.slave = globals.player
 	get_node("paperdoll").slave = globals.player
 	get_node("paperdoll").showup()
 
@@ -2373,7 +2340,7 @@ func selfabilityselect(ability):
 	
 	confirmbutton.set_disabled(false)
 	
-	text = '[center]'+ ability.name + '[/center]\n' + ability.description + '\nCooldown:' + str(ability.cooldown) + '\nLearn requirements: ' 
+	text = '[center]'+ ability.name + '[/center]\n' + ability.description + '\nCooldown:' + str(ability.cooldown) + '\nLearn requirements: '
 	
 	var array = []
 	for i in ability.reqs:
@@ -2426,7 +2393,7 @@ func _on_abilityclose_pressed():
 func _on_selfpotion_pressed():
 	_on_inventory_pressed('self')
 
-var potionselected 
+var potionselected
 
 func potbuttonpressed(potion):
 	potionselected = potion
@@ -2444,7 +2411,7 @@ func _on_potioncancelbutton_pressed():
 
 func _on_potionusebutton_pressed():
 	var slave = globals.player
-	var itemnode = get_tree().get_current_scene().get_node('itemnode')
+	var itemnode = globals.items
 	itemnode.slave = slave
 	if potionselected.code != 'minoruspot' && potionselected.code != 'majoruspot' && potionselected.code != 'hairdye':
 		if potionselected.code in ['aphrodisiac', 'regressionpot', 'miscariagepot','amnesiapot','stimulantpot','deterrentpot']:
@@ -2452,7 +2419,7 @@ func _on_potionusebutton_pressed():
 			return
 		popup(slave.dictionary(itemnode.call(potionselected.effect)))
 		_on_selfbutton_pressed()
-		slave.toxicity = potionselected.toxicity
+		slave.toxicity += potionselected.toxicity
 		potionselected.amount -= 1
 	else:
 		itemnode.call(potionselected.effect)
@@ -3013,254 +2980,21 @@ var inventorymode = 'mainscreen'
 
 
 func _on_inventory_pressed(mode = 'mainscreen'):
-	get_node("inventory").popup()
-	inventorymode = mode
-	itemselected = null
-	selectcategory(get_node("inventory/Panel/everything"))
-	get_node("inventory/Panel/everything").set_pressed(true)
-	get_node("inventory/Panel/applytoslave").set_hidden(true)
-	get_node("inventory/Panel/discard").set_hidden(true)
-	get_node("inventory/Panel/iteminfo").set_bbcode("")
-	get_node("inventory/Panel/iconbig").set_hidden(true)
-	get_node("inventory/Panel/movebp").set_hidden(true)
-	get_node("inventory/Panel/moveinv").set_hidden(true)
-	sortitems()
-
-func selectcategory(button):
-	categoryselected = button.get_name().to_lower()
-	button.set_pressed(true)
-	for i in get_tree().get_nodes_in_group("invcategories"):
-		if i != button:
-			i.set_pressed(false)
-	sortitems()
-
-func sortitems():
-	var itemgrid = get_node("inventory/Panel/ScrollContainer/GridContainer")
-	var button
-	var array = []
-	var items = false
-	var tempitem
-	if itemselected != null && itemselected.has('id') == false:
-		if itemselected.amount <= 0:
-			_on_inventory_pressed()
-			return
-	for i in get_node("inventory/Panel/ScrollContainer/GridContainer").get_children() + get_node("inventory/Panel/backpackcontainer/GridContainer").get_children():
-		if i.get_name() != "Button":
-			i.set_hidden(true)
-			i.queue_free()
-	for i in globals.itemdict.values():
-		array.append(i)
-	array.sort_custom(get_node("itemnode"),'sortitems')
-	for i in array:
-		if i.amount < 1 || i.type in ['gear','dummy']:
-			continue
-		if categoryselected.findn(i.type) < 0 && categoryselected != 'everything':
-			continue
-		items = true
-		button = get_node("inventory/Panel/ScrollContainer/GridContainer/Button").duplicate()
-		button.set_hidden(false)
-		button.get_node('number').set_text(str(i.amount))
-		if i.icon != null:
-			button.get_node("icon").set_texture(i.icon)
-		else:
-			button.get_node("Label").set_text(i.name)
-			button.get_node("Label").set_hidden(false)
-			#button.get_node("icon").set_texture(globals.noimage)
-		button.connect("pressed",self,"itemselected",[button])
-		button.connect("mouse_enter",self,'itemhovered',[button])
-		button.connect("mouse_exit",self,'itemunhovered',[button])
-		button.set_meta("item", i)
-		itemgrid.add_child(button)
-	for i in globals.state.unstackables.values():
-		if i.owner != null && globals.state.findslave(i.owner) == null && i.owner != globals.player.id:
-			i.owner = null
-		if i.owner == null && (categoryselected == 'everything' || categoryselected == 'gear' ):
-			items = true
-			button = get_node("inventory/Panel/ScrollContainer/GridContainer/Button").duplicate()
-			button.set_hidden(false)
-			button.get_node('number').set_hidden(true)
-			if i.icon != null:
-				button.get_node("icon").set_texture(load(i.icon))
-			else:
-				button.get_node("Label").set_text(i.name)
-				button.get_node("Label").set_hidden(false)
-			button.connect("pressed",self,"itemselected",[button])
-			button.connect("mouse_enter",self,'itemhovered',[button])
-			button.connect("mouse_exit",self,'itemunhovered',[button])
-			button.set_meta("item", i)
-			itemgrid.add_child(button)
-	for i in globals.state.backpack.stackables:
-		tempitem = globals.itemdict[i]
-		button = get_node("inventory/Panel/ScrollContainer/GridContainer/Button").duplicate()
-		get_node("inventory/Panel/backpackcontainer/GridContainer").add_child(button)
-		button.set_hidden(false)
-		button.get_node("number").set_text(str(globals.state.backpack.stackables[i]))
-		if tempitem.icon != null:
-			button.get_node("icon").set_texture(tempitem.icon)
-		button.connect("pressed",self,"itemselected",[button, true])
-		button.connect("mouse_enter",self,'itemhovered',[button])
-		button.connect("mouse_exit",self,'itemunhovered',[button])
-		button.set_meta("item", tempitem)
-	for i in globals.state.backpack.unstackables:
-		button = get_node("inventory/Panel/ScrollContainer/GridContainer/Button").duplicate()
-		get_node("inventory/Panel/backpackcontainer/GridContainer").add_child(button)
-		button.set_hidden(false)
-		button.get_node("number").set_hidden(true)
-		if i.icon != null:
-			button.get_node("icon").set_texture(load(i.icon))
-		button.connect("pressed",self,"itemselected",[button, true])
-		button.connect("mouse_enter",self,'itemhovered',[button])
-		button.connect("mouse_exit",self,'itemunhovered',[button])
-		button.set_meta("item", i)
-	calculateweight()
-	get_node("inventory/Panel/noitems").set_hidden(items)
-
-func calculateweight():
-	var weight = globals.state.calculateweight()
-	get_node("inventory/Panel/weightmeter/Label").set_text("Weight: " + str(weight.currentweight) + '/' + str(weight.maxweight))
-	get_node("inventory/Panel/weightmeter").set_val((weight.currentweight*10/max(weight.maxweight,1)*10))
-
-func itemselected(button, backpack = false):
-	var text = ''
-	var item = button.get_meta("item")
-	itemselected = item
-	for i in get_node("inventory/Panel/ScrollContainer/GridContainer").get_children() + get_node("inventory/Panel/backpackcontainer/GridContainer").get_children():
-		i.set_pressed(i == button)
-	if item.type in ['costume','underwear','armor','weapon','accessory']:
-		get_node("inventory/Panel/applytoslave").set_text("Equip")
-		text = globals.itemdescription(item)
-		if item.icon != null:
-			get_node("inventory/Panel/iconbig").set_texture(load(item.icon))
-			get_node("inventory/Panel/iconbig").set_hidden(false)
-		else:
-			get_node("inventory/Panel/iconbig").set_hidden(true)
-	else:
-		if item.icon != null:
-			get_node("inventory/Panel/iconbig").set_texture(item.icon)
-			get_node("inventory/Panel/iconbig").set_hidden(false)
-		else:
-			get_node("inventory/Panel/iconbig").set_hidden(true)
-		get_node("inventory/Panel/applytoslave").set_text("Use")
-		text = globals.itemdescription(item)
-	get_node("inventory/Panel/iteminfo").set_bbcode(text)
-	get_node("inventory/Panel/discard").set_hidden(backpack)
-	get_node("inventory/Panel/movebp").set_hidden(backpack)
-	get_node("inventory/Panel/moveinv").set_hidden(!backpack)
-	if itemselected.type in ['ingredient', 'supply'] || backpack == true:
-		get_node("inventory/Panel/applytoslave").set_hidden(true)
-	else:
-		get_node("inventory/Panel/applytoslave").set_hidden(false)
-
-func itemhovered(button):
-	var item = button.get_meta("item")
-	var pos
-	get_node("inventory/Panel/tooltip/Label").set_text(item.name)
-	get_node("inventory/Panel/tooltip").set_hidden(false)
-	pos = button.get_global_pos()
-	pos.y -= 40
-	pos.x -= 62
-	
-	get_node("inventory/Panel/tooltip").set_global_pos(pos)
-
-func itemunhovered(button):
-	get_node("inventory/Panel/tooltip").set_hidden(true)
-
-func _on_movebp_pressed():
-	var item = itemselected
-	if item.has('owner') == false:
-		item.amount -= 1
-		if globals.state.backpack.stackables.has(item.code):
-			globals.state.backpack.stackables[item.code] += 1
-		else:
-			globals.state.backpack.stackables[item.code] = 1
-	else:
-		globals.state.backpack.unstackables.append(item)
-		globals.state.unstackables.erase(item.id)
-	sortitems()
-
-func _on_moveinv_pressed():
-	var item = itemselected
-	if item.has('owner') == false:
-		item.amount += 1
-		globals.state.backpack.stackables[item.code] -= 1
-		if globals.state.backpack.stackables[item.code] <= 0:
-			globals.state.backpack.stackables.erase(item.code)
-			_on_inventory_pressed()
-	else:
-		globals.state.unstackables[str(item.id)] = item
-		globals.state.backpack.unstackables.erase(item)
-	sortitems()
-
-func _on_applytoslave_pressed():
-	if inventorymode == 'mainscreen':
-		selectslavelist(true, 'useitem', self, 'true', true )
-	elif inventorymode == 'self':
-		useitem(globals.player)
-		get_node("inventory").set_hidden(true)
-	else:
-		useitem(get_node("MainScreen/slave_tab").slave)
-		get_node("MainScreen/slave_tab")._on_slave_tab_visibility_changed()
-		get_node("inventory").set_hidden(true)
-
-func useitem(slave):
-	var tempitem
-	get_node("itemnode").slave = slave
-	if itemselected.code in ['aphrodisiac', 'regressionpot', 'miscariagepot','amnesiapot','stimulantpot','deterrentpot'] && slave == globals.player:
-		popup(slave.dictionary(get_node("itemnode").call(itemselected.effect)))
-		return
-	slave.metrics.item += 1
-	if itemselected.type == 'potion':
-		if itemselected.code != 'minoruspot' && itemselected.code != 'majoruspot' && itemselected.code != 'hairdye':
-			get_tree().get_current_scene().popup(slave.dictionary(get_node("itemnode").call(itemselected.effect)))
-			slave.toxicity = itemselected.toxicity
-			itemselected.amount -= 1
-		else:
-			get_node("itemnode").call(itemselected.effect)
-			get_node("inventory").set_hidden(true)
-	else:
-		if itemselected.reqs != null:
-			get_node("itemnode").slave = slave
-			if get_node("itemnode").checkreqs(itemselected) == false:
-				infotext(slave.dictionary("$name does not pass the requirements for ") + itemselected.name, 'red')
-				return
-		if slave.gear[itemselected.type] != null && !slave.gear[itemselected.type] in ['clothcommon','underwearplain']:
-			tempitem = globals.state.unstackables[slave.gear[itemselected.type]]
-			for i in tempitem.effects:
-				if i.type == 'onequip':
-					get_node("itemnode").call(i.effect, -i.effectvalue)
-			tempitem.owner = null
-		slave.gear[itemselected.type] = itemselected.id
-		itemselected.owner = slave.id
-		for i in itemselected.effects:
-			if i.type == 'onequip':
-				get_tree().get_current_scene().get_node("itemnode").call(i.effect, i.effectvalue)
-		itemselected = null
-		_on_inventory_pressed()
-		return
-	sortitems()
-
-
-func _on_discard_pressed():
-	if itemselected.has('id'):
-		globals.state.unstackables.erase(itemselected.id)
-		_on_inventory_pressed()
-	else:
-		itemselected.amount -= 1
-		sortitems()
-
-func _on_inventoryclose_pressed():
-	get_node("inventory").set_hidden(true)
-
-func _on_hideui_pressed():
-	if get_node("combat").is_visible() == true:
-		infotext("Can't hide UI during combat")
-		return
-	get_node("outside").set_hidden(get_node("outside").is_visible())
-	get_node("ResourcePanel").set_hidden(get_node("ResourcePanel").is_visible())
-	if get_node("hideui").get_text() == 'Hide UI':
-		get_node("hideui").set_text("Unhide UI")
-	else:
-		get_node("hideui").set_text("Hide UI")
+	get_node("inventory").open("mansion")
+#
+#func itemhovered(button):
+#	var item = button.get_meta("item")
+#	var pos
+#	get_node("inventory/Panel/tooltip/Label").set_text(item.name)
+#	get_node("inventory/Panel/tooltip").set_hidden(false)
+#	pos = button.get_global_pos()
+#	pos.y -= 40
+#	pos.x -= 62
+#	
+#	get_node("inventory/Panel/tooltip").set_global_pos(pos)
+#
+#func itemunhovered(button):
+#	get_node("inventory/Panel/tooltip").set_hidden(true)
 
 
 
@@ -3410,7 +3144,7 @@ func updatedescription():
 		text += "[center][color=yellow]Rape[/color][/center]"
 		text += "\nRequires a target and an optional assistant. Can be initiated with prisoners. \nCurrent target: "
 		for i in sexslaves:
-			text += i.dictionary('$name') + ". " 
+			text += i.dictionary('$name') + ". "
 		text += "\nCurrent assistant: "
 		for i in sexassist:
 			text += i.dictionary('$name') + ". "
@@ -3505,7 +3239,6 @@ func _on_supplybuy_pressed():
 
 func _on_close_pressed():
 	get_node("mansionsettings").set_hidden(true)
-
 
 
 

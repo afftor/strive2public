@@ -657,8 +657,9 @@ func _on_confirmdescript_pressed():
 
 
 func _on_gear_pressed():
-	get_tree().get_current_scene().get_node("paperdoll").slave = slave
-	get_tree().get_current_scene().get_node("paperdoll").showup()
+	globals.main._on_inventory_pressed()
+	globals.main.get_node('inventory').slavegear(slave)
+	globals.main.get_node('inventory').selectcategory(globals.main.get_node('inventory/gear'))
 
 
 func _on_spec_mouse_enter():

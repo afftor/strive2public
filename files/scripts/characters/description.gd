@@ -149,6 +149,8 @@ func mods():
 		text += '[color=#B05DB0]$His breasts has been modified and are flexible and sensitive enough for penetration. [/color]'
 	if slave.mods.has('augmentfur'):
 		text += "[color=#B05DB0]$His fur is magically augmented and provides extra resistance against harmful effects.[/color]\n"
+	if slave.mods.has('augmenttongue'):
+		text += "[color=#B05DB0]$His tongue is unusually long which allows better performance during oral sex [/color]\n"
 	if slave.mods.has('augmentscales'):
 		text += "[color=#B05DB0]$His scales are thicker than normal and provide extra protection against impacts.[/color]\n"
 	if slave.mods.has('augmenthearing'):
