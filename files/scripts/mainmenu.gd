@@ -156,6 +156,8 @@ func _on_startrandom_pressed():
 	globals.player.relatives.mother = 0
 	globals.player.ability.append('escape')
 	globals.player.abilityactive.append('escape')
+	globals.player.ability.append("protect")
+	globals.player.abilityactive.append("protect")
 	globals.player.cleartraits()
 	globals.resources.energy = 3
 	globals.resources.day = 1
@@ -824,6 +826,8 @@ func _on_slaveconfirm_pressed():
 	globals.player.relatives.mother = 0
 	globals.player.ability.append('escape')
 	globals.player.abilityactive.append('escape')
+	globals.player.ability.append("protect")
+	globals.player.abilityactive.append("protect")
 	globals.player.beautybase = 40
 	globals.resources.energy = 100
 	globals.resources.day = 1

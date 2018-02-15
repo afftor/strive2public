@@ -868,3 +868,12 @@ stats = {health = 450, power = 24, speed = 30, energy = 50, armor = 15, magic = 
 skills = [],
 },
 }
+
+var enemyequips = {
+weakbandits = {
+armor = [['armorleather',10], ['armorchain', 1], ['armorleather+', 1]],
+weapon = [['weapondagger',10], ['weaponsword', 2], ['weapondagger+', 2]],
+abilities = [],
+}
+}
+

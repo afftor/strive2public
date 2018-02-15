@@ -1,4 +1,4 @@
-[gd_scene load_steps=57 format=1]
+[gd_scene load_steps=59 format=1]
 
 [ext_resource path="res://files/theme.tres" type="Theme" id=1]
 [ext_resource path="res://files/buttons/inventory/11-litter.png" type="Texture" id=2]
@@ -27,30 +27,32 @@
 [ext_resource path="res://files/buttons/inventory/18(2).png" type="Texture" id=25]
 [ext_resource path="res://files/buttons/inventorypanel.png" type="Texture" id=26]
 [ext_resource path="res://files/buttons/inventory/7-(slave).png" type="Texture" id=27]
-[ext_resource path="res://files/buttons/inventory/36.png" type="Texture" id=28]
-[ext_resource path="res://files/buttons/inventory/35.png" type="Texture" id=29]
-[ext_resource path="res://files/buttons/icons/strength.png" type="Texture" id=30]
-[ext_resource path="res://files/buttons/icons/agility.png" type="Texture" id=31]
-[ext_resource path="res://files/buttons/icons/magic.png" type="Texture" id=32]
-[ext_resource path="res://files/buttons/icons/endurance.png" type="Texture" id=33]
-[ext_resource path="res://files/buttons/explorebar2.png" type="Texture" id=34]
-[ext_resource path="res://files/buttons/explorebar.png" type="Texture" id=35]
-[ext_resource path="res://files/buttons/inventory/1 (2).png" type="Texture" id=36]
-[ext_resource path="res://files/buttons/inventory/2 (1).png" type="Texture" id=37]
-[ext_resource path="res://files/buttons/inventory/3.png" type="Texture" id=38]
-[ext_resource path="res://files/buttons/inventory/25.png" type="Texture" id=39]
-[ext_resource path="res://files/buttons/inventory/8-(equipped_item).png" type="Texture" id=40]
-[ext_resource path="res://files/buttons/inventory/30.png" type="Texture" id=41]
-[ext_resource path="res://files/buttons/inventory/26.png" type="Texture" id=42]
-[ext_resource path="res://files/buttons/inventory/29.png" type="Texture" id=43]
-[ext_resource path="res://files/buttons/inventory/28.png" type="Texture" id=44]
-[ext_resource path="res://files/buttons/inventory/enchant.png" type="Texture" id=45]
-[ext_resource path="res://files/buttons/inventory/27.png" type="Texture" id=46]
-[ext_resource path="res://files/buttons/inventory/9.png" type="Texture" id=47]
-[ext_resource path="res://files/buttons/inventory/4.png" type="Texture" id=48]
-[ext_resource path="res://files/buttons/inventory/5.png" type="Texture" id=49]
-[ext_resource path="res://files/buttons/inventory/33.png" type="Texture" id=50]
-[ext_resource path="res://files/buttons/menupanel.png" type="Texture" id=51]
+[ext_resource path="res://files/buttons/inventory/37.png" type="Texture" id=28]
+[ext_resource path="res://files/buttons/inventory/36.png" type="Texture" id=29]
+[ext_resource path="res://files/buttons/inventory/35.png" type="Texture" id=30]
+[ext_resource path="res://files/buttons/inventory/34.png" type="Texture" id=31]
+[ext_resource path="res://files/buttons/icons/strength.png" type="Texture" id=32]
+[ext_resource path="res://files/buttons/icons/agility.png" type="Texture" id=33]
+[ext_resource path="res://files/buttons/icons/magic.png" type="Texture" id=34]
+[ext_resource path="res://files/buttons/icons/endurance.png" type="Texture" id=35]
+[ext_resource path="res://files/buttons/explorebar2.png" type="Texture" id=36]
+[ext_resource path="res://files/buttons/explorebar.png" type="Texture" id=37]
+[ext_resource path="res://files/buttons/inventory/1 (2).png" type="Texture" id=38]
+[ext_resource path="res://files/buttons/inventory/2 (1).png" type="Texture" id=39]
+[ext_resource path="res://files/buttons/inventory/3.png" type="Texture" id=40]
+[ext_resource path="res://files/buttons/inventory/25.png" type="Texture" id=41]
+[ext_resource path="res://files/buttons/inventory/8-(equipped_item).png" type="Texture" id=42]
+[ext_resource path="res://files/buttons/inventory/30.png" type="Texture" id=43]
+[ext_resource path="res://files/buttons/inventory/enchant.png" type="Texture" id=44]
+[ext_resource path="res://files/buttons/inventory/26.png" type="Texture" id=45]
+[ext_resource path="res://files/buttons/inventory/29.png" type="Texture" id=46]
+[ext_resource path="res://files/buttons/inventory/28.png" type="Texture" id=47]
+[ext_resource path="res://files/buttons/inventory/27.png" type="Texture" id=48]
+[ext_resource path="res://files/buttons/inventory/9.png" type="Texture" id=49]
+[ext_resource path="res://files/buttons/inventory/4.png" type="Texture" id=50]
+[ext_resource path="res://files/buttons/inventory/5.png" type="Texture" id=51]
+[ext_resource path="res://files/buttons/inventory/33.png" type="Texture" id=52]
+[ext_resource path="res://files/buttons/menupanel.png" type="Texture" id=53]
 
 [sub_resource type="StyleBoxTexture" id=16]
 
@@ -75,7 +77,7 @@ content_margin/left = -1.0
 content_margin/right = -1.0
 content_margin/top = -1.0
 content_margin/bottom = -1.0
-texture = ExtResource( 34 )
+texture = ExtResource( 36 )
 margin/left = 5.0
 margin/right = 5.0
 margin/top = 5.0
@@ -92,7 +94,7 @@ content_margin/left = -1.0
 content_margin/right = -1.0
 content_margin/top = -1.0
 content_margin/bottom = -1.0
-texture = ExtResource( 35 )
+texture = ExtResource( 37 )
 margin/left = 5.0
 margin/right = 5.0
 margin/top = 5.0
@@ -109,7 +111,7 @@ content_margin/left = -1.0
 content_margin/right = -1.0
 content_margin/top = -1.0
 content_margin/bottom = -1.0
-texture = ExtResource( 50 )
+texture = ExtResource( 52 )
 margin/left = 0.0
 margin/right = 0.0
 margin/top = 0.0
@@ -126,7 +128,7 @@ content_margin/left = -1.0
 content_margin/right = -1.0
 content_margin/top = -1.0
 content_margin/bottom = -1.0
-texture = ExtResource( 51 )
+texture = ExtResource( 53 )
 margin/left = 10.0
 margin/right = 10.0
 margin/top = 10.0
@@ -534,6 +536,7 @@ toggle_mode = true
 enabled_focus_mode = 2
 shortcut = null
 textures/normal = ExtResource( 27 )
+textures/pressed = ExtResource( 28 )
 params/resize_mode = 1
 params/stretch_mode = 1
 
@@ -575,9 +578,9 @@ focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
-margin/left = 90.0
+margin/left = 89.0
 margin/top = 1.0
-margin/right = 112.0
+margin/right = 105.0
 margin/bottom = 82.0
 range/min = 0.0
 range/max = 100.0
@@ -587,8 +590,33 @@ range/value = 95.0
 range/exp_edit = false
 range/rounded = false
 texture/under = null
-texture/over = ExtResource( 28 )
-texture/progress = ExtResource( 29 )
+texture/over = ExtResource( 29 )
+texture/progress = ExtResource( 30 )
+mode = 3
+radial_fill/fill_degrees = 360.0
+radial_fill/center_offset = Vector2( 0, 0 )
+
+[node name="enbar" type="TextureProgress" parent="slavelist/GridContainer/Button"]
+
+hint/tooltip = "Energy"
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 103.0
+margin/top = 1.0
+margin/right = 119.0
+margin/bottom = 82.0
+range/min = 0.0
+range/max = 100.0
+range/step = 1.0
+range/page = 0.0
+range/value = 95.0
+range/exp_edit = false
+range/rounded = false
+texture/under = null
+texture/over = ExtResource( 29 )
+texture/progress = ExtResource( 31 )
 mode = 3
 radial_fill/fill_degrees = 360.0
 radial_fill/center_offset = Vector2( 0, 0 )
@@ -604,7 +632,7 @@ margin/left = 125.0
 margin/top = 56.0
 margin/right = 150.0
 margin/bottom = 81.0
-texture = ExtResource( 30 )
+texture = ExtResource( 32 )
 stretch_mode = 0
 
 [node name="TextureFrame1" type="TextureFrame" parent="slavelist/GridContainer/Button"]
@@ -618,7 +646,7 @@ margin/left = 188.0
 margin/top = 56.0
 margin/right = 213.0
 margin/bottom = 81.0
-texture = ExtResource( 31 )
+texture = ExtResource( 33 )
 stretch_mode = 0
 
 [node name="TextureFrame2" type="TextureFrame" parent="slavelist/GridContainer/Button"]
@@ -632,7 +660,7 @@ margin/left = 254.0
 margin/top = 56.0
 margin/right = 279.0
 margin/bottom = 81.0
-texture = ExtResource( 32 )
+texture = ExtResource( 34 )
 stretch_mode = 0
 
 [node name="TextureFrame3" type="TextureFrame" parent="slavelist/GridContainer/Button"]
@@ -646,7 +674,7 @@ margin/left = 322.0
 margin/top = 56.0
 margin/right = 347.0
 margin/bottom = 81.0
-texture = ExtResource( 33 )
+texture = ExtResource( 35 )
 stretch_mode = 0
 
 [node name="sstr" type="Label" parent="slavelist/GridContainer/Button"]
@@ -802,7 +830,7 @@ margin/left = 501.0
 margin/top = 30.0
 margin/right = 877.0
 margin/bottom = 460.0
-texture = ExtResource( 36 )
+texture = ExtResource( 38 )
 expand = true
 stretch_mode = 5
 
@@ -818,7 +846,7 @@ margin/left = 0.0
 margin/top = 0.0
 margin/right = 0.0
 margin/bottom = 0.0
-texture = ExtResource( 37 )
+texture = ExtResource( 39 )
 stretch_mode = 0
 
 [node name="TextureFrame" type="TextureFrame" parent="gearpanel"]
@@ -831,7 +859,7 @@ margin/left = -5.0
 margin/top = -5.0
 margin/right = 382.0
 margin/bottom = 432.0
-texture = ExtResource( 38 )
+texture = ExtResource( 40 )
 expand = true
 stretch_mode = 6
 
@@ -850,7 +878,7 @@ margin/bottom = 252.0
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
-textures/normal = ExtResource( 39 )
+textures/normal = ExtResource( 41 )
 params/resize_mode = 1
 params/stretch_mode = 6
 
@@ -884,7 +912,7 @@ margin/left = -3.0
 margin/top = -2.0
 margin/right = -2.0
 margin/bottom = -3.0
-texture = ExtResource( 40 )
+texture = ExtResource( 42 )
 expand = true
 stretch_mode = 0
 
@@ -903,13 +931,31 @@ margin/bottom = 65.0
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
-textures/normal = ExtResource( 41 )
+textures/normal = ExtResource( 43 )
 params/resize_mode = 1
 params/stretch_mode = 0
 
+[node name="enchant" type="TextureFrame" parent="gearpanel/costume"]
+
+visibility/visible = false
+visibility/self_opacity = 0.5
+visibility/behind_parent = true
+anchor/right = 1
+anchor/bottom = 1
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 0.0
+margin/bottom = 0.0
+texture = ExtResource( 44 )
+expand = true
+stretch_mode = 0
+
 [node name="underwear" type="TextureButton" parent="gearpanel"]
 
-editor/display_folded = true
 rect/min_size = Vector2( 0, 60 )
 hint/tooltip = "underwear"
 focus/ignore_mouse = false
@@ -923,9 +969,27 @@ margin/bottom = 353.0
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
-textures/normal = ExtResource( 42 )
+textures/normal = ExtResource( 45 )
 params/resize_mode = 1
 params/stretch_mode = 5
+
+[node name="TextureFrame3" type="TextureFrame" parent="gearpanel/underwear"]
+
+visibility/behind_parent = true
+anchor/right = 1
+anchor/bottom = 1
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 0.0
+margin/bottom = 0.0
+texture = ExtResource( 2 )
+modulate = Color( 0.957031, 0.957031, 0.957031, 1 )
+expand = true
+stretch_mode = 0
 
 [node name="TextureFrame" type="TextureFrame" parent="gearpanel/underwear"]
 
@@ -939,7 +1003,7 @@ margin/left = -3.0
 margin/top = -2.0
 margin/right = -2.0
 margin/bottom = -3.0
-texture = ExtResource( 40 )
+texture = ExtResource( 42 )
 expand = true
 stretch_mode = 0
 
@@ -958,13 +1022,31 @@ margin/bottom = 65.0
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
-textures/normal = ExtResource( 41 )
+textures/normal = ExtResource( 43 )
 params/resize_mode = 1
 params/stretch_mode = 0
 
+[node name="enchant" type="TextureFrame" parent="gearpanel/underwear"]
+
+visibility/visible = false
+visibility/self_opacity = 0.5
+visibility/behind_parent = true
+anchor/right = 1
+anchor/bottom = 1
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 0.0
+margin/bottom = 0.0
+texture = ExtResource( 44 )
+expand = true
+stretch_mode = 0
+
 [node name="weapon" type="TextureButton" parent="gearpanel"]
 
-editor/display_folded = true
 rect/min_size = Vector2( 0, 60 )
 hint/tooltip = "Weapon"
 focus/ignore_mouse = false
@@ -978,9 +1060,27 @@ margin/bottom = 103.0
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
-textures/normal = ExtResource( 43 )
+textures/normal = ExtResource( 46 )
 params/resize_mode = 1
 params/stretch_mode = 5
+
+[node name="TextureFrame4" type="TextureFrame" parent="gearpanel/weapon"]
+
+visibility/behind_parent = true
+anchor/right = 1
+anchor/bottom = 1
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 0.0
+margin/bottom = 0.0
+texture = ExtResource( 2 )
+modulate = Color( 0.957031, 0.957031, 0.957031, 1 )
+expand = true
+stretch_mode = 0
 
 [node name="TextureFrame" type="TextureFrame" parent="gearpanel/weapon"]
 
@@ -994,7 +1094,7 @@ margin/left = -3.0
 margin/top = -2.0
 margin/right = -2.0
 margin/bottom = -3.0
-texture = ExtResource( 40 )
+texture = ExtResource( 42 )
 expand = true
 stretch_mode = 0
 
@@ -1013,9 +1113,28 @@ margin/bottom = 65.0
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
-textures/normal = ExtResource( 41 )
+textures/normal = ExtResource( 43 )
 params/resize_mode = 1
 params/stretch_mode = 0
+
+[node name="enchant" type="TextureFrame" parent="gearpanel/weapon"]
+
+visibility/visible = false
+visibility/self_opacity = 0.5
+visibility/behind_parent = true
+anchor/right = 1
+anchor/bottom = 1
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 0.0
+margin/bottom = 0.0
+texture = ExtResource( 44 )
+expand = true
+stretch_mode = 0
 
 [node name="armor" type="TextureButton" parent="gearpanel"]
 
@@ -1032,9 +1151,27 @@ margin/bottom = 192.0
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
-textures/normal = ExtResource( 44 )
+textures/normal = ExtResource( 47 )
 params/resize_mode = 1
 params/stretch_mode = 5
+
+[node name="TextureFrame5" type="TextureFrame" parent="gearpanel/armor"]
+
+visibility/behind_parent = true
+anchor/right = 1
+anchor/bottom = 1
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 0.0
+margin/bottom = 0.0
+texture = ExtResource( 2 )
+modulate = Color( 0.957031, 0.957031, 0.957031, 1 )
+expand = true
+stretch_mode = 0
 
 [node name="TextureFrame" type="TextureFrame" parent="gearpanel/armor"]
 
@@ -1048,7 +1185,7 @@ margin/left = -3.0
 margin/top = -2.0
 margin/right = -2.0
 margin/bottom = -3.0
-texture = ExtResource( 40 )
+texture = ExtResource( 42 )
 expand = true
 stretch_mode = 0
 
@@ -1067,14 +1204,15 @@ margin/bottom = 65.0
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
-textures/normal = ExtResource( 41 )
+textures/normal = ExtResource( 43 )
 params/resize_mode = 1
 params/stretch_mode = 0
 
 [node name="enchant" type="TextureFrame" parent="gearpanel/armor"]
 
 visibility/visible = false
-visibility/self_opacity = 0.8
+visibility/self_opacity = 0.5
+visibility/behind_parent = true
 anchor/right = 1
 anchor/bottom = 1
 focus/ignore_mouse = true
@@ -1085,14 +1223,12 @@ margin/left = 0.0
 margin/top = 0.0
 margin/right = 0.0
 margin/bottom = 0.0
-texture = ExtResource( 45 )
-modulate = Color( 0.246094, 0.664276, 1, 1 )
+texture = ExtResource( 44 )
 expand = true
 stretch_mode = 0
 
 [node name="accessory" type="TextureButton" parent="gearpanel"]
 
-editor/display_folded = true
 rect/min_size = Vector2( 0, 60 )
 hint/tooltip = "Accessory"
 focus/ignore_mouse = false
@@ -1106,9 +1242,27 @@ margin/bottom = 398.0
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
-textures/normal = ExtResource( 46 )
+textures/normal = ExtResource( 48 )
 params/resize_mode = 1
 params/stretch_mode = 5
+
+[node name="TextureFrame6" type="TextureFrame" parent="gearpanel/accessory"]
+
+visibility/behind_parent = true
+anchor/right = 1
+anchor/bottom = 1
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 0.0
+margin/bottom = 0.0
+texture = ExtResource( 2 )
+modulate = Color( 0.957031, 0.957031, 0.957031, 1 )
+expand = true
+stretch_mode = 0
 
 [node name="TextureFrame" type="TextureFrame" parent="gearpanel/accessory"]
 
@@ -1122,7 +1276,7 @@ margin/left = -3.0
 margin/top = -2.0
 margin/right = -2.0
 margin/bottom = -3.0
-texture = ExtResource( 40 )
+texture = ExtResource( 42 )
 expand = true
 stretch_mode = 0
 
@@ -1141,13 +1295,14 @@ margin/bottom = 65.0
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
-textures/normal = ExtResource( 41 )
+textures/normal = ExtResource( 43 )
 params/resize_mode = 1
 params/stretch_mode = 0
 
 [node name="enchant" type="TextureFrame" parent="gearpanel/accessory"]
 
 visibility/visible = false
+visibility/self_opacity = 0.5
 visibility/behind_parent = true
 anchor/right = 1
 anchor/bottom = 1
@@ -1159,7 +1314,7 @@ margin/left = 0.0
 margin/top = 0.0
 margin/right = 0.0
 margin/bottom = 0.0
-texture = ExtResource( 45 )
+texture = ExtResource( 44 )
 expand = true
 stretch_mode = 0
 
@@ -1176,7 +1331,7 @@ margin/left = -3.0
 margin/top = 445.0
 margin/right = -6.0
 margin/bottom = -238.0
-texture = ExtResource( 47 )
+texture = ExtResource( 49 )
 expand = true
 stretch_mode = 0
 
@@ -1192,7 +1347,7 @@ margin/left = 0.0
 margin/top = -2.0
 margin/right = 3.0
 margin/bottom = 0.0
-texture = ExtResource( 48 )
+texture = ExtResource( 50 )
 expand = true
 stretch_mode = 0
 
@@ -1223,7 +1378,7 @@ margin/left = 893.0
 margin/top = 25.0
 margin/right = 1316.0
 margin/bottom = 702.0
-texture = ExtResource( 49 )
+texture = ExtResource( 51 )
 expand = true
 stretch_mode = 5
 __meta__ = {

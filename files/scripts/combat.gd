@@ -182,7 +182,7 @@ func start_battle(nosound = false):
 		for i in slave.ability:
 			combatant.abilities[i] = globals.abilities.abilitydict[i]
 		for i in slave.gear.values():
-			if !i in ['clothcommon','underwearplain'] && i != null:
+			if i != null:
 				var tempitem = globals.state.unstackables[i]
 				for k in tempitem.effects:
 					if k.type == 'incombat':
@@ -200,30 +200,72 @@ func start_battle(nosound = false):
 				combatant.icon = i.iconalt
 		else:
 			combatant.person = null
-		combatant.name = i.name
-		combatant.healthmax = i.stats.health
-		combatant.speed = i.stats.speed
-		combatant.power = i.stats.power
-		combatant.magic = i.stats.magic
-		combatant.energy = i.stats.energy
-		combatant.energymax = i.stats.energy
-		combatant.armor = i.stats.armor
-		combatant.protection = 0
-		combatant.state = 'normal'
-		combatant.abilities = []
-		combatant.cooldowns = {}
-		combatant.effects = {}
-		combatant.action = null
-		combatant.target = null
-		combatant.party = 'enemy'
-		combatant.button = null
-		if get_parent().get_node("explorationnode").deeperregion:
-			combatant.power = ceil(combatant.power * 1.25)
-			combatant.healthmax = ceil(combatant.healthmax * 1.5)
-			combatant.speed = ceil(combatant.speed + 5)
-		combatant.health = combatant.healthmax
-		for ii in i.stats.abilities:
-			combatant.abilities.append(globals.abilities.abilitydict[ii])
+		if combatant.person == null:
+			combatant.name = i.name
+			combatant.healthmax = i.stats.health
+			combatant.speed = i.stats.speed
+			combatant.power = i.stats.power
+			combatant.magic = i.stats.magic
+			combatant.energy = i.stats.energy
+			combatant.energymax = i.stats.energy
+			combatant.armor = i.stats.armor
+			combatant.protection = 0
+			combatant.state = 'normal'
+			combatant.abilities = []
+			combatant.cooldowns = {}
+			combatant.effects = {}
+			combatant.action = null
+			combatant.target = null
+			combatant.party = 'enemy'
+			combatant.button = null
+			if get_parent().get_node("explorationnode").deeperregion:
+				combatant.power = ceil(combatant.power * 1.25)
+				combatant.healthmax = ceil(combatant.healthmax * 1.5)
+				combatant.speed = ceil(combatant.speed + 5)
+			combatant.health = combatant.healthmax
+			for ii in i.stats.abilities:
+				combatant.abilities.append(globals.abilities.abilitydict[ii])
+		else:
+			slave = combatant.person
+			if slave.spec == 'trapper':
+				trapper = true
+				trappername = slave.name_short()
+			combatant = fighter.new()
+			combatant.person = slave
+			combatant.name = i.name
+			combatant.health = slave.health
+			combatant.healthmax = slave.stats.health_max
+			combatant.speed = 6 + slave.sagi*3
+			combatant.power = 3 + slave.sstr*2
+			if slave.race == 'Seraph':
+				combatant.speed += 4
+			elif slave.race.find('Wolf') >= 0:
+				combatant.power += 2 
+			if slave.spec == 'assassin':
+				combatant.speed += 5
+			combatant.magic = slave.smaf
+			combatant.energy = slave.stats.energy_cur
+			combatant.energymax = slave.stats.energy_max
+			combatant.armor = slave.stats.armor_cur
+			combatant.protection = 0
+			combatant.state = 'normal'
+			combatant.abilities = []
+			combatant.activeabilities = []
+			combatant.cooldowns = {}
+			combatant.effects = {}
+			combatant.action = null
+			combatant.target = null
+			combatant.party = 'ally'
+			for i in slave.abilityactive:
+				combatant.activeabilities.append(globals.abilities.abilitydict[i])
+			for i in slave.ability:
+				combatant.abilities.append(globals.abilities.abilitydict[i])
+			for i in slave.gear.values():
+				if i != null:
+					var tempitem = globals.state.unstackables[i]
+					for k in tempitem.effects:
+						if k.type == 'incombat':
+							call(k.effect, combatant, k.effectvalue)
 		enemygroup.append(combatant)
 	set_process(true)
 	set_process_input(true)
@@ -803,9 +845,13 @@ func _on_confirm_pressed():
 			combatant.cooldowns[i] -= 1
 			if combatant.cooldowns[i] <= 0:
 				combatant.cooldowns.erase(i)
+		var abilitydict = []
 		for i in combatant.abilities:
 			if combatant.cooldowns.has(i.code) || i.code == 'attack':
 				continue
+			if i.aitargets == '1enemy' || i.aitargets == 'self':
+				pass
+			
 			combatant.action = i
 		if combatant.action == null:
 			combatant.action = combatant.abilities[0]

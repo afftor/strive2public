@@ -30,7 +30,7 @@ scylla = {male = load("res://files/buttons/inventory/shades/Scylla_M.png"), fema
 seraph = {male = load("res://files/buttons/inventory/shades/Seraph_M.png"), female = load("res://files/buttons/inventory/shades/Seraph_F.png")},
 slime = {male = load("res://files/buttons/inventory/shades/Slime_M.png"), female = load("res://files/buttons/inventory/shades/Slime_F.png")},
 taurus = {male = load("res://files/buttons/inventory/shades/Taurus_M.png"), female = load("res://files/buttons/inventory/shades/Taurus_F.png")},
-
+orc = {male = load("res://files/buttons/inventory/shades/Orc_-M.png"), female = load("res://files/buttons/inventory/shades/Orc_F.png")},
 
 }
 
@@ -289,6 +289,7 @@ func slavelist():
 			text += " " + i.origins.capitalize()
 		button.get_node("name").set_bbcode(text)
 		button.get_node("hpbar").set_val(float((i.stats.health_cur)/float(i.stats.health_max))*100)
+		button.get_node("enbar").set_val(float((i.stats.energy_cur)/float(i.stats.energy_max))*100)
 		if i.imageportait != null:
 			if File.new().file_exists(i.imageportait) == true:
 				button.get_node("portrait").set_texture(load(i.imageportait))
@@ -323,18 +324,20 @@ func slavegear(slave):
 	var race
 	sex = slave.sex.replace('futanari','female')
 	race = slave.race.replace("Beastkin ",'').replace("Halfkin ", '').to_lower()
+	if race in ['dark elf', 'drow']:
+		race = 'elf'
 	get_node("gearpanel/charframe").set_texture(shades[race][sex])
 	
 	
 	for i in ['weapon','costume','underwear','armor','accessory']:
 		if slave.gear[i] == null:
 			get_node("gearpanel/"+i+"/unequip").set_hidden(true)
+			get_node("gearpanel/"+i+"/enchant").set_hidden(true)
 			get_node("gearpanel/"+i).set_normal_texture(sil[i])
 		else:
 			get_node("gearpanel/"+i+"/unequip").set_hidden(false)
 			get_node("gearpanel/"+i).set_normal_texture(load(globals.state.unstackables[slave.gear[i]].icon))
-			if globals.state.unstackables[slave.gear[i]].enchant != '':
-				pass
+			get_node("gearpanel/"+i+"/enchant").set_hidden(globals.state.unstackables[slave.gear[i]].enchant == '')
 
 func use(button):
 	if selectedslave == null:

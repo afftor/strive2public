@@ -92,8 +92,7 @@ highlands = load("res://files/backgrounds/highlands.jpg"),
 marsh = load("res://files/backgrounds/marsh.jpg"),
 meadows = load("res://files/backgrounds/meadows.png"),
 sea = load("res://files/backgrounds/sea.jpg"),
-lab1 = load("res://files/backgrounds/laboratory1.jpg"),
-lab2 = load("res://files/backgrounds/laboratory2.jpg"),
+lab = load("res://files/backgrounds/laboratory.png"),
 gorn = load("res://files/backgrounds/gorn.png"),
 frostford = load("res://files/backgrounds/frostford.png"),
 mountains = load("res://files/backgrounds/mountains.jpg"),
@@ -205,6 +204,8 @@ func newslave(race, age, sex, origins = 'slave'):
 func slaves_set(slave):
 	slave.originstrue = slave.origins
 	slave.health = max(slave.health, 5)
+	slave.ability.append("protect")
+	slave.abilityactive.append("protect")
 	slaves.append(slave)
 	if get_tree().get_current_scene().find_node('CharList'):
 		get_tree().get_current_scene().rebuild_slave_list()
@@ -575,8 +576,8 @@ class slave:
 	var sleep = ''
 	var farmoutcome = false
 	
-	var ability = ['attack','protect']
-	var abilityactive = ['attack','protect']
+	var ability = ['attack']
+	var abilityactive = ['attack']
 	var customdesc = ''
 	var piercing = {earlobes = null, eyebrow = null, nose = null, lips = null, tongue = null, navel = null, clit = null, nipples = null, clit = null, labia = null, penis = null}
 	var tattoo = {chest = 'none', face = 'none', ass = 'none', arms = 'none', legs = 'none', waist = 'none'}
@@ -793,7 +794,7 @@ class slave:
 	
 	
 	func health_set(value):
-		stats.health_max = (35 + stats.end_cur*20)*stats.health_bonus
+		stats.health_max = (50 + stats.end_cur*25)*stats.health_bonus
 		stats.health_cur = min(value, stats.health_max) 
 	
 	func obed_set(value):
