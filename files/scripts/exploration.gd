@@ -4,7 +4,7 @@ extends Node
 onready var mansion = get_parent()
 
 var progress = 0.0
-var enemygroup
+var enemygroup = {}
 var defeated = {}
 var inencounter = false
 var currentzone
@@ -17,6 +17,7 @@ var combatdata = load("res://files/scripts/combatdata.gd").new()
 var deeperregion = false
 var capturedtojail = 0
 var enemyloot = {stackables = {}, unstackables = []}
+var enemygear = {}
 
 var enemygrouppools = combatdata.enemygrouppools
 var capturespool = combatdata.capturespool
@@ -549,7 +550,8 @@ func enemyencounter():
 	var patrol = 'none'
 	var text = ''
 	var enemyawareness
-	enemygroup = {}
+	enemygear.clear()
+	enemygroup.clear()
 	inencounter = true
 	outside.clearbuttons()
 	if globals.state.playergroup.size() > 0:
@@ -626,6 +628,22 @@ func enemyencounter():
 					origins = globals.originsarray[globals.originsarray.find(origins)+1]
 				var slavetemp = globals.newslave(race, age, sex, origins)
 				enemygroup.units[counter].capture = slavetemp
+				var gear = {}
+				for k in ['armor','weapon','costume','underwear','accessory']:
+					if !combatdata.enemyequips[i.gear].has(k):
+						continue
+					gear[k] = globals.weightedrandom(combatdata.enemyequips[i.gear][k])
+					var enchant = false
+					var item
+					if gear[k].find("+") >= 0:
+						enchant = true
+						gear[k] = gear[k].replace("+","")
+					item = globals.items.createunstackable(gear[k])
+					if enchant:
+						globals.items.enchantrand(item)
+					enemygear[item.id] = item
+					slavetemp.gear[k] = item.id
+				
 			counter += 1
 		if enemygroup.captured != null:
 			var group = enemygroup.captured
@@ -943,6 +961,7 @@ func enemyfight(soundkeep = false):
 	outside.clearbuttons()
 	main.get_node("combat").currentenemies = enemygroup.units
 	main.get_node('combat').area = currentzone
+	main.get_node('combat').enemygear = enemygear
 	main.get_node("combat").start_battle(soundkeep)
 
 

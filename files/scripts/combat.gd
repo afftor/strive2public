@@ -6,6 +6,7 @@ var area
 var currentenemies
 var playergroup = []
 var enemygroup = []
+var enemygear
 var chosencharacter
 var selectedcombatant
 var selectmode = null
@@ -44,6 +45,8 @@ class fighter:
 	var button
 	var icon
 	var passives = []
+	var ai
+	var aimemory = []
 	
 	func sendbuff():
 		var effect = str2var(var2str(globals.abilities.effects[action.effect]))
@@ -200,6 +203,7 @@ func start_battle(nosound = false):
 				combatant.icon = i.iconalt
 		else:
 			combatant.person = null
+		combatant.ai = 'attack'
 		if combatant.person == null:
 			combatant.name = i.name
 			combatant.healthmax = i.stats.health
@@ -262,7 +266,7 @@ func start_battle(nosound = false):
 				combatant.abilities.append(globals.abilities.abilitydict[i])
 			for i in slave.gear.values():
 				if i != null:
-					var tempitem = globals.state.unstackables[i]
+					var tempitem = enemygear[i]
 					for k in tempitem.effects:
 						if k.type == 'incombat':
 							call(k.effect, combatant, k.effectvalue)
@@ -400,7 +404,7 @@ func updatepanels():
 		get_node("grouppanel/groupline").add_child(newbutton)
 		newbutton.get_node("name").set_text(combatant.name)
 		if (combatant.health/combatant.healthmax) < 0.35:
-			newbutton.get_node("hp").set('custom_colors/font_color', Color(1,0,0,1))
+			newbutton.get_node("hp").set('custom_colors/font_color', Color(1,0.29,0.29,1))
 		newbutton.get_node("hp").set_text('HP: ' + str(ceil(combatant.health)) +'/'+ str(ceil(combatant.healthmax)))
 		newbutton.get_node("energy").set_text('E:'+str(floor(combatant.energy)) +'/'+ str(floor(combatant.energymax)))
 		newbutton.get_node("power").set_text('P:'+str(round(combatant.power)))
@@ -811,6 +815,8 @@ func enemytooltip(enemy):
 		text += "Power: " + str(enemy.power) + " Speed: " + str(enemy.speed) + " Protection: " + str(enemy.protection) + " Armor: " + str(enemy.armor)
 		if enemy.person != null:
 			text += "\nOrigins: " + enemy.person.origins
+#	if enemy.person != null:
+#		text += enemygear[enemy.person.gear.armor].name + "\n" + enemygear[enemy.person.gear.weapon].name
 	get_node("tooltippanel/tooltiptext").set_bbcode(text)
 	get_node("tooltippanel").set_hidden(false)
 	var pos = get_global_mouse_pos()
@@ -847,12 +853,19 @@ func _on_confirm_pressed():
 				combatant.cooldowns.erase(i)
 		var abilitydict = []
 		for i in combatant.abilities:
-			if combatant.cooldowns.has(i.code) || i.code == 'attack':
-				continue
-			if i.aitargets == '1enemy' || i.aitargets == 'self':
-				pass
+			if combatant.ai == 'attack':
+				if combatant.aimemory != 'attack':
+					abilitydict = combatant.abilities[0]
+					combatant.aimemory = 'attack'
+					break
+				if combatant.cooldowns.has(i.code):
+					continue
+				if i.aipatterns.has('attack'):
+					abilitydict.append({value = i, weight = i.aipriority})
 			
-			combatant.action = i
+		if typeof(abilitydict) == TYPE_ARRAY:
+			abilitydict = globals.weightedrandom(abilitydict)
+		combatant.action = abilitydict
 		if combatant.action == null:
 			combatant.action = combatant.abilities[0]
 		if combatant.action.target == 'enemy':
@@ -917,7 +930,7 @@ func resolution(text = ''):
 					text +=  '\n[color=yellow]'+ i.name + ' has been defeated and knocked out by your group. [/color]'
 	for i in playergroup:
 		if i.health <= 0:
-			text += '\n[color=red]'+ i.name + ' has fallen. [/color]'
+			text += '\n[color=#ff4949]'+ i.name + ' has fallen. [/color]'
 			playergroup.remove(playergroup.find(i))
 			if i.person == globals.player:
 				get_tree().get_current_scene().get_node("gameover").set_hidden(false)

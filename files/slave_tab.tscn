@@ -1,23 +1,29 @@
-[gd_scene load_steps=35 format=1]
+[gd_scene load_steps=44 format=1]
 
 [ext_resource path="res://files/theme.tres" type="Theme" id=1]
 [ext_resource path="res://files/scripts/slave_tab.gd" type="Script" id=2]
 [ext_resource path="res://files/scripts/statstab.gd" type="Script" id=3]
-[ext_resource path="res://statspanel.tscn" type="PackedScene" id=4]
-[ext_resource path="res://mainfont.tres" type="DynamicFont" id=5]
-[ext_resource path="res://files/buttons/tex-wind.png" type="Texture" id=6]
-[ext_resource path="res://files/bigpanel.tres" type="StyleBox" id=7]
-[ext_resource path="res://files/paneltexturebland.tres" type="StyleBox" id=8]
-[ext_resource path="res://files/SelectButton.tscn" type="PackedScene" id=9]
-[ext_resource path="res://files/buttongrouptheme.tres" type="Theme" id=10]
-[ext_resource path="res://files/buttons/menupanel.png" type="Texture" id=11]
-[ext_resource path="res://files/buttons/panelempty.png" type="Texture" id=12]
-[ext_resource path="res://Roundo-Medium.otf" type="DynamicFontData" id=13]
-[ext_resource path="res://files/buttons/img-backG-popup.png" type="Texture" id=14]
-[ext_resource path="res://files/buttons/textfield.png" type="Texture" id=15]
-[ext_resource path="res://files/buttons/textfieldinact.png" type="Texture" id=16]
-[ext_resource path="res://files/joblist.tscn" type="PackedScene" id=17]
-[ext_resource path="res://files/scripts/sexuals.gd" type="Script" id=18]
+[ext_resource path="res://files/buttons/mainscreen/6.png" type="Texture" id=4]
+[ext_resource path="res://files/scripts/statspanel.gd" type="Script" id=5]
+[ext_resource path="res://files/buttons/levelup.png" type="Texture" id=6]
+[ext_resource path="res://files/buttons/levelupdown.png" type="Texture" id=7]
+[ext_resource path="res://Roundo-Medium.otf" type="DynamicFontData" id=8]
+[ext_resource path="res://files/buttons/icons/xpbot.png" type="Texture" id=9]
+[ext_resource path="res://files/buttons/icons/xpup.png" type="Texture" id=10]
+[ext_resource path="res://files/buttons/icons/xpmid.png" type="Texture" id=11]
+[ext_resource path="res://mainfont.tres" type="DynamicFont" id=12]
+[ext_resource path="res://files/buttons/tex-wind.png" type="Texture" id=13]
+[ext_resource path="res://files/bigpanel.tres" type="StyleBox" id=14]
+[ext_resource path="res://files/paneltexturebland.tres" type="StyleBox" id=15]
+[ext_resource path="res://files/SelectButton.tscn" type="PackedScene" id=16]
+[ext_resource path="res://files/buttongrouptheme.tres" type="Theme" id=17]
+[ext_resource path="res://files/buttons/menupanel.png" type="Texture" id=18]
+[ext_resource path="res://files/buttons/panelempty.png" type="Texture" id=19]
+[ext_resource path="res://files/buttons/img-backG-popup.png" type="Texture" id=20]
+[ext_resource path="res://files/buttons/textfield.png" type="Texture" id=21]
+[ext_resource path="res://files/buttons/textfieldinact.png" type="Texture" id=22]
+[ext_resource path="res://files/joblist.tscn" type="PackedScene" id=23]
+[ext_resource path="res://files/scripts/sexuals.gd" type="Script" id=24]
 
 [sub_resource type="StyleBoxTexture" id=1]
 
@@ -26,10 +32,10 @@ content_margin/right = -1.0
 content_margin/top = -1.0
 content_margin/bottom = -1.0
 texture = ExtResource( 6 )
-margin/left = 10.0
-margin/right = 10.0
-margin/top = 10.0
-margin/bottom = 10.0
+margin/left = 0.0
+margin/right = 0.0
+margin/top = 0.0
+margin/bottom = 0.0
 expand_margin/left = 0.0
 expand_margin/right = 0.0
 expand_margin/top = 0.0
@@ -42,16 +48,24 @@ content_margin/left = -1.0
 content_margin/right = -1.0
 content_margin/top = -1.0
 content_margin/bottom = -1.0
-texture = ExtResource( 11 )
-margin/left = 8.0
-margin/right = 8.0
-margin/top = 8.0
-margin/bottom = 8.0
+texture = ExtResource( 7 )
+margin/left = 0.0
+margin/right = 0.0
+margin/top = 0.0
+margin/bottom = 0.0
 expand_margin/left = 0.0
 expand_margin/right = 0.0
 expand_margin/top = 0.0
 expand_margin/bottom = 0.0
 draw_center = true
+
+[sub_resource type="DynamicFont" id=19]
+
+font/size = 11
+extra_spacing/top = 1
+font/use_mipmaps = false
+font/use_filter = true
+font/font = ExtResource( 8 )
 
 [sub_resource type="StyleBoxTexture" id=3]
 
@@ -59,7 +73,7 @@ content_margin/left = -1.0
 content_margin/right = -1.0
 content_margin/top = -1.0
 content_margin/bottom = -1.0
-texture = ExtResource( 12 )
+texture = ExtResource( 13 )
 margin/left = 10.0
 margin/right = 10.0
 margin/top = 10.0
@@ -70,7 +84,41 @@ expand_margin/top = 0.0
 expand_margin/bottom = 0.0
 draw_center = true
 
-[sub_resource type="Animation" id=4]
+[sub_resource type="StyleBoxTexture" id=4]
+
+content_margin/left = -1.0
+content_margin/right = -1.0
+content_margin/top = -1.0
+content_margin/bottom = -1.0
+texture = ExtResource( 18 )
+margin/left = 8.0
+margin/right = 8.0
+margin/top = 8.0
+margin/bottom = 8.0
+expand_margin/left = 0.0
+expand_margin/right = 0.0
+expand_margin/top = 0.0
+expand_margin/bottom = 0.0
+draw_center = true
+
+[sub_resource type="StyleBoxTexture" id=5]
+
+content_margin/left = -1.0
+content_margin/right = -1.0
+content_margin/top = -1.0
+content_margin/bottom = -1.0
+texture = ExtResource( 19 )
+margin/left = 10.0
+margin/right = 10.0
+margin/top = 10.0
+margin/bottom = 10.0
+expand_margin/left = 0.0
+expand_margin/right = 0.0
+expand_margin/top = 0.0
+expand_margin/bottom = 0.0
+draw_center = true
+
+[sub_resource type="Animation" id=6]
 
 length = 0.01
 loop = false
@@ -116,7 +164,7 @@ tracks/3/keys = {
 "values": [ 0.0 ]
 }
 
-[sub_resource type="Animation" id=5]
+[sub_resource type="Animation" id=7]
 
 length = 0.01
 loop = false
@@ -161,38 +209,6 @@ tracks/3/keys = {
 "update": 1,
 "values": [ 273.0 ]
 }
-
-[sub_resource type="StyleBoxTexture" id=6]
-
-content_margin/left = -1.0
-content_margin/right = -1.0
-content_margin/top = -1.0
-content_margin/bottom = -1.0
-margin/left = 0.0
-margin/right = 0.0
-margin/top = 0.0
-margin/bottom = 0.0
-expand_margin/left = 0.0
-expand_margin/right = 0.0
-expand_margin/top = 0.0
-expand_margin/bottom = 0.0
-draw_center = true
-
-[sub_resource type="StyleBoxTexture" id=7]
-
-content_margin/left = -1.0
-content_margin/right = -1.0
-content_margin/top = -1.0
-content_margin/bottom = -1.0
-margin/left = 0.0
-margin/right = 0.0
-margin/top = 0.0
-margin/bottom = 0.0
-expand_margin/left = 0.0
-expand_margin/right = 0.0
-expand_margin/top = 0.0
-expand_margin/bottom = 0.0
-draw_center = true
 
 [sub_resource type="StyleBoxTexture" id=8]
 
@@ -258,13 +274,21 @@ expand_margin/top = 0.0
 expand_margin/bottom = 0.0
 draw_center = true
 
-[sub_resource type="DynamicFont" id=12]
+[sub_resource type="StyleBoxTexture" id=12]
 
-font/size = 32
-extra_spacing/top = 3
-font/use_mipmaps = false
-font/use_filter = true
-font/font = ExtResource( 13 )
+content_margin/left = -1.0
+content_margin/right = -1.0
+content_margin/top = -1.0
+content_margin/bottom = -1.0
+margin/left = 0.0
+margin/right = 0.0
+margin/top = 0.0
+margin/bottom = 0.0
+expand_margin/left = 0.0
+expand_margin/right = 0.0
+expand_margin/top = 0.0
+expand_margin/bottom = 0.0
+draw_center = true
 
 [sub_resource type="StyleBoxTexture" id=13]
 
@@ -272,33 +296,23 @@ content_margin/left = -1.0
 content_margin/right = -1.0
 content_margin/top = -1.0
 content_margin/bottom = -1.0
-texture = ExtResource( 14 )
-margin/left = 4.0
-margin/right = 4.0
-margin/top = 4.0
-margin/bottom = 4.0
+margin/left = 0.0
+margin/right = 0.0
+margin/top = 0.0
+margin/bottom = 0.0
 expand_margin/left = 0.0
 expand_margin/right = 0.0
 expand_margin/top = 0.0
 expand_margin/bottom = 0.0
 draw_center = true
 
-[sub_resource type="StyleBoxTexture" id=14]
+[sub_resource type="DynamicFont" id=14]
 
-content_margin/left = -1.0
-content_margin/right = -1.0
-content_margin/top = -1.0
-content_margin/bottom = -1.0
-texture = ExtResource( 15 )
-margin/left = 10.0
-margin/right = 10.0
-margin/top = 10.0
-margin/bottom = 10.0
-expand_margin/left = 0.0
-expand_margin/right = 0.0
-expand_margin/top = 0.0
-expand_margin/bottom = 0.0
-draw_center = true
+font/size = 32
+extra_spacing/top = 3
+font/use_mipmaps = false
+font/use_filter = true
+font/font = ExtResource( 8 )
 
 [sub_resource type="StyleBoxTexture" id=15]
 
@@ -306,11 +320,11 @@ content_margin/left = -1.0
 content_margin/right = -1.0
 content_margin/top = -1.0
 content_margin/bottom = -1.0
-texture = ExtResource( 16 )
-margin/left = 10.0
-margin/right = 10.0
-margin/top = 10.0
-margin/bottom = 10.0
+texture = ExtResource( 20 )
+margin/left = 4.0
+margin/right = 4.0
+margin/top = 4.0
+margin/bottom = 4.0
 expand_margin/left = 0.0
 expand_margin/right = 0.0
 expand_margin/top = 0.0
@@ -323,7 +337,41 @@ content_margin/left = -1.0
 content_margin/right = -1.0
 content_margin/top = -1.0
 content_margin/bottom = -1.0
-texture = ExtResource( 14 )
+texture = ExtResource( 21 )
+margin/left = 10.0
+margin/right = 10.0
+margin/top = 10.0
+margin/bottom = 10.0
+expand_margin/left = 0.0
+expand_margin/right = 0.0
+expand_margin/top = 0.0
+expand_margin/bottom = 0.0
+draw_center = true
+
+[sub_resource type="StyleBoxTexture" id=17]
+
+content_margin/left = -1.0
+content_margin/right = -1.0
+content_margin/top = -1.0
+content_margin/bottom = -1.0
+texture = ExtResource( 22 )
+margin/left = 10.0
+margin/right = 10.0
+margin/top = 10.0
+margin/bottom = 10.0
+expand_margin/left = 0.0
+expand_margin/right = 0.0
+expand_margin/top = 0.0
+expand_margin/bottom = 0.0
+draw_center = true
+
+[sub_resource type="StyleBoxTexture" id=18]
+
+content_margin/left = -1.0
+content_margin/right = -1.0
+content_margin/top = -1.0
+content_margin/bottom = -1.0
+texture = ExtResource( 20 )
 margin/left = 0.0
 margin/right = 0.0
 margin/top = 0.0
@@ -368,118 +416,693 @@ margin/right = 10.0
 margin/bottom = 10.0
 script/script = ExtResource( 3 )
 
-[node name="statspanel" parent="stats" instance=ExtResource( 4 )]
+[node name="statspanel" type="TextureFrame" parent="stats"]
 
-editor/display_folded = true
-anchor/left = 0
-anchor/bottom = 0
-margin/left = -15.0
+anchor/right = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = -11.0
 margin/top = -17.0
-margin/right = -16.0
-margin/bottom = 144.0
+margin/right = -13.0
+margin/bottom = 152.0
+texture = ExtResource( 4 )
+expand = true
+stretch_mode = 5
+script/script = ExtResource( 5 )
 
-[node name="Label" parent="stats/statspanel"]
+[node name="sstr" type="TextureFrame" parent="stats/statspanel"]
 
-margin/left = 141.0
-margin/top = 15.0
-margin/right = 12.0
-margin/bottom = 31.0
+anchor/left = 3
+anchor/right = 3
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 113.0
+margin/top = 8.0
+margin/right = 89.0
+margin/bottom = 32.0
+expand = true
+stretch_mode = 0
 
-[node name="sstr" parent="stats/statspanel"]
+[node name="cur" type="RichTextLabel" parent="stats/statspanel/sstr"]
 
-margin/left = 108.5
-margin/top = 37.0
-margin/right = 81.5
-margin/bottom = 65.0
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 29.0
+margin/top = 2.0
+margin/right = 49.0
+margin/bottom = 23.0
+bbcode/enabled = true
+bbcode/bbcode = "1"
+visible_characters = -1
 
-[node name="sagi" parent="stats/statspanel"]
+[node name="max" type="RichTextLabel" parent="stats/statspanel/sstr"]
 
-margin/left = 108.5
-margin/top = 64.0
-margin/right = 81.5
-margin/bottom = 92.0
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 52.0
+margin/top = 2.0
+margin/right = 115.0
+margin/bottom = 23.0
+bbcode/enabled = true
+bbcode/bbcode = "5"
+visible_characters = -1
 
-[node name="smaf" parent="stats/statspanel"]
+[node name="Control" type="Control" parent="stats/statspanel/sstr"]
 
-margin/left = 108.5
-margin/top = 91.0
-margin/right = 81.5
-margin/bottom = 119.0
+focus/ignore_mouse = false
+focus/stop_mouse = false
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 91.0
+margin/bottom = 23.0
 
-[node name="send" parent="stats/statspanel"]
+[node name="Button" type="Button" parent="stats/statspanel/sstr"]
 
-margin/left = 108.5
-margin/top = 118.0
-margin/right = 81.5
-margin/bottom = 146.0
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 84.0
+margin/top = 1.0
+margin/right = 104.0
+margin/bottom = 21.0
+custom_styles/hover = SubResource( 1 )
+custom_styles/pressed = SubResource( 2 )
+custom_styles/normal = SubResource( 1 )
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+flat = false
 
-[node name="Label1" parent="stats/statspanel"]
+[node name="sagi" type="TextureFrame" parent="stats/statspanel"]
 
-margin/left = -29.0
-margin/top = 15.0
-margin/right = -158.0
-margin/bottom = 31.0
+anchor/left = 3
+anchor/right = 3
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 113.0
+margin/top = 42.0
+margin/right = 89.0
+margin/bottom = 66.0
+expand = true
+stretch_mode = 0
 
-[node name="cour" parent="stats/statspanel"]
+[node name="cur" type="RichTextLabel" parent="stats/statspanel/sagi"]
 
-margin/left = -53.5
-margin/top = 37.0
-margin/right = -80.5
-margin/bottom = 65.0
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 29.0
+margin/top = 2.0
+margin/right = 115.0
+margin/bottom = 23.0
+bbcode/enabled = true
+bbcode/bbcode = "1"
+visible_characters = -1
 
-[node name="conf" parent="stats/statspanel"]
+[node name="max" type="RichTextLabel" parent="stats/statspanel/sagi"]
 
-margin/left = -53.5
-margin/top = 64.0
-margin/right = -80.5
-margin/bottom = 92.0
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 52.0
+margin/top = 2.0
+margin/right = 115.0
+margin/bottom = 23.0
+bbcode/enabled = true
+bbcode/bbcode = "5"
+visible_characters = -1
 
-[node name="wit" parent="stats/statspanel"]
+[node name="Control" type="Control" parent="stats/statspanel/sagi"]
 
-margin/left = -53.5
-margin/top = 91.0
-margin/right = -80.5
-margin/bottom = 119.0
+focus/ignore_mouse = false
+focus/stop_mouse = false
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 91.0
+margin/bottom = 23.0
 
-[node name="charm" parent="stats/statspanel"]
+[node name="Button" type="Button" parent="stats/statspanel/sagi"]
 
-margin/left = -53.5
-margin/top = 118.0
-margin/right = -80.5
-margin/bottom = 146.0
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 84.0
+margin/top = 1.0
+margin/right = 104.0
+margin/bottom = 21.0
+custom_styles/hover = SubResource( 1 )
+custom_styles/pressed = SubResource( 2 )
+custom_styles/normal = SubResource( 1 )
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+flat = false
 
-[node name="leveltext" parent="stats/statspanel"]
+[node name="smaf" type="TextureFrame" parent="stats/statspanel"]
 
+anchor/left = 3
+anchor/right = 3
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 113.0
+margin/top = 75.0
+margin/right = 89.0
+margin/bottom = 99.0
+expand = true
+stretch_mode = 0
+
+[node name="cur" type="RichTextLabel" parent="stats/statspanel/smaf"]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 29.0
+margin/top = 2.0
+margin/right = 115.0
+margin/bottom = 23.0
+bbcode/enabled = true
+bbcode/bbcode = "1"
+visible_characters = -1
+
+[node name="max" type="RichTextLabel" parent="stats/statspanel/smaf"]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 52.0
+margin/top = 2.0
+margin/right = 115.0
+margin/bottom = 23.0
+bbcode/enabled = true
+bbcode/bbcode = "5"
+visible_characters = -1
+
+[node name="Control" type="Control" parent="stats/statspanel/smaf"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = false
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 91.0
+margin/bottom = 23.0
+
+[node name="Button" type="Button" parent="stats/statspanel/smaf"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 84.0
+margin/top = 1.0
+margin/right = 104.0
+margin/bottom = 21.0
+custom_styles/hover = SubResource( 1 )
+custom_styles/pressed = SubResource( 2 )
+custom_styles/normal = SubResource( 1 )
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+flat = false
+
+[node name="send" type="TextureFrame" parent="stats/statspanel"]
+
+anchor/left = 3
+anchor/right = 3
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 113.0
+margin/top = 109.0
+margin/right = 89.0
+margin/bottom = 133.0
+expand = true
+stretch_mode = 0
+
+[node name="cur" type="RichTextLabel" parent="stats/statspanel/send"]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 29.0
+margin/top = 2.0
+margin/right = 115.0
+margin/bottom = 23.0
+bbcode/enabled = true
+bbcode/bbcode = "1"
+visible_characters = -1
+
+[node name="max" type="RichTextLabel" parent="stats/statspanel/send"]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 52.0
+margin/top = 2.0
+margin/right = 115.0
+margin/bottom = 23.0
+bbcode/enabled = true
+bbcode/bbcode = "5"
+visible_characters = -1
+
+[node name="Control" type="Control" parent="stats/statspanel/send"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = false
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 91.0
+margin/bottom = 23.0
+
+[node name="Button" type="Button" parent="stats/statspanel/send"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 84.0
+margin/top = 1.0
+margin/right = 104.0
+margin/bottom = 21.0
+custom_styles/hover = SubResource( 1 )
+custom_styles/pressed = SubResource( 2 )
+custom_styles/normal = SubResource( 1 )
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+flat = false
+
+[node name="cour" type="TextureFrame" parent="stats/statspanel"]
+
+anchor/left = 3
+anchor/right = 3
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = -2.0
+margin/top = 9.0
+margin/right = -26.0
+margin/bottom = 33.0
+expand = true
+stretch_mode = 0
+
+[node name="cur" type="RichTextLabel" parent="stats/statspanel/cour"]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 27.0
+margin/top = 5.0
+margin/right = 113.0
+margin/bottom = 26.0
+custom_fonts/normal_font = SubResource( 19 )
+bbcode/enabled = true
+bbcode/bbcode = "100"
+visible_characters = -1
+
+[node name="max" type="RichTextLabel" parent="stats/statspanel/cour"]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 56.0
+margin/top = 5.0
+margin/right = 104.0
+margin/bottom = 26.0
+custom_fonts/normal_font = SubResource( 19 )
+bbcode/enabled = true
+bbcode/bbcode = "100"
+visible_characters = -1
+
+[node name="Control" type="Control" parent="stats/statspanel/cour"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = false
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 91.0
+margin/bottom = 23.0
+
+[node name="Button" type="Button" parent="stats/statspanel/cour"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 83.0
+margin/top = 1.0
+margin/right = 103.0
+margin/bottom = 21.0
+custom_styles/hover = SubResource( 1 )
+custom_styles/pressed = SubResource( 2 )
+custom_styles/normal = SubResource( 1 )
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+flat = false
+
+[node name="conf" type="TextureFrame" parent="stats/statspanel"]
+
+anchor/left = 3
+anchor/right = 3
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = -2.0
+margin/top = 42.0
+margin/right = -26.0
+margin/bottom = 66.0
+expand = true
+stretch_mode = 0
+
+[node name="cur" type="RichTextLabel" parent="stats/statspanel/conf"]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 27.0
+margin/top = 5.0
+margin/right = 113.0
+margin/bottom = 26.0
+custom_fonts/normal_font = SubResource( 19 )
+bbcode/enabled = true
+bbcode/bbcode = "100"
+visible_characters = -1
+
+[node name="max" type="RichTextLabel" parent="stats/statspanel/conf"]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 56.0
+margin/top = 5.0
+margin/right = 142.0
+margin/bottom = 26.0
+custom_fonts/normal_font = SubResource( 19 )
+bbcode/enabled = true
+bbcode/bbcode = "100"
+visible_characters = -1
+
+[node name="Control" type="Control" parent="stats/statspanel/conf"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = false
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 91.0
+margin/bottom = 23.0
+
+[node name="Button" type="Button" parent="stats/statspanel/conf"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 82.0
+margin/top = 1.0
+margin/right = 102.0
+margin/bottom = 21.0
+custom_styles/hover = SubResource( 1 )
+custom_styles/pressed = SubResource( 2 )
+custom_styles/normal = SubResource( 1 )
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+flat = false
+
+[node name="wit" type="TextureFrame" parent="stats/statspanel"]
+
+anchor/left = 3
+anchor/right = 3
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = -2.0
+margin/top = 76.0
+margin/right = -26.0
+margin/bottom = 100.0
+expand = true
+stretch_mode = 0
+
+[node name="cur" type="RichTextLabel" parent="stats/statspanel/wit"]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 27.0
+margin/top = 5.0
+margin/right = 113.0
+margin/bottom = 26.0
+custom_fonts/normal_font = SubResource( 19 )
+bbcode/enabled = true
+bbcode/bbcode = "100"
+visible_characters = -1
+
+[node name="max" type="RichTextLabel" parent="stats/statspanel/wit"]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 56.0
+margin/top = 5.0
+margin/right = 142.0
+margin/bottom = 26.0
+custom_fonts/normal_font = SubResource( 19 )
+bbcode/enabled = true
+bbcode/bbcode = "100"
+visible_characters = -1
+
+[node name="Control" type="Control" parent="stats/statspanel/wit"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = false
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 91.0
+margin/bottom = 23.0
+
+[node name="Button" type="Button" parent="stats/statspanel/wit"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 81.0
+margin/top = 1.0
+margin/right = 101.0
+margin/bottom = 21.0
+custom_styles/hover = SubResource( 1 )
+custom_styles/pressed = SubResource( 2 )
+custom_styles/normal = SubResource( 1 )
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+flat = false
+
+[node name="charm" type="TextureFrame" parent="stats/statspanel"]
+
+anchor/left = 3
+anchor/right = 3
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = -2.0
+margin/top = 110.0
+margin/right = -26.0
+margin/bottom = 134.0
+expand = true
+stretch_mode = 0
+
+[node name="cur" type="RichTextLabel" parent="stats/statspanel/charm"]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 27.0
+margin/top = 5.0
+margin/right = 113.0
+margin/bottom = 26.0
+custom_fonts/normal_font = SubResource( 19 )
+bbcode/enabled = true
+bbcode/bbcode = "100"
+visible_characters = -1
+
+[node name="max" type="RichTextLabel" parent="stats/statspanel/charm"]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 56.0
+margin/top = 5.0
+margin/right = 142.0
+margin/bottom = 26.0
+custom_fonts/normal_font = SubResource( 19 )
+bbcode/enabled = true
+bbcode/bbcode = "100"
+visible_characters = -1
+
+[node name="Control" type="Control" parent="stats/statspanel/charm"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = false
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 91.0
+margin/bottom = 23.0
+
+[node name="Button" type="Button" parent="stats/statspanel/charm"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 81.0
+margin/top = 1.0
+margin/right = 101.0
+margin/bottom = 21.0
+custom_styles/hover = SubResource( 1 )
+custom_styles/pressed = SubResource( 2 )
+custom_styles/normal = SubResource( 1 )
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+flat = false
+
+[node name="leveltext" type="RichTextLabel" parent="stats/statspanel"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 20.0
 margin/top = 16.0
 margin/right = 208.0
 margin/bottom = 108.0
+bbcode/enabled = true
+bbcode/bbcode = ""
+visible_characters = -1
 
-[node name="levelreqs" parent="stats/statspanel"]
+[node name="levelreqs" type="RichTextLabel" parent="stats/statspanel"]
 
 anchor/left = 3
 anchor/top = 1
 anchor/right = 3
 anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
 margin/left = 130.5
 margin/top = -122.0
 margin/right = -110.5
 margin/bottom = -215.0
+bbcode/enabled = true
+bbcode/bbcode = ""
+visible_characters = -1
 
-[node name="traittext" parent="stats/statspanel"]
+[node name="traittext" type="RichTextLabel" parent="stats/statspanel"]
 
 visibility/visible = false
+anchor/right = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 23.0
+margin/top = 163.0
+margin/right = 24.0
+margin/bottom = 270.0
+bbcode/enabled = true
+bbcode/bbcode = ""
+visible_characters = -1
 
-[node name="levelprogress" parent="stats/statspanel"]
+[node name="levelprogress" type="TextureProgress" parent="stats/statspanel"]
 
-margin/left = 14.0
-margin/top = 124.0
-margin/right = 220.0
-margin/bottom = 149.0
+hint/tooltip = "At 100% you can talk to servant to advance their level"
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 29.0
+margin/top = 98.0
+margin/right = 235.0
+margin/bottom = 123.0
+range/min = 0.0
+range/max = 100.0
+range/step = 1.0
+range/page = 0.0
+range/value = 45.0
+range/exp_edit = false
+range/rounded = false
+texture/under = ExtResource( 9 )
+texture/over = ExtResource( 10 )
+texture/progress = ExtResource( 11 )
+radial_fill/fill_degrees = 360.0
+radial_fill/center_offset = Vector2( 0, 0 )
 
-[node name="Label" parent="stats/statspanel/levelprogress"]
+[node name="Label" type="Label" parent="stats/statspanel/levelprogress"]
 
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
 margin/left = 57.0
+margin/top = -15.0
 margin/right = 152.0
+margin/bottom = -1.0
+text = "Experience"
+align = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
 
 [node name="trainingabils" type="Button" parent="stats" groups=[
 "prisondisable",
@@ -497,7 +1120,7 @@ margin/left = 68.0
 margin/top = 40.0
 margin/right = -39.0
 margin/bottom = 4.0
-custom_fonts/font = ExtResource( 5 )
+custom_fonts/font = ExtResource( 12 )
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
@@ -517,7 +1140,7 @@ margin/left = 319.0
 margin/top = 25.0
 margin/right = 191.0
 margin/bottom = 122.0
-custom_fonts/normal_font = ExtResource( 5 )
+custom_fonts/normal_font = ExtResource( 12 )
 bbcode/enabled = true
 bbcode/bbcode = "Level - 1
 ExP - 0
@@ -537,7 +1160,7 @@ margin/left = 126.0
 margin/top = 178.0
 margin/right = -127.0
 margin/bottom = 249.0
-custom_fonts/normal_font = ExtResource( 5 )
+custom_fonts/normal_font = ExtResource( 12 )
 bbcode/enabled = true
 bbcode/bbcode = ""
 visible_characters = -1
@@ -556,7 +1179,7 @@ margin/left = 278.0
 margin/top = 3.0
 margin/right = 184.0
 margin/bottom = 22.0
-custom_fonts/font = ExtResource( 5 )
+custom_fonts/font = ExtResource( 12 )
 custom_colors/font_color = Color( 1, 0.937255, 0, 1 )
 text = "Stats"
 align = 1
@@ -576,7 +1199,7 @@ margin/left = 76.0
 margin/top = 151.0
 margin/right = -40.0
 margin/bottom = 169.0
-custom_fonts/font = ExtResource( 5 )
+custom_fonts/font = ExtResource( 12 )
 custom_colors/font_color = Color( 1, 0.9375, 0, 1 )
 text = "Learned Abilities"
 align = 1
@@ -619,7 +1242,7 @@ margin/left = 242.0
 margin/top = 117.5
 margin/right = -236.0
 margin/bottom = -96.5
-custom_styles/panel = SubResource( 1 )
+custom_styles/panel = SubResource( 3 )
 
 [node name="tooltiptext" type="RichTextLabel" parent="stats/tooltip1"]
 
@@ -631,7 +1254,7 @@ margin/left = 16.0
 margin/top = 15.0
 margin/right = 462.0
 margin/bottom = 198.0
-custom_fonts/normal_font = ExtResource( 5 )
+custom_fonts/normal_font = ExtResource( 12 )
 bbcode/enabled = true
 bbcode/bbcode = ""
 visible_characters = -1
@@ -651,7 +1274,7 @@ margin/left = -208.0
 margin/top = 40.0
 margin/right = -315.0
 margin/bottom = 4.0
-custom_fonts/font = ExtResource( 5 )
+custom_fonts/font = ExtResource( 12 )
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
@@ -673,7 +1296,7 @@ margin/left = 391.5
 margin/top = 381.0
 margin/right = -346.5
 margin/bottom = -69.0
-custom_styles/panel = ExtResource( 7 )
+custom_styles/panel = ExtResource( 14 )
 popup/exclusive = false
 
 [node name="statstext" type="RichTextLabel" parent="stats/statistics/Popup"]
@@ -740,7 +1363,7 @@ margin/left = 338.0
 margin/top = 240.5
 margin/right = -288.0
 margin/bottom = -187.5
-custom_styles/panel = ExtResource( 8 )
+custom_styles/panel = ExtResource( 15 )
 popup/exclusive = false
 
 [node name="abilcancel" type="Button" parent="stats/trainingabilspanel"]
@@ -845,7 +1468,7 @@ margin/left = -181.0
 margin/top = 148.0
 margin/right = -269.0
 margin/bottom = 167.0
-custom_fonts/font = ExtResource( 5 )
+custom_fonts/font = ExtResource( 12 )
 custom_colors/font_color = Color( 1, 0.9375, 0, 1 )
 text = "Traits"
 align = 1
@@ -957,7 +1580,7 @@ margin/left = 143.0
 margin/top = 58.0
 margin/right = 49.0
 margin/bottom = 77.0
-custom_fonts/font = ExtResource( 5 )
+custom_fonts/font = ExtResource( 12 )
 custom_colors/font_color = Color( 1, 0.937255, 0, 1 )
 text = "Grade"
 align = 1
@@ -977,7 +1600,7 @@ margin/left = 143.0
 margin/top = 8.0
 margin/right = 49.0
 margin/bottom = 27.0
-custom_fonts/font = ExtResource( 5 )
+custom_fonts/font = ExtResource( 12 )
 custom_colors/font_color = Color( 1, 0.937255, 0, 1 )
 text = "Specialization"
 align = 1
@@ -1013,7 +1636,7 @@ margin/left = 13.0
 margin/top = 335.0
 margin/right = 160.0
 margin/bottom = 375.0
-custom_fonts/font = ExtResource( 5 )
+custom_fonts/font = ExtResource( 12 )
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
@@ -1033,7 +1656,7 @@ margin/left = 12.0
 margin/top = 157.0
 margin/right = 162.0
 margin/bottom = 193.0
-custom_fonts/font = ExtResource( 5 )
+custom_fonts/font = ExtResource( 12 )
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
@@ -1053,7 +1676,7 @@ margin/left = 46.0
 margin/top = 145.0
 margin/right = 135.0
 margin/bottom = 164.0
-custom_fonts/font = ExtResource( 5 )
+custom_fonts/font = ExtResource( 12 )
 text = "Occupation"
 percent_visible = 1.0
 lines_skipped = 0
@@ -1069,14 +1692,14 @@ margin/left = 18.0
 margin/top = 193.0
 margin/right = 157.0
 margin/bottom = 212.0
-custom_fonts/font = ExtResource( 5 )
+custom_fonts/font = ExtResource( 12 )
 text = "Sleeping conditions"
 align = 1
 percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
 
-[node name="SelectButtonSleep" parent="stats" instance=ExtResource( 9 )]
+[node name="SelectButtonSleep" parent="stats" instance=ExtResource( 16 )]
 
 editor/display_folded = true
 margin/left = 12.0
@@ -1095,7 +1718,7 @@ margin/left = 13.0
 margin/top = 286.0
 margin/right = 160.0
 margin/bottom = 326.0
-custom_fonts/font = ExtResource( 5 )
+custom_fonts/font = ExtResource( 12 )
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
@@ -1112,7 +1735,7 @@ margin/left = 13.0
 margin/top = 293.0
 margin/right = 160.0
 margin/bottom = 333.0
-custom_fonts/font = ExtResource( 5 )
+custom_fonts/font = ExtResource( 12 )
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
@@ -1129,7 +1752,7 @@ margin/left = 13.0
 margin/top = 252.0
 margin/right = 159.0
 margin/bottom = 292.0
-custom_fonts/font = ExtResource( 5 )
+custom_fonts/font = ExtResource( 12 )
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
@@ -1152,7 +1775,7 @@ margin/left = 212.0
 margin/top = 201.5
 margin/right = -349.0
 margin/bottom = -184.5
-custom_styles/panel = ExtResource( 8 )
+custom_styles/panel = ExtResource( 15 )
 popup/exclusive = false
 
 [node name="ScrollContainer" type="ScrollContainer" parent="stats/selectspellpanel"]
@@ -1190,7 +1813,7 @@ focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
-theme/theme = ExtResource( 10 )
+theme/theme = ExtResource( 17 )
 margin/left = 0.0
 margin/top = 0.0
 margin/right = 200.0
@@ -1211,7 +1834,7 @@ margin/left = 114.0
 margin/top = 340.0
 margin/right = 223.0
 margin/bottom = 368.0
-custom_fonts/font = ExtResource( 5 )
+custom_fonts/font = ExtResource( 12 )
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
@@ -1228,7 +1851,7 @@ margin/left = 329.0
 margin/top = 340.0
 margin/right = 438.0
 margin/bottom = 368.0
-custom_fonts/font = ExtResource( 5 )
+custom_fonts/font = ExtResource( 12 )
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
@@ -1265,7 +1888,7 @@ margin/left = 109.0
 margin/top = 92.5
 margin/right = -198.0
 margin/bottom = -33.5
-custom_styles/panel = SubResource( 2 )
+custom_styles/panel = SubResource( 4 )
 popup/exclusive = false
 
 [node name="Label" type="Label" parent="stats/callorder"]
@@ -1358,7 +1981,7 @@ margin/left = 0.0
 margin/top = 0.0
 margin/right = 2.0
 margin/bottom = 273.0
-custom_fonts/normal_font = ExtResource( 5 )
+custom_fonts/normal_font = ExtResource( 12 )
 bbcode/enabled = true
 bbcode/bbcode = ""
 visible_characters = -1
@@ -1376,7 +1999,7 @@ margin/left = 5.0
 margin/top = 252.0
 margin/right = 0.0
 margin/bottom = 134.0
-custom_fonts/normal_font = ExtResource( 5 )
+custom_fonts/normal_font = ExtResource( 12 )
 bbcode/enabled = true
 bbcode/bbcode = "She barely pays any attention to you, as if demonstrating her independence.
 
@@ -1430,15 +2053,15 @@ margin/left = 145.0
 margin/top = -10.0
 margin/right = -8.0
 margin/bottom = 143.0
-custom_styles/panel = SubResource( 3 )
+custom_styles/panel = SubResource( 5 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="inspect"]
 
 playback/process_mode = 1
 playback/default_blend_time = 0.0
 root/root = NodePath("..")
-anims/descriptfull = SubResource( 4 )
-anims/descriptportait = SubResource( 5 )
+anims/descriptfull = SubResource( 6 )
+anims/descriptportait = SubResource( 7 )
 playback/active = true
 playback/speed = 1.0
 blend_times = [  ]
@@ -1473,7 +2096,7 @@ margin/left = 11.0
 margin/top = 130.0
 margin/right = 12.0
 margin/bottom = 13.0
-custom_fonts/normal_font = ExtResource( 5 )
+custom_fonts/normal_font = ExtResource( 12 )
 bbcode/enabled = true
 bbcode/bbcode = "Wears etc
 
@@ -1559,7 +2182,7 @@ margin/left = 168.0
 margin/top = 21.0
 margin/right = 51.0
 margin/bottom = 40.0
-custom_fonts/font = ExtResource( 5 )
+custom_fonts/font = ExtResource( 12 )
 custom_colors/font_color = Color( 1, 1, 0, 1 )
 text = "Everyday Rules"
 align = 1
@@ -1581,7 +2204,7 @@ margin/left = 184.0
 margin/top = 204.0
 margin/right = 37.0
 margin/bottom = 245.0
-custom_fonts/font = ExtResource( 5 )
+custom_fonts/font = ExtResource( 12 )
 custom_colors/font_color = Color( 1, 1, 0, 1 )
 text = "Advanced Rules"
 align = 1
@@ -1603,7 +2226,7 @@ margin/left = 184.0
 margin/top = 93.0
 margin/right = 37.0
 margin/bottom = 134.0
-custom_fonts/font = ExtResource( 5 )
+custom_fonts/font = ExtResource( 12 )
 custom_colors/font_color = Color( 1, 1, 0, 1 )
 text = "Luxury Rules"
 align = 1
@@ -1612,8 +2235,8 @@ lines_skipped = 0
 max_lines_visible = -1
 
 [node name="contraception" type="CheckBox" parent="customization/rules" groups=[
-"prisondisable",
 "slaverules",
+"prisondisable",
 ]]
 
 anchor/left = 1
@@ -1629,8 +2252,8 @@ margin/left = 204.0
 margin/top = 44.0
 margin/right = 15.0
 margin/bottom = 72.0
-custom_styles/focus = SubResource( 6 )
-custom_fonts/font = ExtResource( 5 )
+custom_styles/focus = SubResource( 8 )
+custom_fonts/font = ExtResource( 12 )
 custom_colors/font_color_pressed = Color( 0.0921321, 0.644531, 0.0453186, 1 )
 toggle_mode = true
 enabled_focus_mode = 2
@@ -1640,8 +2263,8 @@ flat = false
 align = 0
 
 [node name="aphrodisiac" type="CheckBox" parent="customization/rules" groups=[
-"prisondisable",
 "slaverules",
+"prisondisable",
 ]]
 
 anchor/left = 1
@@ -1657,8 +2280,8 @@ margin/left = 204.0
 margin/top = 67.0
 margin/right = 15.0
 margin/bottom = 95.0
-custom_styles/focus = SubResource( 7 )
-custom_fonts/font = ExtResource( 5 )
+custom_styles/focus = SubResource( 9 )
+custom_fonts/font = ExtResource( 12 )
 custom_colors/font_color_pressed = Color( 0.0921321, 0.644531, 0.0453186, 1 )
 toggle_mode = true
 enabled_focus_mode = 2
@@ -1683,8 +2306,8 @@ margin/left = 204.0
 margin/top = 217.0
 margin/right = 15.0
 margin/bottom = 245.0
-custom_styles/focus = SubResource( 8 )
-custom_fonts/font = ExtResource( 5 )
+custom_styles/focus = SubResource( 10 )
+custom_fonts/font = ExtResource( 12 )
 custom_colors/font_color_pressed = Color( 0.0921321, 0.644531, 0.0453186, 1 )
 toggle_mode = true
 enabled_focus_mode = 2
@@ -1711,8 +2334,8 @@ margin/left = 204.0
 margin/top = 241.0
 margin/right = 15.0
 margin/bottom = 269.0
-custom_styles/focus = SubResource( 9 )
-custom_fonts/font = ExtResource( 5 )
+custom_styles/focus = SubResource( 11 )
+custom_fonts/font = ExtResource( 12 )
 custom_colors/font_color_pressed = Color( 0.0921321, 0.644531, 0.0453186, 1 )
 toggle_mode = true
 enabled_focus_mode = 2
@@ -1738,8 +2361,8 @@ margin/left = 204.0
 margin/top = 264.0
 margin/right = 15.0
 margin/bottom = 292.0
-custom_styles/focus = SubResource( 10 )
-custom_fonts/font = ExtResource( 5 )
+custom_styles/focus = SubResource( 12 )
+custom_fonts/font = ExtResource( 12 )
 custom_colors/font_color_pressed = Color( 0.0921321, 0.644531, 0.0453186, 1 )
 toggle_mode = true
 enabled_focus_mode = 2
@@ -1765,8 +2388,8 @@ margin/left = 204.0
 margin/top = 287.0
 margin/right = 15.0
 margin/bottom = 315.0
-custom_styles/focus = SubResource( 11 )
-custom_fonts/font = ExtResource( 5 )
+custom_styles/focus = SubResource( 13 )
+custom_fonts/font = ExtResource( 12 )
 custom_colors/font_color_pressed = Color( 0.0921321, 0.644531, 0.0453186, 1 )
 toggle_mode = true
 enabled_focus_mode = 2
@@ -1776,8 +2399,8 @@ flat = false
 align = 0
 
 [node name="betterfood" type="CheckBox" parent="customization/rules" groups=[
-"prisondisable",
 "slaverules",
+"prisondisable",
 ]]
 
 anchor/left = 1
@@ -1793,8 +2416,8 @@ margin/left = 204.0
 margin/top = 108.0
 margin/right = 15.0
 margin/bottom = 136.0
-custom_styles/focus = SubResource( 8 )
-custom_fonts/font = ExtResource( 5 )
+custom_styles/focus = SubResource( 10 )
+custom_fonts/font = ExtResource( 12 )
 custom_colors/font_color_pressed = Color( 0.0921321, 0.644531, 0.0453186, 1 )
 toggle_mode = true
 enabled_focus_mode = 2
@@ -1804,8 +2427,8 @@ flat = false
 align = 0
 
 [node name="personalbath" type="CheckBox" parent="customization/rules" groups=[
-"prisondisable",
 "slaverules",
+"prisondisable",
 ]]
 
 anchor/left = 1
@@ -1821,8 +2444,8 @@ margin/left = 204.0
 margin/top = 132.0
 margin/right = 15.0
 margin/bottom = 160.0
-custom_styles/focus = SubResource( 9 )
-custom_fonts/font = ExtResource( 5 )
+custom_styles/focus = SubResource( 11 )
+custom_fonts/font = ExtResource( 12 )
 custom_colors/font_color_pressed = Color( 0.0921321, 0.644531, 0.0453186, 1 )
 toggle_mode = true
 enabled_focus_mode = 2
@@ -1832,8 +2455,8 @@ flat = false
 align = 0
 
 [node name="cosmetics" type="CheckBox" parent="customization/rules" groups=[
-"prisondisable",
 "slaverules",
+"prisondisable",
 ]]
 
 anchor/left = 1
@@ -1849,8 +2472,8 @@ margin/left = 204.0
 margin/top = 156.0
 margin/right = 15.0
 margin/bottom = 184.0
-custom_styles/focus = SubResource( 11 )
-custom_fonts/font = ExtResource( 5 )
+custom_styles/focus = SubResource( 13 )
+custom_fonts/font = ExtResource( 12 )
 custom_colors/font_color_pressed = Color( 0.0921321, 0.644531, 0.0453186, 1 )
 toggle_mode = true
 enabled_focus_mode = 2
@@ -1860,8 +2483,8 @@ flat = false
 align = 0
 
 [node name="pocketmoney" type="CheckBox" parent="customization/rules" groups=[
-"prisondisable",
 "slaverules",
+"prisondisable",
 ]]
 
 anchor/left = 1
@@ -1877,8 +2500,8 @@ margin/left = 204.0
 margin/top = 179.0
 margin/right = 15.0
 margin/bottom = 207.0
-custom_styles/focus = SubResource( 10 )
-custom_fonts/font = ExtResource( 5 )
+custom_styles/focus = SubResource( 12 )
+custom_fonts/font = ExtResource( 12 )
 custom_colors/font_color_pressed = Color( 0.0921321, 0.644531, 0.0453186, 1 )
 toggle_mode = true
 enabled_focus_mode = 2
@@ -1898,7 +2521,7 @@ margin/left = 146.0
 margin/top = 51.0
 margin/right = 168.0
 margin/bottom = 86.0
-custom_fonts/font = SubResource( 12 )
+custom_fonts/font = SubResource( 14 )
 custom_colors/font_color = Color( 0.0157561, 0.675781, 0.0105591, 1 )
 text = "B"
 percent_visible = 1.0
@@ -1916,7 +2539,7 @@ margin/left = 55.0
 margin/top = 50.0
 margin/right = 77.0
 margin/bottom = 85.0
-custom_fonts/font = SubResource( 12 )
+custom_fonts/font = SubResource( 14 )
 custom_colors/font_color = Color( 0.0739976, 0.660156, 0.00773621, 1 )
 text = "P"
 percent_visible = 1.0
@@ -1947,7 +2570,7 @@ margin/left = 89.0
 margin/top = 12.0
 margin/right = 136.0
 margin/bottom = 31.0
-custom_fonts/font = ExtResource( 5 )
+custom_fonts/font = ExtResource( 12 )
 text = "Brand"
 percent_visible = 1.0
 lines_skipped = 0
@@ -1965,7 +2588,7 @@ margin/left = 289.0
 margin/top = 50.0
 margin/right = 402.0
 margin/bottom = 14.0
-custom_fonts/font = ExtResource( 5 )
+custom_fonts/font = ExtResource( 12 )
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
@@ -1984,7 +2607,7 @@ margin/left = 173.0
 margin/top = 50.0
 margin/right = 286.0
 margin/bottom = 14.0
-custom_fonts/font = ExtResource( 5 )
+custom_fonts/font = ExtResource( 12 )
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
@@ -2006,7 +2629,7 @@ margin/left = 14.0
 margin/top = 50.0
 margin/right = 166.0
 margin/bottom = 14.0
-custom_fonts/font = ExtResource( 5 )
+custom_fonts/font = ExtResource( 12 )
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
@@ -2024,7 +2647,7 @@ margin/left = 37.0
 margin/top = 31.0
 margin/right = 185.0
 margin/bottom = 67.0
-custom_fonts/font = ExtResource( 5 )
+custom_fonts/font = ExtResource( 12 )
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
@@ -2047,7 +2670,7 @@ margin/left = 274.0
 margin/top = 260.0
 margin/right = -160.0
 margin/bottom = -6.0
-custom_styles/panel = SubResource( 13 )
+custom_styles/panel = SubResource( 15 )
 popup/exclusive = false
 window/title = "Branding"
 
@@ -2061,7 +2684,7 @@ margin/left = 7.0
 margin/top = 7.0
 margin/right = 422.0
 margin/bottom = 107.0
-custom_fonts/normal_font = ExtResource( 5 )
+custom_fonts/normal_font = ExtResource( 12 )
 bbcode/enabled = true
 bbcode/bbcode = "Branding a person will put permanent spell on the person, preventing them from opposing the brander and ultimately making them a legitimate property. Operation requires 10 mana and 20 energy.
 "
@@ -2077,7 +2700,7 @@ margin/left = 10.0
 margin/top = 9.0
 margin/right = 425.0
 margin/bottom = 109.0
-custom_fonts/normal_font = ExtResource( 5 )
+custom_fonts/normal_font = ExtResource( 12 )
 bbcode/enabled = true
 bbcode/bbcode = "Enhanced Branding will allow to issue specific rules and comands to the branded person. 
 [color=aqua]Servants with Enhanced Brand won't be able to steal or agitate others. [/color]
@@ -2094,7 +2717,7 @@ margin/left = 8.0
 margin/top = 104.0
 margin/right = 430.0
 margin/bottom = 190.0
-custom_fonts/normal_font = ExtResource( 5 )
+custom_fonts/normal_font = ExtResource( 12 )
 bbcode/enabled = true
 bbcode/bbcode = "You can remove your brand for 5 mana, but this can make sudden escape more probable."
 visible_characters = -1
@@ -2244,8 +2867,8 @@ margin/left = 68.0
 margin/top = 27.0
 margin/right = 568.0
 margin/bottom = 233.0
-custom_styles/focus = SubResource( 14 )
-custom_styles/normal = SubResource( 15 )
+custom_styles/focus = SubResource( 16 )
+custom_styles/normal = SubResource( 17 )
 syntax_highlighting = false
 show_line_numbers = false
 highlight_all_occurrences = false
@@ -2285,7 +2908,7 @@ margin/left = 226.5
 margin/top = 211.0
 margin/right = -727.5
 margin/bottom = -274.0
-custom_styles/panel = ExtResource( 8 )
+custom_styles/panel = ExtResource( 15 )
 popup/exclusive = false
 
 [node name="Control" type="Control" parent="customization/clothes&relatives&customs/relativespanel"]
@@ -2335,7 +2958,7 @@ margin/left = 0.0
 margin/top = 0.0
 margin/right = 5.0
 margin/bottom = 18.0
-custom_fonts/font = ExtResource( 5 )
+custom_fonts/font = ExtResource( 12 )
 text = "1"
 percent_visible = 1.0
 lines_skipped = 0
@@ -2377,7 +3000,7 @@ margin/left = 0.0
 margin/top = 0.0
 margin/right = 168.0
 margin/bottom = 19.0
-custom_fonts/font = ExtResource( 5 )
+custom_fonts/font = ExtResource( 12 )
 text = "Mother - $name $race"
 percent_visible = 1.0
 lines_skipped = 0
@@ -2419,7 +3042,7 @@ margin/left = 0.0
 margin/top = 0.0
 margin/right = 168.0
 margin/bottom = 19.0
-custom_fonts/font = ExtResource( 5 )
+custom_fonts/font = ExtResource( 12 )
 text = "Mother - $name $race"
 percent_visible = 1.0
 lines_skipped = 0
@@ -2435,7 +3058,7 @@ margin/left = 392.0
 margin/top = 409.0
 margin/right = 531.0
 margin/bottom = 456.0
-custom_fonts/font = ExtResource( 5 )
+custom_fonts/font = ExtResource( 12 )
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
@@ -2452,7 +3075,7 @@ margin/left = 44.0
 margin/top = 34.0
 margin/right = 212.0
 margin/bottom = 53.0
-custom_fonts/font = ExtResource( 5 )
+custom_fonts/font = ExtResource( 12 )
 text = "Parents"
 align = 1
 percent_visible = 1.0
@@ -2469,7 +3092,7 @@ margin/left = 371.0
 margin/top = 34.0
 margin/right = 539.0
 margin/bottom = 53.0
-custom_fonts/font = ExtResource( 5 )
+custom_fonts/font = ExtResource( 12 )
 text = "Siblings"
 align = 1
 percent_visible = 1.0
@@ -2486,14 +3109,14 @@ margin/left = 714.0
 margin/top = 34.0
 margin/right = 882.0
 margin/bottom = 53.0
-custom_fonts/font = ExtResource( 5 )
+custom_fonts/font = ExtResource( 12 )
 text = "Children"
 align = 1
 percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
 
-[node name="joblist" parent="customization" instance=ExtResource( 17 )]
+[node name="joblist" parent="customization" instance=ExtResource( 23 )]
 
 visibility/visible = false
 
@@ -2508,7 +3131,7 @@ margin/left = 34.0
 margin/top = 79.0
 margin/right = 186.0
 margin/bottom = 115.0
-custom_fonts/font = ExtResource( 5 )
+custom_fonts/font = ExtResource( 12 )
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
@@ -2530,7 +3153,7 @@ margin/left = 80.0
 margin/top = -19.0
 margin/right = -66.0
 margin/bottom = 0.0
-custom_fonts/font = ExtResource( 5 )
+custom_fonts/font = ExtResource( 12 )
 text = "Hairstyle"
 align = 1
 percent_visible = 1.0
@@ -2549,7 +3172,7 @@ margin/left = 203.0
 margin/top = 78.0
 margin/right = 348.0
 margin/bottom = 114.0
-custom_fonts/font = ExtResource( 5 )
+custom_fonts/font = ExtResource( 12 )
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
@@ -2568,7 +3191,7 @@ margin/left = 9.0
 margin/top = 91.0
 margin/right = 161.0
 margin/bottom = 55.0
-custom_fonts/font = ExtResource( 5 )
+custom_fonts/font = ExtResource( 12 )
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
@@ -2588,7 +3211,7 @@ margin/left = 9.0
 margin/top = 137.0
 margin/right = 161.0
 margin/bottom = 101.0
-custom_fonts/font = ExtResource( 5 )
+custom_fonts/font = ExtResource( 12 )
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
@@ -2607,7 +3230,7 @@ margin/left = 203.0
 margin/top = 24.0
 margin/right = 349.0
 margin/bottom = 60.0
-custom_fonts/font = ExtResource( 5 )
+custom_fonts/font = ExtResource( 12 )
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
@@ -2630,7 +3253,7 @@ margin/left = 199.0
 margin/top = 42.0
 margin/right = 42.0
 margin/bottom = 14.0
-custom_fonts/font = ExtResource( 5 )
+custom_fonts/font = ExtResource( 12 )
 toggle_mode = true
 enabled_focus_mode = 2
 shortcut = null
@@ -2654,7 +3277,7 @@ margin/left = 332.0
 margin/top = 236.5
 margin/right = -123.0
 margin/bottom = -248.5
-custom_styles/panel = ExtResource( 8 )
+custom_styles/panel = ExtResource( 15 )
 popup/exclusive = false
 
 [node name="closebutton" type="Button" parent="customization/piercingpanel"]
@@ -2778,7 +3401,7 @@ margin/left = 325.0
 margin/top = 202.5
 margin/right = -236.0
 margin/bottom = -213.5
-custom_styles/panel = ExtResource( 8 )
+custom_styles/panel = ExtResource( 15 )
 popup/exclusive = false
 
 [node name="Control" type="Control" parent="customization/tattoopanel"]
@@ -3032,7 +3655,7 @@ margin/left = 10.0
 margin/top = 37.0
 margin/right = 10.0
 margin/bottom = 10.0
-script/script = ExtResource( 18 )
+script/script = ExtResource( 24 )
 __meta__ = {
 "_edit_lock_": true
 }
@@ -3060,7 +3683,7 @@ margin/left = 11.0
 margin/top = 9.0
 margin/right = 8.0
 margin/bottom = 76.0
-custom_fonts/normal_font = ExtResource( 5 )
+custom_fonts/normal_font = ExtResource( 12 )
 bbcode/enabled = true
 bbcode/bbcode = "$name speaks to you softly"
 visible_characters = -1
@@ -3080,7 +3703,7 @@ margin/left = 486.0
 margin/top = 70.0
 margin/right = 573.0
 margin/bottom = 89.0
-custom_fonts/font = ExtResource( 5 )
+custom_fonts/font = ExtResource( 12 )
 text = "Dominance"
 percent_visible = 1.0
 lines_skipped = 0
@@ -3098,7 +3721,7 @@ margin/left = 11.0
 margin/top = 73.0
 margin/right = 167.0
 margin/bottom = 92.0
-custom_fonts/font = ExtResource( 5 )
+custom_fonts/font = ExtResource( 12 )
 custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
 text = "Free Affection:"
 percent_visible = 1.0
@@ -3119,7 +3742,7 @@ margin/left = 110.0
 margin/top = 48.0
 margin/right = 7.0
 margin/bottom = 12.0
-custom_fonts/font = ExtResource( 5 )
+custom_fonts/font = ExtResource( 12 )
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
@@ -3138,7 +3761,7 @@ margin/left = 8.0
 margin/top = 48.0
 margin/right = 109.0
 margin/bottom = 13.0
-custom_fonts/font = ExtResource( 5 )
+custom_fonts/font = ExtResource( 12 )
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
@@ -3307,7 +3930,7 @@ margin/left = 338.0
 margin/top = 48.0
 margin/right = 439.0
 margin/bottom = 14.0
-custom_fonts/font = ExtResource( 5 )
+custom_fonts/font = ExtResource( 12 )
 custom_colors/font_color_pressed = Color( 1, 0, 0, 1 )
 toggle_mode = true
 enabled_focus_mode = 2
@@ -3328,7 +3951,7 @@ margin/left = 232.0
 margin/top = 48.0
 margin/right = 324.0
 margin/bottom = 14.0
-custom_fonts/font = ExtResource( 5 )
+custom_fonts/font = ExtResource( 12 )
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
@@ -3469,7 +4092,7 @@ margin/left = 120.0
 margin/top = 48.0
 margin/right = 221.0
 margin/bottom = 14.0
-custom_fonts/font = ExtResource( 5 )
+custom_fonts/font = ExtResource( 12 )
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
@@ -3489,7 +4112,7 @@ margin/left = 451.0
 margin/top = 360.0
 margin/right = 552.0
 margin/bottom = 394.0
-custom_fonts/font = ExtResource( 5 )
+custom_fonts/font = ExtResource( 12 )
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
@@ -3687,7 +4310,7 @@ margin/left = -8.0
 margin/top = -7.0
 margin/right = -7.0
 margin/bottom = -5.0
-custom_styles/panel = SubResource( 16 )
+custom_styles/panel = SubResource( 18 )
 
 [node name="RichTextLabel" type="RichTextLabel" parent="sexual/hidingpanel"]
 
@@ -3744,7 +4367,7 @@ margin/left = 241.0
 margin/top = 208.0
 margin/right = -278.0
 margin/bottom = -109.0
-custom_styles/panel = ExtResource( 8 )
+custom_styles/panel = ExtResource( 15 )
 
 [node name="Control" type="Control" parent="sexual/groupsexpanel"]
 
@@ -3770,7 +4393,7 @@ margin/left = 298.0
 margin/top = 250.0
 margin/right = 401.0
 margin/bottom = 280.0
-custom_fonts/font = ExtResource( 5 )
+custom_fonts/font = ExtResource( 12 )
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
@@ -3787,7 +4410,7 @@ margin/left = 102.0
 margin/top = 250.0
 margin/right = 205.0
 margin/bottom = 280.0
-custom_fonts/font = ExtResource( 5 )
+custom_fonts/font = ExtResource( 12 )
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
@@ -3804,7 +4427,7 @@ margin/left = 31.0
 margin/top = 28.0
 margin/right = 152.0
 margin/bottom = 58.0
-custom_fonts/font = ExtResource( 5 )
+custom_fonts/font = ExtResource( 12 )
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
@@ -3821,7 +4444,7 @@ margin/left = 176.0
 margin/top = 22.0
 margin/right = 490.0
 margin/bottom = 232.0
-custom_fonts/normal_font = ExtResource( 5 )
+custom_fonts/normal_font = ExtResource( 12 )
 bbcode/enabled = true
 bbcode/bbcode = "Selected: "
 visible_characters = -1
@@ -3994,4 +4617,3 @@ items = [ "Pussy", null, false, -1, null, "Ass", null, false, -1, null ]
 [connection signal="pressed" from="sexual/groupsexpanel/selectpartner" to="sexual" method="_on_selectpartner_pressed"]
 
 
-[editable path="stats/statspanel"]

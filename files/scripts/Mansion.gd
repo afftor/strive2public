@@ -74,29 +74,29 @@ func _input(event):
 	
 	if event.is_action_pressed("F") && get_node("Navigation/end").is_visible():
 		_on_end_pressed()
-	elif event.is_action_pressed("Q") && get_node("buttonpanel").is_visible():
+	elif event.is_action_pressed("Q") && get_node("MainScreen").is_visible():
 		mansion()
-	elif event.is_action_pressed("W") && get_node("buttonpanel").is_visible():
+	elif event.is_action_pressed("W") && get_node("MainScreen").is_visible():
 		jail()
-	elif event.is_action_pressed("E") && get_node("buttonpanel").is_visible():
+	elif event.is_action_pressed("E") && get_node("MainScreen").is_visible():
 		libraryopen()
-	elif event.is_action_pressed("A") && get_node("buttonpanel").is_visible() && !get_node("buttonpanel/VBoxContainer/alchemy").is_disabled():
+	elif event.is_action_pressed("A") && get_node("MainScreen").is_visible() && !get_node("Navigation/alchemy").is_disabled():
 		alchemy()
-	elif event.is_action_pressed("S") && get_node("buttonpanel").is_visible() && !get_node("buttonpanel/VBoxContainer/laboratory").is_disabled():
+	elif event.is_action_pressed("S") && get_node("MainScreen").is_visible() && !get_node("Navigation/laboratory").is_disabled():
 		laboratory()
-	elif event.is_action_pressed("Z") && get_node("buttonpanel").is_visible() && !get_node("buttonpanel/VBoxContainer/farm").is_disabled():
+	elif event.is_action_pressed("Z") && get_node("MainScreen").is_visible() && !get_node("Navigation/farm").is_disabled():
 		farm()
-	elif event.is_action_pressed("X") && get_node("buttonpanel").is_visible() && !get_node("buttonpanel/VBoxContainer/portals").is_disabled():
+	elif event.is_action_pressed("X") && get_node("MainScreen").is_visible() && !get_node("MainScreen/portals").is_disabled():
 		portals()
-	elif event.is_action_pressed("C") && get_node("buttonpanel").is_visible():
+	elif event.is_action_pressed("C") && get_node("MainScreen").is_visible():
 		leave()
-	elif event.is_action_pressed("B") && get_node("buttonpanel").is_visible():
+	elif event.is_action_pressed("B") && get_node("MainScreen").is_visible():
 		_on_inventory_pressed()
-	elif event.is_action_pressed("R") && get_node("buttonpanel").is_visible():
+	elif event.is_action_pressed("R") && get_node("MainScreen").is_visible():
 		_on_personal_pressed()
-	elif event.is_action_pressed("V") && get_node("buttonpanel").is_visible():
+	elif event.is_action_pressed("V") && get_node("MainScreen").is_visible():
 		_on_combatgroup_pressed()
-	elif event.is_action_pressed("L") && get_node("buttonpanel").is_visible():
+	elif event.is_action_pressed("L") && get_node("MainScreen").is_visible():
 		_on_questlog_pressed()
 
 
@@ -1548,7 +1548,6 @@ func _on_music_finished():
 
 func _on_mansionbutton_pressed():
 	_on_mansion_pressed()
-	_on_buttonpanel_mouse_enter()
 
 func _on_mansion_pressed():
 	var textnode = get_node("MainScreen/mansion/mansioninfo")
@@ -1559,7 +1558,6 @@ func _on_mansion_pressed():
 	hide_everything()
 	for i in get_tree().get_nodes_in_group("mansioncontrols"):
 		i.set_hidden(false)
-	get_node("buttonpanel").set_hidden(false)
 	get_node("outside/slavesellpanel").set_hidden(true)
 	get_node("outside/slavebuypanel").set_hidden(true)
 	get_node("outside/slaveguildquestpanel").set_hidden(true)
@@ -1574,7 +1572,7 @@ func _on_mansion_pressed():
 	for i in globals.state.portals.values():
 		if i.enabled == true:
 			portals = true
-	get_node("buttonpanel/VBoxContainer/portals").set_disabled(!portals)
+	get_node("MainScreen/portals").set_disabled(!portals)
 	textnode.set_hidden(false)
 	var sleepers = globals.count_sleepers()
 	text = 'You are at your mansion, which is located near [color=aqua]'+ globals.state.location.capitalize()+'[/color].\n\n' 
@@ -1617,13 +1615,13 @@ func _on_mansion_pressed():
 	else:
 		get_node("charlistcontrol/slavelist").set_hidden(true)
 	if globals.state.farm >= 3:
-		get_node("buttonpanel/VBoxContainer/farm").set_disabled(false)
+		get_node("Navigation/farm").set_disabled(false)
 	else:
-		get_node("buttonpanel/VBoxContainer/farm").set_disabled(true)
+		get_node("Navigation/farm").set_disabled(true)
 	if globals.state.mansionupgrades.mansionlab > 0:
-		get_node("buttonpanel/VBoxContainer/laboratory").set_disabled(false)
+		get_node("Navigation/laboratory").set_disabled(false)
 	else:
-		get_node("buttonpanel/VBoxContainer/laboratory").set_disabled(true)
+		get_node("Navigation/laboratory").set_disabled(true)
 	music_set('mansion')
 	if globals.state.sidequests.emily == 3:
 		globals.events.emilymansion()
@@ -1825,7 +1823,7 @@ func brewlistpressed(potion):
 		newpanel.get_node("number").set_text(str(recipedict[i]*counter))
 		newpanel.get_node("totalnumber").set_text(str(item.amount))
 		if item.amount < recipedict[i]*counter:
-			newpanel.get_node("totalnumber").set('custom_colors/font_color', Color(1,0,0))
+			newpanel.get_node("totalnumber").set('custom_colors/font_color', Color(1,0.29,0.29))
 			brewable = false
 	text = text + '\n[center][color=aqua]'+ potselected.name + '[/color][/center]\n' + '' + potselected.description + '\n'		
 	for i in get_tree().get_nodes_in_group('alchemypot'):
@@ -2216,7 +2214,8 @@ func babyage(age):
 		baby.vagvirgin = true
 		#baby.pussy.first = 'none'
 	globals.slaves = baby
-	baby = ''
+	globals.state.babylist.erase(baby)
+	baby = null
 	get_node("birthpanel").set_hidden(true)
 	get_node("birthpanel/raise/childpanel").set_hidden(true)
 	nextdayevents()
@@ -3002,19 +3001,7 @@ func _on_wiki_pressed():
 	OS.shell_open('http://strive4power.wikia.com/wiki/Strive4power_Wiki')
 
 
-var panelshown = false
 
-func _on_buttonpanel_mouse_enter():
-	get_node("buttonpanel/leavenode").set_hidden(false)
-	if panelshown == false:
-		get_node("AnimationPlayer").play("panelshow")
-		panelshown = true
-
-func _on_leavenode_mouse_enter():
-	if panelshown == true:
-		get_node("buttonpanel/leavenode").set_hidden(true)
-		get_node("AnimationPlayer").play_backwards("panelshow")
-		panelshown = false
 
 
 func _on_personal_pressed():
@@ -3170,7 +3157,6 @@ func _on_startbutton_pressed():
 	else:
 		get_node("interactions").startsequence([globals.player] + sexslaves + sexassist, mode)
 	get_node("Navigation").set_hidden(true)
-	get_node("buttonpanel").set_hidden(true)
 	get_node('MainScreen').set_hidden(true)
 	get_node("charlistcontrol").set_hidden(true)
 	get_node("interactions").set_hidden(false)

@@ -208,7 +208,6 @@ func gooutside():
 		yield(main, 'animfinished')
 	main.checkplayergroup()
 	main.get_node("Navigation").set_hidden(true)
-	main.get_node("buttonpanel").set_hidden(true)
 	main.get_node('MainScreen').set_hidden(true)
 	main.get_node("charlistcontrol").set_hidden(true)
 	set_hidden(false)

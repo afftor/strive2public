@@ -428,6 +428,7 @@ func action(actionname):
 			get_tree().get_current_scene().popup(slave.dictionary(text))
 			get_tree().get_current_scene().rebuild_slave_list()
 			get_tree().get_current_scene().close_dialogue()
+			get_tree().get_current_scene()._on_mansion_pressed()
 			return
 		if slave.obed < 75||slave.traits.has('Masochist') == true:
 			if slave.effects.has('captured') == true:

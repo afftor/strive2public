@@ -5,18 +5,18 @@ onready var sstr = get_node("sstr/Label")
 onready var sagi = get_node("sagi/Label")
 onready var smaf = get_node("smaf/Label")
 onready var send = get_node("send/Label")
-onready var cour = get_node("cour/Label")
-onready var conf = get_node("conf/Label")
-onready var wit = get_node("wit/Label")
-onready var charm = get_node("charm/Label")
+onready var cour = get_node("cour/cur")
+onready var conf = get_node("conf/cur")
+onready var wit = get_node("wit/cur")
+onready var charm = get_node("charm/cur")
 var mode = 'slavebase'
 
 func _ready():
 	for i in ['send','smaf','sstr','sagi']:
 		get_node(i+'/Button').connect("pressed", self, 'statup', [i])
-	for i in globals.statsdict:
-		self[i].get_parent().get_node("Control").connect("mouse_enter", self, 'showtooltip', [i])
-		self[i].get_parent().get_node("Control").connect("mouse_exit", globals, 'hidetooltip')
+#	for i in globals.statsdict:
+#		self[i].get_parent().get_node("Control").connect("mouse_enter", self, 'showtooltip', [i])
+#		self[i].get_parent().get_node("Control").connect("mouse_exit", globals, 'hidetooltip')
 
 func showtooltip(value):
 	var text = globals.statsdescript[value]
@@ -42,7 +42,7 @@ func show():
 			if text.find('color') >= 0:
 				text += "[/color]"
 			text += "/" +str(min(slave.stats[globals.maxstatdict[i]], slave.originvalue[slave.origins]))
-		self[i].set_bbcode(text)
+		#self[i].set_bbcode(text)
 	for i in mentals:
 		if mode == 'slavebase' || slave == globals.player:
 			i.get_parent().set_hidden(true)
